@@ -10,6 +10,6 @@ public interface UserDao {
     public void addUser(User user) throws Exception;
 
     //select one
-    public void getUser(String userId) throws Exception;
+    public User getUser(String userId) throws Exception;
 
 }

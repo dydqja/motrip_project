@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class TripPlanApplicationTests {
+public class TripPlanDaoTest {
 
     @Autowired
     @Qualifier("tripPlanServiceImpl")

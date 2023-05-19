@@ -1,7 +1,5 @@
 package com.bit.motrip.domain;
 
-import com.sun.xml.internal.fastinfoset.util.StringArray;
-
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +31,7 @@ public class User {
     private boolean isUsingMemoBar;
     private boolean isListingAttachedMemo;
     private boolean isListingSharedMemo;
+    private int evaluateCount;
 //    private List<String> accessibleMemos;
 
     //constructor
@@ -48,7 +47,7 @@ public class User {
         this.userId = userId;
     }
 
-    public String getNickName() {
+    public String getNickname() {
         return nickname;
     }
 
@@ -164,8 +163,8 @@ public class User {
         return isSecession;
     }
 
-    public void setIsSecession(boolean isSecession) {
-        this.isSecession = isSecession;
+    public void setSecession(boolean secession) {
+        isSecession = secession;
     }
 
     public Date getSecessionDate() {
@@ -180,8 +179,8 @@ public class User {
         return isSuspension;
     }
 
-    public void setIsSuspension(boolean isSuspension) {
-        this.isSuspension = isSuspension;
+    public void setSuspension(boolean suspension) {
+        isSuspension = suspension;
     }
 
     public Date getSuspensionDate() {
@@ -204,42 +203,49 @@ public class User {
         return isSelfIntroPublic;
     }
 
-    public void setIsSelfIntroPublic(boolean isSelfIntroPublic) {
-        this.isSelfIntroPublic = isSelfIntroPublic;
+    public void setSelfIntroPublic(boolean selfIntroPublic) {
+        isSelfIntroPublic = selfIntroPublic;
     }
 
     public boolean isUserPhotoPublic() {
         return isUserPhotoPublic;
     }
 
-    public void setIsUserPhotoPublic(boolean isUserPhotoPublic) {
-        this.isUserPhotoPublic = isUserPhotoPublic;
+    public void setUserPhotoPublic(boolean userPhotoPublic) {
+        isUserPhotoPublic = userPhotoPublic;
     }
 
     public boolean isUsingMemoBar() {
         return isUsingMemoBar;
     }
 
-    public void setIsUsingMemoBar(boolean isUsingMemoBar) {
-        this.isUsingMemoBar = isUsingMemoBar;
+    public void setUsingMemoBar(boolean usingMemoBar) {
+        isUsingMemoBar = usingMemoBar;
     }
 
-    public boolean isListingAttachedMeMo() {
+    public boolean isListingAttachedMemo() {
         return isListingAttachedMemo;
     }
 
-    public void setIsListingAttachedMemo(boolean isListingAttachedMemo) {
-        this.isListingAttachedMemo = isListingAttachedMemo;
+    public void setListingAttachedMemo(boolean listingAttachedMemo) {
+        isListingAttachedMemo = listingAttachedMemo;
     }
 
     public boolean isListingSharedMemo() {
         return isListingSharedMemo;
     }
 
-    public void setIsListingSharedMemo(boolean isListingSharedMemo) {
-        this.isListingSharedMemo = isListingSharedMemo;
+    public void setListingSharedMemo(boolean listingSharedMemo) {
+        isListingSharedMemo = listingSharedMemo;
     }
 
+    public int getEvaluateCount() {
+        return evaluateCount;
+    }
+
+    public void setEvaluateCount(int evaluateCount) {
+        this.evaluateCount = evaluateCount;
+    }
 //    public List<String> getAceessableMemos() {
 //        return accessibleMemos;
 //    }
@@ -258,8 +264,9 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", gender='" + gender + '\'' +
                 ", age='" + age + '\'' +
-                ", isScession=" + isSecession +
+                ", isSecession=" + isSecession +
                 ", isSuspension=" + isSuspension +
+                ", evaluateCount=" + evaluateCount +
                 '}';
     }
 }

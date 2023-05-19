@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import javax.xml.stream.events.Comment;
 import java.util.List;
-
 @Mapper
 public interface ReviewDao {
     //후기 부분 CRUD

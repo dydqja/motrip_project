@@ -33,6 +33,7 @@
         <result property="isUsingMemoBar"           column="is_using_memo_bar"          jdbcType="TINYINT"/>
         <result property="isListingAttachedMemo"    column="is_listing_attached_memo"   jdbcType="TINYINT"/>
         <result property="isListingSharedMemo"      column="is_listing_Shared_memo"     jdbcType="TINYINT"/>
+        <result property="evaluateCount"            column="evaluate_count"             jdbcType="INTEGER"/>
     </resultMap>
 
     <insert id="addUser" parameterType="com.bit.motrip.domain.User">
@@ -49,10 +50,11 @@
     </insert>
 
     <select 	id="getUser"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
-        SELECT
-            user_id , user_name , password , role ,  cell_phone ,  addr , email , reg_date , addr_detail
-        FROM users
-        WHERE user_id = #{value}
+        SELECT u.nickname, u.gender, u.user_photo, u.self_intro, SUM(e.is_score_plus) AS evaluate_count
+        FROM users u
+        JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
+        WHERE e.evaluated_user_id = #{userId}
+        GROUP BY u.user_id;
     </select>
 
 

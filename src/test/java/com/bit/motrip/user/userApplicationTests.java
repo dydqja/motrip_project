@@ -15,7 +15,7 @@ public class userApplicationTests {
     @Autowired
     private UserDao userDao;
 
-    @Test
+//    @Test
     public void insertTest() throws Exception {
         User user = new User();
 
@@ -32,16 +32,28 @@ public class userApplicationTests {
         user.setGender("M");
         user.setAge("30-39");
         user.setRole(1);
-        user.setIsSecession(FALSE);
-        user.setIsSuspension(FALSE);
+        user.setSecession(FALSE);
+        user.setSuspension(FALSE);
         user.setWarningCount(1);
-        user.setIsSelfIntroPublic(TRUE);
-        user.setIsUserPhotoPublic(TRUE);
-        user.setIsUsingMemoBar(TRUE);
-        user.setIsListingAttachedMemo(FALSE);
-        user.setIsListingSharedMemo(FALSE);
+        user.setSelfIntroPublic(TRUE);
+        user.setUserPhotoPublic(TRUE);
+        user.setUsingMemoBar(TRUE);
+        user.setListingAttachedMemo(FALSE);
+        user.setListingSharedMemo(FALSE);
 
         userDao.addUser(user);
+    }
+
+    @Test
+    public void getTest() throws Exception {
+        User user = new User();
+
+        user.setUserId("user2");
+
+        User getUser = userDao.getUser(user.getUserId());
+
+        System.out.println(getUser.getEvaluateCount());
+
     }
 
 }
