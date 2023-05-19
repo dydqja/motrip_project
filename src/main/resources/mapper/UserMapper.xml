@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.user.UserDao">
+
+    <resultMap id="userSelectMap" type="com.bit.motrip.domain.User">
+        <result property="userId"                   column="user_id"                    jdbcType="VARCHAR"/>
+        <result property="nickname"                 column="nickname"                   jdbcType="VARCHAR"/>
+        <result property="pwd"                      column="pwd"                        jdbcType="VARCHAR"/>
+        <result property="userName"                 column="user_name"                  jdbcType="VARCHAR"/>
+        <result property="phone"                    column="phone"                      jdbcType="VARCHAR"/>
+        <result property="addr"                     column="addr"                       jdbcType="VARCHAR"/>
+        <result property="addrDetail"               column="addr_detail"                jdbcType="VARCHAR"/>
+        <result property="email"                    column="email"                      jdbcType="VARCHAR"/>
+        <result property="ssn"                      column="ssn"                        jdbcType="VARCHAR"/>
+        <result property="pwd"                      column="pwd"                        jdbcType="VARCHAR"/>
+        <result property="selfIntro"                column="self_intro"                 jdbcType="VARCHAR"/>
+        <result property="userPhoto"                column="user_photo"                 jdbcType="VARCHAR"/>
+        <result property="gender"                   column="gender"                     jdbcType="VARCHAR"/>
+        <result property="age"                      column="age"                        jdbcType="VARCHAR"/>
+        <result property="role"                     column="role"                       jdbcType="TINYINT"/>
+        <result property="userRegDate"              column="user_reg_date"              jdbcType="DATE"/>
+        <result property="isSecession"              column="is_secession"               jdbcType="TINYINT"/>
+        <result property="secessionDate"            column="secession_date"             jdbcType="DATE"/>
+        <result property="isSuspension"             column="is_suspension"              jdbcType="TINYINT"/>
+        <result property="suspensionDate"           column="suspension_date"            jdbcType="DATE"/>
+        <result property="warningCount"             column="warning_Count"              jdbcType="TINYINT"/>
+        <result property="isSelfIntroPublic"        column="is_self_intro_public"       jdbcType="TINYINT"/>
+        <result property="isUserPhotoPublic"        column="is_user_photo_public"       jdbcType="TINYINT"/>
+        <result property="isUsingMemoBar"           column="is_using_memo_bar"          jdbcType="TINYINT"/>
+        <result property="isListingAttachedMemo"    column="is_listing_attached_memo"   jdbcType="TINYINT"/>
+        <result property="isListingSharedMemo"      column="is_listing_Shared_memo"     jdbcType="TINYINT"/>
+    </resultMap>
+
+    <insert id="addUser" parameterType="com.bit.motrip.domain.User">
+        INSERT
+        INTO users( user_id, nickname, pwd, user_name, phone, addr, addr_detail, email, ssn, self_intro, user_photo,
+                    gender, age, role, is_secession, secession_date, is_suspension, suspension_date, warning_count,
+                    is_self_intro_public, is_user_photo_public, is_using_memo_bar, is_listing_attached_memo,
+                    is_listing_shared_memo )
+        VALUES	 (	#{userId}, #{nickname}, #{pwd}, #{userName}, #{phone}, #{addr}, #{addrDetail}, #{email}, #{ssn}, #{selfIntro}, #{userPhoto},
+                    #{gender}, #{age}, #{role}, #{isSecession}, #{secessionDate}, #{isSuspension}, #{suspensionDate}, #{warningCount},
+                    #{isSelfIntroPublic}, #{isUserPhotoPublic}, #{isUsingMemoBar}, #{isListingAttachedMemo},
+                    #{isListingSharedMemo}
+                 );
+    </insert>
+
+    <select 	id="getUser"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
+        SELECT
+            user_id , user_name , password , role ,  cell_phone ,  addr , email , reg_date , addr_detail
+        FROM users
+        WHERE user_id = #{value}
+    </select>
+
+
+
+</mapper>

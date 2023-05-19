@@ -1,15 +1,12 @@
-package com.bit.motrip.dao.review;
+package com.bit.motrip.service.review;
 
 import com.bit.motrip.domain.Review;
-import org.apache.ibatis.annotations.Mapper;
 
 import javax.xml.stream.events.Comment;
 import java.util.List;
 
-@Mapper
-public interface ReviewDao {
-    //후기 부분 CRUD
-    //INSERT C 후기 작성
+public interface ReviewService {
+    //INSERT C 후기 등록
     public void addReview() throws Exception;
 
     //SELECT LIST 후기 목록 조회
@@ -19,11 +16,12 @@ public interface ReviewDao {
     public Review getReview() throws Exception;
 
     //UPDATE U 후기 수정
-    public int updateReview(Review review) throws Exception;
+    public int updateReview() throws Exception;
+
+    int updateReview(Review review);
 
     //DELETE D 후기 삭제
     public int deleteReview(int reviewNo);
-
 
 
     //Comment 댓글 부분 CRD
@@ -39,5 +37,4 @@ public interface ReviewDao {
     //DELETE D
     public int deleteComment(int commentNo);
 
-
-}//end of ReviewDao
+}//end of ReviewService
