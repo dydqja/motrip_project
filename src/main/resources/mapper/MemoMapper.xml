@@ -54,10 +54,15 @@
         where  memo_no = #{memoNo}
     </delete>
 
-    <select id="getMemoList" resultMap="memoResultMap">
-        SELECT memo_no, memo_title, memo_contents, memo_reg_date, memo_del_date, memo_color
-        FROM memo
-        ORDER BY memo_reg_date DESC
+    <select id="getMemoList" parameterType="String" resultMap="memoResultMap">
+        SELECT m.memo_no, m.memo_title, m.memo_contents, m.memo_reg_date, m.memo_color
+        FROM memo m, (
+            SELECT memo_no
+            FROM memo_access
+            WHERE memo_access_user = #{username}
+            ORDER BY is_memo_author
+        ) vt
+        WHERE m.memo_no = vt.memo_no
     </select>
 
 
