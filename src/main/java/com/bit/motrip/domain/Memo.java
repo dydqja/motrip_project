@@ -10,6 +10,8 @@ public class Memo {
     Date memoRegDate;
     Date memoDelDate;
     int memoColor;
+    String memoAuthor;
+    List<User> memoAccessUserList;
 
     public int getMemoNo() {
         return memoNo;
@@ -57,5 +59,21 @@ public class Memo {
 
     public void setMemoColor(int memoColor) {
         this.memoColor = memoColor;
+    }
+
+    public String getMemoAuthor() {
+        return memoAuthor;
+    }
+
+    public void setMemoAuthor(String memoAuthor) {
+        this.memoAuthor = memoAuthor;
+    }
+
+    public List<User> getMemoAccessUserList() {
+        return memoAccessUserList;
+    }
+
+    public void setMemoAccessUserList(List<User> memoAccessUserList) {
+        this.memoAccessUserList = memoAccessUserList;
     }
 }
