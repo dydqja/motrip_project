@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.tripplan.TripPlanDao">
+
+    <insert id="insertDailyPlan" parameterType="com.bit.motrip.domain.DailyPlan">
+        INSERT INTO daily_plan (
+        trip_plan_no,
+        daily_plan_contents,
+        total_trip_time
+        ) VALUES (
+        #{tripPlanNo},
+        #{dailyPlanContents},
+        #{totalTripTime}
+        )
+    </insert>
+
+    <select id="getDailyPlanList" resultType="com.bit.motrip.domain.DailyPlan">
+        SELECT * FROM daily_plan
+    </select>
+
+</mapper>
