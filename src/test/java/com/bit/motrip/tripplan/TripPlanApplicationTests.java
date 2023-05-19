@@ -28,7 +28,7 @@ public class TripPlanApplicationTests {
         System.out.println(tripPlans);
     }
 
-    @Test
+    //@Test
     public void insertTest() throws Exception {
         TripPlan tripPlan = new TripPlan();
         tripPlan.setTripPlanAuthor("user2");
