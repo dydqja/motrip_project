@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.chatroom.ChatMemberDao">
+	<resultMap id="chatMemberResultMap" type="com.bit.motrip.domain.ChatMember">
+		<id column="member_no" property="memberNo" jdbcType="INTEGER"/>
+		<result column="chat_room_no" property="chatRoomNo" jdbcType="INTEGER"/>
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
+		<result column="is_chat_room_author" property="isChatRoomAuthor" jdbcType="TINYINT"/>
+	</resultMap>
+
+<!--	<insert 	id="addChatRoom"		parameterType="chatRoomResultMap" >-->
+<!--	 	INSERT-->
+<!--		INTO chatroom (CHATROOMNAME , CHATROOMNO) -->
+<!--		VALUES	 (#{chatroomName}, seq_chatroom_chatroomno.NEXTVAL)-->
+<!--	 </insert>-->
+
+<!--	<select id="getChatRoom" resultMap="chatRoomResultMap">-->
+<!--		select-->
+<!--			cr.chat_room_no,-->
+<!--			cr.chat_room_title,-->
+<!--			cr.travel_start_date,-->
+<!--			cr.age_range,-->
+<!--			cr.max_persons,-->
+<!--			cr.current_persons-->
+<!--		from-->
+<!--			chat_rooms cr-->
+<!--		where-->
+<!--			cr.chat_room_no = #{chatRoomNo};-->
+<!--	</select>-->
+
+	
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.chatroom.PhotosDao">
+	<resultMap id="PhotosResultMap" type="com.bit.motrip.domain.Photos">
+		<id column="photo_no" property="photoNo" jdbcType="INTEGER"/>
+		<result column="photo_id" property="photoId" jdbcType="VARCHAR"/>
+		<result column="chat_room_no" property="chatRoomNo" jdbcType="INTEGER"/>
+	</resultMap>
+	
+
+
+	
+</mapper>
