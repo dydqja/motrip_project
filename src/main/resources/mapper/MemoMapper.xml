@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.memo.MemoDao">
+
+    <resultMap id="memoResultMap" type="com.bit.motrip.domain.Memo">
+        <id column="memo_no" property="memoNo"/>
+        <result column="memo_title" property="memoTitle"/>
+        <result column="memo_contents" property="memoContents"/>
+        <result column="memo_reg_date" property="memoRegDate"/>
+        <result column="memo_del_date" property="memoDelDate"/>
+        <result column="memo_color" property="memoColor"/>
+    </resultMap>
+
+        <select id="getMemo" parameterType="int" resultMap="memoResultMap">
+                SELECT memo_no, memo_title, memo_contents, memo_reg_date, memo_del_date, memo_color
+                FROM memo
+                WHERE memo_no = #{memoNo}
+        </select>
+
+
+    <insert id="addMemo" parameterType="com.bit.motrip.domain.Memo">
+        <selectKey keyProperty="memoNo" resultType="int" order="BEFORE">
+                SELECT LAST_INSERT_ID() AS memo_no
+        </selectKey>
+        insert into memo
+        (memo_title, memo_contents, memo_color)
+        values
+        (#{memoTitle}, #{memoContents}, #{memoColor})
+    </insert>
+
+
+</mapper>
