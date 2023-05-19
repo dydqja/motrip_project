@@ -15,15 +15,19 @@ class MemoDaoTest {
     @Test
     void addMemo() throws Exception{
         Memo memo = new Memo();
-        memo.setMemoTitle("test1");
-        memo.setMemoContents("test");
+        memo.setMemoTitle("test2");
+        memo.setMemoContents("testtest");
         memo.setMemoColor(0);
-        memoDao.addMemo(memo);
+        int afterMemoNo = memoDao.addMemo(memo);
+        System.out.println(afterMemoNo);
     }
-    //@Test
+    @Test
     //select test
-    void getMemoList() throws Exception{
-        Memo firstMemo = memoDao.getMemoList().get(0);
-        System.out.println(firstMemo.getMemoTitle());
+    void getMemo() throws Exception{
+
+        Memo memo = new Memo();
+        int targetMemoNo= 1;
+        memo = memoDao.getMemo(targetMemoNo);
+        System.out.println(memo.getMemoTitle());
     }
 }
