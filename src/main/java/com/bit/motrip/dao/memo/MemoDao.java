@@ -10,7 +10,10 @@ import java.util.List;
 public interface MemoDao {
     //add 후 memoNo를 리턴해야 함
     public int addMemo(Memo memo) throws Exception;
-    public List<Memo> getMemoList() throws Exception;
-
     public Memo getMemo(int memoNo) throws Exception;
+    public List<Memo> getMemoList() throws Exception;
+    public int deleteMemo(int memoNo) throws Exception;
+
+
+    public void updateMemo(Memo memo);
 }
