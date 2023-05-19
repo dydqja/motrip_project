@@ -1,10 +1,14 @@
 package com.bit.motrip.dao.memo;
 
+import com.bit.motrip.common.TestUtil;
 import com.bit.motrip.domain.Memo;
+import com.bit.motrip.domain.MemoAccess;
+import com.bit.motrip.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,18 +17,31 @@ class MemoDaoTest {
     @Autowired
     private MemoDao memoDao;
 
+    //methods to test
+
+
     //insert test
     @Test
     void addMemo() throws Exception{
-        Memo memo = new Memo();
-        memo.setMemoTitle("이거왜안됨");
-        memo.setMemoContents("도저히모르겠네");
-        memo.setMemoColor(0);
-        int afterMemoNo = memoDao.addMemo(memo);
-        System.out.println(afterMemoNo);
-    }
-    //SimpleCrud
+        //입력할 메모를 만든다.
+        Memo memo = TestUtil.temporaryMemoMaker();
+        //DB에 메모를 추가한다.
+        int isSuccess = memoDao.addMemo(memo);
+        if(isSuccess==1){
+            int maxNo = memoDao.getMaxMemoNo();
+            System.out.println(maxNo);
+            System.out.println("추가된 메모의 번호는 "+maxNo+"입니다.");
 
+            //DB에 삽입된 메모의 memo_user_access 추가한다.
+            MemoAccess memoAccess = new MemoAccess();
+            memoAccess.setMemoNo(maxNo);
+            memoAccess.setUserId(memo.getMemoAuthor());
+            memoAccess.setAuthor(true);
+            memoDao.addMemoAccess(memoAccess);
+            int maxAccessNo = memoDao.getMaxMemoAccessNo();
+            System.out.println("추가된 메모의 접근번호는 "+maxAccessNo+"입니다.");
+        }
+    }
     //@Test
     //select test
     void getMemo() throws Exception{
