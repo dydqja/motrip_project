@@ -17,13 +17,8 @@ public class PlaceServiceImpl implements PlaceService {
     private PlaceDao placeDao;
 
     @Override
-    public List<Place> getAllPlaces() {
-        return placeDao.getAllPlaces();
-    }
-
-    @Override
-    public Place getPlaceById(int placeNo) {
-        return placeDao.getPlaceById(placeNo);
+    public List<Place> getPlaceList(int dailyPlanNo) {
+        return placeDao.getPlaceList(dailyPlanNo);
     }
 
     @Override

@@ -17,21 +17,19 @@
         <result column="trip_time"          property="tripTime"             jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="getAllPlaces" resultMap="placeResultMap">
-        select * from place
+    <!-- 명소 리스트 확인 쿼리 -->
+    <select id="getPlaceList" parameterType="int" resultMap="placeResultMap">
+        select * from place WHERE daily_plan_no = #{dailyPlanNo}
     </select>
 
-    <select id="getPlaceById" resultMap="placeResultMap">
-        select * from place where place_no = #{placeNo}
-    </select>
-
-    <insert id="insertPlace" parameterType="com.bit.motrip.domain.Place">
-        insert into place (place_name, place_coordinates, place_image, place_phone_number, place_address, place_category, trip_time)
-        values (#{placeName}, #{placeCoordinates}, #{placeImage}, #{placePhoneNumber}, #{placeAddress}, #{placeCategory}, #{tripTime})
+    <!-- 명소 추가 쿼리 -->
+    <insert id="addPlace" parameterType="com.bit.motrip.domain.Place">
+        insert into place (place_tags, daily_plan_no, place_coordinates, place_image, place_phone_number, place_address, place_category, trip_time)
+        values (#{placeTags}, #{dailyPlanNo}, #{placeCoordinates}, #{placeImage}, #{placePhoneNumber}, #{placeAddress}, #{placeCategory}, #{tripTime})
     </insert>
 
     <update id="updatePlace" parameterType="com.bit.motrip.domain.Place">
-        update place set place_name = #{placeName}, place_coordinates = #{placeCoordinates}, place_image = #{placeImage}, place_phone_number = #{placePhoneNumber}, place_address = #{placeAddress}, place_category = #{placeCategory}, trip_time = #{tripTime} where place_no = #{placeNo}
+        update place set place_tags = #{placeTags}, place_coordinates = #{placeCoordinates}, place_image = #{placeImage}, place_phone_number = #{placePhoneNumber}, place_address = #{placeAddress}, place_category = #{placeCategory}, trip_time = #{tripTime} where place_no = #{placeNo}
     </update>
 
     <delete id="deletePlace" parameterType="int">

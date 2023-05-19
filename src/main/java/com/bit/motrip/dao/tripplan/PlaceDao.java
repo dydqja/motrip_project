@@ -7,9 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface PlaceDao {
-    List<Place> getAllPlaces();
-    Place getPlaceById(int placeNo);
-    void addPlace(Place place);
+    public List<Place> getPlaceList(int dailyPlanNo);
+    public void addPlace(Place place);
     void updatePlace(Place place);
     void deletePlace(int placeNo);
 }

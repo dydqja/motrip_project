@@ -42,6 +42,7 @@
         SELECT MAX(trip_plan_no) FROM trip_plan;
     </select>
 
+    <!--
     <update id="updateTripPlan" parameterType="com.bit.motrip.domain.TripPlan">
         UPDATE trip_plan
         SET trip_plan_author = #{tripPlanAuthor},
@@ -57,8 +58,9 @@
         trip_plan_likes = #{tripPlanLikes},
         trip_plan_views = #{tripPlanViews}
         WHERE trip_plan_no = #{tripPlanNo}
-    </update>
+    </update> -->
 
+    <!-- 작성된 여행플랜 삭제 -->
     <delete id="deleteTripPlan" parameterType="int">
         DELETE FROM trip_plan
         WHERE trip_plan_no = #{tripPlanNo}
