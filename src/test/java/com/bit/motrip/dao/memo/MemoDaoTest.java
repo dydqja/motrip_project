@@ -3,15 +3,10 @@ package com.bit.motrip.dao.memo;
 import com.bit.motrip.common.TestUtil;
 import com.bit.motrip.domain.Memo;
 import com.bit.motrip.domain.MemoAccess;
-import com.bit.motrip.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class MemoDaoTest {
     @Autowired
