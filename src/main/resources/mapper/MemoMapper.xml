@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.memo.MemoDao">
+
+    <resultMap id="memoResultMap" type="com.bit.motrip.domain.Memo">
+        <id column="memo_no" property="memoNo"/>
+        <result column="memo_title" property="memoTitle"/>
+        <result column="memo_contents" property="memoContents"/>
+        <result column="memo_reg_date" property="memoRegDate"/>
+        <result column="memo_color" property="memoColor"/>
+        <result column="memo_author" property="memoAuthor"/>
+    </resultMap>
+
+</mapper>
