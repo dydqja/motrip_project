@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
-@SpringBootTest
+//@SpringBootTest
 class DailyPlanDaoTest {
 
     @Autowired
@@ -16,7 +16,13 @@ class DailyPlanDaoTest {
     private DailyPlanService dailyPlanService;
 
     //@Test
-    public void insertDailyPlan() {
+    public void addDailyPlan() {
+    }
+
+    //@Test
+    public void getDailyPlan() throws Exception {
+        int dailyPlanNo = dailyPlanService.getDailyPlan();
+        System.out.println(dailyPlanNo);
     }
 
     //@Test

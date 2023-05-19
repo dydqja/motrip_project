@@ -6,15 +6,6 @@ public class DailyPlan {
     private String dailyPlanContents;
     private String totalTripTime;
 
-    public DailyPlan() {}
-
-    public DailyPlan(int dailyPlanNo, int tripPlanNo, String dailyPlanContents, String totalTripTime) {
-        this.dailyPlanNo = dailyPlanNo;
-        this.tripPlanNo = tripPlanNo;
-        this.dailyPlanContents = dailyPlanContents;
-        this.totalTripTime = totalTripTime;
-    }
-
     public int getDailyPlanNo() {
         return dailyPlanNo;
     }
@@ -46,5 +37,4 @@ public class DailyPlan {
     public void setTotalTripTime(String totalTripTime) {
         this.totalTripTime = totalTripTime;
     }
-
 }

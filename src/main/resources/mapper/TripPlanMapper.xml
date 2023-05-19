@@ -6,36 +6,56 @@
 <mapper namespace="com.bit.motrip.dao.tripplan.TripPlanDao">
 
     <resultMap id="tripPlanResultMap" type="com.bit.motrip.domain.TripPlan">
-        <id column="trip_plan_no" property="tripPlanNo"/>
-        <result column="trip_plan_author" property="tripPlanAuthor"/>
-        <result column="trip_plan_title" property="tripPlanTitle"/>
-        <result column="trip_plan_thumbnail" property="tripPlanThumbnail"/>
-        <result column="trip_days" property="tripDays"/>
-        <result column="trip_plan_reg_date" property="tripPlanRegDate"/>
-        <result column="trip_plan_del_date" property="tripPlanDelDate"/>
-        <result column="is_plan_deleted" property="isPlanDeleted"/>
-        <result column="is_plan_public" property="isPlanPublic"/>
-        <result column="is_plan_downloadable" property="isPlanDownloadable"/>
-        <result column="is_trip_completed" property="isTripCompleted"/>
-        <result column="trip_plan_likes" property="tripPlanLikes"/>
-        <result column="trip_plan_views" property="tripPlanViews"/>
+        <id column="trip_plan_no"               property="tripPlanNo"             jdbcType="INTEGER"/>
+        <result column="trip_plan_author"       property="tripPlanAuthor"         jdbcType="VARCHAR"/>
+        <result column="trip_plan_title"        property="tripPlanTitle"          jdbcType="VARCHAR"/>
+        <result column="trip_plan_thumbnail"    property="tripPlanThumbnail"      jdbcType="VARCHAR"/>
+        <result column="trip_days"              property="tripDays"               jdbcType="INTEGER"/>
+        <result column="trip_plan_reg_date"     property="tripPlanRegDate"        jdbcType="DATE"/>
+        <result column="trip_plan_del_date"     property="tripPlanDelDate"        jdbcType="DATE"/>
+        <result column="is_plan_deleted"        property="isPlanDeleted"          jdbcType="TINYINT"/>
+        <result column="is_plan_public"         property="isPlanPublic"           jdbcType="TINYINT"/>
+        <result column="is_plan_downloadable"   property="isPlanDownloadable"     jdbcType="TINYINT"/>
+        <result column="is_trip_completed"      property="isTripCompleted"        jdbcType="TINYINT"/>
+        <result column="trip_plan_likes"        property="tripPlanLikes"          jdbcType="INTEGER"/>
+        <result column="trip_plan_views"        property="tripPlanViews"          jdbcType="INTEGER"/>
     </resultMap>
 
-    <select id="selectTripPlanList" resultType="com.bit.motrip.domain.TripPlan">
-        select * from trip_plan
+    <!-- 모든 여행플랜 조회 -->
+    <select id="selectTripPlanList" resultMap="tripPlanResultMap">
+        SELECT * FROM trip_plan
     </select>
 
-    <insert id="insertTripPlan" parameterType="com.bit.motrip.domain.TripPlan">
+    <!-- 여행플랜 작성 -->
+    <insert id="addTripPlan" parameterType="com.bit.motrip.domain.TripPlan">
         INSERT INTO trip_plan (
-        trip_plan_author, trip_plan_title, trip_plan_thumbnail, trip_days, trip_plan_reg_date, trip_plan_del_date, is_plan_deleted, is_plan_public, is_plan_downloadable, is_trip_completed, trip_plan_likes, trip_plan_views
-        ) VALUES (
-        #{tripPlanAuthor}, #{tripPlanTitle}, #{tripPlanThumbnail}, #{tripDays}, #{tripPlanRegDate}, #{tripPlanDelDate}, #{isPlanDeleted}, #{isPlanPublic}, #{isPlanDownloadable}, #{isTripCompleted}, #{tripPlanLikes}, #{tripPlanViews}
+        trip_plan_author, trip_plan_title, trip_plan_thumbnail, trip_days, trip_plan_reg_date, trip_plan_del_date, is_plan_deleted,
+        is_plan_public, is_plan_downloadable, is_trip_completed, trip_plan_likes, trip_plan_views )
+        VALUES (
+        #{tripPlanAuthor}, #{tripPlanTitle}, #{tripPlanThumbnail}, #{tripDays}, #{tripPlanRegDate}, #{tripPlanDelDate}, #{isPlanDeleted},
+        #{isPlanPublic}, #{isPlanDownloadable}, #{isTripCompleted}, #{tripPlanLikes}, #{tripPlanViews}
         )
     </insert>
 
+    <!-- 작성된 여행플랜의 번호를 찾기 위한 쿼리문 -->
+    <select id="getTripPlan" resultType="int">
+        SELECT MAX(trip_plan_no) FROM trip_plan;
+    </select>
+
     <update id="updateTripPlan" parameterType="com.bit.motrip.domain.TripPlan">
         UPDATE trip_plan
-        SET trip_plan_author = #{tripPlanAuthor}, trip_plan_title = #{tripPlanTitle}, trip_plan_thumbnail = #{tripPlanThumbnail}, trip_days = #{tripDays}, trip_plan_reg_date = #{tripPlanRegDate}, trip_plan_del_date = #{tripPlanDelDate}, is_plan_deleted = #{isPlanDeleted}, is_plan_public = #{isPlanPublic}, is_plan_downloadable = #{isPlanDownloadable}, is_trip_completed = #{isTripCompleted}, trip_plan_likes = #{tripPlanLikes}, trip_plan_views = #{tripPlanViews}
+        SET trip_plan_author = #{tripPlanAuthor},
+        trip_plan_title = #{tripPlanTitle},
+        trip_plan_thumbnail = #{tripPlanThumbnail},
+        trip_days = #{tripDays},
+        trip_plan_reg_date = #{tripPlanRegDate},
+        trip_plan_del_date = #{tripPlanDelDate},
+        is_plan_deleted = #{isPlanDeleted},
+        is_plan_public = #{isPlanPublic},
+        is_plan_downloadable = #{isPlanDownloadable},
+        is_trip_completed = #{isTripCompleted},
+        trip_plan_likes = #{tripPlanLikes},
+        trip_plan_views = #{tripPlanViews}
         WHERE trip_plan_no = #{tripPlanNo}
     </update>
 
