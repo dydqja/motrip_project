@@ -14,15 +14,16 @@
         <result column="memo_color" property="memoColor"/>
     </resultMap>
 
-    <select id="getMemoList" resultType="com.bit.motrip.domain.Memo">
-        select *
-        from memo
-        order by memo_no
-    </select>
+        <select id="getMemo" parameterType="int" resultMap="memoResultMap">
+                SELECT memo_no, memo_title, memo_contents, memo_reg_date, memo_del_date, memo_color
+                FROM memo
+                WHERE memo_no = #{memoNo}
+        </select>
 
-    <insert id="addMemo">
-        <selectKey resultType="int" keyProperty="USER_ID " order="AFTER">
-            SELECT LAST_INSERT_ID()
+
+    <insert id="addMemo" parameterType="com.bit.motrip.domain.Memo">
+        <selectKey keyProperty="memoNo" resultType="int" order="BEFORE">
+                SELECT LAST_INSERT_ID() AS memo_no
         </selectKey>
         insert into memo
         (memo_title, memo_contents, memo_color)
@@ -30,10 +31,5 @@
         (#{memoTitle}, #{memoContents}, #{memoColor})
     </insert>
 
-    <select id="selectMemo">
-        select *
-        from memo
-        where memo_no = #{memoNo}
-    </select>
 
 </mapper>
