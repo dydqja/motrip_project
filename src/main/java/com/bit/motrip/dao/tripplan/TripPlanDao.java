@@ -8,7 +8,9 @@ import java.util.List;
 @Mapper
 public interface TripPlanDao {
 
-    public List<TripPlan> selectTripPlanList() throws Exception;
+    public List<TripPlan> selectPublicTripPlanList() throws Exception;
+
+    public List<TripPlan> selectMyTripPlanList(String userId) throws Exception;
 
     public void addTripPlan(TripPlan tripPlan) throws Exception;
 
@@ -16,6 +18,6 @@ public interface TripPlanDao {
 
     public int updateTripPlan(TripPlan tripPlan);
 
-    public int deleteTripPlan(int tripPlanNo);
+    public int deleteTripPlan (int tripPlanNo) throws Exception;
 
 }

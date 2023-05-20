@@ -47,16 +47,73 @@
                     #{isSelfIntroPublic}, #{isUserPhotoPublic}, #{isUsingMemoBar}, #{isListingAttachedMemo},
                     #{isListingSharedMemo}
                  );
+
+        INSERT
+        INTO evaluate_list( evaluater_id )
+        VALUES ( #{userId} );
+
+
     </insert>
 
     <select 	id="getUser"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
-        SELECT u.nickname, u.gender, u.user_photo, u.self_intro, SUM(e.is_score_plus) AS evaluate_count
+        SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
+               u.is_self_intro_public, u.is_user_photo_public, SUM(e.is_score_plus) AS evaluate_count
         FROM users u
         JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
         WHERE e.evaluated_user_id = #{userId}
         GROUP BY u.user_id;
     </select>
 
+    <select  id="getList"  parameterType="com.bit.motrip.common.Search"	resultMap="userSelectMap">
+        SELECT *
+        FROM (	SELECT user_id, user_name, nickname, user_reg_date, is_secession,
+                       ROW_NUMBER() OVER (ORDER BY user_id) AS row_seq
+                FROM users
+                    <if test="searchCondition != null">
+                        <where>
+                            <if test="searchCondition == 0 and searchKeyword !='' ">
+                                user_id like CONCAT('%', #{searchKeyword}, '%')
+                            </if>
+                            <if test="searchCondition == 1 and searchKeyword !='' ">
+                                user_name like CONCAT('%', #{searchKeyword}, '%')
+                            </if>
+                        </where>
+                    </if>
+             ) AS derived_table
+        WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+    </select>
 
+    <select  id="getTotalCount" parameterType="com.bit.motrip.common.Search" resultType="int">
+        SELECT COUNT(*)
+        FROM(	SELECT user_id, user_name, nickname, user_reg_date, is_secession
+                FROM users
+                <if test="searchCondition != null">
+                    <where>
+                        <if test="searchCondition == 0 and searchKeyword !='' ">
+                            user_id like CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                        <if test="searchCondition == 1 and searchKeyword !='' ">
+                            user_name like CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                    </where>
+                </if> ) countTable
+    </select>
+
+    <update	id="updateUser"	parameterType="com.bit.motrip.domain.User" >
+        UPDATE users
+        <set>
+            pwd                  = #{pwd},
+            nickname    	     = #{nickname},
+            phone	             = #{phone},
+            addr 		         = #{addr},
+            addr_detail          = #{addrDetail},
+            email		         = #{email},
+            self_intro           = #{selfIntro},
+            user_photo           = #{userPhoto},
+            is_self_intro_public = #{isSelfIntroPublic},
+            is_user_photo_public = #{isUserPhotoPublic},
+        </set>
+        WHERE user_id = #{userId}
+    </update>
 
 </mapper>
