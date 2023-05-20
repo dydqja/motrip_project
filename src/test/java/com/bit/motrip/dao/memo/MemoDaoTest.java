@@ -5,14 +5,22 @@ import com.bit.motrip.domain.Memo;
 import com.bit.motrip.domain.MemoAccess;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 @SpringBootTest
 class MemoDaoTest {
     @Autowired
     private MemoDao memoDao;
+    @Value("#{memo['listSize']}")
+    private int listSize;
 
     //methods to test
+    @Test
+    void getListSize(){
+        System.out.println(listSize);
+    }
+
 
 
     //insert test
@@ -75,6 +83,7 @@ class MemoDaoTest {
         for(Memo memo : memoList){
             System.out.println(memo.getMemoTitle());
         }
+
     }
 
 }
