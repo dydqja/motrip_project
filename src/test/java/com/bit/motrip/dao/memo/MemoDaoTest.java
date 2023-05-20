@@ -1,5 +1,6 @@
 package com.bit.motrip.dao.memo;
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.common.TestUtil;
 import com.bit.motrip.domain.Memo;
 import com.bit.motrip.domain.MemoAccess;
@@ -12,7 +13,7 @@ import java.util.List;
 class MemoDaoTest {
     @Autowired
     private MemoDao memoDao;
-    @Value("#{memo['listSize']}")
+    @Value(value = "#{memo['listSize']}")
     private int listSize;
 
     //methods to test
@@ -29,22 +30,29 @@ class MemoDaoTest {
         //입력할 메모를 만든다.
         Memo memo = TestUtil.temporaryMemoMaker();
         //DB에 메모를 추가한다.
+        int isSuccess = 0;
         try {
-            int isSuccess = memoDao.addMemo(memo);
+            isSuccess = memoDao.addMemo(memo);
         }catch (Exception e){
             e.printStackTrace();
         }
-        try{
-            int maxNo = memoDao.getMaxMemoNo();
-            System.out.println("추가된 메모의 번호는 "+maxNo+"입니다.");
+        if(isSuccess==1) {
+            System.out.println("메모가 추가되었습니다.");
+            try {
+                int maxNo = memoDao.getMaxMemoNo();
+                System.out.println("추가된 메모의 번호는 " + maxNo + "입니다.");
 
-            //DB에 삽입된 메모의 memo_user_access 추가한다.
-            MemoAccess memoAccess = new MemoAccess(maxNo,memo.getMemoAuthor(),true);
-            memoDao.addMemoAccess(memoAccess);
-            int maxAccessNo = memoDao.getMaxMemoAccessNo();
-            System.out.println("추가된 메모의 접근번호는 "+maxAccessNo+"입니다.");
-        }catch (Exception e){
-            e.printStackTrace();
+                //DB에 삽입된 메모의 memo_user_access 추가한다.
+                MemoAccess memoAccess = new MemoAccess(maxNo, memo.getMemoAuthor(), true);
+                memoDao.addMemoAccess(memoAccess);
+                int maxAccessNo = memoDao.getMaxMemoAccessNo();
+                System.out.println("추가된 메모의 접근번호는 " + maxAccessNo + "입니다.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            System.out.println("메모가 추가되지 않았습니다.");
         }
     }
     @Test
@@ -59,7 +67,7 @@ class MemoDaoTest {
         }
     }
     @Test
-    void deleteMemo() throws Exception{
+    void deleteMemo(){
         int targetMemoNo = 4;
         try{
             memoDao.deleteMemo(targetMemoNo);
@@ -68,7 +76,7 @@ class MemoDaoTest {
         }
     }
     @Test
-    void updateMemo() throws Exception{
+    void updateMemo(){
         Memo memo = new Memo();
         memo.setMemoNo(2);
         memo.setMemoTitle("오늘의 코딩일지");
@@ -79,7 +87,11 @@ class MemoDaoTest {
     @Test
     //select list test
     void getMemoList() throws Exception{
-        List<Memo> memoList = memoDao.getMemoList("user1");
+        Search search = new Search();
+        search.setCurrentPage(1);
+        search.setPageSize(10);
+        search.setSearchCondition("0");
+        List<Memo> memoList = memoDao.getMemoList("user1",search);
         for(Memo memo : memoList){
             System.out.println(memo.getMemoTitle());
         }

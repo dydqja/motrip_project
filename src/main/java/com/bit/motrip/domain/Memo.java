@@ -4,14 +4,14 @@ import java.sql.Date;
 import java.util.List;
 
 public class Memo {
-    int memoNo;
-    String memoTitle;
-    String memoContents;
-    Date memoRegDate;
-    Date memoDelDate;
-    int memoColor;
-    String memoAuthor;
-    List<User> memoAccessUserList;
+    private int memoNo;
+    private String memoTitle;
+    private String memoContents;
+    private Date memoRegDate;
+    private Date memoDelDate;
+    private int memoColor;
+    private String memoAuthor;
+    private List<User> memoAccessUserList;
 
     public int getMemoNo() {
         return memoNo;
