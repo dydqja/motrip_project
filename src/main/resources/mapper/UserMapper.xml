@@ -50,7 +50,8 @@
     </insert>
 
     <select 	id="getUser"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
-        SELECT u.nickname, u.gender, u.user_photo, u.self_intro, SUM(e.is_score_plus) AS evaluate_count
+        SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
+               u.is_self_intro_public, u.is_user_photo_public, SUM(e.is_score_plus) AS evaluate_count
         FROM users u
         JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
         WHERE e.evaluated_user_id = #{userId}
@@ -91,5 +92,17 @@
                     </where>
                 </if> ) countTable
     </select>
+
+    <update	id="updateUser"	parameterType="com.bit.motrip.domain.User" >
+        UPDATE users
+        <set>
+            user_name 	= #{userName} ,
+            cell_phone	= #{phone} ,
+            addr 		= #{addr} ,
+            addr_detail = #{addrDetail} ,
+            email		= #{email}
+        </set>
+        WHERE user_id = #{userId}
+    </update>
 
 </mapper>

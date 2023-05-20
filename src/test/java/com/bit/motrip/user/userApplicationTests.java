@@ -49,20 +49,20 @@ public class userApplicationTests {
         userDao.addUser(user);
     }
 
-//    @Test
-    public void getTest() throws Exception {
+    @Test
+    public void getUserTest() throws Exception {
         User user = new User();
 
         user.setUserId("user2");
 
         User getUser = userDao.getUser(user.getUserId());
 
-        System.out.println(getUser.getEvaluateCount());
+        System.out.println(getUser.toString());
 
     }
 
-    @Test
-    public void getList() throws Exception {
+//    @Test
+    public void getListTest() throws Exception {
         Search search = new Search();
 
         int pageSize = 3;
