@@ -21,9 +21,16 @@
         <result column="trip_plan_views"        property="tripPlanViews"          jdbcType="INTEGER"/>
     </resultMap>
 
-    <!-- 모든 여행플랜 조회 -->
-    <select id="selectTripPlanList" resultMap="tripPlanResultMap">
-        SELECT * FROM trip_plan
+    <!-- 공유된 모든 여행플랜 조회 -->
+    <select id="selectPublicTripPlanList" resultMap="tripPlanResultMap">
+        SELECT * FROM trip_plan WHERE is_plan_public = TRUE
+        ORDER BY trip_plan_reg_date DESC;
+    </select>
+
+    <!-- 나의 모든 여행플랜 조회 -->
+    <select id="selectMyTripPlanList" parameterType="string" resultMap="tripPlanResultMap">
+        SELECT * FROM trip_plan WHERE trip_plan_author = #{trip_plan_author}
+        ORDER BY trip_plan_reg_date DESC;
     </select>
 
     <!-- 여행플랜 작성 -->
@@ -62,8 +69,7 @@
 
     <!-- 작성된 여행플랜 삭제 -->
     <delete id="deleteTripPlan" parameterType="int">
-        DELETE FROM trip_plan
-        WHERE trip_plan_no = #{tripPlanNo}
+        DELETE FROM trip_plan WHERE trip_plan_no = #{tripPlanNo}
     </delete>
 
 </mapper>
