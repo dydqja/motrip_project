@@ -21,8 +21,13 @@ public class TripPlanServiceImpl implements TripPlanService {
     }
 
     @Override
-    public void insertTripPlan(TripPlan tripPlan) {
-        tripPlanDao.insertTripPlan(tripPlan);
+    public void addTripPlan(TripPlan tripPlan) throws Exception {
+        tripPlanDao.addTripPlan(tripPlan);
+    }
+
+    @Override
+    public int getTripPlan() throws Exception {
+        return tripPlanDao.getTripPlan();
     }
 
     @Override

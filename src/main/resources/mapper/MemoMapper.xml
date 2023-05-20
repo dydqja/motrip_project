@@ -22,14 +22,44 @@
 
 
     <insert id="addMemo" parameterType="com.bit.motrip.domain.Memo">
-        <selectKey keyProperty="memoNo" resultType="int" order="BEFORE">
-                SELECT LAST_INSERT_ID() AS memo_no
-        </selectKey>
         insert into memo
         (memo_title, memo_contents, memo_color)
         values
         (#{memoTitle}, #{memoContents}, #{memoColor})
     </insert>
+
+    <select id="getMaxMemoNo" resultType="int">
+        select max(memo_no) from memo
+    </select>
+
+    <select id="getMaxMemoAccessNo" resultType="int">
+        select max(memo_access_no) from memo_access
+    </select>
+
+    <insert id="addMemoAccess" parameterType="com.bit.motrip.domain.MemoAccess">
+        insert into memo_access
+        (memo_no,memo_access_user,is_memo_author)
+        values
+        (#{memoNo}, #{userId},#{isAuthor})
+    </insert>
+
+    <update id="updateMemo" parameterType="com.bit.motrip.domain.Memo">
+        update memo
+        set memo_title = #{memoTitle}, memo_contents = #{memoContents}, memo_color = #{memoColor}
+        where memo_no = #{memoNo}
+    </update>
+
+    <delete id="deleteMemo" parameterType="int">
+        delete from memo
+        where  memo_no = #{memoNo}
+    </delete>
+
+    <select id="getMemoList" resultMap="memoResultMap">
+        SELECT memo_no, memo_title, memo_contents, memo_reg_date, memo_del_date, memo_color
+        FROM memo
+        ORDER BY memo_reg_date DESC
+    </select>
+
 
 
 </mapper>

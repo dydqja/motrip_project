@@ -5,20 +5,28 @@
 
 <mapper namespace="com.bit.motrip.dao.tripplan.DailyPlanDao">
 
-    <insert id="insertDailyPlan" parameterType="com.bit.motrip.domain.DailyPlan">
-        INSERT INTO daily_plan (
-        trip_plan_no,
-        daily_plan_contents,
-        total_trip_time
-        ) VALUES (
-        #{tripPlanNo},
-        #{dailyPlanContents},
-        #{totalTripTime}
-        )
+    <resultMap id="dailyPlanResultMap" type="com.bit.motrip.domain.DailyPlan">
+        <id     column="daily_plan_no"          property="dailyPlanNo"         jdbcType="INTEGER"/>
+        <result column="trip_plan_no"           property="tripPlanNo"          jdbcType="INTEGER"/>
+        <result column="daily_plan_contents"    property="dailyPlanContents"   jdbcType="VARCHAR"/>
+        <result column="total_trip_time"        property="totalTripTime"       jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 일차별 여행플랜 작성 쿼리문 -->
+    <insert id="addDailyPlan" parameterType="com.bit.motrip.domain.DailyPlan">
+        INSERT INTO daily_plan ( trip_plan_no, daily_plan_contents, total_trip_time )
+        VALUES ( #{tripPlanNo}, #{dailyPlanContents}, #{totalTripTime} )
     </insert>
 
-    <select id="getDailyPlanList" resultType="com.bit.motrip.domain.DailyPlan">
-        SELECT * FROM daily_plan
+    <!-- 작성된 일차별 플랜의 번호를 찾기 위한 쿼리문 -->
+    <select id="getDailyPlan" resultType="int">
+        SELECT MAX(daily_plan_no) FROM daily_plan ORDER BY trip_plan_no;
     </select>
+
+    <!-- 여행플랜에 맞는 일차별 여행플랜을 모두 찾기위한 쿼리문 -->
+    <select id="getDailyPlanList" parameterType="int" resultMap="dailyPlanResultMap">
+        SELECT * FROM daily_plan WHERE trip_plan_no = #{tripPlanNo}
+    </select>
+
 
 </mapper>

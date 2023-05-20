@@ -121,5 +121,4 @@ public class TripPlan {
     public void setTripPlanViews(int tripPlanViews) {
         this.tripPlanViews = tripPlanViews;
     }
-
 }

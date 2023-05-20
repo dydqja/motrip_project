@@ -10,7 +10,9 @@ public interface TripPlanDao {
 
     public List<TripPlan> selectTripPlanList() throws Exception;
 
-    public void insertTripPlan(TripPlan tripPlan);
+    public void addTripPlan(TripPlan tripPlan) throws Exception;
+
+    public int getTripPlan() throws Exception;
 
     public int updateTripPlan(TripPlan tripPlan);
 
