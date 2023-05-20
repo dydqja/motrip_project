@@ -1,10 +1,15 @@
 package com.bit.motrip.user;
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.user.UserDao;
 import com.bit.motrip.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -45,15 +50,35 @@ public class userApplicationTests {
     }
 
     @Test
-    public void getTest() throws Exception {
+    public void getUserTest() throws Exception {
         User user = new User();
 
         user.setUserId("user2");
 
         User getUser = userDao.getUser(user.getUserId());
 
-        System.out.println(getUser.getEvaluateCount());
+        System.out.println(getUser.toString());
 
     }
 
+//    @Test
+    public void getListTest() throws Exception {
+        Search search = new Search();
+
+        int pageSize = 3;
+        int pageUnit = 5;
+
+        search.setPageSize(pageSize);
+        search.setCurrentPage(1);
+
+        List<User> list = userDao.getList(search);
+        int totalCount = userDao.getTotalCount(search);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("list",list);
+        map.put("totalCount", new Integer(totalCount));
+
+        System.out.println(map);
+
+    }
 }
