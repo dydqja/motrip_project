@@ -30,42 +30,64 @@ class TripPlanDaoTest {
     private PlaceService placeService;
 
 
-    //@Test //여행플랜에 저장된 모든 데이터 확인
-    public void SelectTripPlanList() throws Exception {
+    //@Test // 공유된 여행플랜 목록 확인
+    public void selectPublicTripPlanList() throws Exception {
 
         List<DailyPlan> dailyPlan = new ArrayList<DailyPlan>();
         List<Place> place = new ArrayList<>();
-        List<TripPlan> tripPlan = tripPlanService.selectTripPlanList();
+        List<TripPlan> tripPlan = tripPlanService.selectPublicTripPlanList();
         for (TripPlan trip : tripPlan) {
-            System.out.println("플랜 번호: " + trip.getTripPlanNo());
-            System.out.println("플랜 작성자: " + trip.getTripPlanAuthor());
-            System.out.println("플랜 제목: " + trip.getTripPlanTitle());
-            System.out.println("플랜 썸네일: " + trip.getTripPlanThumbnail());
-            System.out.println("플랜 여행일수: " + trip.getTripDays());
-            System.out.println("플랜 작성날짜: " + trip.getTripPlanRegDate());
-            System.out.println("플랜 조회수: " + trip.getTripPlanViews());
-            System.out.println("플랜 추천수: " + trip.getTripPlanLikes());
+            System.out.println("===========================");
+            System.out.println("tripPlan 번호: " + trip.getTripPlanNo());
+            System.out.println("tripPlan 작성자: " + trip.getTripPlanAuthor());
+            System.out.println("tripPlan 제목: " + trip.getTripPlanTitle());
+            System.out.println("tripPlan 썸네일: " + trip.getTripPlanThumbnail());
+            System.out.println("tripPlan 여행일수: " + trip.getTripDays());
+            System.out.println("tripPlan 작성날짜: " + trip.getTripPlanRegDate());
+            System.out.println("tripPlan 조회수: " + trip.getTripPlanViews());
+            System.out.println("tripPlan 추천수: " + trip.getTripPlanLikes());
 
             dailyPlan = dailyPlanService.getDailyPlanList(trip.getTripPlanNo());
             for (DailyPlan daily : dailyPlan){
-                System.out.println("일차별 플랜번호: " + daily.getDailyPlanNo());
-                System.out.println("일차별 본문내용: " + daily.getDailyPlanContents());
-                System.out.println("일차별 총이동시간: " + daily.getTotalTripTime());
+                System.out.println("----------------------------");
+                System.out.println("dailyPlan 플랜번호: " + daily.getDailyPlanNo());
+                System.out.println("dailyPlan TripPlan번호: " + daily.getTripPlanNo());
+                System.out.println("dailyPlan 본문내용: " + daily.getDailyPlanContents());
+                System.out.println("dailyPlan 총이동시간: " + daily.getTotalTripTime());
 
                 place = placeService.getPlaceList(daily.getDailyPlanNo());
                 for(Place placeList : place){
-                    System.out.println("명소 번호 : " + placeList.getPlaceNo());
-                    System.out.println("명소 태그 : " + placeList.getPlaceTags());
-                    System.out.println("명소 좌표 : " + placeList.getPlaceCoordinates());
-                    System.out.println("명소 이미지 : " + placeList.getPlaceImage());
-                    System.out.println("명소 전화번호 : " + placeList.getPlacePhoneNumber());
-                    System.out.println("명소 카테고리 : " + placeList.getPlaceCategory());
-                    System.out.println("명소 이동시간 : " + placeList.getTripTime());
+                    System.out.println("===========================");
+                    System.out.println("place 번호 : " + placeList.getPlaceNo());
+                    System.out.println("place 태그 : " + placeList.getPlaceTags());
+                    System.out.println("place 좌표 : " + placeList.getPlaceCoordinates());
+                    System.out.println("place 이미지 : " + placeList.getPlaceImage());
+                    System.out.println("place 전화번호 : " + placeList.getPlacePhoneNumber());
+                    System.out.println("place 카테고리 : " + placeList.getPlaceCategory());
+                    System.out.println("place 이동시간 : " + placeList.getTripTime());
                 }
 
             }
         }
     }
+
+    @Test // 내가 작성한 여행플랜 목록 확인
+    public void selectMyTripPlanList() throws Exception {
+
+        List<TripPlan> tripPlan = tripPlanService.selectMyTripPlanList("user2");
+        for (TripPlan trip : tripPlan) {
+            System.out.println("===========================");
+            System.out.println("tripPlan 번호: " + trip.getTripPlanNo());
+            System.out.println("tripPlan 작성자: " + trip.getTripPlanAuthor());
+            System.out.println("tripPlan 제목: " + trip.getTripPlanTitle());
+            System.out.println("tripPlan 썸네일: " + trip.getTripPlanThumbnail());
+            System.out.println("tripPlan 여행일수: " + trip.getTripDays());
+            System.out.println("tripPlan 작성날짜: " + trip.getTripPlanRegDate());
+            System.out.println("tripPlan 조회수: " + trip.getTripPlanViews());
+            System.out.println("tripPlan 추천수: " + trip.getTripPlanLikes());
+        }
+    }
+
 
     //@Test // 여행플랜, 일차별여행플랜, 명소 한번에 저장
     public void addTripPlan() throws Exception {
@@ -78,7 +100,7 @@ class TripPlanDaoTest {
         // 명소 갯수
         int placeNo = 4;
 
-        tripPlan.setTripPlanAuthor("sean");
+        tripPlan.setTripPlanAuthor("user1");
         tripPlan.setTripPlanTitle("재연과 함께하는 비트캠프 단일인입조 여행");
         tripPlan.setTripPlanThumbnail("Seoul_bitcamp");
         tripPlan.setTripDays(tripDays);
@@ -129,9 +151,10 @@ class TripPlanDaoTest {
     public void updateTripPlan() {
     }
 
-    //@Test
-    public void deleteTripPlan() {
-
+    //@Test // 여행플랜 삭제(일차별 여행플랜, 명소 함께 삭제)
+    public void deleteTripPlan() throws Exception {
+        tripPlanService.deleteTripPlan(7);
+        System.out.println("삭제 완료");
     }
 
 }

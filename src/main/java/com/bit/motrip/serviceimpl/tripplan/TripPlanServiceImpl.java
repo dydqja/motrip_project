@@ -15,9 +15,15 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Autowired
     @Qualifier("tripPlanDao")
     private TripPlanDao tripPlanDao;
+
     @Override
-    public List<TripPlan> selectTripPlanList() throws Exception {
-        return tripPlanDao.selectTripPlanList();
+    public List<TripPlan> selectPublicTripPlanList() throws Exception {
+        return tripPlanDao.selectPublicTripPlanList();
+    }
+
+    @Override
+    public List<TripPlan> selectMyTripPlanList(String userId) throws Exception {
+        return tripPlanDao.selectMyTripPlanList(userId);
     }
 
     @Override
@@ -36,7 +42,7 @@ public class TripPlanServiceImpl implements TripPlanService {
     }
 
     @Override
-    public int deleteTripPlan(int tripPlanNo) {
-        return 0;
+    public int deleteTripPlan(int tripPlanNo) throws Exception {
+        return tripPlanDao.deleteTripPlan(tripPlanNo);
     }
 }
