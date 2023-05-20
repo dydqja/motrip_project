@@ -76,4 +76,18 @@ public class Memo {
     public void setMemoAccessUserList(List<User> memoAccessUserList) {
         this.memoAccessUserList = memoAccessUserList;
     }
+
+    @Override
+    public String toString() {
+        return "Memo{" +
+                "번호=" + memoNo +
+                ", 제목='" + memoTitle + '\'' +
+                ", 내용='" + memoContents + '\'' +
+                ", 등록일=" + memoRegDate +
+                ", 삭제일=" + memoDelDate +
+                ", 색=" + memoColor +
+                ", 작성자='" + memoAuthor + '\'' +
+                ", 접근가능자=" + memoAccessUserList +
+                '}';
+    }
 }

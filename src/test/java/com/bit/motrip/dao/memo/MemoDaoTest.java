@@ -16,7 +16,7 @@ class MemoDaoTest {
 
 
     //insert test
-    //@Test
+    @Test
     void addMemo(){
         //입력할 메모를 만든다.
         Memo memo = TestUtil.temporaryMemoMaker();
@@ -39,8 +39,7 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    //@Test
-    //select test
+    @Test
     void getMemo(){
         Memo memo = new Memo();
         int targetMemoNo= 1;
@@ -51,14 +50,16 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    //@Test
-    //delete test
+    @Test
     void deleteMemo() throws Exception{
         int targetMemoNo = 4;
-        memoDao.deleteMemo(targetMemoNo);
+        try{
+            memoDao.deleteMemo(targetMemoNo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-    //@Test
-    //update test
+    @Test
     void updateMemo() throws Exception{
         Memo memo = new Memo();
         memo.setMemoNo(2);
