@@ -21,7 +21,7 @@ public class userApplicationTests {
     private UserDao userDao;
 
 //    @Test
-    public void insertTest() throws Exception {
+    public void addUserTest() throws Exception {
         User user = new User();
 
         user.setUserId("user101");
@@ -49,7 +49,7 @@ public class userApplicationTests {
         userDao.addUser(user);
     }
 
-    @Test
+    //@Test
     public void getUserTest() throws Exception {
         User user = new User();
 
@@ -58,7 +58,6 @@ public class userApplicationTests {
         User getUser = userDao.getUser(user.getUserId());
 
         System.out.println(getUser.toString());
-
     }
 
 //    @Test
@@ -79,6 +78,32 @@ public class userApplicationTests {
         map.put("totalCount", new Integer(totalCount));
 
         System.out.println(map);
-
     }
+
+//   @Test
+//    public void updateUserTest() throws Exception {
+//
+//         User user = new User();
+//
+//         user.setUserId("user2");
+//
+//         User getUser = userDao.getUser(user.getUserId());
+//
+//         System.out.println(getUser);
+//         System.out.println(getUser.getUserName());
+//         System.out.println(getUser.getAge());
+//         System.out.println(getUser.getAddr());
+//         System.out.println(getUser.getEmail());
+//         System.out.println(getUser.getUserPhoto());
+//         System.out.println(getUser.getPwd());
+//
+
+//        getUser.setNickname("수정된지확인용");
+//        getUser.setPwd("8888");
+//        getUser.setSelfIntro("테스트 수정이 잘 되었다면 당근을 흔들어 주세요.");
+//        getUser.setSelfIntroPublic(TRUE);
+//
+//        userDao.updateUser(getUser);
+
+//    }
 }

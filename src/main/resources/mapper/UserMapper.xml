@@ -47,6 +47,12 @@
                     #{isSelfIntroPublic}, #{isUserPhotoPublic}, #{isUsingMemoBar}, #{isListingAttachedMemo},
                     #{isListingSharedMemo}
                  );
+
+        INSERT
+        INTO evaluate_list( evaluater_id )
+        VALUES ( #{userId} );
+
+
     </insert>
 
     <select 	id="getUser"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
@@ -96,11 +102,16 @@
     <update	id="updateUser"	parameterType="com.bit.motrip.domain.User" >
         UPDATE users
         <set>
-            user_name 	= #{userName} ,
-            cell_phone	= #{phone} ,
-            addr 		= #{addr} ,
-            addr_detail = #{addrDetail} ,
-            email		= #{email}
+            pwd                  = #{pwd},
+            nickname    	     = #{nickname},
+            phone	             = #{phone},
+            addr 		         = #{addr},
+            addr_detail          = #{addrDetail},
+            email		         = #{email},
+            self_intro           = #{selfIntro},
+            user_photo           = #{userPhoto},
+            is_self_intro_public = #{isSelfIntroPublic},
+            is_user_photo_public = #{isUserPhotoPublic},
         </set>
         WHERE user_id = #{userId}
     </update>

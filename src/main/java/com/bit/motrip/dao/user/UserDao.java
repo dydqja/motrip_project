@@ -20,5 +20,8 @@ public interface UserDao {
 
     public int getTotalCount(Search search) throws Exception ;
 
+    //update
+    public void updateUser(User user) throws Exception;
+
 
 }
