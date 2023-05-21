@@ -1,14 +1,28 @@
 package com.bit.motrip.serviceimpl.memo;
 
+import com.bit.motrip.dao.memo.MemoDao;
 import com.bit.motrip.domain.Memo;
 import com.bit.motrip.domain.MemoAttachable;
 import com.bit.motrip.domain.User;
 import com.bit.motrip.service.memo.MemoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service("memoServiceImpl")
 public class MemoServiceImpl implements MemoService {
 
+    //Constructor
+    public MemoServiceImpl() {
+    }
+
+    //Field
+    @Autowired
+    @Qualifier("memoDao")
+    private MemoDao memoDao;
+
+    //Methods
     @Override
     public void addMemo() throws Exception {
 

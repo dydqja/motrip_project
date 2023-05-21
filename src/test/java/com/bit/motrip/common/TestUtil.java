@@ -16,14 +16,14 @@ public class TestUtil {
         memo.setMemoColor(0);
         memo.setMemoAuthor("user1");
         //build temporary memoAccessUserList
-        List<User> memoAccessUserList = new ArrayList<User>();
+/*        List<User> memoAccessUserList = new ArrayList<User>();
         User admin = new User();
         admin.setUserId("admin");
         User user1 = new User();
         user1.setUserId("user1");
         memoAccessUserList.add(admin);
         memoAccessUserList.add(user1);
-        memo.setMemoAccessUserList(memoAccessUserList);
+        memo.setMemoAccessUserList(memoAccessUserList);*/
         return memo;
     }
 

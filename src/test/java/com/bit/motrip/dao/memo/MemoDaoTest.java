@@ -39,11 +39,9 @@ class MemoDaoTest {
         if(isSuccess==1) {
             System.out.println("메모가 추가되었습니다.");
             try {
-                int maxNo = memoDao.getMaxMemoNo();
-                System.out.println("추가된 메모의 번호는 " + maxNo + "입니다.");
-
+                System.out.println("추가된 메모의 내용은 "+memo+"입니다.");
                 //DB에 삽입된 메모의 memo_user_access 추가한다.
-                MemoAccess memoAccess = new MemoAccess(maxNo, memo.getMemoAuthor(), true);
+                MemoAccess memoAccess = new MemoAccess(memo.getMemoNo(), memo.getMemoAuthor(), true);
                 memoDao.addMemoAccess(memoAccess);
                 int maxAccessNo = memoDao.getMaxMemoAccessNo();
                 System.out.println("추가된 메모의 접근번호는 " + maxAccessNo + "입니다.");
@@ -77,12 +75,23 @@ class MemoDaoTest {
     }
     @Test
     void updateMemo(){
+        int resultNo = 0;
         Memo memo = new Memo();
         memo.setMemoNo(2);
         memo.setMemoTitle("오늘의 코딩일지");
         memo.setMemoContents("오늘은 마이바티스를 죽였다. 내일은 비트캠프를 불태울 것이다.");
         memo.setMemoColor(1);
-        memoDao.updateMemo(memo);
+        try{
+           resultNo = memoDao.updateMemo(memo);
+              if(resultNo==1){
+                System.out.println("메모가 수정되었습니다.");
+              }
+              else{
+                System.out.println("메모가 수정되지 않았습니다.");
+              }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     @Test
     //select list test
