@@ -1,6 +1,14 @@
 package com.bit.motrip.domain;
 
 public class MemoAccess {
+    //constructor
+    public MemoAccess() {
+    }
+    public MemoAccess(int memoNo, String userId, boolean isAuthor) {
+        this.memoNo = memoNo;
+        this.userId = userId;
+        this.isAuthor = isAuthor;
+    }
     int memoNo;
     String userId;
     boolean isAuthor;
