@@ -49,14 +49,14 @@
                  );
 
         INSERT
-        INTO evaluate_list( evaluater_id )
+        INTO evaluate_list( evaluated_user_id )
         VALUES ( #{userId} );
 
 
     </insert>
 
     <select 	id="getUser"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
-        SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
+        SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.phone, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
                u.is_self_intro_public, u.is_user_photo_public, SUM(e.is_score_plus) AS evaluate_count
         FROM users u
         JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
