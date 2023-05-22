@@ -26,7 +26,7 @@
         <result property="isSecession"              column="is_secession"               jdbcType="TINYINT"/>
         <result property="secessionDate"            column="secession_date"             jdbcType="DATE"/>
         <result property="isSuspension"             column="is_suspension"              jdbcType="TINYINT"/>
-        <result property="suspensionDate"           column="suspension_date"            jdbcType="DATE"/>
+        <result property="suspensionDate"           column="suspension_date"            jdbcType="TIMESTAMP"/>
         <result property="warningCount"             column="warning_Count"              jdbcType="TINYINT"/>
         <result property="isSelfIntroPublic"        column="is_self_intro_public"       jdbcType="TINYINT"/>
         <result property="isUserPhotoPublic"        column="is_user_photo_public"       jdbcType="TINYINT"/>
@@ -115,5 +115,14 @@
         </set>
         WHERE user_id = #{userId}
     </update>
+
+    <delete	id="deleteUser"	parameterType="com.bit.motrip.domain.User" >
+        UPDATE users
+        <set>
+            suspension_Date  = #{suspensionDate},
+            is_suspension    = #{isSuspension}
+        </set>
+        WHERE user_id = #{userId}
+    </delete>
 
 </mapper>

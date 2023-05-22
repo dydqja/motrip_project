@@ -24,9 +24,21 @@
     </select>
 
     <!-- 여행플랜에 맞는 일차별 여행플랜을 모두 찾기위한 쿼리문 -->
-    <select id="getDailyPlanList" parameterType="int" resultMap="dailyPlanResultMap">
+    <select id="selectDailyPlan" parameterType="int" resultMap="dailyPlanResultMap">
         SELECT * FROM daily_plan WHERE trip_plan_no = #{tripPlanNo}
     </select>
 
+    <!-- 작성된 일차별 여행플랜 수정 -->
+    <update id="updateDailyPlan" parameterType="com.bit.motrip.domain.DailyPlan">
+        UPDATE daily_plan
+        SET daily_plan_contents = #{dailyPlanContents},
+        total_trip_time = #{totalTripTime}
+        WHERE daily_plan_no = #{dailyPlanNo}
+    </update>
+
+    <!-- 작성된 일차별 여행플랜 삭제 -->
+    <delete id="deleteDailyPlan" parameterType="int">
+        DELETE FROM daily_plan WHERE daily_plan_no = #{dailyPlanNo}
+    </delete>
 
 </mapper>

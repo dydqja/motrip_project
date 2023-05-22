@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.chatroom.PhotosDao">
+	<resultMap id="PhotosResultMap" type="com.bit.motrip.domain.Photos">
+		<id column="photo_no" property="photoNo" jdbcType="INTEGER"/>
+		<result column="photo_id" property="photoId" jdbcType="VARCHAR"/>
+		<result column="chat_room_no" property="chatRoomNo" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<select id="getPhotos" resultMap="PhotosResultMap">
+		select * from photos where photo_no =#{photoNo}
+	</select>
+
+	<insert id="addPhotos" parameterType="com.bit.motrip.domain.Photos">
+		insert into photos (photo_id,chat_room_no)
+		values (#{photoId},#{chatRoomNo})
+	</insert>
+
+	<delete id="deletePhotos" parameterType="int">
+		delete from photos
+		where photo_no = #{photoNo}
+	</delete>
+
+	<select id="listPhotos" resultMap="PhotosResultMap">
+		select * from photos where chat_room_no = #{chatRoomNo}
+	</select>
+</mapper>

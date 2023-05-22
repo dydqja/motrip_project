@@ -15,7 +15,7 @@ public class DailyPlanServiceImpl implements DailyPlanService {
     private DailyPlanDao dailyPlanDao;
 
     @Override
-    public void addDailyPlan(DailyPlan dailyPlan) {
+    public void addDailyPlan(DailyPlan dailyPlan) throws Exception {
         dailyPlanDao.addDailyPlan(dailyPlan);
     }
 
@@ -25,7 +25,19 @@ public class DailyPlanServiceImpl implements DailyPlanService {
     }
 
     @Override
-    public List<DailyPlan> getDailyPlanList(int TripPlanNo) {
-        return dailyPlanDao.getDailyPlanList(TripPlanNo);
+    public List<DailyPlan> selectDailyPlan(int tripPlanNo) throws Exception{
+        return dailyPlanDao.selectDailyPlan(tripPlanNo);
     }
+
+    @Override
+    public int updateDailyPlan(DailyPlan dailyPlan) throws Exception {
+        return dailyPlanDao.updateDailyPlan(dailyPlan);
+    }
+
+    @Override
+    public int deleteDailyPlan(int dailyPlanNo) throws Exception {
+        return dailyPlanDao.deleteDailyPlan(dailyPlanNo);
+    }
+
+
 }

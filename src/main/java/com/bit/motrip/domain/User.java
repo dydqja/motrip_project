@@ -1,5 +1,11 @@
 package com.bit.motrip.domain;
 
+import com.sun.xml.internal.ws.resources.UtilMessages;
+import org.springframework.cglib.core.Local;
+
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +30,7 @@ public class User {
     private boolean isSecession;
     private Date secessionDate;
     private boolean isSuspension;
-    private Date suspensionDate;
+    private Timestamp suspensionDate;
     private int warningCount;
     private boolean isSelfIntroPublic;
     private boolean isUserPhotoPublic;
@@ -183,11 +189,11 @@ public class User {
         isSuspension = suspension;
     }
 
-    public Date getSuspensionDate() {
+    public Timestamp getSuspensionDate() {
         return suspensionDate;
     }
 
-    public void setSuspensionDate(Date suspensionDate) {
+    public void setSuspensionDate(Timestamp suspensionDate) {
         this.suspensionDate = suspensionDate;
     }
 

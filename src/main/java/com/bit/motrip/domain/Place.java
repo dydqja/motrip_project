@@ -1,15 +1,15 @@
 package com.bit.motrip.domain;
 
 public class Place {
-    int placeNo;
-    int dailyPlanNo;
-    String placeTags;
-    String placeCoordinates;
-    String placeImage;
-    String placePhoneNumber;
-    String placeAddress;
-    int placeCategory;
-    String tripTime;
+        int placeNo;
+        int dailyPlanNo;
+        String placeTags;
+        String placeCoordinates;
+        String placeImage;
+        String placePhoneNumber;
+        String placeAddress;
+        int placeCategory;
+        String tripTime;
 
     public int getPlaceNo() {
         return placeNo;
@@ -81,5 +81,20 @@ public class Place {
 
     public void setTripTime(String tripTime) {
         this.tripTime = tripTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "placeNo=" + placeNo +
+                ", dailyPlanNo=" + dailyPlanNo +
+                ", placeTags='" + placeTags + '\'' +
+                ", placeCoordinates='" + placeCoordinates + '\'' +
+                ", placeImage='" + placeImage + '\'' +
+                ", placePhoneNumber='" + placePhoneNumber + '\'' +
+                ", placeAddress='" + placeAddress + '\'' +
+                ", placeCategory=" + placeCategory +
+                ", tripTime='" + tripTime + '\'' +
+                '}';
     }
 }
