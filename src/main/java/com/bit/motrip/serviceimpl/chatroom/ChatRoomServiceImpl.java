@@ -18,16 +18,18 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Autowired
     @Qualifier("chatRoomDao")
     ChatRoomDao chatRoomDao; //Chatroom
+
 //    @Autowired
 //    @Qualifier("chatMemberDao")
 //    ChatMemberDao chatMemberDao; // chatmember
 
     @Override
-    public ChatRoom addChatRoom(ChatRoom chatRoom) throws Exception {
+    public int addChatRoom(ChatRoom chatRoom) throws Exception {
         System.out.println("addChatRoom");
-        chatRoomDao.addChatRoom(chatRoom);
+        int chatRoomNo = chatRoomDao.addChatRoom(chatRoom);
+
         //chatMemberDao.addChatMember();
-        return chatRoom;
+        return chatRoomNo;
     }
 
     @Override
@@ -46,11 +48,19 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public void deleteChatRoom(int chatRoomNo) throws Exception {
         System.out.println("deleteChatRoom");
+
         chatRoomDao.deleteChatRoom(chatRoomNo);
     }
 
     @Override
     public Map<String, Object> chatRoomList() throws Exception {
         return null;
+    }
+
+    //채팅 상태 변환
+    @Override
+    public int changeRoomStatus(int chatRoomStatus, int chatRoomNo) throws Exception {
+        chatRoomDao.changeRoomStatus(chatRoomStatus,chatRoomNo);
+        return chatRoomStatus;
     }
 }

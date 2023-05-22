@@ -11,9 +11,18 @@ public class ChatRoom { //채팅방 도메인
     private int maxPersons; // 최대 인원수
     private int currentPersons; // 현재 인원수
 
+    private int chatRoomStatus; // 0 모집중 1 모집완료
     //getter & setter
     public int getChatRoomNo() {
         return chatRoomNo;
+    }
+
+    public int getChatRoomStatus() {
+        return chatRoomStatus;
+    }
+
+    public void setChatRoomStatus(int chatRoomStatus) {
+        this.chatRoomStatus = chatRoomStatus;
     }
 
     public void setChatRoomNo(int chatRoomNo) {
@@ -69,6 +78,7 @@ public class ChatRoom { //채팅방 도메인
                 ", ageRange='" + ageRange + '\'' +
                 ", maxPersons=" + maxPersons +
                 ", currentPersons=" + currentPersons +
+                ", chatRoomStatus=" + chatRoomStatus +
                 '}';
     }
 }

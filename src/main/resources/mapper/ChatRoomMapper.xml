@@ -12,6 +12,7 @@
 		<result column="age_range" property="ageRange" jdbcType="VARCHAR" />
 		<result column="max_persons" property="maxPersons" jdbcType="INTEGER"/>
 		<result column="current_persons" property="currentPersons" jdbcType="INTEGER"/>
+		<result column="chat_room_status" property="chatRoomStatus" jdbcType="INTEGER"/>
 	</resultMap>
 
 	<resultMap id="chatMemberResultMap" type="com.bit.motrip.domain.ChatMember">
@@ -23,6 +24,9 @@
 	</resultMap>
 
 	<insert id="addChatRoom" parameterType="com.bit.motrip.domain.ChatRoom">
+		<selectKey keyProperty="chatRoomNo" resultType="int" order="AFTER">
+			select last_insert_id()
+		</selectKey>
 		insert into chat_rooms (chat_room_title, travel_start_date, age_range, max_persons, current_persons)
 		values (#{chatRoomTitle}, #{travelStartDate}, #{ageRange}, #{maxPersons}, #{currentPersons})
 	</insert>
@@ -57,4 +61,12 @@
 		DELETE FROM chat_rooms
 		WHERE chat_room_no = #{chatRoomNo}
 	</delete>
+	
+	<update id="changeRoomStatus" parameterType="Map">
+		update chat_rooms
+		set
+		    chat_room_status = #{chatRoomStatus}
+		where
+			chat_room_no = #{chatRoomNo}
+	</update>
 </mapper>

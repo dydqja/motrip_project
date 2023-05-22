@@ -4,13 +4,16 @@ import com.bit.motrip.dao.chatroom.ChatMemberDao;
 import com.bit.motrip.domain.ChatMember;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ChatMemberService {
-    public void addChatMember(ChatMember chatMemberDao) throws Exception;// 채팅 멤버 추가
-    //public void
-    public void deleteChatMember(String chatRoomTitle, String userId) throws Exception;
-
-    public void outChatMember(String chatRoomTitle, String userId, boolean isChatRoomAuthor) throws Exception;
+    // 채팅 멤버 추가
+    public void addChatMember(ChatMember chatMember) throws Exception;
+    // 채팅 멤버 삭제(채팅방 나가기)
+    public void deleteChatMember(int chatRoomNo, String userId) throws Exception;
+    // 채팅 멤버 강퇴
+    public void outChatMember(int chatRoomNo, String userId, boolean isChatRoomAuthor) throws Exception;
+    // 채팅 멤버 리스트 출력
     public List<ChatMember> chatMemberList(int chatRoomNo) throws Exception; // 멤버리스트
 
 }

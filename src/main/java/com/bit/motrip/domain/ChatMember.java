@@ -47,4 +47,6 @@ public class ChatMember {
     public void setChatRoomAuthor(boolean chatRoomAuthor) {
         isChatRoomAuthor = chatRoomAuthor;
     }
+
+
 }

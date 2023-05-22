@@ -13,25 +13,33 @@
 		<result column="is_chat_room_author" property="isChatRoomAuthor" jdbcType="TINYINT"/>
 	</resultMap>
 
-<!--	<insert 	id="addChatRoom"		parameterType="chatRoomResultMap" >-->
-<!--	 	INSERT-->
-<!--		INTO chatroom (CHATROOMNAME , CHATROOMNO) -->
-<!--		VALUES	 (#{chatroomName}, seq_chatroom_chatroomno.NEXTVAL)-->
-<!--	 </insert>-->
+	<insert id="addChatMember" parameterType="com.bit.motrip.domain.ChatMember">
+		INSERT INTO chat_room_members (
+			chat_room_no,
+			user_id,
+			trip_plan_no,
+			is_chat_room_author
+		)
+		VALUES (
+				   #{chatRoomNo},
+				   #{userId},
+				   #{tripPlanNo},
+				   #{isChatRoomAuthor}
+			   );
+	</insert>
 
-<!--	<select id="getChatRoom" resultMap="chatRoomResultMap">-->
-<!--		select-->
-<!--			cr.chat_room_no,-->
-<!--			cr.chat_room_title,-->
-<!--			cr.travel_start_date,-->
-<!--			cr.age_range,-->
-<!--			cr.max_persons,-->
-<!--			cr.current_persons-->
-<!--		from-->
-<!--			chat_rooms cr-->
-<!--		where-->
-<!--			cr.chat_room_no = #{chatRoomNo};-->
-<!--	</select>-->
+	<delete id="deleteChatMember" parameterType="Map">
+		DELETE FROM chat_room_members
+		WHERE chat_room_no = #{chatRoomNo}
+		  AND user_id = #{userId}
+	</delete>
 
-	
+	<update id="outChatMember" parameterType="Map">
+		update chat_room_members
+		set status = 1
+		where chat_room_no = #{chatRoomNo}
+		    and user_id = #{userId}
+			and #{isChatRoomAuthor} = 1
+	</update>
+
 </mapper>
