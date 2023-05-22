@@ -7,9 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -80,7 +79,7 @@ public class userApplicationTests {
         System.out.println(map);
     }
 
-    @Test
+//    @Test
     public void updateUserTest() throws Exception {
 
         User user = new User();
@@ -97,6 +96,27 @@ public class userApplicationTests {
         getUser.setSelfIntroPublic(TRUE);
 
         userDao.updateUser(getUser);
+    }
 
+    @Test
+    public void deleteUserTest() throws Exception {
+
+        User user = new User();
+        Timestamp suspensionDate = new Timestamp(System.currentTimeMillis());
+        System.out.println("현재시간은? => " + suspensionDate);
+
+//        LocalDateTime suspensionDate = LocalDateTime.now();
+//        System.out.println("현재시간은? => " + suspensionDate);
+
+        user.setUserId("testUser6");
+
+        User getUser = userDao.getUser(user.getUserId());
+
+        System.out.println(getUser.toString());
+
+        getUser.setSuspension(TRUE);
+        getUser.setSuspensionDate(suspensionDate);
+
+        userDao.deleteUser(getUser);
     }
 }
