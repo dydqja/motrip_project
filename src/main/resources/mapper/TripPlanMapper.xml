@@ -61,7 +61,7 @@
 
     <!-- 공유된 모든 여행플랜 조회 -->
     <select id="selectPublicTripPlanList" resultMap="tripPlanResultMap">
-        SELECT * FROM trip_plan WHERE is_plan_public = TRUE
+        SELECT * FROM trip_plan WHERE is_plan_public = TRUE AND is_plan_deleted = FALSE
         ORDER BY trip_plan_reg_date DESC, trip_plan_no DESC;
     </select>
 
@@ -168,5 +168,27 @@
     <delete id="deleteTripPlan" parameterType="int">
         DELETE FROM trip_plan WHERE trip_plan_no = #{tripPlanNo}
     </delete>
+    
+    <!-- 여행플랜 공유권한 설정 -->
+    <update id="tripPlanPublic" parameterType="Map">
+        UPDATE trip_plan
+        SET is_plan_public = #{isPlanPublic}
+        WHERE trip_plan_no = #{tripPlanNo}
+    </update>
+
+    <!-- 여행플랜 가져가기 여부 설정 -->
+    <update id="tripPlanDownloadable" parameterType="Map">
+        UPDATE trip_plan
+        SET is_plan_downloadable = #{isPlanDownloadable}
+        WHERE trip_plan_no = #{tripPlanNo}
+    </update>
+
+    <!-- 여행플랜 삭제시 더이상 조회 불가능하도록 -->
+    <update id="tripPlanDeleted" parameterType="Map">
+        UPDATE trip_plan
+        SET is_plan_deleted = #{isPlanDeleted}
+        WHERE trip_plan_no = #{tripPlanNo}
+    </update>
+
 
 </mapper>

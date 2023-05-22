@@ -21,4 +21,8 @@ public interface TripPlanService {
 
     public int deleteTripPlan(int tripPlanNo) throws Exception;
 
+    public void tripPlanPublic(int tripPlanNo, boolean isPlanPublic) throws Exception;
+    public void tripPlanDownloadable(int tripPlanNo, boolean isPlanDownloadable) throws Exception;
+    public void tripPlanDeleted(int tripPlanNo, boolean isPlanDeleted) throws Exception;
+
 }

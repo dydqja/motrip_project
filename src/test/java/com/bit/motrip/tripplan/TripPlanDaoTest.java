@@ -211,4 +211,25 @@ class TripPlanDaoTest {
         System.out.println("삭제 완료");
     }
 
+    //@Test // 여행플랜 공유권한 설정
+    public void tripPlanPublic() throws Exception{
+        TripPlan tripPlan = tripPlanService.selectTripPlan(10);
+        if(tripPlan.isPlanPublic()){
+            tripPlanService.tripPlanPublic(tripPlan.getTripPlanNo(), false);
+        } else {
+            tripPlanService.tripPlanPublic(tripPlan.getTripPlanNo(), true);
+        }
+        System.out.println(tripPlan.toString());
+    }
+
+    //@Test
+    public void tripPlanDownloadable() throws Exception{
+
+    }
+
+    //@Test
+    public void tripPlanDeleted() throws Exception{
+
+    }
+
 }

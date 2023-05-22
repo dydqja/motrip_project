@@ -60,4 +60,19 @@ public class TripPlanServiceImpl implements TripPlanService {
     public int deleteTripPlan(int tripPlanNo) throws Exception {
         return tripPlanDao.deleteTripPlan(tripPlanNo);
     }
+
+    @Override
+    public void tripPlanPublic(int tripPlanNo, boolean isPlanPublic) throws Exception {
+        tripPlanDao.tripPlanPublic(tripPlanNo, isPlanPublic);
+    }
+
+    @Override
+    public void tripPlanDownloadable(int tripPlanNo, boolean isPlanDownloadable) throws Exception {
+        tripPlanDao.tripPlanDownloadable(tripPlanNo, isPlanDownloadable);
+    }
+
+    @Override
+    public void tripPlanDeleted(int tripPlanNo, boolean isPlanDeleted) throws Exception {
+        tripPlanDao.tripPlanDeleted(tripPlanNo, isPlanDeleted);
+    }
 }
