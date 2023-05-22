@@ -5,10 +5,9 @@ import com.bit.motrip.domain.Place;
 import java.util.List;
 
 public interface PlaceService {
-    List<Place> getAllPlaces();
-    Place getPlaceById(int placeNo);
-    void addPlace(Place place);
-    void updatePlace(Place place);
-    void deletePlace(int placeNo);
+    public List<Place> selectPlace(int dailyPlanNo) throws Exception;
+    public void addPlace(Place place) throws Exception;
+    public int updatePlace(Place place) throws Exception;
+    public int deletePlace(int placeNo) throws Exception;
 
 }

@@ -5,8 +5,9 @@ import com.bit.motrip.domain.DailyPlan;
 import java.util.List;
 
 public interface DailyPlanService {
-    void addDailyPlan(DailyPlan dailyPlan);
-
+    public void addDailyPlan(DailyPlan dailyPlan) throws Exception;
     public int getDailyPlan() throws Exception;
-    List<DailyPlan> getDailyPlanList(int TripPlanNo);
+    public List<DailyPlan> selectDailyPlan(int tripPlanNo) throws Exception;
+    public int updateDailyPlan(DailyPlan dailyPlan) throws Exception;
+    public int deleteDailyPlan(int dailyPlanNo) throws Exception;
 }

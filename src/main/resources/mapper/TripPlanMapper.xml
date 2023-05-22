@@ -5,25 +5,70 @@
 
 <mapper namespace="com.bit.motrip.dao.tripplan.TripPlanDao">
 
+    <!-- 조인 하기전 resultMap -->
+<!--    <resultMap id="tripPlanResultMap" type="com.bit.motrip.domain.TripPlan">-->
+<!--        <id column="trip_plan_no"               property="tripPlanNo"             jdbcType="INTEGER"/>-->
+<!--        <result column="trip_plan_author"       property="tripPlanAuthor"         jdbcType="VARCHAR"/>-->
+<!--        <result column="trip_plan_title"        property="tripPlanTitle"          jdbcType="VARCHAR"/>-->
+<!--        <result column="trip_plan_thumbnail"    property="tripPlanThumbnail"      jdbcType="VARCHAR"/>-->
+<!--        <result column="trip_days"              property="tripDays"               jdbcType="INTEGER"/>-->
+<!--        <result column="trip_plan_reg_date"     property="tripPlanRegDate"        jdbcType="DATE"/>-->
+<!--        <result column="trip_plan_del_date"     property="tripPlanDelDate"        jdbcType="DATE"/>-->
+<!--        <result column="is_plan_deleted"        property="isPlanDeleted"          jdbcType="TINYINT"/>-->
+<!--        <result column="is_plan_public"         property="isPlanPublic"           jdbcType="TINYINT"/>-->
+<!--        <result column="is_plan_downloadable"   property="isPlanDownloadable"     jdbcType="TINYINT"/>-->
+<!--        <result column="is_trip_completed"      property="isTripCompleted"        jdbcType="TINYINT"/>-->
+<!--        <result column="trip_plan_likes"        property="tripPlanLikes"          jdbcType="INTEGER"/>-->
+<!--        <result column="trip_plan_views"        property="tripPlanViews"          jdbcType="INTEGER"/>-->
+<!--    </resultMap>-->
+
+    <!-- 조인 후 resultMap -->
     <resultMap id="tripPlanResultMap" type="com.bit.motrip.domain.TripPlan">
-        <id column="trip_plan_no"               property="tripPlanNo"             jdbcType="INTEGER"/>
-        <result column="trip_plan_author"       property="tripPlanAuthor"         jdbcType="VARCHAR"/>
-        <result column="trip_plan_title"        property="tripPlanTitle"          jdbcType="VARCHAR"/>
-        <result column="trip_plan_thumbnail"    property="tripPlanThumbnail"      jdbcType="VARCHAR"/>
-        <result column="trip_days"              property="tripDays"               jdbcType="INTEGER"/>
-        <result column="trip_plan_reg_date"     property="tripPlanRegDate"        jdbcType="DATE"/>
-        <result column="trip_plan_del_date"     property="tripPlanDelDate"        jdbcType="DATE"/>
-        <result column="is_plan_deleted"        property="isPlanDeleted"          jdbcType="TINYINT"/>
-        <result column="is_plan_public"         property="isPlanPublic"           jdbcType="TINYINT"/>
-        <result column="is_plan_downloadable"   property="isPlanDownloadable"     jdbcType="TINYINT"/>
-        <result column="is_trip_completed"      property="isTripCompleted"        jdbcType="TINYINT"/>
-        <result column="trip_plan_likes"        property="tripPlanLikes"          jdbcType="INTEGER"/>
-        <result column="trip_plan_views"        property="tripPlanViews"          jdbcType="INTEGER"/>
+        <id column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
+        <result column="trip_plan_author" property="tripPlanAuthor" jdbcType="VARCHAR"/>
+        <result column="trip_plan_title" property="tripPlanTitle" jdbcType="VARCHAR"/>
+        <result column="trip_plan_thumbnail" property="tripPlanThumbnail" jdbcType="VARCHAR"/>
+        <result column="trip_days" property="tripDays" jdbcType="INTEGER"/>
+        <result column="trip_plan_reg_date" property="tripPlanRegDate" jdbcType="DATE"/>
+        <result column="trip_plan_del_date" property="tripPlanDelDate" jdbcType="DATE"/>
+        <result column="is_plan_deleted" property="isPlanDeleted" jdbcType="TINYINT"/>
+        <result column="is_plan_public" property="isPlanPublic" jdbcType="TINYINT"/>
+        <result column="is_plan_downloadable" property="isPlanDownloadable" jdbcType="TINYINT"/>
+        <result column="is_trip_completed" property="isTripCompleted" jdbcType="TINYINT"/>
+        <result column="trip_plan_likes" property="tripPlanLikes" jdbcType="INTEGER"/>
+        <result column="trip_plan_views" property="tripPlanViews" jdbcType="INTEGER"/>
+
+        <collection property="dailyplanResultMap" ofType="com.bit.motrip.domain.DailyPlan">
+            <id column="daily_plan_no" property="dailyPlanNo" jdbcType="INTEGER"/>
+            <result column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
+            <result column="daily_plan_contents" property="dailyPlanContents" jdbcType="VARCHAR"/>
+            <result column="total_trip_time" property="totalTripTime" jdbcType="VARCHAR"/>
+
+            <collection property="placeResultMap" ofType="com.bit.motrip.domain.Place">
+                <id column="place_no" property="placeNo" jdbcType="INTEGER"/>
+                <result column="daily_plan_no" property="dailyPlanNo" jdbcType="INTEGER"/>
+                <result column="place_tags" property="placeTags" jdbcType="VARCHAR"/>
+                <result column="place_coordinates" property="placeCoordinates" jdbcType="VARCHAR"/>
+                <result column="place_image" property="placeImage" jdbcType="VARCHAR"/>
+                <result column="place_phone_number" property="placePhoneNumber" jdbcType="VARCHAR"/>
+                <result column="place_address" property="placeAddress" jdbcType="VARCHAR"/>
+                <result column="place_category" property="placeCategory" jdbcType="INTEGER"/>
+                <result column="trip_time" property="tripTime" jdbcType="VARCHAR"/>
+            </collection>
+        </collection>
     </resultMap>
 
-    <!-- 모든 여행플랜 조회 -->
-    <select id="selectTripPlanList" resultMap="tripPlanResultMap">
-        SELECT * FROM trip_plan
+
+    <!-- 공유된 모든 여행플랜 조회 -->
+    <select id="selectPublicTripPlanList" resultMap="tripPlanResultMap">
+        SELECT * FROM trip_plan WHERE is_plan_public = TRUE
+        ORDER BY trip_plan_reg_date DESC, trip_plan_no DESC;
+    </select>
+
+    <!-- 나의 모든 여행플랜 조회 -->
+    <select id="selectMyTripPlanList" parameterType="string" resultMap="tripPlanResultMap">
+        SELECT * FROM trip_plan WHERE trip_plan_author = #{trip_plan_author}
+        ORDER BY trip_plan_reg_date DESC, trip_plan_no DESC;
     </select>
 
     <!-- 여행플랜 작성 -->
@@ -42,6 +87,46 @@
         SELECT MAX(trip_plan_no) FROM trip_plan;
     </select>
 
+    <!-- 선택한 여행플랜 정보 확인을 위한 쿼리문 -->
+    <select id="selectTripPlan" parameterType="int" resultMap="tripPlanResultMap">
+        SELECT
+        tp.trip_plan_no,
+        tp.trip_plan_author,
+        tp.trip_plan_title,
+        tp.trip_plan_thumbnail,
+        tp.trip_days,
+        tp.trip_plan_reg_date,
+        tp.trip_plan_del_date,
+        tp.is_plan_deleted,
+        tp.is_plan_public,
+        tp.is_plan_downloadable,
+        tp.is_trip_completed,
+        tp.trip_plan_likes,
+        tp.trip_plan_views,
+        dp.daily_plan_no,
+        dp.trip_plan_no,
+        dp.daily_plan_contents,
+        dp.total_trip_time,
+        p.place_no,
+        p.daily_plan_no,
+        p.place_tags,
+        p.place_coordinates,
+        p.place_image,
+        p.place_phone_number,
+        p.place_address,
+        p.place_category,
+        p.trip_time
+        FROM
+        trip_plan tp
+        LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
+        LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
+        WHERE
+        tp.trip_plan_no = #{tripPlanNo}
+        ORDER BY
+        dp.daily_plan_no, p.place_no
+    </select>
+
+    <!-- 여행플랜에서 업데이트를 하기위한 쿼리 tripPlan, dailyPlan, place 각각 필요 -->
     <update id="updateTripPlan" parameterType="com.bit.motrip.domain.TripPlan">
         UPDATE trip_plan
         SET trip_plan_author = #{tripPlanAuthor},
@@ -59,9 +144,29 @@
         WHERE trip_plan_no = #{tripPlanNo}
     </update>
 
+    <update id="updateDailyPlan" parameterType="com.bit.motrip.domain.DailyPlan">
+        UPDATE daily_plan
+        SET daily_plan_contents = #{dailyPlanContents},
+        total_trip_time = #{totalTripTime}
+        WHERE daily_plan_no = #{dailyPlanNo}
+    </update>
+
+    <update id="updatePlace" parameterType="com.bit.motrip.domain.Place">
+        UPDATE place
+        SET place_tags = #{placeTags},
+        place_coordinates = #{placeCoordinates},
+        place_image = #{placeImage},
+        place_phone_number = #{placePhoneNumber},
+        place_address = #{placeAddress},
+        place_category = #{placeCategory},
+        trip_time = #{tripTime}
+        WHERE place_no = #{placeNo}
+    </update>
+    <!-- ///////여기까지 업데이트/////// -->
+
+    <!-- 작성된 여행플랜 삭제 -->
     <delete id="deleteTripPlan" parameterType="int">
-        DELETE FROM trip_plan
-        WHERE trip_plan_no = #{tripPlanNo}
+        DELETE FROM trip_plan WHERE trip_plan_no = #{tripPlanNo}
     </delete>
 
 </mapper>

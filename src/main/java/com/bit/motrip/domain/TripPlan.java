@@ -1,6 +1,8 @@
 package com.bit.motrip.domain;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class TripPlan {
 
@@ -17,6 +19,7 @@ public class TripPlan {
     private boolean isTripCompleted;
     private int tripPlanLikes;
     private int tripPlanViews;
+    private List<DailyPlan> dailyplanResultMap;
 
     public int getTripPlanNo() {
         return tripPlanNo;
@@ -120,5 +123,32 @@ public class TripPlan {
 
     public void setTripPlanViews(int tripPlanViews) {
         this.tripPlanViews = tripPlanViews;
+    }
+
+    public List<DailyPlan> getDailyplanResultMap() {
+        return dailyplanResultMap;
+    }
+
+    public void setDailyplanResultMap(List<DailyPlan> dailyplanResultMap) {
+        this.dailyplanResultMap = dailyplanResultMap;
+    }
+
+    @Override
+    public String toString() {
+        return "TripPlan{" +
+                "tripPlanNo=" + tripPlanNo +
+                ", tripPlanAuthor='" + tripPlanAuthor + '\'' +
+                ", tripPlanTitle='" + tripPlanTitle + '\'' +
+                ", tripPlanThumbnail='" + tripPlanThumbnail + '\'' +
+                ", tripDays=" + tripDays +
+                ", tripPlanRegDate=" + tripPlanRegDate +
+                ", tripPlanDelDate=" + tripPlanDelDate +
+                ", isPlanDeleted=" + isPlanDeleted +
+                ", isPlanPublic=" + isPlanPublic +
+                ", isPlanDownloadable=" + isPlanDownloadable +
+                ", isTripCompleted=" + isTripCompleted +
+                ", tripPlanLikes=" + tripPlanLikes +
+                ", tripPlanViews=" + tripPlanViews +
+                '}';
     }
 }

@@ -5,6 +5,7 @@
 
 <mapper namespace="com.bit.motrip.dao.memo.MemoDao">
 
+    <!--ResultMap-->
     <resultMap id="memoResultMap" type="com.bit.motrip.domain.Memo">
         <id column="memo_no" property="memoNo"/>
         <result column="memo_title" property="memoTitle"/>
@@ -14,22 +15,20 @@
         <result column="memo_color" property="memoColor"/>
     </resultMap>
 
-        <select id="getMemo" parameterType="int" resultMap="memoResultMap">
-                SELECT memo_no, memo_title, memo_contents, memo_reg_date, memo_del_date, memo_color
-                FROM memo
-                WHERE memo_no = #{memoNo}
-        </select>
+    <!--Memo-->
 
-
-    <insert id="addMemo" parameterType="com.bit.motrip.domain.Memo">
-        <selectKey keyProperty="memoNo" resultType="int" order="BEFORE">
-                SELECT MAX(memo_no) FROM memo
-        </selectKey>
+    <insert id="addMemo" parameterType="com.bit.motrip.domain.Memo" useGeneratedKeys="true" keyProperty="memoNo" keyColumn="memo_no">
         insert into memo
-        (memo_title, memo_contents, memo_color)
+            (memo_title, memo_contents, memo_color)
         values
-        (#{memoTitle}, #{memoContents}, #{memoColor})
+            (#{memoTitle,jdbcType=VARCHAR}, #{memoContents,jdbcType=VARCHAR}, #{memoColor,jdbcType=INTEGER})
     </insert>
+
+    <select id="getMemo" parameterType="int" resultMap="memoResultMap">
+            SELECT memo_no, memo_title, memo_contents, memo_reg_date, memo_del_date, memo_color
+            FROM memo
+            WHERE memo_no = #{memoNo}
+    </select>
 
     <update id="updateMemo" parameterType="com.bit.motrip.domain.Memo">
         update memo
@@ -42,10 +41,31 @@
         where  memo_no = #{memoNo}
     </delete>
 
-    <select id="getMemoList" resultMap="memoResultMap">
-        SELECT memo_no, memo_title, memo_contents, memo_reg_date, memo_del_date, memo_color
-        FROM memo
-        ORDER BY memo_reg_date DESC
+    <select id="getMemoList" parameterType="String" resultMap="memoResultMap">
+        SELECT m.memo_no, m.memo_title, m.memo_contents, m.memo_reg_date, m.memo_color
+        FROM memo m, (
+            SELECT memo_no
+            FROM memo_access
+            WHERE memo_access_user = #{username}
+            ORDER BY is_memo_author
+        ) vt
+        WHERE m.memo_no = vt.memo_no
+    </select>
+
+    <!--MemoAccess-->
+
+    <insert id="addMemoAccess" parameterType="com.bit.motrip.domain.MemoAccess">
+        insert into memo_access
+            (memo_no,memo_access_user,is_memo_author)
+        values
+            (#{memoNo}, #{userId},#{isAuthor})
+    </insert>
+
+
+    <!--MaxMemo-->
+
+    <select id="getMaxMemoAccessNo" resultType="int">
+        select max(memo_access_no) from memo_access
     </select>
 
 </mapper>

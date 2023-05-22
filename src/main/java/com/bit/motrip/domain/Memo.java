@@ -4,12 +4,14 @@ import java.sql.Date;
 import java.util.List;
 
 public class Memo {
-    int memoNo;
-    String memoTitle;
-    String memoContents;
-    Date memoRegDate;
-    Date memoDelDate;
-    int memoColor;
+    private int memoNo;
+    private String memoTitle;
+    private String memoContents;
+    private Date memoRegDate;
+    private Date memoDelDate;
+    private int memoColor;
+    private String memoAuthor;
+    private List<User> memoAccessUserList;
 
     public int getMemoNo() {
         return memoNo;
@@ -57,5 +59,35 @@ public class Memo {
 
     public void setMemoColor(int memoColor) {
         this.memoColor = memoColor;
+    }
+
+    public String getMemoAuthor() {
+        return memoAuthor;
+    }
+
+    public void setMemoAuthor(String memoAuthor) {
+        this.memoAuthor = memoAuthor;
+    }
+
+    public List<User> getMemoAccessUserList() {
+        return memoAccessUserList;
+    }
+
+    public void setMemoAccessUserList(List<User> memoAccessUserList) {
+        this.memoAccessUserList = memoAccessUserList;
+    }
+
+    @Override
+    public String toString() {
+        return "Memo{" +
+                "번호=" + memoNo +
+                ", 제목='" + memoTitle + '\'' +
+                ", 내용='" + memoContents + '\'' +
+                ", 등록일=" + memoRegDate +
+                ", 삭제일=" + memoDelDate +
+                ", 색=" + memoColor +
+                ", 작성자='" + memoAuthor + '\'' +
+                ", 접근가능자=" + memoAccessUserList +
+                '}';
     }
 }
