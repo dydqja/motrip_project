@@ -5,6 +5,7 @@ public class Search {
     //Field
     private int currentPage;
     private String searchCondition;
+    private int[] searchConditions;
     private String searchKeyword;
     private int pageSize;
     private int endRowNum;

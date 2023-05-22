@@ -7,9 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -21,11 +20,11 @@ public class userApplicationTests {
     private UserDao userDao;
 
 //    @Test
-    public void insertTest() throws Exception {
+    public void addUserTest() throws Exception {
         User user = new User();
 
-        user.setUserId("user101");
-        user.setNickname("재연소맨");
+        user.setUserId("testUser6");
+        user.setNickname("테스트좀하자제발");
         user.setPwd("1234");
         user.setUserName("홍길동");
         user.setPhone("010-1234-1234");
@@ -49,16 +48,15 @@ public class userApplicationTests {
         userDao.addUser(user);
     }
 
-    @Test
+//    @Test
     public void getUserTest() throws Exception {
         User user = new User();
 
-        user.setUserId("user2");
+        user.setUserId("testUser6");
 
         User getUser = userDao.getUser(user.getUserId());
 
         System.out.println(getUser.toString());
-
     }
 
 //    @Test
@@ -79,6 +77,46 @@ public class userApplicationTests {
         map.put("totalCount", new Integer(totalCount));
 
         System.out.println(map);
+    }
 
+//    @Test
+    public void updateUserTest() throws Exception {
+
+        User user = new User();
+
+        user.setUserId("testUser6");
+
+        User getUser = userDao.getUser(user.getUserId());
+
+        System.out.println(getUser.toString());
+
+        getUser.setNickname("수정된지확인용");
+        getUser.setPwd("8888");
+        getUser.setSelfIntro("테스트 수정이 잘 되었다면 당근을 흔들어 주세요.");
+        getUser.setSelfIntroPublic(TRUE);
+
+        userDao.updateUser(getUser);
+    }
+
+    @Test
+    public void deleteUserTest() throws Exception {
+
+        User user = new User();
+        Timestamp suspensionDate = new Timestamp(System.currentTimeMillis());
+        System.out.println("현재시간은? => " + suspensionDate);
+
+//        LocalDateTime suspensionDate = LocalDateTime.now();
+//        System.out.println("현재시간은? => " + suspensionDate);
+
+        user.setUserId("testUser6");
+
+        User getUser = userDao.getUser(user.getUserId());
+
+        System.out.println(getUser.toString());
+
+        getUser.setSuspension(TRUE);
+        getUser.setSuspensionDate(suspensionDate);
+
+        userDao.deleteUser(getUser);
     }
 }
