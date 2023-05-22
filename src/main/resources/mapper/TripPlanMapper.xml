@@ -59,7 +59,7 @@
     </resultMap>
 
 
-    <!-- 공유된 모든 여행플랜 조회 -->
+    <!-- 공유된 모든 여행플랜 조회 삭제유무도 조회-->
     <select id="selectPublicTripPlanList" resultMap="tripPlanResultMap">
         SELECT * FROM trip_plan WHERE is_plan_public = TRUE AND is_plan_deleted = FALSE
         ORDER BY trip_plan_reg_date DESC, trip_plan_no DESC;
