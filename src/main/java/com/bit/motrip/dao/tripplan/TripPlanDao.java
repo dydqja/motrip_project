@@ -1,5 +1,7 @@
 package com.bit.motrip.dao.tripplan;
 
+import com.bit.motrip.domain.DailyPlan;
+import com.bit.motrip.domain.Place;
 import com.bit.motrip.domain.TripPlan;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,7 +18,11 @@ public interface TripPlanDao {
 
     public int getTripPlan() throws Exception;
 
-    public int updateTripPlan(TripPlan tripPlan);
+    public TripPlan selectTripPlan(int tripPlanNo) throws Exception;
+
+    public int updateTripPlan(TripPlan tripPlan) throws Exception;
+    public int updateDailyPlan(DailyPlan dailyPlan) throws Exception;
+    public int updatePlace(Place place) throws Exception;
 
     public int deleteTripPlan (int tripPlanNo) throws Exception;
 

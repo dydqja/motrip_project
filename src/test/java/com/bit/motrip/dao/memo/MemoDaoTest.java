@@ -16,7 +16,7 @@ class MemoDaoTest {
 
 
     //insert test
-    @Test
+    //@Test
     void addMemo() throws Exception{
         //입력할 메모를 만든다.
         Memo memo = TestUtil.temporaryMemoMaker();

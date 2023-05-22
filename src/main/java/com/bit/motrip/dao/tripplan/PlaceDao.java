@@ -7,8 +7,9 @@ import java.util.List;
 
 @Mapper
 public interface PlaceDao {
-    public List<Place> getPlaceList(int dailyPlanNo);
-    public void addPlace(Place place);
-    void updatePlace(Place place);
-    void deletePlace(int placeNo);
+    public List<Place> selectPlace(int dailyPlanNo) throws Exception;
+    public void addPlace(Place place) throws Exception;
+    public int updatePlace(Place place) throws Exception;
+    public int deletePlace(int placeNo) throws Exception;
+
 }
