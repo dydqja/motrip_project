@@ -17,22 +17,23 @@ public class PlaceServiceImpl implements PlaceService {
     private PlaceDao placeDao;
 
     @Override
-    public List<Place> getPlaceList(int dailyPlanNo) {
-        return placeDao.getPlaceList(dailyPlanNo);
+    public List<Place> selectPlace(int dailyPlanNo) throws Exception {
+        return placeDao.selectPlace(dailyPlanNo);
     }
 
     @Override
-    public void addPlace(Place place) {
+    public void addPlace(Place place) throws Exception {
         placeDao.addPlace(place);
     }
 
     @Override
-    public void updatePlace(Place place) {
-        placeDao.updatePlace(place);
+    public int updatePlace(Place place) throws Exception {
+        return placeDao.updatePlace(place);
     }
 
     @Override
-    public void deletePlace(int placeNo) {
-        placeDao.deletePlace(placeNo);
+    public int deletePlace(int placeNo) throws Exception {
+        return placeDao.deletePlace(placeNo);
     }
+
 }

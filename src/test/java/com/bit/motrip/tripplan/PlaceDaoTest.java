@@ -9,17 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-class PlaceServiceTest {
+class PlaceDaoTest {
 
     @Autowired
     @Qualifier("placeServiceImpl")
     private PlaceService placeService;
 
     //@Test // 명소 리스트 확인
-    public void getPlaceList() {
-        List<Place> place = placeService.getPlaceList(17);
+    public void selectPlace() throws Exception{
+        List<Place> place = placeService.selectPlace(17);
         for(Place placeList : place){
             System.out.println("명소 번호 : " + placeList.getPlaceNo());
             System.out.println("명소 태그 : " + placeList.getPlaceTags());
@@ -31,12 +30,8 @@ class PlaceServiceTest {
         }
     }
 
-    //@Test
-    public void getPlaceById() {
-    }
-
-    //@Test // 명소 추가 확인
-    public void addPlace() {
+    //@Test // 명소 추가
+    public void addPlace() throws Exception{
         Place place = new Place();
         place.setDailyPlanNo(1);
         place.setPlaceTags("#테스트");
@@ -48,14 +43,26 @@ class PlaceServiceTest {
         place.setTripTime(null);
 
         placeService.addPlace(place);
-
     }
 
-    //@Test
-    public void updatePlace() {
+    //@Test // 명소 업데이트(일차별 여행플랜번호로 가져온 명소 목록중 하나를 선택하여 내용 변경후 확인)
+    public void updatePlace() throws Exception{
+        List<Place> place1 = placeService.selectPlace(21);
+        Place getPlace1 = place1.get(0);
+        System.out.println(getPlace1.toString());
+        getPlace1.setPlaceTags("제주도");
+        getPlace1.setPlaceCategory(2);
+
+        placeService.updatePlace(getPlace1);
+
+        List<Place> place2 = placeService.selectPlace(21);
+        Place getPlace2 = place2.get(0);
+        System.out.println(getPlace2.toString());
     }
 
-    //@Test
-    public void deletePlace() {
+    //@Test // 명소 삭제
+    public void deletePlace() throws Exception{
+        placeService.deletePlace(69);
     }
+
 }

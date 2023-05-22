@@ -18,7 +18,7 @@
     </resultMap>
 
     <!-- 명소 리스트 확인 쿼리 -->
-    <select id="getPlaceList" parameterType="int" resultMap="placeResultMap">
+    <select id="selectPlace" parameterType="int" resultMap="placeResultMap">
         select * from place WHERE daily_plan_no = #{dailyPlanNo}
     </select>
 
@@ -28,12 +28,22 @@
         values (#{placeTags}, #{dailyPlanNo}, #{placeCoordinates}, #{placeImage}, #{placePhoneNumber}, #{placeAddress}, #{placeCategory}, #{tripTime})
     </insert>
 
+    <!-- 작성된 명소 수정 -->
     <update id="updatePlace" parameterType="com.bit.motrip.domain.Place">
-        update place set place_tags = #{placeTags}, place_coordinates = #{placeCoordinates}, place_image = #{placeImage}, place_phone_number = #{placePhoneNumber}, place_address = #{placeAddress}, place_category = #{placeCategory}, trip_time = #{tripTime} where place_no = #{placeNo}
+        UPDATE place
+        SET place_tags = #{placeTags},
+        place_coordinates = #{placeCoordinates},
+        place_image = #{placeImage},
+        place_phone_number = #{placePhoneNumber},
+        place_address = #{placeAddress},
+        place_category = #{placeCategory},
+        trip_time = #{tripTime}
+        WHERE place_no = #{placeNo}
     </update>
 
+    <!-- 작성된 명소 삭제 -->
     <delete id="deletePlace" parameterType="int">
-        delete from place where place_no = #{placeNo}
+        DELETE FROM place WHERE place_no = #{placeNo}
     </delete>
 
 </mapper>
