@@ -11,7 +11,12 @@ public class Memo {
     private Date memoDelDate;
     private int memoColor;
     private String memoAuthor;
-    private List<User> memoAccessUserList;
+    private Integer attachedTripPlanNo;
+    private Integer attachedReviewNo;
+    private Integer attachedChatRoomNo;
+
+    //getter and setter
+
 
     public int getMemoNo() {
         return memoNo;
@@ -69,25 +74,43 @@ public class Memo {
         this.memoAuthor = memoAuthor;
     }
 
-    public List<User> getMemoAccessUserList() {
-        return memoAccessUserList;
+    public Integer getAttachedTripPlanNo() {
+        return attachedTripPlanNo;
     }
 
-    public void setMemoAccessUserList(List<User> memoAccessUserList) {
-        this.memoAccessUserList = memoAccessUserList;
+    public void setAttachedTripPlanNo(Integer attachedTripPlanNo) {
+        this.attachedTripPlanNo = attachedTripPlanNo;
+    }
+
+    public Integer getAttachedReviewNo() {
+        return attachedReviewNo;
+    }
+
+    public void setAttachedReviewNo(Integer attachedReviewNo) {
+        this.attachedReviewNo = attachedReviewNo;
+    }
+
+    public Integer getAttachedChatRoomNo() {
+        return attachedChatRoomNo;
+    }
+
+    public void setAttachedChatRoomNo(Integer attachedChatRoomNo) {
+        this.attachedChatRoomNo = attachedChatRoomNo;
     }
 
     @Override
     public String toString() {
         return "Memo{" +
-                "번호=" + memoNo +
-                ", 제목='" + memoTitle + '\'' +
-                ", 내용='" + memoContents + '\'' +
-                ", 등록일=" + memoRegDate +
-                ", 삭제일=" + memoDelDate +
-                ", 색=" + memoColor +
-                ", 작성자='" + memoAuthor + '\'' +
-                ", 접근가능자=" + memoAccessUserList +
+                "memoNo=" + memoNo +
+                ", memoTitle='" + memoTitle + '\'' +
+                ", memoContents='" + memoContents + '\'' +
+                ", memoRegDate=" + memoRegDate +
+                ", memoDelDate=" + memoDelDate +
+                ", memoColor=" + memoColor +
+                ", memoAuthor='" + memoAuthor + '\'' +
+                ", attachedTripPlanNo=" + attachedTripPlanNo +
+                ", attachedReviewNo=" + attachedReviewNo +
+                ", attachedChatRoomNo=" + attachedChatRoomNo +
                 '}';
     }
 }

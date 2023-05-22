@@ -1,5 +1,6 @@
 package com.bit.motrip.serviceimpl.memo;
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.memo.MemoDao;
 import com.bit.motrip.domain.Memo;
 import com.bit.motrip.domain.MemoAttachable;
@@ -14,22 +15,23 @@ import java.util.List;
 public class MemoServiceImpl implements MemoService {
 
     //Constructor
-    public MemoServiceImpl() {
-    }
 
     //Field
     @Autowired
     @Qualifier("memoDao")
     private MemoDao memoDao;
 
-    //Methods
+    //Method
     @Override
-    public void addMemo() throws Exception {
-
+    public void addMemo(Memo memo) throws Exception {
+        //Controller 에서 Memo의 Author 에 User 객체를 넣어줘야 한다.
+        memoDao.addMemo(memo);
     }
 
     @Override
-    public List<Memo> getMemoList(User user) throws Exception {
+    public List<Memo> getMemoList(User user, Search search) throws Exception {
+        String targetId = user.getUserId();
+        search.setSearchKeyword(targetId);
         return null;
     }
 
@@ -59,12 +61,22 @@ public class MemoServiceImpl implements MemoService {
     }
 
     @Override
-    public void addMemoAttach(MemoAttachable memoAttachable) throws Exception {
+    public void addMemoAttach(int memoNo, MemoAttachable memoAttachable) throws Exception {
 
     }
 
     @Override
-    public void deleteMemoAttach(MemoAttachable memoAttachable) throws Exception {
+    public void deleteMemoAttach(int memoNo, MemoAttachable memoAttachable) throws Exception {
 
+    }
+
+    @Override
+    public void updateMemoAttach(int memoNo, MemoAttachable memoAttachable) throws Exception {
+
+    }
+
+    @Override
+    public MemoAttachable getMemoAttach(int memoNo) throws Exception {
+        return null;
     }
 }

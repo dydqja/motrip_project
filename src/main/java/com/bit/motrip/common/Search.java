@@ -53,6 +53,14 @@ public class Search {
         return (getCurrentPage()-1)*getPageSize()+1;
     }
 
+    public int[] getSearchConditions() {
+        return searchConditions;
+    }
+
+    public void setSearchConditions(int[] searchConditions) {
+        this.searchConditions = searchConditions;
+    }
+
     @Override
     public String toString() {
         return "Search{" +
