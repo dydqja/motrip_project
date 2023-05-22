@@ -1,29 +1,35 @@
-package com.bit.motrip.user;
+package com.bit.motrip.serviceimpl.user;
 
+import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.user.UserDao;
 import com.bit.motrip.domain.User;
+import com.bit.motrip.service.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-
+import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-public class userApplicationTests {
+class UserServiceImplTest {
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
 
-    @Test
-    public void addUserTest() throws Exception {
+
+//    @Test
+    void addUser() throws Exception {
+
         User user = new User();
 
-        user.setUserId("testUser6");
+        user.setUserId("testUser7");
         user.setNickname("테스트좀하자제발");
         user.setPwd("1234");
         user.setUserName("홍길동");
@@ -45,48 +51,49 @@ public class userApplicationTests {
         user.setListingAttachedMemo(FALSE);
         user.setListingSharedMemo(FALSE);
 
-        userDao.addUser(user);
+        userService.addUser(user);
     }
 
 //    @Test
-    public void getUserTest() throws Exception {
+    void getUser() throws Exception {
+
         User user = new User();
 
         user.setUserId("testUser6");
 
-        User getUser = userDao.getUser(user.getUserId());
+        User getUser = userService.getUser(user.getUserId());
 
         System.out.println(getUser.toString());
+
     }
 
 //    @Test
-    public void getListTest() throws Exception {
-        Search search = new Search();
+    void getList() throws Exception {
 
+        Search search = new Search();
+        Page page = new Page();
         int pageSize = 3;
         int pageUnit = 5;
 
+        if(search.getCurrentPage() ==0 ){
+            search.setCurrentPage(1);
+        }
         search.setPageSize(pageSize);
-        search.setCurrentPage(1);
 
-        List<User> list = userDao.getList(search);
-        int totalCount = userDao.getTotalCount(search);
+        Map<String , Object> map=userService.getList(search);
 
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("list",list);
-        map.put("totalCount", new Integer(totalCount));
-
-        System.out.println(map);
+        Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+        System.out.println(resultPage);
     }
 
 //    @Test
-    public void updateUserTest() throws Exception {
+    void updateUser() throws Exception {
 
         User user = new User();
 
         user.setUserId("testUser6");
 
-        User getUser = userDao.getUser(user.getUserId());
+        User getUser = userService.getUser(user.getUserId());
 
         System.out.println(getUser.toString());
 
@@ -95,28 +102,31 @@ public class userApplicationTests {
         getUser.setSelfIntro("테스트 수정이 잘 되었다면 당근을 흔들어 주세요.");
         getUser.setSelfIntroPublic(TRUE);
 
-        userDao.updateUser(getUser);
+        userService.updateUser(getUser);
     }
 
 //    @Test
-    public void deleteUserTest() throws Exception {
+    void checkDuplication() throws Exception{
+
+        boolean result=userService.checkDuplication("userTest6");
+    }
+
+    @Test
+    void deleteUser() throws Exception{
 
         User user = new User();
         Timestamp suspensionDate = new Timestamp(System.currentTimeMillis());
         System.out.println("현재시간은? => " + suspensionDate);
 
-//        LocalDateTime suspensionDate = LocalDateTime.now();
-//        System.out.println("현재시간은? => " + suspensionDate);
-
         user.setUserId("testUser6");
 
-        User getUser = userDao.getUser(user.getUserId());
+        User getUser = userService.getUser(user.getUserId());
 
         System.out.println(getUser.toString());
 
         getUser.setSuspension(TRUE);
         getUser.setSuspensionDate(suspensionDate);
 
-        userDao.deleteUser(getUser);
+        userService.deleteUser(getUser);
     }
 }
