@@ -11,6 +11,8 @@ public class Search {
     private int endRowNum;
     private int startRowNum;
 
+    private int mysqlStartRowNum;
+
     //Constructor
     public Search() {
 
@@ -51,6 +53,10 @@ public class Search {
 
     public int getStartRowNum() {
         return (getCurrentPage()-1)*getPageSize()+1;
+    }
+
+    public int getMysqlStartRowNum() {
+        return (getCurrentPage()-1)*getPageSize();
     }
 
     public int[] getSearchConditions() {
