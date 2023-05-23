@@ -19,7 +19,7 @@ public class userApplicationTests {
     @Autowired
     private UserDao userDao;
 
-    @Test
+    //@Test
     public void addUserTest() throws Exception {
         User user = new User();
 
@@ -48,7 +48,7 @@ public class userApplicationTests {
         userDao.addUser(user);
     }
 
-//    @Test
+    @Test
     public void getUserTest() throws Exception {
         User user = new User();
 

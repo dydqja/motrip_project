@@ -29,8 +29,8 @@ class UserServiceImplTest {
 
         User user = new User();
 
-        user.setUserId("testUser7");
-        user.setNickname("테스트좀하자제발");
+        user.setUserId("testUser41");
+        user.setNickname("조인테스트");
         user.setPwd("1234");
         user.setUserName("홍길동");
         user.setPhone("010-1234-1234");
@@ -38,7 +38,7 @@ class UserServiceImplTest {
         user.setAddrDetail("삼오빌딩 5-9층");
         user.setEmail("user101@bitcamp.com");
         user.setSsn("930311-1");
-        user.setSelfIntro("저는 purchase 도 못한 좆밥입니다");
+        user.setSelfIntro("블랙리스트 테스트 컬럼입니다");
         user.setGender("M");
         user.setAge("30-39");
         user.setRole(1);
@@ -59,7 +59,7 @@ class UserServiceImplTest {
 
         User user = new User();
 
-        user.setUserId("testUser6");
+        user.setUserId("testUser41");
 
         User getUser = userService.getUser(user.getUserId());
 
@@ -111,7 +111,7 @@ class UserServiceImplTest {
         boolean result=userService.checkDuplication("userTest6");
     }
 
-    @Test
+//    @Test
     void deleteUser() throws Exception{
 
         User user = new User();

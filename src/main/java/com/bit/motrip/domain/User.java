@@ -1,8 +1,5 @@
 package com.bit.motrip.domain;
 
-import com.sun.xml.internal.ws.resources.UtilMessages;
-import org.springframework.cglib.core.Local;
-
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

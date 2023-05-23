@@ -9,7 +9,7 @@ import java.util.List;
 public interface PlaceDao {
     public List<Place> selectPlace(int dailyPlanNo) throws Exception;
     public void addPlace(Place place) throws Exception;
-    public int updatePlace(Place place) throws Exception;
-    public int deletePlace(int placeNo) throws Exception;
+    public void updatePlace(Place place) throws Exception;
+    public void deletePlace(int placeNo) throws Exception;
 
 }

@@ -6,9 +6,8 @@ import com.bit.motrip.service.chatroom.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/chatRoom/*")
@@ -23,19 +22,23 @@ public class ChatRoomController {
     public ChatRoomController(){
         System.out.println("==> ChatRoomController default Constructor call....");
     }//chatroom 생성자
-
-    @RequestMapping(value = "addChatRoom", method = RequestMethod.GET)
+    //chatRoom/addChatRoom
+    @GetMapping("addChatRoom")
     public String addChatRoom() throws Exception{
-        System.out.println("/chatRoom/addChatRoom");
-        return "redirect:/chatroom/addChatRoom.jsp";
+        System.out.println("/chatRoom/addChatRoom/GET");
+        return "forward:addChatRoom";
     }//채팅방 생성 페이지
 
-    @RequestMapping(value = "addChatRoom", method = RequestMethod.POST)
-    public String addChatRoom(@ModelAttribute("chatroom") ChatRoom chatRoom) throws Exception{
-        System.out.println("/chatRoom/addChatRoom");
-        chatRoomService.addChatRoom(chatRoom);
-        //chatMemberService.addChatMember();
-        return "forward:/chatRoom/addChatRoom.jsp";
+    @PostMapping("addChatRoom")
+    public String addChatRoom(@ModelAttribute("chatRoom") ChatRoom chatRoom,
+                              @RequestParam("userId") String userId,
+                              @RequestParam("tripPlanNo") int tripPlanNo,
+                              Model model) throws Exception{
+        System.out.println("/chatRoom/addChatRoom/POST");
+        ChatRoom NewchatRoom = chatRoomService.getChatRoom(chatRoomService.addChatRoom(chatRoom,userId,tripPlanNo));
+        model.addAttribute("chatRoom", NewchatRoom);
+        model.addAttribute("chatMember",chatMemberService.getChatMember(NewchatRoom.getChatRoomNo()));
+        return "/jsp/chatroom/addChatRoomView";
     }//채팅방 생성 후
 
 

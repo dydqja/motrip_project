@@ -28,6 +28,13 @@
 			   );
 	</insert>
 
+	<select id="getChatMember" parameterType="int" resultMap="chatMemberResultMap">
+		SELECT
+			*
+		FROM chat_room_members
+		where chat_room_no = #{chatRoomNo} and is_chat_room_author = 1
+	</select>
+
 	<delete id="deleteChatMember" parameterType="Map">
 		DELETE FROM chat_room_members
 		WHERE chat_room_no = #{chatRoomNo}
@@ -42,4 +49,7 @@
 			and #{isChatRoomAuthor} = 1
 	</update>
 
+	<select id="listChatMember" parameterType="int" resultMap="chatMemberResultMap">
+		select * from chat_room_members where chat_room_no = #{chatRoomNo}
+	</select>
 </mapper>
