@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +21,25 @@ public class ChatMemberServiceImpl implements ChatMemberService {
     @Override
     public void addChatMember(ChatMember chatMember) throws Exception {
         System.out.println("addChatMember");
+        //기존회원 참여 불가
+        int chatRoomNo = chatMember.getChatRoomNo();
+        List<ChatMember> chatMemberList=chatMemberDao.listChatMember(chatRoomNo);
+
+        for(ChatMember ch:chatMemberList){
+            boolean checker = ch.getUserId().equals(chatMember.getUserId());
+            if(checker) {
+                System.out.println("이미 참여한 회원");
+                return;
+            }
+        }
         chatMemberDao.addChatMember(chatMember);
     }
+
+    @Override
+    public ChatMember getChatMember(int chatRoomNo) throws Exception {
+        return chatMemberDao.getChatMember(chatRoomNo);
+    }
+
     //채팅 멤버 삭제 (나가기)
     @Override
     public void deleteChatMember(int chatRoomNo, String userId) throws Exception {
@@ -34,7 +52,7 @@ public class ChatMemberServiceImpl implements ChatMemberService {
     }
     //채팅 멤버리스트 출력
     @Override
-    public List<ChatMember> chatMemberList(int chatRoomNo) throws Exception {
-        return null;
+    public ArrayList<ChatMember> chatMemberList(int chatRoomNo) throws Exception {
+        return chatMemberDao.listChatMember(chatRoomNo);
     }
 }
