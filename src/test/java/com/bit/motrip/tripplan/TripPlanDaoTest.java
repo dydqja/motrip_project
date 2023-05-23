@@ -1,5 +1,6 @@
 package com.bit.motrip.tripplan;
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.tripplan.DailyPlanDao;
 import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
@@ -10,6 +11,7 @@ import com.bit.motrip.domain.TripPlan;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -30,12 +32,19 @@ class TripPlanDaoTest {
     @Qualifier("placeDao")
     private PlaceDao placeDao;
 
-    //@Test // 공유된 여행플랜 목록 확인 (join 이전)
+    @Value("${tripPlanPageSize}")
+    private int tripPlanPageSize;
+
+    @Test // 공유된 여행플랜 목록 확인 (join 이전)
     public void selectPublicTripPlanList() throws Exception {
+
+        Search search = new Search();
+        search.setCurrentPage(0);
+        search.setPageSize(tripPlanPageSize);
 
         List<DailyPlan> dailyPlan = new ArrayList<DailyPlan>();
         List<Place> place = new ArrayList<>();
-        List<TripPlan> tripPlan = tripPlanDao.selectPublicTripPlanList();
+        List<TripPlan> tripPlan = tripPlanDao.selectPublicTripPlanList(search);
         for (TripPlan trip : tripPlan) {
             System.out.println("===========================");
             System.out.println("tripPlan 번호: " + trip.getTripPlanNo());
@@ -74,7 +83,11 @@ class TripPlanDaoTest {
     //@Test // 내가 작성한 여행플랜 목록 확인 (join 이전)
     public void selectMyTripPlanList() throws Exception {
 
-        List<TripPlan> tripPlan = tripPlanDao.selectMyTripPlanList("user2");
+        Search search = new Search();
+        search.setCurrentPage(0);
+        search.setPageSize(tripPlanPageSize);
+
+        List<TripPlan> tripPlan = tripPlanDao.selectMyTripPlanList("user2", search);
         for (TripPlan trip : tripPlan) {
             System.out.println("===========================");
             System.out.println("tripPlan 번호: " + trip.getTripPlanNo());
