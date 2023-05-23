@@ -4,6 +4,7 @@ import com.bit.motrip.dao.chatroom.ChatMemberDao;
 import com.bit.motrip.dao.chatroom.ChatRoomDao;
 import com.bit.motrip.domain.ChatMember;
 import com.bit.motrip.domain.ChatRoom;
+import com.bit.motrip.service.chatroom.ChatMemberService;
 import com.bit.motrip.service.chatroom.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,17 +20,30 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Qualifier("chatRoomDao")
     ChatRoomDao chatRoomDao; //Chatroom
 
+    @Autowired
+    @Qualifier("chatMemberServiceImpl")
+    private ChatMemberService chatMemberService;
 //    @Autowired
 //    @Qualifier("chatMemberDao")
 //    ChatMemberDao chatMemberDao; // chatmember
 
     @Override
-    public int addChatRoom(ChatRoom chatRoom) throws Exception {
+    public int addChatRoom(ChatRoom chatRoom,String userId,int tripPlanNo) throws Exception {
         System.out.println("addChatRoom");
-        int chatRoomNo = chatRoomDao.addChatRoom(chatRoom);
-
+        int newChatRoomNo = chatRoomDao.addChatRoom(chatRoom);
+        if(newChatRoomNo == 1) {
+            ChatMember chatMember = new ChatMember();
+            chatMember.setChatRoomNo(chatRoom.getChatRoomNo());
+            chatMember.setUserId(userId);
+            chatMember.setTripPlanNo(tripPlanNo);
+            chatMember.setChatRoomAuthor(true);
+            chatMemberService.addChatMember(chatMember);
+        }
+        else{
+            System.out.println("채팅방 생성 실패하였습니다.");
+        }
         //chatMemberDao.addChatMember();
-        return chatRoomNo;
+        return chatRoom.getChatRoomNo();
     }
 
     @Override
