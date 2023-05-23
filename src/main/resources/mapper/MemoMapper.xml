@@ -13,7 +13,19 @@
         <result column="memo_reg_date" property="memoRegDate"/>
         <result column="memo_del_date" property="memoDelDate"/>
         <result column="memo_color" property="memoColor"/>
+        <result column="attached_trip_plan_no" property="attachedTripPlanNo"/>
+        <result column="attached_review_no" property="attachedReviewNo"/>
+        <result column="attached_chat_room_no" property="attachedChatRoomNo"/>
+        <result column="memo_author" property="memoAuthor"/>
     </resultMap>
+
+    <resultMap id="memoAccessResultMap" type="com.bit.motrip.domain.MemoAccess">
+        <id column="memo_access_no" property="memoAccessNo"/>
+        <result column="memo_access_user" property="memoAccessUser"/>
+        <result column="memo_no" property="memoNo"/>
+        <result column="is_memo_author" property="isMemoAuthor"/>
+    </resultMap>
+
 
     <!--Memo-->
 
@@ -36,21 +48,58 @@
         where memo_no = #{memoNo}
     </update>
 
-    <delete id="deleteMemo" parameterType="int">
+    <delete id="deleteMemo" parameterType="Map">
         delete from memo
-        where  memo_no = #{memoNo}
-    </delete>
-
-    <select id="getMemoList" parameterType="String" resultMap="memoResultMap">
-        SELECT m.memo_no, m.memo_title, m.memo_contents, m.memo_reg_date, m.memo_color
-        FROM memo m, (
+        where memo_no = #{memoNo}
+        <!--Let's see whether you are the author or not-->
+        AND memo_no = (
             SELECT memo_no
             FROM memo_access
-            WHERE memo_access_user = #{username}
-            ORDER BY is_memo_author
-        ) vt
-        WHERE m.memo_no = vt.memo_no
+            WHERE memo_access_user = #{userId}
+            AND memo_no = #{memoNo}
+            AND is_memo_author = 1
+        )
+    </delete>
+
+    <select id="getMemoList" parameterType="com.bit.motrip.common.Search" resultMap="memoResultMap">
+        SELECT DISTINCT m.memo_no, m.memo_title, m.memo_contents, m.memo_reg_date, m.memo_color, ma.memo_access_user AS memo_author
+        <!--부착된 메모까지 보는 상황임-->
+        <if test="searchConditions != null and searchConditions[1] == 1">
+            , vt2.attached_trip_plan_no, vt2.attached_review_no, vt2.attached_chat_room_no
+        </if>
+        FROM memo m
+        INNER JOIN (
+        SELECT memo_no
+        FROM memo_access
+        WHERE memo_access_user = #{searchKeyword}
+        <!--서치.서치컨디션[0] (isListingSharedMemo)옵션을 켜지 않음-->
+        <if test="searchConditions != null and searchConditions[0] == 0">
+            AND is_memo_author = 1
+        </if>
+        ORDER BY is_memo_author
+        ) vt ON m.memo_no = vt.memo_no
+        <if test="searchConditions != null and searchConditions[1] == 0">
+            LEFT JOIN (
+            SELECT memo_no
+            FROM memo
+            WHERE attached_trip_plan_no IS NULL
+            AND attached_review_no IS NULL
+            AND attached_chat_room_no IS NULL
+            ) vt2 ON m.memo_no = vt2.memo_no
+        </if>
+        <if test="searchConditions != null and searchConditions[1] == 1">
+            LEFT JOIN (
+            SELECT memo_no, attached_trip_plan_no, attached_review_no, attached_chat_room_no
+            FROM memo
+            WHERE (attached_trip_plan_no != 0 OR attached_review_no != 0 OR attached_chat_room_no != 0)
+            ) vt2 ON m.memo_no = vt2.memo_no
+        </if>
+        LEFT JOIN memo_access ma ON m.memo_no = ma.memo_no AND ma.is_memo_author = 1
+        <if test="searchConditions != null and searchConditions[1] != null">
+            WHERE m.memo_no = vt2.memo_no
+        </if>
     </select>
+
 
     <!--MemoAccess-->
 
@@ -58,14 +107,32 @@
         insert into memo_access
             (memo_no,memo_access_user,is_memo_author)
         values
-            (#{memoNo}, #{userId},#{isAuthor})
+            (#{memoNo}, #{memoAccessUser},#{isMemoAuthor})
     </insert>
 
-
-    <!--MaxMemo-->
-
-    <select id="getMaxMemoAccessNo" resultType="int">
-        select max(memo_access_no) from memo_access
+    <select id="getMemoAccessListByMemoNo" parameterType="int" resultMap="memoAccessResultMap">
+        select memo_access_no, memo_no, memo_access_user, is_memo_author
+        from memo_access
+        where memo_no = #{memoNo}
     </select>
+
+    <select id="getMemoAccessListByUserId" parameterType="String" resultMap="memoAccessResultMap">
+        select memo_access_no, memo_no, memo_access_user, is_memo_author
+        from memo_access
+        where memo_access_user = #{memoAccessUser}
+    </select>
+
+    <select id="getMemoAccessByAuthor" parameterType="String" resultMap="memoAccessResultMap">
+        select memo_access_no, memo_no, memo_access_user, is_memo_author
+        from memo_access
+        where memo_access_user = #{userId} and is_memo_author = 1
+    </select>
+
+    <delete id="deleteMemoAccess" parameterType="com.bit.motrip.domain.MemoAccess">
+        delete from memo_access
+        where memo_no = #{memoNo} and memo_access_user = #{memoAccessUser}
+    </delete>
+
+
 
 </mapper>

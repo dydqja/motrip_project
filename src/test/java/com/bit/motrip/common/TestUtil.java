@@ -2,10 +2,6 @@ package com.bit.motrip.common;
 
 import com.bit.motrip.domain.Memo;
 import com.bit.motrip.domain.MemoAccess;
-import com.bit.motrip.domain.User;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestUtil {
     public static Memo temporaryMemoMaker() {
@@ -30,8 +26,8 @@ public class TestUtil {
     public static MemoAccess temporaryMemoAccessMaker() {
         MemoAccess memoAccess = new MemoAccess();
         memoAccess.setMemoNo(1);
-        memoAccess.setUserId("user1");
-        memoAccess.setAuthor(true);
+        memoAccess.setMemoAccessUser("user1");
+        memoAccess.setMemoAuthor(true);
         return memoAccess;
     }
 }

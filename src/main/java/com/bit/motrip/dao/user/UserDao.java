@@ -26,5 +26,4 @@ public interface UserDao {
     //delete
     public void deleteUser(User user) throws Exception;
 
-
 }
