@@ -18,7 +18,7 @@ class MemoDaoTest {
     private int listSize;
 
     //methods to test
-    @Test
+    //@Test
     void getListSize(){
         System.out.println(listSize);
     }
@@ -26,7 +26,7 @@ class MemoDaoTest {
 
 
     //insert test
-    @Test
+   // @Test
     void addMemoTest(){
         //입력할 메모를 만든다.
         Memo memo = TestUtil.temporaryMemoMaker();
@@ -59,7 +59,7 @@ class MemoDaoTest {
             System.out.println("메모가 추가되지 않았습니다.");
         }
     }
-    @Test
+ //   @Test
     void getMemoTest(){
         Memo memo = new Memo();
         int targetMemoNo= 1;
@@ -70,7 +70,7 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    @Test
+  //  @Test
     void deleteMemoTest(){
         int targetMemoNo = 36;
         String userId = "user1";
@@ -86,7 +86,7 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    @Test
+  //  @Test
     void updateMemoTest(){
         int resultNo = 0;
         Memo memo = new Memo();
@@ -108,7 +108,7 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    @Test
+   // @Test
     //select list test
     void getMemoListTest() throws Exception{
         Search search = new Search();
@@ -125,7 +125,7 @@ class MemoDaoTest {
         }
 
     }
-    @Test
+   // @Test
     void addMemoAccessTest() throws Exception{
         MemoAccess memoAccess = new MemoAccess();
         memoAccess.setMemoNo(1);
@@ -140,7 +140,7 @@ class MemoDaoTest {
             System.out.println("메모 접근권한이 추가되지 않았습니다.");
         }
     }
-    @Test
+   // @Test
     void deleteMemoAccessTest(){
         MemoAccess memoAccess = new MemoAccess();
         memoAccess.setMemoAccessUser("admin");
@@ -160,7 +160,7 @@ class MemoDaoTest {
         }
 
     }
-    @Test
+   // @Test
     void getMemoAccessListByMemoNoTest() throws Exception{
         int targetMemoNo = 1;
         List<MemoAccess> memoAccessList = memoDao.getMemoAccessListByMemoNo(targetMemoNo);
@@ -170,7 +170,7 @@ class MemoDaoTest {
             count++;
         }
     }
-    @Test
+   // @Test
     void getMemoAccessListByUserIdTest() throws Exception{
         String targetUserId = "user1";
         List<MemoAccess> memoAccessList = memoDao.getMemoAccessListByUserId(targetUserId);

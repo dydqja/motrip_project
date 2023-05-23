@@ -38,5 +38,12 @@ public class EvaluateListServiceImpl implements EvaluateListService {
         return evaluateListDao.getEvaluation(evaluaterId);
     }
 
-    //아래에 여행플랜 & 리뷰 겟 필요할시 입력 ############################################
+    public void deleteBlacklist(EvaluateList evaluateList) throws Exception {
+        evaluateListDao.deleteBlacklist(evaluateList);
+    }
+
+    public void userEvaluateCancle(EvaluateList evaluateList) throws Exception {
+        evaluateListDao.userEvaluateCancle(evaluateList);
+    }
+
 }

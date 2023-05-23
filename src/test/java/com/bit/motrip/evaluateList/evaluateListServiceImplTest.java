@@ -33,7 +33,8 @@ class EvaluateListServiceImplTest {
         EvaluateList evaluateList = new EvaluateList();
 
         evaluateList.setEvaluaterId("testUser41");
-        evaluateList.setBlacklistedUserId("testUser21");
+        evaluateList.setEvaluatedUserId("testUser21");
+        evaluateList.setIsScorePlus(-1);
 
         evaluateListService.addEvaluation(evaluateList);
     }
@@ -44,25 +45,40 @@ class EvaluateListServiceImplTest {
 
         evaluateList.setEvaluaterId("testUser41");
 
+        //evaluaterId 값에 해당하는 모든 칼럼정보 가져온다.
         List<EvaluateList> getEvaluateList = evaluateListService.getEvaluation(evaluateList.getEvaluaterId());
 
         System.out.println(getEvaluateList);
 
+        //모든 칼럼정보에서 원하는 값(blacklistUserId / evaluatedReviewNo / 등)만 가져온다
         List<String> blacklistUserId = new ArrayList<>();
         for (EvaluateList evaluateList1 : getEvaluateList) {
-            blacklistUserId.add(evaluateList1.getBlacklistedUserId());
+            if (evaluateList1.getBlacklistedUserId() != null) {
+                blacklistUserId.add(evaluateList1.getBlacklistedUserId());
+            }
         }
         System.out.println(blacklistUserId);
-//        System.out.println(blacklistUserId.get(0));
-//        System.out.println(blacklistUserId.get(1));
-//        evaluateList.setBlacklistedUserId(blacklistUserId.get(0));
-//        System.out.println(evaluateList.getBlacklistedUserId());
+    }
+//    @Test
+    void deleteBlacklist() throws Exception {
+        EvaluateList evaluateList = new EvaluateList();
 
+        evaluateList.setEvaluaterId("testUser41");
+        evaluateList.setBlacklistedUserId("testUser31");
 
-
-
+        evaluateListService.deleteBlacklist(evaluateList);
     }
 
+//    @Test
+    void userEvaluateCancle() throws Exception {
+        EvaluateList evaluateList = new EvaluateList();
+
+        evaluateList.setEvaluaterId("testUser41");
+        evaluateList.setEvaluatedUserId("testUser21");
+
+        evaluateListService.userEvaluateCancle(evaluateList);
+
+    }
 
 
 }

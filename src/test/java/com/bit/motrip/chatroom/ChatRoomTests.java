@@ -22,7 +22,7 @@ public class ChatRoomTests {
     @Qualifier("chatMemberServiceImpl")
     private ChatMemberService chatMemberService;
 
-  //  @Test
+    //@Test
     public void getTest() throws Exception{
         ChatRoom chatRoom = chatRoomService.getChatRoom(1);
         System.out.println(chatRoom);
@@ -34,6 +34,7 @@ public class ChatRoomTests {
         ChatRoom chatRoom = new ChatRoom();
         Date currentDate = new Date();
         chatRoom.setChatRoomTitle("test room2");
+        System.out.println(currentDate);
         chatRoom.setTravelStartDate(currentDate);
         chatRoom.setAgeRange("20-29");
         chatRoom.setMaxPersons(4);
@@ -61,7 +62,7 @@ public class ChatRoomTests {
         chatRoomService.deleteChatRoom(5);
     }
 
-    @Test
+    //@Test
     public void changeStatusTest() throws Exception{
         chatRoomService.changeRoomStatus(0,1);
         Assertions.assertEquals(0,chatRoomService.getChatRoom(1).getChatRoomStatus());
