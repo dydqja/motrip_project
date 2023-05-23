@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.notice.NoticeDao">
+
+    <resultMap id="noticeSelectMap" type="com.bit.motrip.domain.Notice">
+
+        <result property="noticeNo"                    column="board_no"                  jdbcType="INTEGER"/>
+        <result property="noticeAuthor"                column="board_author"              jdbcType="VARCHAR"/>
+        <result property="noticeTitle"                 column="board_title"               jdbcType="VARCHAR"/>
+        <result property="noticeContents"              column="board_contents"            jdbcType="VARCHAR"/>
+        <result property="noticeViews"                 column="board_views"               jdbcType="INTEGER"/>
+        <result property="noticeRegDate"               column="board_reg_date"            jdbcType="DATE"/>
+        <result property="isNoticeImportant"           column="is_notice_important"       jdbcType="TINYINT"/>
+        <result property="boardCategory"               column="board_category"            jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <insert id="addNotice" parameterType="com.bit.motrip.domain.Notice" >
+        INSERT INTO board (BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, IS_NOTICE_IMPORTANT, BOARD_CATEGORY)
+        VALUES (
+            (SELECT USER_ID FROM users WHERE USER_ID = #{noticeAuthor}),
+            #{noticeTitle},
+            #{noticeContents},
+            0,
+            CURDATE(),
+            #{isNoticeImportant},
+            0)
+    </insert>
+
+    <select id="getNotice" parameterType="com.bit.motrip.domain.Notice" resultMap="noticeSelectMap">
+        SELECT BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, IS_NOTICE_IMPORTANT, BOARD_CATEGORY
+        FROM board
+        WHERE BOARD_NO = #{noticeNo}
+    </select>
+
+    <update id="increaseViews" parameterType="com.bit.motrip.domain.Notice" >
+        UPDATE board SET BOARD_VIEWS = BOARD_VIEWS + 1 WHERE BOARD_NO = #{noticeNo}
+    </update>
+
+    <select id="getNoticeList"  parameterType="com.bit.motrip.common.Search"	resultMap="noticeSelectMap">
+        SELECT *
+        FROM (
+                 SELECT
+                     BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, BOARD_CATEGORY, IS_NOTICE_IMPORTANT,
+                     ROW_NUMBER() OVER (ORDER BY BOARD_NO) AS row_seq
+                 FROM
+                     board
+                 WHERE
+                     BOARD_CATEGORY = 0
+             ) AS derived_table
+        WHERE
+            row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+    </select>
+
+    <select  id="getNoticeTotalCount" parameterType="com.bit.motrip.common.Search" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            (
+                SELECT
+                    BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, IS_NOTICE_IMPORTANT, BOARD_CATEGORY
+                FROM
+                    board
+                WHERE
+                    BOARD_CATEGORY = 0
+            ) countTable
+    </select>
+
+    <update id="updateNotice" parameterType="com.bit.motrip.domain.Notice">
+        UPDATE board
+        SET BOARD_TITLE = #{noticeTitle},
+            BOARD_CONTENTS = #{noticeContents},
+            IS_NOTICE_IMPORTANT = #{isNoticeImportant}
+        WHERE BOARD_NO = #{noticeNo}
+    </update>
+
+    <delete id="deleteNotice" parameterType="com.bit.motrip.domain.Notice">
+        DELETE FROM board WHERE BOARD_NO = #{noticeNo}
+    </delete>
+
+</mapper>
