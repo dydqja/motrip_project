@@ -5,6 +5,7 @@ import com.bit.motrip.domain.ChatRoom;
 import com.bit.motrip.service.chatroom.ChatMemberService;
 import com.bit.motrip.service.chatroom.ChatRoomService;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,23 +33,17 @@ public class ChatRoomTests {
         //1.방 생성 후
         ChatRoom chatRoom = new ChatRoom();
         Date currentDate = new Date();
-
         chatRoom.setChatRoomTitle("test room2");
         chatRoom.setTravelStartDate(currentDate);
         chatRoom.setAgeRange("20-29");
         chatRoom.setMaxPersons(4);
         chatRoom.setCurrentPersons(0);
-        int newChatRoomNo =chatRoomService.addChatRoom(chatRoom);
+        int newChatRoomNo =chatRoomService.addChatRoom(chatRoom,"user101",2);
         System.out.println(newChatRoomNo);
-        //2.방장추가
-        if(newChatRoomNo == 1) {
-            ChatMember chatMember = new ChatMember();
-            chatMember.setChatRoomNo(chatRoom.getChatRoomNo());
-            chatMember.setUserId("user101");
-            chatMember.setTripPlanNo(2);
-            chatMember.setChatRoomAuthor(true);
-            chatMemberService.addChatMember(chatMember);
-        }
+
+        Assertions.assertEquals(12,newChatRoomNo);
+
+        System.out.println("==========================\n");
     }
 
     //@Test
@@ -56,17 +51,20 @@ public class ChatRoomTests {
         ChatRoom chatRoom = chatRoomService.getChatRoom(1);
 
         chatRoom.setChatRoomTitle("update room");
-
         chatRoomService.updateChatRoom(chatRoom);
         System.out.println(chatRoomService.getChatRoom(1));
+
+        Assertions.assertEquals("update room",chatRoomService.getChatRoom(1).getChatRoomTitle());
     }
-    @Test
+    //@Test
     public void deleteTest() throws Exception{
         chatRoomService.deleteChatRoom(5);
     }
 
-    //@Test
+    @Test
     public void changeStatusTest() throws Exception{
-        chatRoomService.changeRoomStatus(1,1);
+        chatRoomService.changeRoomStatus(0,1);
+        Assertions.assertEquals(0,chatRoomService.getChatRoom(1).getChatRoomStatus());
+
     }
 }

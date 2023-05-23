@@ -18,9 +18,9 @@ public class CommonUtil {
 
     public static void main(String[] args) {
         //수정내역
-        String commitComments = "getUser() 가져오는 목록 수정";
+        String commitComments = "service layer에 로직생성 + assertions test";
         //수정파일
-        String changedFiles = "(UserDao.java, UserMapper.xml)";
-        gitCommitMSGBuilder(4,1,changedFiles,commitComments);
+        String changedFiles = "(ChatRoomServiceImpl.java, chatRoomTests)";
+        gitCommitMSGBuilder(3,1,changedFiles,commitComments);
     }
 }
