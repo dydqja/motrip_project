@@ -30,13 +30,13 @@ public class DailyPlanServiceImpl implements DailyPlanService {
     }
 
     @Override
-    public int updateDailyPlan(DailyPlan dailyPlan) throws Exception {
-        return dailyPlanDao.updateDailyPlan(dailyPlan);
+    public void updateDailyPlan(DailyPlan dailyPlan) throws Exception {
+        dailyPlanDao.updateDailyPlan(dailyPlan);
     }
 
     @Override
-    public int deleteDailyPlan(int dailyPlanNo) throws Exception {
-        return dailyPlanDao.deleteDailyPlan(dailyPlanNo);
+    public void deleteDailyPlan(int dailyPlanNo) throws Exception {
+        dailyPlanDao.deleteDailyPlan(dailyPlanNo);
     }
 
 
