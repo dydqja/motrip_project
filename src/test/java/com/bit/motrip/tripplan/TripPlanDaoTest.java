@@ -211,4 +211,38 @@ class TripPlanDaoTest {
         System.out.println("삭제 완료");
     }
 
+    //@Test // 여행플랜 공유권한 설정(공유가 해제되면 가져가기유무도 자동해제)
+    public void tripPlanPublic() throws Exception{
+        TripPlan tripPlan = tripPlanService.selectTripPlan(10);
+        if(tripPlan.isPlanPublic()){
+            tripPlanService.tripPlanPublic(tripPlan.getTripPlanNo(), false);
+            tripPlanService.tripPlanDownloadable(tripPlan.getTripPlanNo(), false);
+        } else {
+            tripPlanService.tripPlanPublic(tripPlan.getTripPlanNo(), true);
+        }
+        System.out.println(tripPlan.toString());
+    }
+
+    //@Test // 여행플랜 가져가기 유무
+    public void tripPlanDownloadable() throws Exception{
+        TripPlan tripPlan = tripPlanService.selectTripPlan(10);
+        if(tripPlan.isPlanDownloadable()){
+            tripPlanService.tripPlanDownloadable(tripPlan.getTripPlanNo(), !tripPlan.isPlanDownloadable());
+        } else {
+            tripPlanService.tripPlanDownloadable(tripPlan.getTripPlanNo(), !tripPlan.isPlanDownloadable());
+        }
+        System.out.println(tripPlan.toString());
+    }
+
+    //@Test // 여행플랜 삭제유무
+    public void tripPlanDeleted() throws Exception{
+        TripPlan tripPlan = tripPlanService.selectTripPlan(10);
+        if(tripPlan.isTripCompleted()){
+            tripPlanService.tripPlanDeleted(tripPlan.getTripPlanNo(), !tripPlan.isPlanDeleted());
+        } else {
+            tripPlanService.tripPlanDeleted(tripPlan.getTripPlanNo(), !tripPlan.isPlanDeleted());
+        }
+        System.out.println(tripPlan.toString());
+    }
+
 }

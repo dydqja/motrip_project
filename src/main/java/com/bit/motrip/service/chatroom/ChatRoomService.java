@@ -4,7 +4,7 @@ import java.util.Map;
 import com.bit.motrip.domain.ChatRoom; // ChatRoom domain
 
 public interface ChatRoomService { //service
-    public int addChatRoom(ChatRoom chatRoom) throws Exception; // 채팅방 생성
+    public int addChatRoom(ChatRoom chatRoom,String userId,int tripPlanNo) throws Exception; // 채팅방 생성
     public ChatRoom getChatRoom(int chatRoomNo) throws Exception; // 채팅방 조회
     public ChatRoom updateChatRoom(ChatRoom chatRoom) throws Exception; // 채팅방 업데이트
     public void deleteChatRoom(int chatRoomNo) throws Exception; // 채팅방 삭제

@@ -4,14 +4,29 @@ public class MemoAccess {
     //constructor
     public MemoAccess() {
     }
-    public MemoAccess(int memoNo, String userId, boolean isAuthor) {
+    public MemoAccess(int memoNo, String memoAccessUser, boolean isMemoAuthor) {
         this.memoNo = memoNo;
-        this.userId = userId;
-        this.isAuthor = isAuthor;
+        this.memoAccessUser = memoAccessUser;
+        this.isMemoAuthor = isMemoAuthor;
     }
-    int memoNo;
-    String userId;
-    boolean isAuthor;
+
+
+
+    //fields
+    private int memoAccessNo;
+    private int memoNo;
+    private String memoAccessUser;
+    private boolean isMemoAuthor;
+
+    //getter and setter
+
+    public int getMemoAccessNo() {
+        return memoAccessNo;
+    }
+
+    public void setMemoAccessNo(int memoAccessNo) {
+        this.memoAccessNo = memoAccessNo;
+    }
 
     public int getMemoNo() {
         return memoNo;
@@ -21,19 +36,29 @@ public class MemoAccess {
         this.memoNo = memoNo;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getMemoAccessUser() {
+        return memoAccessUser;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setMemoAccessUser(String memoAccessUser) {
+        this.memoAccessUser = memoAccessUser;
     }
 
-    public boolean isAuthor() {
-        return isAuthor;
+    public boolean isMemoAuthor() {
+        return isMemoAuthor;
     }
 
-    public void setAuthor(boolean author) {
-        isAuthor = author;
+    public void setMemoAuthor(boolean memoAuthor) {
+        isMemoAuthor = memoAuthor;
+    }
+
+    @Override
+    public String toString() {
+        return "MemoAccess{" +
+                "memoAccessNo=" + memoAccessNo +
+                ", memoNo=" + memoNo +
+                ", memoAccessUser='" + memoAccessUser + '\'' +
+                ", isMemoAuthor=" + isMemoAuthor +
+                '}';
     }
 }

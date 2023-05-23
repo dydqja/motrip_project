@@ -18,7 +18,6 @@ public class ChatMemberTests {
     //@Test
     public void addTest() throws Exception{
         ChatMember chatMember = new ChatMember();
-
         chatMember.setChatRoomNo(1);
         chatMember.setUserId("user101");
         chatMember.setTripPlanNo(2);
@@ -31,8 +30,8 @@ public class ChatMemberTests {
         chatMemberService.deleteChatMember(1,"user101");
     }
 
-    @Test
-    public void outTest() throws Exception{
+    //@Test
+    public void outTest() throws Exception{//강퇴
         chatMemberService.outChatMember(1,"user2",true);
     }
 
