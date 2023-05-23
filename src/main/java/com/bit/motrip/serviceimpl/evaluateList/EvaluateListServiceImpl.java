@@ -34,7 +34,9 @@ public class EvaluateListServiceImpl implements EvaluateListService {
         evaluateListDao.addEvaluation(evaluateList);
     }
 
-//    public EvaluateList getEvaluation(String evaluaterId) throws Exception {
-//        return evaluateListDao.getEvaluation(evaluaterId);
-//    }
+    public List<EvaluateList> getEvaluation(String evaluaterId) throws Exception {
+        return evaluateListDao.getEvaluation(evaluaterId);
+    }
+
+    //아래에 여행플랜 & 리뷰 겟 필요할시 입력 ############################################
 }

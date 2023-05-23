@@ -13,6 +13,6 @@ public interface EvaluateListDao {
     //update
     public void addEvaluation(EvaluateList evaluateList) throws Exception;
 
-//    public EvaluateList getEvaluation(String evaluaterId) throws Exception;
+    public List<EvaluateList> getEvaluation(String evaluaterId) throws Exception;
 
 }
