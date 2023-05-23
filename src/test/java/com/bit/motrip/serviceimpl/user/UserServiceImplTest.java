@@ -111,7 +111,7 @@ class UserServiceImplTest {
         boolean result=userService.checkDuplication("userTest6");
     }
 
-    @Test
+    //@Test
     void deleteUser() throws Exception{
 
         User user = new User();

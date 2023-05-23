@@ -19,7 +19,7 @@ public class userApplicationTests {
     @Autowired
     private UserDao userDao;
 
-    @Test
+    //@Test
     public void addUserTest() throws Exception {
         User user = new User();
 

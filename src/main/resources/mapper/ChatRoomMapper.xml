@@ -31,18 +31,20 @@
 		values (#{chatRoomTitle}, #{travelStartDate}, #{ageRange}, #{maxPersons}, #{currentPersons})
 	</insert>
 
-		<select id="getChatRoom" resultMap="chatRoomResultMap">
-			select
+		<select id="getChatRoom" parameterType="int" resultMap="chatRoomResultMap">
+			SELECT
 				cr.chat_room_no,
 				cr.chat_room_title,
 				cr.travel_start_date,
 				cr.age_range,
 				cr.max_persons,
-				cr.current_persons
-			from
-				chat_rooms cr
-			where
-				cr.chat_room_no = #{chatRoomNo};
+				cr.current_persons,
+				cr.chat_room_status,
+				cm.trip_plan_no,
+				cm.user_id
+			FROM chat_rooms cr
+					 LEFT JOIN chat_room_members cm ON cr.chat_room_no = cm.chat_room_no
+			where cm.chat_room_no = #{chatRoomNo} and is_chat_room_author = 1
 		</select>
 
 	<update id="updateChatRoom" parameterType="com.bit.motrip.domain.ChatRoom">
