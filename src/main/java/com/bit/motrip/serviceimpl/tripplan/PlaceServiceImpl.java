@@ -27,13 +27,13 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public int updatePlace(Place place) throws Exception {
-        return placeDao.updatePlace(place);
+    public void updatePlace(Place place) throws Exception {
+        placeDao.updatePlace(place);
     }
 
     @Override
-    public int deletePlace(int placeNo) throws Exception {
-        return placeDao.deletePlace(placeNo);
+    public void deletePlace(int placeNo) throws Exception {
+        placeDao.deletePlace(placeNo);
     }
 
 }
