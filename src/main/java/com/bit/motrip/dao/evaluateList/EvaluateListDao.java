@@ -10,9 +10,16 @@ import java.util.List;
 @Mapper
 public interface EvaluateListDao {
 
-    //update
+    //insert
     public void addEvaluation(EvaluateList evaluateList) throws Exception;
 
+    //select
     public List<EvaluateList> getEvaluation(String evaluaterId) throws Exception;
+
+    //delete
+    public void deleteBlacklist(EvaluateList evaluateList) throws Exception;
+
+    //delete
+    public void userEvaluateCancle(EvaluateList evaluateList) throws Exception;
 
 }

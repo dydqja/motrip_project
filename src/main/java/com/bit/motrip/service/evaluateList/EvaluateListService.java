@@ -14,9 +14,13 @@ public interface EvaluateListService {
     // insert
     public void addEvaluation(EvaluateList evaluateList) throws Exception;
 
-    // blacklist get
+    // select
     public List<EvaluateList> getEvaluation(String evaluaterId) throws Exception;
 
-    //아래에 여행플랜 & 리뷰 get 필요할시 입력 ############################################
+    // delete
+    public void deleteBlacklist(EvaluateList evaluateList) throws Exception;
+
+    //update
+    public void userEvaluateCancle(EvaluateList evaluateList) throws Exception;
 
 }
