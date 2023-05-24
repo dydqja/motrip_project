@@ -23,5 +23,6 @@ public interface TripPlanDao {
     public void tripPlanDownloadable(int tripPlanNo, boolean isPlanDownloadable) throws Exception;
     public void tripPlanDeleted(int tripPlanNo, boolean isPlanDeleted) throws Exception;
     public void tripPlanCompleted(int tripPlanNo, boolean isTripCompleted) throws Exception;
+    public void tripPlanLikes(TripPlan tripPlan) throws Exception;
 
 }

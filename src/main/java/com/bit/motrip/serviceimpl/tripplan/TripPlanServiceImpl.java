@@ -134,4 +134,9 @@ public class TripPlanServiceImpl implements TripPlanService {
     public void tripPlanCompleted(int tripPlanNo) throws Exception {
         tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), true);
     }
+
+    @Override // 여행플랜 추천수 증가
+    public void tripPlanLikes(TripPlan tripPlan) throws Exception {
+        tripPlanDao.tripPlanLikes(tripPlan);
+    }
 }

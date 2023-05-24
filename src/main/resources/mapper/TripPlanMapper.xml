@@ -42,17 +42,28 @@
 
     <!-- 공유된 모든 여행플랜 조회 삭제유무도 조회-->
     <select id="selectPublicTripPlanList" parameterType="com.bit.motrip.common.Search" resultMap="tripPlanResultMap">
-        SELECT * FROM trip_plan WHERE is_plan_public = TRUE AND is_plan_deleted = FALSE
+        SELECT
+        tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail,
+        tp.trip_days, tp.trip_plan_reg_date, tp.trip_plan_del_date, tp.is_plan_deleted,
+        tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed, tp.trip_plan_likes, tp.trip_plan_views,
+        dp.daily_plan_no, dp.trip_plan_no, dp.daily_plan_contents, dp.total_trip_time,
+        p.place_no, p.daily_plan_no, p.place_tags, p.place_coordinates, p.place_image,
+        p.place_phone_number, p.place_address, p.place_category, p.trip_time
+        FROM
+        trip_plan tp
+        LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
+        LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
+        WHERE tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
         ORDER BY
             <choose>
                 <when test="'trip_plan_views' == searchCondition">
-                    trip_plan_views DESC, trip_plan_no DESC
+                    tp.trip_plan_views DESC, tp.trip_plan_no DESC
                 </when>
                 <when test="'trip_plan_likes' == searchCondition">
-                    trip_plan_likes DESC, trip_plan_no DESC
+                    tp.trip_plan_likes DESC, tp.trip_plan_no DESC
                 </when>
                 <otherwise>
-                    trip_plan_no DESC
+                    tp.trip_plan_no DESC
                 </otherwise>
             </choose>
         LIMIT #{currentPage}, #{pageSize};
@@ -62,17 +73,28 @@
 
     <!-- 나의 모든 여행플랜 조회 -->
     <select id="selectMyTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
-        SELECT * FROM trip_plan WHERE trip_plan_author = #{tripPlanAuthor}
+        SELECT
+        tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail,
+        tp.trip_days, tp.trip_plan_reg_date, tp.trip_plan_del_date, tp.is_plan_deleted,
+        tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed, tp.trip_plan_likes, tp.trip_plan_views,
+        dp.daily_plan_no, dp.trip_plan_no, dp.daily_plan_contents, dp.total_trip_time,
+        p.place_no, p.daily_plan_no, p.place_tags, p.place_coordinates, p.place_image,
+        p.place_phone_number, p.place_address, p.place_category, p.trip_time
+        FROM
+        trip_plan tp
+        LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
+        LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
+        WHERE trip_plan_author = #{tripPlanAuthor}
         ORDER BY
             <choose>
                 <when test="'trip_plan_views' == searchCondition">
-                    trip_plan_views DESC, trip_plan_no DESC
+                    tp.trip_plan_views DESC, tp.trip_plan_no DESC
                 </when>
                 <when test="'trip_plan_likes' == searchCondition">
-                    trip_plan_likes DESC, trip_plan_no DESC
+                    tp.trip_plan_likes DESC, tp.trip_plan_no DESC
                 </when>
                 <otherwise>
-                    trip_plan_no DESC
+                    tp.trip_plan_no DESC
                 </otherwise>
             </choose>
         LIMIT #{currentPage}, #{pageSize};
@@ -96,33 +118,12 @@
 
     <!-- 선택한 여행플랜 정보 확인을 위한 쿼리문 -->
     <select id="selectTripPlan" parameterType="int" resultMap="tripPlanResultMap">
-        SELECT
-        tp.trip_plan_no,
-        tp.trip_plan_author,
-        tp.trip_plan_title,
-        tp.trip_plan_thumbnail,
-        tp.trip_days,
-        tp.trip_plan_reg_date,
-        tp.trip_plan_del_date,
-        tp.is_plan_deleted,
-        tp.is_plan_public,
-        tp.is_plan_downloadable,
-        tp.is_trip_completed,
-        tp.trip_plan_likes,
-        tp.trip_plan_views,
-        dp.daily_plan_no,
-        dp.trip_plan_no,
-        dp.daily_plan_contents,
-        dp.total_trip_time,
-        p.place_no,
-        p.daily_plan_no,
-        p.place_tags,
-        p.place_coordinates,
-        p.place_image,
-        p.place_phone_number,
-        p.place_address,
-        p.place_category,
-        p.trip_time
+        SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail,
+        tp.trip_days, tp.trip_plan_reg_date, tp.trip_plan_del_date, tp.is_plan_deleted,
+        tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed, tp.trip_plan_likes, tp.trip_plan_views,
+        dp.daily_plan_no, dp.trip_plan_no, dp.daily_plan_contents, dp.total_trip_time,
+        p.place_no, p.daily_plan_no, p.place_tags, p.place_coordinates, p.place_image,
+        p.place_phone_number, p.place_address, p.place_category, p.trip_time
         FROM
         trip_plan tp
         LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
@@ -143,8 +144,6 @@
         trip_plan_reg_date = #{tripPlanRegDate},
         is_plan_public = #{isPlanPublic},
         is_plan_downloadable = #{isPlanDownloadable},
-        trip_plan_likes = #{tripPlanLikes},
-        trip_plan_views = #{tripPlanViews}
         WHERE trip_plan_no = #{tripPlanNo}
     </update>
 
@@ -180,5 +179,14 @@
         SET is_trip_completed = #{isTripCompleted}
         WHERE trip_plan_no = #{tripPlanNo}
     </update>
+
+    <!-- 여행플랜 추천 -->
+    <update id="tripPlanLikes" parameterType="com.bit.motrip.domain.TripPlan">
+        UPDATE trip_plan
+        SET trip_plan_likes = #{tripPlanLikes}
+        WHERE trip_plan_no = #{tripPlanNo}
+    </update>
+
+    <!-- 조회수(진행예정) -->
 
 </mapper>
