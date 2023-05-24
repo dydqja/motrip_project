@@ -1,5 +1,7 @@
 package com.bit.motrip.domain;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -9,14 +11,14 @@ public class ReportAndSanction {
     private int reportNo;
     private String reporterId;
     private String reportedUserId;
-    private Date reportDate;
+    private Timestamp reportDate;
     private String reportReason;
     private String reportContents;
     private Integer reportChatRoomNo;
     private Integer reportTripPlanNo;
     private Integer reportReviewNo;
     private String sanctionDetail;
-    private Date sanctionDate;
+    private Timestamp sanctionDate;
     private int sanctionResult;
 
     public int getReportNo() {
@@ -43,11 +45,11 @@ public class ReportAndSanction {
         this.reportedUserId = reportedUserId;
     }
 
-    public Date getReportDate() {
+    public Timestamp getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(Date reportDate) {
+    public void setReportDate(Timestamp reportDate) {
         this.reportDate = reportDate;
     }
 
@@ -99,11 +101,11 @@ public class ReportAndSanction {
         this.sanctionDetail = sanctionDetail;
     }
 
-    public Date getSanctionDate() {
+    public Timestamp getSanctionDate() {
         return sanctionDate;
     }
 
-    public void setSanctionDate(Date sanctionDate) {
+    public void setSanctionDate(Timestamp sanctionDate) {
         this.sanctionDate = sanctionDate;
     }
 

@@ -10,14 +10,14 @@
         <result property="reportNo"          column="report_no"            jdbcType="INTEGER"/>
         <result property="reporterId"        column="reporter_id"          jdbcType="VARCHAR"/>
         <result property="reportedUserId"    column="reported_user_id"     jdbcType="VARCHAR"/>
-        <result property="reportDate"        column="report_date"          jdbcType="DATE"/>
+        <result property="reportDate"        column="report_date"          jdbcType="TIMESTAMP"/>
         <result property="reportReason"      column="report_reason"        jdbcType="VARCHAR"/>
         <result property="reportContents"    column="report_contents"      jdbcType="VARCHAR"/>
         <result property="reportChatRoomNo"  column="report_chat_room_no"  jdbcType="INTEGER"/>
         <result property="reportTripPlanNo"  column="report_trip_plan_no"  jdbcType="INTEGER"/>
         <result property="reportReviewNo"    column="report_review_no"     jdbcType="INTEGER"/>
         <result property="sanctionDetail"    column="sanction_detail"      jdbcType="VARCHAR"/>
-        <result property="sanctionDate"      column="sanction_date"        jdbcType="DATE"/>
+        <result property="sanctionDate"      column="sanction_date"        jdbcType="TIMESTAMP"/>
         <result property="sanctionResult"    column="sanction_result"      jdbcType="TINYINT"/>
     </resultMap>
 
@@ -36,10 +36,62 @@
               #{reportTripPlanNo,jdbcType=INTEGER},
               #{reportReviewNo,jdbcType=INTEGER},
               #{sanctionDetail,jdbcType=VARCHAR},
-              #{sanctionDate,jdbcType=DATE},
+              #{sanctionDate,jdbcType=TIMESTAMP},
               #{sanctionResult,jdbcType=TINYINT}
             );
     </insert>
+
+    <select  id="getList"  parameterType="com.bit.motrip.common.Search"	resultMap="reportAndSanctionSelectMap">
+        SELECT *
+        FROM (	SELECT reporter_id, reported_user_id, report_reason, sanction_result, report_date,
+                       ROW_NUMBER() OVER (ORDER BY report_date) AS row_seq
+                FROM report_and_sanctions
+                <if test="searchCondition != null">
+                    <where>
+                        <if test="searchCondition == 0 and searchKeyword !='' ">
+                            report_reason like CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                        <if test="searchCondition == 1 and searchKeyword !='' ">
+                            sanction_result like CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                    </where>
+                </if>
+             ) AS derived_table
+        WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+    </select>
+
+    <select  id="getTotalCount" parameterType="com.bit.motrip.common.Search" resultType="int">
+        SELECT COUNT(*)
+        FROM(	SELECT reporter_id, reported_user_id, report_reason, sanction_result, report_date
+                FROM report_and_sanctions
+                <if test="searchCondition != null">
+                    <where>
+                        <if test="searchCondition == 0 and searchKeyword !='' ">
+                            report_reason like CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                        <if test="searchCondition == 1 and searchKeyword !='' ">
+                            sanction_result like CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                    </where>
+                </if> ) countTable
+    </select>
+
+    <select id="getReport"	parameterType="com.bit.motrip.domain.ReportAndSanction"	resultMap="reportAndSanctionSelectMap">
+        SELECT report_no, reporter_id, reported_user_id, report_date, report_reason, report_contents, report_chat_room_no,
+               report_trip_plan_no, report_review_no
+        FROM report_and_sanctions
+        WHERE report_no = #{reportNo};
+    </select>
+
+    <update	id="updateSanction"	parameterType="com.bit.motrip.domain.ReportAndSanction" >
+        UPDATE report_and_sanctions
+        <set>
+            sanction_detail      = #{sanctionDetail},
+            sanction_result      = #{sanctionResult},
+            sanction_date        = #{sanctionDate}
+        </set>
+        WHERE report_no = #{reportNo}
+    </update>
 
 
 
