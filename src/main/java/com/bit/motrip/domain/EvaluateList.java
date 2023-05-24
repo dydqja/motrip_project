@@ -1,5 +1,7 @@
 package com.bit.motrip.domain;
 
+import java.util.Map;
+
 public class EvaluateList {
 
     //Field
@@ -81,7 +83,7 @@ public class EvaluateList {
                 ", evaluatedTripPlanNo=" + evaluatedTripPlanNo +
                 ", evaluatedReviewNo=" + evaluatedReviewNo +
                 ", isScorePlus=" + isScorePlus +
-                ", blacklistUserId='" + blacklistedUserId + '\'' +
+                ", blacklistedUserId='" + blacklistedUserId + '\'' +
                 '}';
     }
 }
