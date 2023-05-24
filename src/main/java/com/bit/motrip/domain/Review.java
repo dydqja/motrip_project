@@ -1,39 +1,25 @@
 package com.bit.motrip.domain;
 
-
 import java.util.Date;
 
-//==>후기를 모델링(추상화/캡슐화)한 Bean
 public class Review {
-
-    ///Field
     private int reviewNo;
-    private String reviewTitle;
+    private int tripPlanNo;
     private String reviewAuthor;
+    private String reviewTitle;
     private String reviewContents;
     private String reviewThumbnail;
     private String instaPostLink;
     private boolean isReviewPublic;
     private int reviewLikes;
     private int viewCount;
-    private Date reviewDate;
+    private Date reviewRegDate;
     private boolean isReviewDeleted;
     private Date reviewDelDate;
 
-    //Comment 댓글
-    private int commentNo;
-    private String commentAuthor;
-    private String commentContents;
-    private Date commentRegDate;
-    private int parentCommentNo;
 
 
-
-
-    ///Constructor
-
-
-    ///Method
+    // 생성자, getter 및 setter 메서드
 
 
     public int getReviewNo() {
@@ -44,12 +30,12 @@ public class Review {
         this.reviewNo = reviewNo;
     }
 
-    public String getReviewTitle() {
-        return reviewTitle;
+    public int getTripPlanNo() {
+        return tripPlanNo;
     }
 
-    public void setReviewTitle(String reviewTitle) {
-        this.reviewTitle = reviewTitle;
+    public void setTripPlanNo(int tripPlanNo) {
+        this.tripPlanNo = tripPlanNo;
     }
 
     public String getReviewAuthor() {
@@ -58,6 +44,14 @@ public class Review {
 
     public void setReviewAuthor(String reviewAuthor) {
         this.reviewAuthor = reviewAuthor;
+    }
+
+    public String getReviewTitle() {
+        return reviewTitle;
+    }
+
+    public void setReviewTitle(String reviewTitle) {
+        this.reviewTitle = reviewTitle;
     }
 
     public String getReviewContents() {
@@ -108,15 +102,15 @@ public class Review {
         this.viewCount = viewCount;
     }
 
-    public Date getReviewDate() {
-        return reviewDate;
+    public Date getReviewRegDate() {
+        return reviewRegDate;
     }
 
-    public void setReviewDate(Date reviewDate) {
-        this.reviewDate = reviewDate;
+    public void setReviewRegDate(Date reviewRegDate) {
+        this.reviewRegDate = reviewRegDate;
     }
 
-    public boolean isReviewDeleted() {
+    public boolean isReviewDeleted(boolean b) {
         return isReviewDeleted;
     }
 
@@ -132,45 +126,22 @@ public class Review {
         this.reviewDelDate = reviewDelDate;
     }
 
-
-    //Comment 댓글
-    public int getCommentNo() {
-        return commentNo;
+    @Override
+    public String toString() {
+        return "Review{" +
+                "reviewNo=" + reviewNo +
+                ", tripPlanNo=" + tripPlanNo +
+                ", reviewAuthor='" + reviewAuthor + '\'' +
+                ", reviewTitle='" + reviewTitle + '\'' +
+                ", reviewContents='" + reviewContents + '\'' +
+                ", reviewThumbnail='" + reviewThumbnail + '\'' +
+                ", instaPostLink='" + instaPostLink + '\'' +
+                ", isReviewPublic=" + isReviewPublic +
+                ", reviewLikes=" + reviewLikes +
+                ", viewCount=" + viewCount +
+                ", reviewRegDate=" + reviewRegDate +
+                ", isReviewDeleted=" + isReviewDeleted +
+                ", reviewDelDate=" + reviewDelDate +
+                '}';
     }
-
-    public void setCommentNo(int commentNo) {
-        this.commentNo = commentNo;
-    }
-
-    public String getCommentAuthor() {
-        return commentAuthor;
-    }
-
-    public void setCommentAuthor(String commentAuthor) {
-        this.commentAuthor = commentAuthor;
-    }
-
-    public String getCommentContents() {
-        return commentContents;
-    }
-
-    public void setCommentContents(String commentContents) {
-        this.commentContents = commentContents;
-    }
-
-    public Date getCommentRegDate() {
-        return commentRegDate;
-    }
-
-    public void setCommentRegDate(Date commentRegDate) {
-        this.commentRegDate = commentRegDate;
-    }
-
-    public int getParentCommentNo() {
-        return parentCommentNo;
-    }
-
-    public void setParentCommentNo(int parentCommentNo) {
-        this.parentCommentNo = parentCommentNo;
-    }
-}//end of Review
+}

@@ -67,6 +67,10 @@
             memo.memo_title AS memo_title,
             memo.memo_contents AS memo_contents,
             memo.memo_reg_date AS memo_reg_date,
+            memo.memo_del_date AS memo_del_date,
+            memo.attached_trip_plan_no AS attached_trip_plan_no,
+            memo.attached_review_no AS attached_review_no,
+            memo.attached_chat_room_no AS attached_chat_room_no,
             memo.memo_color AS memo_color,
             memo_access.memo_access_user AS memo_author
         FROM
@@ -102,7 +106,11 @@
 
     <delete id="deleteMemo" parameterType="int">
         UPDATE memo
-        SET memo_del_date = CURRENT_DATE
+        SET
+        memo_del_date = CURRENT_DATE,
+        attached_trip_plan_no = null,
+        attached_review_no = null,
+        attached_chat_room_no = null
         WHERE memo_no = #{memoNo}
     </delete>
 
@@ -201,6 +209,7 @@
         select memo_access_no, memo_no, memo_access_user, is_memo_author
         from memo_access
         where memo_no = #{memoNo}
+        AND is_memo_author = 0
     </select>
 
     <select id="getMemoAccessListByUserId" parameterType="String" resultMap="memoAccessResultMap">
