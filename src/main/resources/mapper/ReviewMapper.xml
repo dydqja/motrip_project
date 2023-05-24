@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- review_mapper.xml -->
+<mapper namespace="com.bit.motrip.dao.review.ReviewDao">
+
+    <resultMap id="reviewResultMap" type="com.bit.motrip.domain.Review">
+        <id property="reviewNo"             column="review_no"          jdbcType="INTEGER" />
+        <result property="tripPlanNo"       column="trip_plan_no"       jdbcType="INTEGER" />
+        <result property="reviewAuthor"     column="review_author"      jdbcType="VARCHAR" />
+        <result property="reviewTitle"      column="review_title"       jdbcType="VARCHAR" />
+        <result property="reviewContents"   column="review_contents"    jdbcType="VARCHAR" />
+        <result property="reviewThumbnail"  column="review_thumbnail"   jdbcType="VARCHAR" />
+        <result property="instaPostLink"    column="insta_post_link"    jdbcType="VARCHAR" />
+        <result property="isReviewPublic"   column="is_review_public"   jdbcType="BOOLEAN" />
+        <result property="reviewLikes"      column="review_likes"       jdbcType="INTEGER" />
+        <result property="viewCount"        column="view_count"         jdbcType="INTEGER" />
+        <result property="reviewRegDate"    column="review_reg_date"    jdbcType="DATE" />
+        <result property="isReviewDeleted"  column="is_review_deleted"  jdbcType="BOOLEAN" />
+        <result property="reviewDelDate"    column="review_del_date"    jdbcType="DATE" />
+
+    </resultMap>
+
+    <resultMap id="commentResultMap" type="com.bit.motrip.domain.Comment">
+        <id property="commentNo" column="comment_no" jdbcType="INTEGER"/>
+        <result property="reviewNo"      column="review_no"       jdbcType="INTEGER" />
+        <result property="commentAuthor" column="comment_author" jdbcType="VARCHAR"/>
+        <result property="commentContent" column="comment_content" jdbcType="VARCHAR"/>
+        <result property="commentRegDate" column="comment_reg_date" jdbcType="DATE"/>
+        <result property="parentCommentNo" column="parent_comment_no" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- INSERT C -->
+    <insert id="addReview" parameterType="com.bit.motrip.domain.Review">
+        insert into review (
+        review_no, review_title, review_contents, review_thumbnail, insta_post_link, is_review_public, review_likes, view_count, review_date, is_review_deleted, review_del_date, trip_plan_no, review_author
+        ) values (
+        #{reviewNo}, #{reviewTitle}, #{reviewContents}, #{reviewThumbnail}, #{instaPostLink}, #{isReviewPublic}, #{reviewLikes}, #{viewCount}, #{reviewDate}, #{isReviewDeleted}, #{reviewDelDate}, #{tripPlanNo}, #{reviewAuthor}
+        )
+    </insert>
+
+    <!-- Select List Review -->
+    <select id="getReviewList" resultMap="reviewResultMap"><!-- 결과가 나와야 하는것은 리절트맵(결과 여러개) 혹은 리절트타입(결과1개) 쓴다 -->
+        select * from review
+    </select>
+    <!-- Select List Review -->
+
+    <!-- Select One Review -->
+    <select id="getReview" parameterType="int" resultMap="reviewResultMap">
+
+        SELECT r.review_no, r.trip_plan_no, r.review_author, r.review_title,
+               r.review_contents, r.review_thumbnail, r.insta_post_link,
+               r.is_review_public, r.review_likes, r.view_count,
+               r.review_reg_date, r.is_review_deleted, r.review_del_date,
+               c.comment_no, c.comment_author, c.comment_content,
+               c.comment_reg_date, c.parent_comment_no
+        FROM review r
+                 LEFT JOIN comment c ON r.review_no = c.review_no
+        WHERE r.review_no = #{reviewNo}
+            LIMIT 1;
+    </select>
+    <!-- Select One Review -->
+
+    <!-- Update Review -->
+    <update id="updateReview" parameterType="com.bit.motrip.domain.Review">
+        UPDATE review
+        SET review_title = #{reviewTitle},
+            review_contents = #{reviewContents},
+            review_thumbnail = #{reviewThumbnail},
+            insta_post_link = #{instaPostLink}
+        WHERE review_no = #{reviewNo}
+    </update>
+    <!-- Update Review -->
+
+    <!-- Delete Review -->
+    <update id="deleteReview">
+        UPDATE review
+        SET is_review_deleted = true,
+            review_del_date = CURRENT_TIMESTAMP + INTERVAL 7 DAY
+        WHERE review_no = #{reviewNo}
+    </update>
+    <!-- Delete Review -->
+
+    <!-- Recover Review -->
+    <update id="recoverReview">
+        UPDATE review
+        SET is_review_deleted = false,
+            review_del_date = null
+        WHERE review_no = #{reviewNo}
+          AND is_review_deleted = true
+          AND review_del_date > CURRENT_TIMESTAMP
+    </update>
+    <!-- Recover Review -->
+
+</mapper>
