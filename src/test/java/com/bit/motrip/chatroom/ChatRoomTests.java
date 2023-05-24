@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 public class ChatRoomTests {
@@ -32,6 +34,7 @@ public class ChatRoomTests {
     public void addTest() throws Exception{
         //1.방 생성 후
         ChatRoom chatRoom = new ChatRoom();
+        //SimpleDateFormat currentDate = new SimpleDateFormat();
         Date currentDate = new Date();
         chatRoom.setChatRoomTitle("test room2");
         System.out.println(currentDate);
@@ -64,8 +67,15 @@ public class ChatRoomTests {
 
     //@Test
     public void changeStatusTest() throws Exception{
-        chatRoomService.changeRoomStatus(0,1);
-        Assertions.assertEquals(0,chatRoomService.getChatRoom(1).getChatRoomStatus());
+        chatRoomService.changeRoomStatus(1,1);
+        Assertions.assertEquals(1,chatRoomService.getChatRoom(1).getChatRoomStatus());
+    }
 
+    //@Test
+    public void listTest() throws Exception{
+        List<ChatRoom> chatRoomList = chatRoomService.chatRoomList();
+        for (ChatRoom ch:chatRoomList) {
+            System.out.println(ch);
+        }
     }
 }
