@@ -1,5 +1,6 @@
 package com.bit.motrip.serviceimpl.tripplan;
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.tripplan.DailyPlanDao;
 import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
@@ -33,13 +34,13 @@ public class TripPlanServiceImpl implements TripPlanService {
     private List<Place> place;
 
     @Override
-    public List<TripPlan> selectPublicTripPlanList() throws Exception {
-        return tripPlanDao.selectPublicTripPlanList();
+    public List<TripPlan> selectPublicTripPlanList(Search search) throws Exception {
+        return tripPlanDao.selectPublicTripPlanList(search);
     }
 
     @Override
-    public List<TripPlan> selectMyTripPlanList(String userId) throws Exception {
-        return tripPlanDao.selectMyTripPlanList(userId);
+    public List<TripPlan> selectMyTripPlanList(String tripPlanAuthor, Search search) throws Exception {
+        return tripPlanDao.selectMyTripPlanList(tripPlanAuthor, search);
     }
 
     @Override // 여행플랜 저장

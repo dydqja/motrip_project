@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.qna.QnaDao">
+
+    <resultMap id="qnaSelectMap" type="com.bit.motrip.domain.Qna">
+
+        <result property="qnaNo"                    column="board_no"                  jdbcType="INTEGER"/>
+        <result property="qnaAuthor"                column="board_author"              jdbcType="VARCHAR"/>
+        <result property="qnaTitle"                 column="board_title"               jdbcType="VARCHAR"/>
+        <result property="qnaContents"              column="board_contents"            jdbcType="VARCHAR"/>
+        <result property="qnaViews"                 column="board_views"               jdbcType="INTEGER"/>
+        <result property="qnaRegDate"               column="board_reg_date"            jdbcType="DATE"/>
+        <result property="qnaCategory"              column="qna_category"              jdbcType="INTEGER"/>
+        <result property="isQnaAnswered"            column="is_qna_answered"           jdbcType="TINYINT"/>
+        <result property="qnaAnswerContents"        column="qna_answer_contents"       jdbcType="VARCHAR"/>
+        <result property="boardCategory"            column="board_category"            jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <insert id="addQna" parameterType="com.bit.motrip.domain.Qna" >
+        INSERT INTO board (BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, BOARD_CATEGORY)
+        VALUES (
+            (SELECT USER_ID FROM users WHERE USER_ID = #{qnaAuthor}),
+            #{qnaTitle},
+            #{qnaContents},
+            0,
+            CURDATE(),
+            #{qnaCategory},
+            0,
+            1)
+    </insert>
+
+    <update id="addQnaAnswer" parameterType="com.bit.motrip.domain.Qna">
+        UPDATE board
+        SET IS_QNA_ANSWERED = 1,
+            QNA_ANSWER_CONTENTS = #{qnaAnswerContents}
+        WHERE BOARD_NO = #{qnaNo}
+    </update>
+
+    <select id="getQna" parameterType="com.bit.motrip.domain.Qna" resultMap="qnaSelectMap">
+        SELECT BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, QNA_ANSWER_CONTENTS, BOARD_CATEGORY
+        FROM board
+        WHERE BOARD_NO = #{qnaNo}
+    </select>
+
+    <update id="increaseViews" parameterType="com.bit.motrip.domain.Qna" >
+        UPDATE board SET BOARD_VIEWS = BOARD_VIEWS + 1 WHERE BOARD_NO = #{qnaNo}
+    </update>
+
+    <select id="getQnaList" parameterType="com.bit.motrip.common.Search"	resultMap="qnaSelectMap">
+        SELECT *
+        FROM (
+                 SELECT
+                     BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS,
+                     BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, QNA_ANSWER_CONTENTS, BOARD_CATEGORY,
+                     ROW_NUMBER() OVER (ORDER BY BOARD_NO) AS row_seq
+                 FROM
+                     board
+                 WHERE
+                     BOARD_CATEGORY = 1
+             ) AS derived_table
+        WHERE
+            row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+    </select>
+
+    <select  id="getQnaTotalCount" parameterType="com.bit.motrip.common.Search" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            (
+                SELECT
+                    BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS,
+                    BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, QNA_ANSWER_CONTENTS, BOARD_CATEGORY
+                FROM
+                    board
+                WHERE
+                    BOARD_CATEGORY = 1
+            ) countTable
+    </select>
+
+    <update id="updateQna" parameterType="com.bit.motrip.domain.Qna">
+        <if test="isQnaAnswered != 1">
+            UPDATE board
+            SET BOARD_TITLE = #{qnaTitle},
+                BOARD_CONTENTS = #{qnaContents},
+                QNA_CATEGORY = #{qnaCategory}
+            WHERE BOARD_NO = #{qnaNo}
+        </if>
+    </update>
+
+    <delete id="deleteQna" parameterType="com.bit.motrip.domain.Qna">
+        DELETE FROM board WHERE BOARD_NO = #{qnaNo}
+    </delete>
+
+</mapper>

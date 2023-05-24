@@ -11,9 +11,16 @@ public class Memo {
     private Date memoDelDate;
     private int memoColor;
     private String memoAuthor;
+
+    //부착된 문서의 No
     private Integer attachedTripPlanNo;
     private Integer attachedReviewNo;
     private Integer attachedChatRoomNo;
+
+    //부착된 문서의 전체정보
+    private TripPlan attachedTripPlan;
+    private Review attachedReview;
+    private ChatRoom attachedChatRoom;
 
     //getter and setter
 
@@ -96,6 +103,30 @@ public class Memo {
 
     public void setAttachedChatRoomNo(Integer attachedChatRoomNo) {
         this.attachedChatRoomNo = attachedChatRoomNo;
+    }
+
+    public TripPlan getAttachedTripPlan() {
+        return attachedTripPlan;
+    }
+
+    public void setAttachedTripPlan(TripPlan attachedTripPlan) {
+        this.attachedTripPlan = attachedTripPlan;
+    }
+
+    public Review getAttachedReview() {
+        return attachedReview;
+    }
+
+    public void setAttachedReview(Review attachedReview) {
+        this.attachedReview = attachedReview;
+    }
+
+    public ChatRoom getAttachedChatRoom() {
+        return attachedChatRoom;
+    }
+
+    public void setAttachedChatRoom(ChatRoom attachedChatRoom) {
+        this.attachedChatRoom = attachedChatRoom;
     }
 
     @Override
