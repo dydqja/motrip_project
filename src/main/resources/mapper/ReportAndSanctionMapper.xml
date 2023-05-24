@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.reportAndSanction.ReportAndSanctionDao">
+
+    <resultMap id="reportAndSanctionSelectMap" type="com.bit.motrip.domain.ReportAndSanction">
+        <result property="reportNo"          column="report_no"            jdbcType="INTEGER"/>
+        <result property="reporterId"        column="reporter_id"          jdbcType="VARCHAR"/>
+        <result property="reportedUserId"    column="reported_user_id"     jdbcType="VARCHAR"/>
+        <result property="reportDate"        column="report_date"          jdbcType="DATE"/>
+        <result property="reportReason"      column="report_reason"        jdbcType="VARCHAR"/>
+        <result property="reportContents"    column="report_contents"      jdbcType="VARCHAR"/>
+        <result property="reportChatRoomNo"  column="report_chat_room_no"  jdbcType="INTEGER"/>
+        <result property="reportTripPlanNo"  column="report_trip_plan_no"  jdbcType="INTEGER"/>
+        <result property="reportReviewNo"    column="report_review_no"     jdbcType="INTEGER"/>
+        <result property="sanctionDetail"    column="sanction_detail"      jdbcType="VARCHAR"/>
+        <result property="sanctionDate"      column="sanction_date"        jdbcType="DATE"/>
+        <result property="sanctionResult"    column="sanction_result"      jdbcType="TINYINT"/>
+    </resultMap>
+
+    <insert id="addReport" parameterType="com.bit.motrip.domain.ReportAndSanction">
+        INSERT
+        INTO report_and_sanctions
+            ( reporter_id, reported_user_id, report_reason, report_contents, report_chat_room_no,
+              report_trip_plan_no, report_review_no, sanction_detail, sanction_date, sanction_result
+            )
+        VALUES
+            ( #{reporterId,jdbcType=VARCHAR},
+              #{reportedUserId,jdbcType=VARCHAR},
+              #{reportReason,jdbcType=VARCHAR},
+              #{reportContents,jdbcType=VARCHAR},
+              #{reportChatRoomNo,jdbcType=INTEGER},
+              #{reportTripPlanNo,jdbcType=INTEGER},
+              #{reportReviewNo,jdbcType=INTEGER},
+              #{sanctionDetail,jdbcType=VARCHAR},
+              #{sanctionDate,jdbcType=DATE},
+              #{sanctionResult,jdbcType=TINYINT}
+            );
+    </insert>
+
+
+
+</mapper>
