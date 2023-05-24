@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import javax.xml.stream.events.Comment;
 import java.util.List;
 
 @Service("reviewServiceImpl")
@@ -20,61 +19,34 @@ public class ReviewServiceImpl implements ReviewService {
     //후기 작성
     @Override
     public void addReview() throws Exception {
-
     }
 
     //후기 목록 조회
     @Override
     public List<Review> getReviewList() throws Exception {
+
         return reviewDao.getReviewList();
     }
 
     //특정 후기 조회
     @Override
-    public Review getReview() throws Exception {
-        return null;
+    public Review getReview(int reviewNo) throws Exception {
+        return reviewDao.getReview(reviewNo);
     }
 
     //후기 수정
     @Override
-    public int updateReview() throws Exception {
-        return 0;
-    }
-
-    //후기 수정
-    @Override
-    public int updateReview(Review review) {
-        return 0;
+    public void updateReview(Review review) throws Exception {
     }
 
     //후기 삭제
     @Override
-    public int deleteReview(int reviewNo) {
-        return 0;
+    public void deleteReview(int reviewNo) {
     }
 
-    //댓글
-    //댓글 작성
+    //후기 복구
     @Override
-    public Void addComment() throws Exception {
-        return null;
-    }
-
-    //댓글 목록 조회
-    @Override
-    public List<Comment> getCommentList() throws Exception {
-        return null;
-    }
-
-    //특정 댓글 조회
-    @Override
-    public Comment getComment() throws Exception {
-        return null;
-    }
-
-    //댓글 삭제
-    @Override
-    public int deleteComment(int commentNo) {
-        return 0;
+    public void recoverReview(int reviewNo) {
     }
 }
+

@@ -1,20 +1,29 @@
 package com.bit.motrip.tripplan;
 
+import com.bit.motrip.common.Search;
+import com.bit.motrip.dao.evaluateList.EvaluateListDao;
 import com.bit.motrip.dao.tripplan.DailyPlanDao;
 import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
 import com.bit.motrip.domain.DailyPlan;
+import com.bit.motrip.domain.EvaluateList;
 import com.bit.motrip.domain.Place;
 import com.bit.motrip.domain.TripPlan;
 
+import com.bit.motrip.service.evaluateList.EvaluateListService;
+import org.apache.ibatis.annotations.Param;
+import org.assertj.core.api.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
 class TripPlanDaoTest {
 
@@ -30,12 +39,24 @@ class TripPlanDaoTest {
     @Qualifier("placeDao")
     private PlaceDao placeDao;
 
+    @Autowired
+    @Qualifier("evaluateListDao")
+    private EvaluateListDao evaluateListDao;
+
+    @Value("${tripPlanPageSize}")
+    private int tripPlanPageSize;
+
     //@Test // 공유된 여행플랜 목록 확인 (join 이전)
     public void selectPublicTripPlanList() throws Exception {
 
+        Search search = new Search();
+        search.setCurrentPage(0);
+        search.setSearchCondition("trip_plan_views");
+        search.setPageSize(tripPlanPageSize);
+
         List<DailyPlan> dailyPlan = new ArrayList<DailyPlan>();
         List<Place> place = new ArrayList<>();
-        List<TripPlan> tripPlan = tripPlanDao.selectPublicTripPlanList();
+        List<TripPlan> tripPlan = tripPlanDao.selectPublicTripPlanList(search);
         for (TripPlan trip : tripPlan) {
             System.out.println("===========================");
             System.out.println("tripPlan 번호: " + trip.getTripPlanNo());
@@ -66,7 +87,6 @@ class TripPlanDaoTest {
                     System.out.println("place 카테고리 : " + placeList.getPlaceCategory());
                     System.out.println("place 이동시간 : " + placeList.getTripTime());
                 }
-
             }
         }
     }
@@ -74,8 +94,25 @@ class TripPlanDaoTest {
     //@Test // 내가 작성한 여행플랜 목록 확인 (join 이전)
     public void selectMyTripPlanList() throws Exception {
 
-        List<TripPlan> tripPlan = tripPlanDao.selectMyTripPlanList("user2");
+        Search search = new Search();
+        search.setCurrentPage(0);
+        search.setPageSize(tripPlanPageSize);
+
+        // 나의 아이디와 화면에 띄우고자 하는 게시물수
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("tripPlanAuthor", "user1");
+        parameterMap.put("currentPage", search.getCurrentPage());
+        parameterMap.put("pageSize", search.getPageSize());
+
+        // 여행플랜에 대한 좋아요수 확인하기 위한 Map
+        Map<String, Object> paramaters = new HashMap<>();
+
+        List<TripPlan> tripPlan = tripPlanDao.selectMyTripPlanList(parameterMap);
         for (TripPlan trip : tripPlan) {
+            paramaters.put("evaluated_trip_plan_no", trip.getTripPlanNo());
+            paramaters.put("searchCondition", "evaluated_trip_plan_no");
+            trip.setTripPlanLikes(evaluateListDao.getEvaluation(paramaters).size());
+
             System.out.println("===========================");
             System.out.println("tripPlan 번호: " + trip.getTripPlanNo());
             System.out.println("tripPlan 작성자: " + trip.getTripPlanAuthor());
@@ -151,13 +188,11 @@ class TripPlanDaoTest {
     public void selectTripPlan() throws Exception {
        TripPlan tripPlan = tripPlanDao.selectTripPlan(10);
 
-        System.out.println(tripPlan.toString());
-        for(DailyPlan daily : tripPlan.getDailyplanResultMap()) {
-            System.out.println(daily.toString());
-            for(Place place : daily.getPlaceResultMap()) {
-                System.out.println(place.toString());
-            }
-        }
+       // 여행플랜에 대한 좋아요수를 가져와서 넣어줌
+       Map<String, Object> paramaters = new HashMap<>();
+       paramaters.put("evaluated_trip_plan_no", tripPlan.getTripPlanNo());
+       tripPlan.setTripPlanLikes(evaluateListDao.getEvaluation(paramaters).size());
+       System.out.println(tripPlan.toString());
     }
 
     //@Test // 선택한 여행플랜 업데이트 및 일차별 여행플랜, 명소도 함께
@@ -251,8 +286,41 @@ class TripPlanDaoTest {
     public void tripPlanCompleted() throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(10);
         tripPlanDao.tripPlanCompleted(tripPlan.getTripPlanNo(), true);
-
         System.out.println(tripPlan.toString());
+    }
+
+    ///////////////////////////////////////////////////
+
+    //@Test // (Evaluate) 여행플랜 추천
+    public void addEvaluation() throws Exception {
+        EvaluateList evaluate = new EvaluateList();
+        Map<String, Object> paramaters = new HashMap<>();
+        paramaters.put("evaluated_trip_plan_no", 10);
+        paramaters.put("searchCondition", "evaluated_trip_plan_no");
+
+        // 목록을 확인하여 이미 추천한 사람이면 더이상 추천할수없음
+        List<EvaluateList> evaluateList = evaluateListDao.getEvaluation(paramaters);
+        for (int i=0; i<evaluateList.size(); i++){
+            if(evaluateList.get(i).getEvaluaterId().equals("admin")){
+                System.out.println("이미 추천을 누른 여행플랜입니다.");
+                return;
+            }
+        }
+        evaluate.setEvaluaterId("admin");
+        evaluate.setEvaluatedTripPlanNo(10);
+        evaluateListDao.addEvaluation(evaluate);
+    }
+
+    //@Test // (Evaluate) 여행플랜 추천수 확인
+    public void getEvaluation() throws Exception {
+        EvaluateList evaluate = new EvaluateList();
+        Map<String, Object> paramaters = new HashMap<>();
+
+        paramaters.put("evaluated_trip_plan_no", 10);
+        paramaters.put("searchCondition", "evaluated_trip_plan_no");
+
+        List<EvaluateList> evaluateList = evaluateListDao.getEvaluation(paramaters);
+        System.out.println(evaluateList.size());
     }
 
 }

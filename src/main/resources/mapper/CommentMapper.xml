@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- review_mapper.xml -->
+<mapper namespace="com.bit.motrip.dao.review.CommentDao">
+
+    <resultMap id="commentResultMap" type="com.bit.motrip.domain.Comment">
+        <id property="commentNo" column="comment_no" jdbcType="INTEGER"/>
+        <result property="reviewNo"      column="review_no"       jdbcType="INTEGER" />
+        <result property="commentAuthor" column="comment_author" jdbcType="VARCHAR"/>
+        <result property="commentContent" column="comment_content" jdbcType="VARCHAR"/>
+        <result property="commentRegDate" column="comment_reg_date" jdbcType="DATE"/>
+        <result property="parentCommentNo" column="parent_comment_no" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="reviewResultMap" type="com.bit.motrip.domain.Review">
+        <id property="reviewNo"             column="review_no"          jdbcType="INTEGER" />
+        <result property="tripPlanNo"       column="trip_plan_no"       jdbcType="INTEGER" />
+        <result property="reviewAuthor"     column="review_author"      jdbcType="VARCHAR" />
+        <result property="reviewTitle"      column="review_title"       jdbcType="VARCHAR" />
+        <result property="reviewContents"   column="review_contents"    jdbcType="VARCHAR" />
+        <result property="reviewThumbnail"  column="review_thumbnail"   jdbcType="VARCHAR" />
+        <result property="instaPostLink"    column="insta_post_link"    jdbcType="VARCHAR" />
+        <result property="isReviewPublic"   column="is_review_public"   jdbcType="BOOLEAN" />
+        <result property="reviewLikes"      column="review_likes"       jdbcType="INTEGER" />
+        <result property="viewCount"        column="view_count"         jdbcType="INTEGER" />
+        <result property="reviewRegDate"    column="review_reg_date"    jdbcType="DATE" />
+        <result property="isReviewDeleted"  column="is_review_deleted"  jdbcType="BOOLEAN" />
+        <result property="reviewDelDate"    column="review_del_date"    jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="addComment" parameterType="com.bit.motrip.domain.Comment">
+        <selectKey keyProperty="commentNo" resultType="int" order="BEFORE">
+            SELECT SEQ_COMMENT_NO.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO comment (comment_no, review_no, comment_author, comment_content, comment_reg_date, parent_comment_no)
+        VALUES (#{commentNo}, #{reviewNo}, #{commentAuthor}, #{commentContent}, #{commentRegDate}, #{parentCommentNo})
+    </insert>
+
+    <select id="getCommentList" resultMap="commentResultMap">
+        SELECT c.*
+        FROM comment c
+                 JOIN review r ON c.review_no = r.review_no
+        WHERE r.review_no = #{reviewNo}
+        ORDER BY c.comment_no ASC;
+    </select>
+
+    <select id="getComment" resultMap="commentResultMap" parameterType="int">
+        SELECT *
+        FROM comment
+        WHERE comment_no = #{commentNo}
+    </select>
+
+    <delete id="deleteComment" parameterType="int">
+        DELETE FROM comment
+        WHERE comment_no = #{commentNo}
+    </delete>
+</mapper>

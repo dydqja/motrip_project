@@ -11,6 +11,7 @@ public class CommitMaker {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
         String stringDate = currentDateTime.format(formatter);
 
+        //make commit msg
         String commitHeader = committer+"/"+typeofCommit+" "+stringDate+" "+commitTitle;
         String commitBody = commitComment;
         String commitFooter = changedFiles;
@@ -27,13 +28,15 @@ public class CommitMaker {
         //                        0         1          2            3                4                5
         String[] commitType = {"Create", "Update", "Delete", "Create&Update", "Update&Delete", "Create&Delete"};
         //커밋 소제목
-        String commitTitle = "jsp 폴더만들고 chatRoom service Update 하였습니다.";
+        String commitTitle = "MemoService 초벌 테스트& 보완완료";
         //수정내역
-        String commitBody = "jsp 폴더구조 생성" +
-                "good" +
-                "css/js 연결 하도록해야합니다.";
+        String commitBody = "MemoService 간단 테스트 완료." +
+                "MemoAccess 를 추가할 때 중복 체크가 없던 문제를 해결 " +
+                "MemoService 단의 각종 메소드들의 리턴 타입을 Memo로 지정해서 화면단이 바뀐 것을 바로 받아보도록 수정" +
+                "memo 프로퍼티로부터 각종 메타데이터를 받아와서 서비스에서 활용하도록 변경" +
+                "";
         //수정파일
-        String changedFiles = "(Memo.java, MemoDao.java, MemoService.java, MemoMapper.xml,MemoAttachable 삭제";
-        gitCommitMSGBuilder(committers[3],commitType[3],commitTitle,commitBody,changedFiles);
+        String changedFiles = "(Memo.java, MemoDao.java, MemoService.java, MemoMapper.xml, MemoServiceImpl.java)";
+        gitCommitMSGBuilder(committers[0],commitType[1],commitTitle,commitBody,changedFiles);
     }
 }

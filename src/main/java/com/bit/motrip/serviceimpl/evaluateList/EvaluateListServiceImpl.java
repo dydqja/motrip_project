@@ -34,7 +34,7 @@ public class EvaluateListServiceImpl implements EvaluateListService {
         evaluateListDao.addEvaluation(evaluateList);
     }
 
-    public List<EvaluateList> getEvaluation(String evaluaterId) throws Exception {
+    public List<EvaluateList> getEvaluation(Map evaluaterId) throws Exception {
         return evaluateListDao.getEvaluation(evaluaterId);
     }
 
