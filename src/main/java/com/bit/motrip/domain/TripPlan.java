@@ -149,6 +149,7 @@ public class TripPlan {
                 ", isTripCompleted=" + isTripCompleted +
                 ", tripPlanLikes=" + tripPlanLikes +
                 ", tripPlanViews=" + tripPlanViews +
+                ", dailyplanResultMap=" + dailyplanResultMap +
                 '}';
     }
 }

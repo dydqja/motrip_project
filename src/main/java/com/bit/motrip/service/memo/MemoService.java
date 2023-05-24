@@ -9,9 +9,12 @@ public interface MemoService {
 
     //메모 관련
 
-    Memo addMemo(String memoAuthor, Memo memo) throws Exception;
-    //새로운 메모를 작성하는 기능.
-    //비어있는 메모를 만들면 된다.
+    Memo addMemo(User user) throws Exception;
+    ///새로운 메모를 작성하는 기능.
+
+    //유저 객체를 받아서, 그 id를 받는다.
+    //그 id의 값을 MemoAuthor로 하는 새로운 빈 메모를 만들어서 DB에 추가한다.
+
     //메모를 만들면서 동시에 memo_access테이블에도 is_author = true 인 접근권한을 추가해야한다.
     //add이후 add된 Memo를 get해서 return 하는 것으로 화면단에 즉시 출력한다.
 
@@ -32,17 +35,17 @@ public interface MemoService {
     //메모의 No를 기준으로 메모의 구체적인 정보를 불러오는 기능.
     //수정버튼이나 삭제버튼을 띄울지말지 여부를 화면에서 판단하기 위해서는, Author 를 함께 뽑아올 필요성이 있다.
 
-    int updateMemo(Memo memo) throws Exception;
+    Memo updateMemo(Memo memo) throws Exception;
     //메모를 수정하는 기능
     //화면단에서 이미 한번 Author 임을 체크했기 때문에 이 메소드로 들어오는 사람은 반드시 Author 일 것이다.
     //추가적인 권한체크는 후순위로 미룬다.
 
     //메모 삭제
-    int deleteMemo(Memo memo) throws Exception;
+    Memo deleteMemo(Memo memo) throws Exception;
     //메모를 삭제하는 기능
     //수정과 동일 이유로 권한체크는 후순위
 
-    int restoreMemo(Memo memo) throws Exception;
+    Memo restoreMemo(Memo memo) throws Exception;
 
 
     //메모 공유 관련
@@ -65,7 +68,7 @@ public interface MemoService {
 
     //메모 부착 관련
 
-    void updateMemoAttach(Memo memo) throws Exception;
+    void updateMemoAttach(int attachedCategory, int attachedNo, int memoNo) throws Exception;
     //메모를 특정 도메인에 부착/탈착하는 기능이다.
     //내부적으로는 메모 Table 의 attached_trip_plan_no, attached_review_no, attached_chat_room_no를 업데이트하는 기능이다
     //부착시에는 해당 도메인의 No를 받아서, 메모의 attached_XXX_no 에 업데이트한다.

@@ -50,7 +50,6 @@ public class DailyPlan {
         this.placeResultMap = placeResultMap;
     }
 
-
     @Override
     public String toString() {
         return "DailyPlan{" +
@@ -58,6 +57,7 @@ public class DailyPlan {
                 ", tripPlanNo=" + tripPlanNo +
                 ", dailyPlanContents='" + dailyPlanContents + '\'' +
                 ", totalTripTime='" + totalTripTime + '\'' +
+                ", placeResultMap=" + placeResultMap +
                 '}';
     }
 }

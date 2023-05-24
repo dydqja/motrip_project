@@ -43,17 +43,38 @@
     <!-- 공유된 모든 여행플랜 조회 삭제유무도 조회-->
     <select id="selectPublicTripPlanList" parameterType="com.bit.motrip.common.Search" resultMap="tripPlanResultMap">
         SELECT * FROM trip_plan WHERE is_plan_public = TRUE AND is_plan_deleted = FALSE
-        ORDER BY trip_plan_reg_date DESC, trip_plan_no DESC
+        ORDER BY
+            <choose>
+                <when test="'trip_plan_views' == searchCondition">
+                    trip_plan_views DESC, trip_plan_no DESC
+                </when>
+                <when test="'trip_plan_likes' == searchCondition">
+                    trip_plan_likes DESC, trip_plan_no DESC
+                </when>
+                <otherwise>
+                    trip_plan_no DESC
+                </otherwise>
+            </choose>
         LIMIT #{currentPage}, #{pageSize};
     </select>
 
     <!-- 서치 쿼리문 추가해야함 -->
-    <!-- 추천수 쿼리문 추가해야함 -->
 
     <!-- 나의 모든 여행플랜 조회 -->
-    <select id="selectMyTripPlanList" parameterType="com.bit.motrip.common.Search" resultMap="tripPlanResultMap">
+    <select id="selectMyTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
         SELECT * FROM trip_plan WHERE trip_plan_author = #{tripPlanAuthor}
-        ORDER BY trip_plan_reg_date DESC, trip_plan_no DESC
+        ORDER BY
+            <choose>
+                <when test="'trip_plan_views' == searchCondition">
+                    trip_plan_views DESC, trip_plan_no DESC
+                </when>
+                <when test="'trip_plan_likes' == searchCondition">
+                    trip_plan_likes DESC, trip_plan_no DESC
+                </when>
+                <otherwise>
+                    trip_plan_no DESC
+                </otherwise>
+            </choose>
         LIMIT #{currentPage}, #{pageSize};
     </select>
 
