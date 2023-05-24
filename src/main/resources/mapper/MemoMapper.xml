@@ -5,13 +5,221 @@
 
 <mapper namespace="com.bit.motrip.dao.memo.MemoDao">
 
+    <!--ResultMap-->
     <resultMap id="memoResultMap" type="com.bit.motrip.domain.Memo">
         <id column="memo_no" property="memoNo"/>
         <result column="memo_title" property="memoTitle"/>
         <result column="memo_contents" property="memoContents"/>
         <result column="memo_reg_date" property="memoRegDate"/>
+        <result column="memo_del_date" property="memoDelDate"/>
         <result column="memo_color" property="memoColor"/>
+        <result column="attached_trip_plan_no" property="attachedTripPlanNo"/>
+        <result column="attached_review_no" property="attachedReviewNo"/>
+        <result column="attached_chat_room_no" property="attachedChatRoomNo"/>
         <result column="memo_author" property="memoAuthor"/>
     </resultMap>
+
+    <resultMap id="memoAccessResultMap" type="com.bit.motrip.domain.MemoAccess">
+        <id column="memo_access_no" property="memoAccessNo"/>
+        <result column="memo_access_user" property="memoAccessUser"/>
+        <result column="memo_no" property="memoNo"/>
+        <result column="is_memo_author" property="isMemoAuthor"/>
+    </resultMap>
+
+    <resultMap id="memoDetailedResultMap" type="com.bit.motrip.domain.Memo">
+        <id column="memo_no" property="memoNo"/>
+        <result column="memo_title" property="memoTitle"/>
+        <result column="memo_contents" property="memoContents"/>
+        <result column="memo_reg_date" property="memoRegDate"/>
+        <result column="memo_del_date" property="memoDelDate"/>
+        <result column="memo_color" property="memoColor"/>
+        <association column="attached_trip_plan" property="attachedTripPlan">
+            <id column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
+            <result column="trip_plan_title" property="tripPlanTitle" jdbcType="VARCHAR"/>
+            <result column="trip_plan_author" property="tripPlanAuthor" jdbcType="VARCHAR"/>
+            <result column="trip_plan_reg_date" property="tripPlanRegDate" jdbcType="DATE"/>
+            <result column="trip_plan_thumbnail" property="tripPlanThumbnail" jdbcType="VARCHAR"/>
+        </association>
+       <!-- <association column="attached_review" property="attachedTripPlan">
+        </association>-->
+    </resultMap>
+
+    <sql id="memo_author">
+        SELECT memo_access.memo_no AS memo_no, memo_access.memo_access_user AS memo_author
+        FROM memo_access
+        WHERE is_memo_author = 1
+        ORDER BY memo_access.memo_no DESC
+    </sql>
+
+
+    <!--Memo-->
+
+    <insert id="addMemo" parameterType="com.bit.motrip.domain.Memo" useGeneratedKeys="true" keyProperty="memoNo" keyColumn="memo_no">
+        insert into memo
+            (memo_title, memo_contents, memo_color)
+        values
+            (#{memoTitle,jdbcType=VARCHAR}, #{memoContents,jdbcType=VARCHAR}, #{memoColor,jdbcType=INTEGER})
+    </insert>
+
+    <select id="getMemo" parameterType="int" resultMap="memoResultMap">
+        SELECT
+            memo.memo_no AS memo_no,
+            memo.memo_title AS memo_title,
+            memo.memo_contents AS memo_contents,
+            memo.memo_reg_date AS memo_reg_date,
+            memo.memo_color AS memo_color,
+            memo_access.memo_access_user AS memo_author
+        FROM
+            memo
+                LEFT JOIN memo_access ON memo.memo_no = memo_access.memo_no
+        WHERE
+            memo.memo_no = memo_access.memo_no
+          AND memo_access.is_memo_author = 1
+          AND memo.memo_no = #{memoNo}
+    </select>
+
+    <update id="updateMemo" parameterType="com.bit.motrip.domain.Memo">
+        UPDATE memo
+        SET
+        memo_title = #{memoTitle},
+        memo_contents = #{memoContents},
+        memo_reg_date = NOW(),
+        memo_del_date = #{memoDelDate},
+        memo_color = #{memoColor}
+        WHERE
+        memo_no = #{memoNo}
+    </update>
+
+    <update id="updateMemoAttach" parameterType="com.bit.motrip.domain.Memo">
+        UPDATE memo
+        SET
+        attached_trip_plan_no = #{attachedTripPlanNo},
+        attached_review_no = #{attachedReviewNo},
+        attached_chat_room_no = #{attachedChatRoomNo}
+        WHERE
+        memo_no = #{memoNo}
+    </update>
+
+    <delete id="deleteMemo" parameterType="int">
+        UPDATE memo
+        SET memo_del_date = CURRENT_DATE
+        WHERE memo_no = #{memoNo}
+    </delete>
+
+    <delete id="restoreMemo" parameterType="int">
+        UPDATE memo
+        SET memo_del_date = null
+        WHERE memo_no = #{memoNo}
+    </delete>
+
+    <delete id="removeMemo" parameterType="int">
+        DELETE from memo
+        WHERE memo_no = #{memoNo}
+    </delete>
+
+
+    <select id="getMemoListByMyMemo" parameterType="com.bit.motrip.common.Search" resultMap="memoResultMap">
+        SELECT
+        memo.memo_no AS memo_no,
+        memo.memo_title AS memo_title,
+        memo.memo_contents AS memo_contents,
+        memo.memo_reg_date AS memo_reg_date,
+        memo.memo_color AS memo_color,
+        memo_author.memo_author AS memo_author
+        FROM
+        memo
+        LEFT JOIN memo_access ON memo.memo_no = memo_access.memo_no
+        LEFT JOIN (
+        <include refid="memo_author"/>
+        ) AS memo_author ON memo.memo_no = memo_author.memo_no
+        WHERE
+        memo.memo_no = memo_access.memo_no
+        AND memo_access.is_memo_author = 1
+        AND memo_access.memo_access_user = #{searchKeyword}
+        ORDER BY memo.memo_reg_date DESC
+        LIMIT #{mysqlStartRowNum}, #{pageSize}
+    </select>
+
+    <select id="getMemoListBySharedMemo" parameterType="com.bit.motrip.common.Search" resultMap="memoResultMap">
+        SELECT
+        memo.memo_no AS memo_no,
+        memo.memo_title AS memo_title,
+        memo.memo_contents AS memo_contents,
+        memo.memo_reg_date AS memo_reg_date,
+        memo.memo_color AS memo_color,
+        memo_author.memo_author AS memo_author
+        FROM
+        memo
+        LEFT JOIN memo_access ON memo.memo_no = memo_access.memo_no
+        LEFT JOIN (
+        <include refid="memo_author"/>
+        ) AS memo_author ON memo.memo_no = memo_author.memo_no
+        WHERE
+        memo.memo_no = memo_access.memo_no
+        AND memo_access.is_memo_author = 0
+        AND memo_access.memo_access_user = #{searchKeyword}
+        ORDER BY memo.memo_reg_date DESC
+        LIMIT #{mysqlStartRowNum}, #{pageSize}
+    </select>
+
+    <select id="getMemoListByDeletedMemo" parameterType="com.bit.motrip.common.Search" resultMap="memoResultMap">
+        SELECT
+        memo.memo_no AS memo_no,
+        memo.memo_title AS memo_title,
+        memo.memo_contents AS memo_contents,
+        memo.memo_reg_date AS memo_reg_date,
+        memo.memo_color AS memo_color,
+        memo_author.memo_author AS memo_author
+        FROM
+        memo
+        LEFT JOIN memo_access ON memo.memo_no = memo_access.memo_no
+        LEFT JOIN (
+        <include refid="memo_author"/>
+        ) AS memo_author ON memo.memo_no = memo_author.memo_no
+        WHERE
+        memo.memo_no = memo_access.memo_no
+        AND memo_access.is_memo_author = 1
+        AND memo_access.memo_access_user = #{searchKeyword}
+        AND memo.memo_del_date IS NOT NULL
+        ORDER BY memo.memo_reg_date DESC
+        LIMIT #{mysqlStartRowNum}, #{pageSize}
+    </select>
+
+
+
+    <!--MemoAccess-->
+    <!--메모 권한을 부여할때 / 작성 직후 자동실행-->
+    <insert id="addMemoAccess" parameterType="com.bit.motrip.domain.MemoAccess" useGeneratedKeys="true" keyProperty="memoAccessNo" keyColumn="memo_access_no">
+        insert into memo_access
+            (memo_no,memo_access_user,is_memo_author)
+        values
+            (#{memoNo}, #{memoAccessUser},#{isMemoAuthor})
+    </insert>
+
+    <!--현재 이 메모에 접근 가능한 사람을 불러옴. 이제 추후에 누군가에게 공유를 해제할 때 사용할 것임.-->
+    <select id="getMemoAccessListByMemoNo" parameterType="int" resultMap="memoAccessResultMap">
+        select memo_access_no, memo_no, memo_access_user, is_memo_author
+        from memo_access
+        where memo_no = #{memoNo}
+    </select>
+
+    <select id="getMemoAccessListByUserId" parameterType="String" resultMap="memoAccessResultMap">
+        select memo_access_no, memo_no, memo_access_user, is_memo_author
+        from memo_access
+        where memo_access_user = #{memoAccessUser}
+    </select>
+
+    <select id="getMemoAccessByAuthor" parameterType="String" resultMap="memoAccessResultMap">
+        select memo_access_no, memo_no, memo_access_user, is_memo_author
+        from memo_access
+        where memo_access_user = #{userId} and is_memo_author = 1
+    </select>
+
+    <delete id="deleteMemoAccess" parameterType="com.bit.motrip.domain.MemoAccess">
+        delete from memo_access
+        where memo_no = #{memoNo} and memo_access_user = #{memoAccessUser}
+    </delete>
+
+
 
 </mapper>

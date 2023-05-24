@@ -15,12 +15,29 @@ public class DailyPlanServiceImpl implements DailyPlanService {
     private DailyPlanDao dailyPlanDao;
 
     @Override
-    public void insertDailyPlan(DailyPlan dailyPlan) {
-        dailyPlanDao.insertDailyPlan(dailyPlan);
+    public void addDailyPlan(DailyPlan dailyPlan) throws Exception {
+        dailyPlanDao.addDailyPlan(dailyPlan);
     }
 
     @Override
-    public List<DailyPlan> getDailyPlanList() {
-        return dailyPlanDao.getDailyPlanList();
+    public int getDailyPlan() throws Exception{
+        return dailyPlanDao.getDailyPlan();
     }
+
+    @Override
+    public List<DailyPlan> selectDailyPlan(int tripPlanNo) throws Exception{
+        return dailyPlanDao.selectDailyPlan(tripPlanNo);
+    }
+
+    @Override
+    public void updateDailyPlan(DailyPlan dailyPlan) throws Exception {
+        dailyPlanDao.updateDailyPlan(dailyPlan);
+    }
+
+    @Override
+    public void deleteDailyPlan(int dailyPlanNo) throws Exception {
+        dailyPlanDao.deleteDailyPlan(dailyPlanNo);
+    }
+
+
 }

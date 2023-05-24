@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.tripplan.PlaceDao">
+
+    <resultMap id="placeResultMap" type="com.bit.motrip.domain.Place">
+        <id     column="place_no"           property="placeNo"              jdbcType="INTEGER"/>
+        <result column="daily_plan_no"      property="dailyPlanNo"          jdbcType="INTEGER"/>
+        <result column="place_tags"         property="placeTags"            jdbcType="VARCHAR"/>
+        <result column="place_coordinates"  property="placeCoordinates"     jdbcType="VARCHAR"/>
+        <result column="place_image"        property="placeImage"           jdbcType="VARCHAR"/>
+        <result column="place_phone_number" property="placePhoneNumber"     jdbcType="VARCHAR"/>
+        <result column="place_address"      property="placeAddress"         jdbcType="VARCHAR"/>
+        <result column="place_category"     property="placeCategory"        jdbcType="INTEGER"/>
+        <result column="trip_time"          property="tripTime"             jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 명소 리스트 확인 쿼리 -->
+    <select id="selectPlace" parameterType="int" resultMap="placeResultMap">
+        select * from place WHERE daily_plan_no = #{dailyPlanNo}
+    </select>
+
+    <!-- 명소 추가 쿼리 -->
+    <insert id="addPlace" parameterType="com.bit.motrip.domain.Place">
+        insert into place (place_tags, daily_plan_no, place_coordinates, place_image, place_phone_number, place_address, place_category, trip_time)
+        values (#{placeTags}, #{dailyPlanNo}, #{placeCoordinates}, #{placeImage}, #{placePhoneNumber}, #{placeAddress}, #{placeCategory}, #{tripTime})
+    </insert>
+
+    <!-- 작성된 명소 수정 -->
+    <update id="updatePlace" parameterType="com.bit.motrip.domain.Place">
+        UPDATE place
+        SET place_tags = #{placeTags},
+        place_coordinates = #{placeCoordinates},
+        place_image = #{placeImage},
+        place_phone_number = #{placePhoneNumber},
+        place_address = #{placeAddress},
+        place_category = #{placeCategory},
+        trip_time = #{tripTime}
+        WHERE place_no = #{placeNo}
+    </update>
+
+    <!-- 작성된 명소 삭제 -->
+    <delete id="deletePlace" parameterType="int">
+        DELETE FROM place WHERE place_no = #{placeNo}
+    </delete>
+
+</mapper>

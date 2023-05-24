@@ -3,7 +3,6 @@ package com.bit.motrip.dao.review;
 import com.bit.motrip.domain.Review;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
-
 @Mapper
 public interface ReviewDao {
     //후기 부분 CRUD

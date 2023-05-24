@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.evaluateList.EvaluateListDao">
+
+    <resultMap id="evaluateListSelectMap" type="com.bit.motrip.domain.EvaluateList">
+        <result property="evaluateListNo"         column="evaluate_list_no"          jdbcType="INTEGER"/>
+        <result property="evaluaterId"            column="evaluater_id"              jdbcType="VARCHAR"/>
+        <result property="evaluatedUserId"        column="evaluated_user_id"         jdbcType="VARCHAR"/>
+        <result property="evaluatedTripPlanNo"    column="evaluated_trip_plan_no"    jdbcType="INTEGER"/>
+        <result property="evaluatedReviewNo"      column="evaluated_review_no"       jdbcType="INTEGER"/>
+        <result property="isScorePlus"            column="is_score_plus"             jdbcType="TINYINT"/>
+        <result property="blacklistedUserId"      column="blacklisted_user_id"       jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="addEvaluation" parameterType="com.bit.motrip.domain.EvaluateList">
+        INSERT
+        INTO evaluate_list
+            ( evaluater_id, evaluated_user_id, evaluated_trip_plan_no, evaluated_review_no, is_score_plus, blacklisted_user_id )
+        VALUES
+            ( #{evaluaterId,jdbcType=VARCHAR},
+              #{evaluatedUserId,jdbcType=VARCHAR},
+              #{evaluatedTripPlanNo,jdbcType=INTEGER},
+              #{evaluatedReviewNo,jdbcType=INTEGER},
+              #{isScorePlus,jdbcType=TINYINT},
+              #{blacklistedUserId,jdbcType=VARCHAR}
+            );
+    </insert>
+
+    <select id="getEvaluation"	parameterType="com.bit.motrip.domain.EvaluateList"	resultMap="evaluateListSelectMap">
+        SELECT evaluate_list_no, evaluater_id, evaluated_user_id, evaluated_trip_plan_no, evaluated_review_no,
+               is_score_plus, blacklisted_user_id
+        FROM evaluate_list
+        WHERE evaluater_id = #{evaluaterId}
+    </select>
+
+    <delete	id="deleteBlacklist"	parameterType="com.bit.motrip.domain.EvaluateList" >
+        DELETE
+        FROM evaluate_list
+        WHERE evaluater_id = #{evaluaterId} and blacklisted_user_id = #{blacklistedUserId}
+    </delete>
+
+    <delete	id="userEvaluateCancle"	parameterType="com.bit.motrip.domain.EvaluateList" >
+        DELETE
+        FROM evaluate_list
+        WHERE evaluater_id = #{evaluaterId} and evaluated_user_id = #{evaluatedUserId}
+    </delete>
+
+</mapper>

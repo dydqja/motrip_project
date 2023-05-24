@@ -1,19 +1,14 @@
 package com.bit.motrip.domain;
 
+import java.util.List;
+import java.util.Map;
+
 public class DailyPlan {
     private int dailyPlanNo;
     private int tripPlanNo;
     private String dailyPlanContents;
     private String totalTripTime;
-
-    public DailyPlan() {}
-
-    public DailyPlan(int dailyPlanNo, int tripPlanNo, String dailyPlanContents, String totalTripTime) {
-        this.dailyPlanNo = dailyPlanNo;
-        this.tripPlanNo = tripPlanNo;
-        this.dailyPlanContents = dailyPlanContents;
-        this.totalTripTime = totalTripTime;
-    }
+    private List<Place> placeResultMap;
 
     public int getDailyPlanNo() {
         return dailyPlanNo;
@@ -47,4 +42,22 @@ public class DailyPlan {
         this.totalTripTime = totalTripTime;
     }
 
+    public List<Place> getPlaceResultMap() {
+        return placeResultMap;
+    }
+
+    public void setPlaceResultMap(List<Place> placeResultMap) {
+        this.placeResultMap = placeResultMap;
+    }
+
+
+    @Override
+    public String toString() {
+        return "DailyPlan{" +
+                "dailyPlanNo=" + dailyPlanNo +
+                ", tripPlanNo=" + tripPlanNo +
+                ", dailyPlanContents='" + dailyPlanContents + '\'' +
+                ", totalTripTime='" + totalTripTime + '\'' +
+                '}';
+    }
 }

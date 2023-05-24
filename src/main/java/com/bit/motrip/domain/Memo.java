@@ -4,24 +4,25 @@ import java.sql.Date;
 import java.util.List;
 
 public class Memo {
-    int memoNo;
-    String memoTitle;
-    String memoContents;
-    Date memoRegDate;
-    Date memoDelDate;
-    int memoColor;
-    String memoAuthor;
-    List<String> memoAccessableUsers;
+    private int memoNo;
+    private String memoTitle;
+    private String memoContents;
+    private Date memoRegDate;
+    private Date memoDelDate;
+    private int memoColor;
+    private String memoAuthor;
 
-    public List<String> getMemoAccessableUsers() {
-        return memoAccessableUsers;
-    }
+    //부착된 문서의 No
+    private Integer attachedTripPlanNo;
+    private Integer attachedReviewNo;
+    private Integer attachedChatRoomNo;
 
-    public void setMemoAccessableUsers(List<String> memoAccessableUsers) {
-        this.memoAccessableUsers = memoAccessableUsers;
-    }
+    //부착된 문서의 전체정보
+    private TripPlan attachedTripPlan;
+    private Review attachedReview;
+    private ChatRoom attachedChatRoom;
 
-    MemoAttachable memoAttachedDomain;
+    //getter and setter
 
 
     public int getMemoNo() {
@@ -80,11 +81,67 @@ public class Memo {
         this.memoAuthor = memoAuthor;
     }
 
-    public MemoAttachable getMemoAttachedDomain() {
-        return memoAttachedDomain;
+    public Integer getAttachedTripPlanNo() {
+        return attachedTripPlanNo;
     }
 
-    public void setMemoAttachedDomain(MemoAttachable memoAttachedDomain) {
-        this.memoAttachedDomain = memoAttachedDomain;
+    public void setAttachedTripPlanNo(Integer attachedTripPlanNo) {
+        this.attachedTripPlanNo = attachedTripPlanNo;
+    }
+
+    public Integer getAttachedReviewNo() {
+        return attachedReviewNo;
+    }
+
+    public void setAttachedReviewNo(Integer attachedReviewNo) {
+        this.attachedReviewNo = attachedReviewNo;
+    }
+
+    public Integer getAttachedChatRoomNo() {
+        return attachedChatRoomNo;
+    }
+
+    public void setAttachedChatRoomNo(Integer attachedChatRoomNo) {
+        this.attachedChatRoomNo = attachedChatRoomNo;
+    }
+
+    public TripPlan getAttachedTripPlan() {
+        return attachedTripPlan;
+    }
+
+    public void setAttachedTripPlan(TripPlan attachedTripPlan) {
+        this.attachedTripPlan = attachedTripPlan;
+    }
+
+    public Review getAttachedReview() {
+        return attachedReview;
+    }
+
+    public void setAttachedReview(Review attachedReview) {
+        this.attachedReview = attachedReview;
+    }
+
+    public ChatRoom getAttachedChatRoom() {
+        return attachedChatRoom;
+    }
+
+    public void setAttachedChatRoom(ChatRoom attachedChatRoom) {
+        this.attachedChatRoom = attachedChatRoom;
+    }
+
+    @Override
+    public String toString() {
+        return "Memo{" +
+                "memoNo=" + memoNo +
+                ", memoTitle='" + memoTitle + '\'' +
+                ", memoContents='" + memoContents + '\'' +
+                ", memoRegDate=" + memoRegDate +
+                ", memoDelDate=" + memoDelDate +
+                ", memoColor=" + memoColor +
+                ", memoAuthor='" + memoAuthor + '\'' +
+                ", attachedTripPlanNo=" + attachedTripPlanNo +
+                ", attachedReviewNo=" + attachedReviewNo +
+                ", attachedChatRoomNo=" + attachedChatRoomNo +
+                '}';
     }
 }
