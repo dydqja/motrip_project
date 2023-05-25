@@ -42,11 +42,25 @@
         )
     </insert>
 
-    <!-- Select List Review -->
-    <select id="getReviewList" resultMap="reviewResultMap"><!-- 결과가 나와야 하는것은 리절트맵(결과 여러개) 혹은 리절트타입(결과1개) 쓴다 -->
-        select * from review
+    <!-- Select All Public ReviewList -->
+    <select id="getPublicReviewList" parameterType="com.bit.motrip.common.Search" resultMap="reviewResultMap"><!-- 결과가 나와야 하는것은 리절트맵(결과 여러개) 혹은 리절트타입(결과1개) 쓴다 -->
+        SELECT * FROM review WHERE is_review_public = TRUE AND is_review_deleted = FALSE
+        ORDER BY review_reg_date DESC, review_no DESC
+            LIMIT #{currentPage}, #{pageSize};
     </select>
-    <!-- Select List Review -->
+    <!-- Select All Public ReviewList -->
+
+    <!-- 서치 쿼리문 추가해야함 -->
+    <!-- 추천수 쿼리문 추가해야함 -->
+
+    <!-- Select All My ReviewList -->
+    <select id="getMyReviewList" parameterType="com.bit.motrip.common.Search" resultMap="reviewResultMap">
+        SELECT * FROM review WHERE review_author = #{reviewAuthor}
+        ORDER BY review_reg_date DESC, review_no DESC
+            LIMIT #{search.currentPage}, #{search.pageSize};
+    </select>
+
+    <!-- Select All My ReviewList -->
 
     <!-- Select One Review -->
     <select id="getReview" parameterType="int" resultMap="reviewResultMap">
@@ -70,9 +84,11 @@
         SET review_title = #{reviewTitle},
             review_contents = #{reviewContents},
             review_thumbnail = #{reviewThumbnail},
-            insta_post_link = #{instaPostLink}
+            insta_post_link = #{instaPostLink},
+            is_review_public = #{isReviewPublic}
         WHERE review_no = #{reviewNo}
     </update>
+
     <!-- Update Review -->
 
     <!-- Delete Review -->

@@ -6,6 +6,7 @@ public class Search {
     private int currentPage;
     private String searchCondition;
     private int[] searchConditions;
+    private String loginConditions;
     private String searchKeyword;
     private int pageSize;
     private int endRowNum;
@@ -53,6 +54,14 @@ public class Search {
 
     public int getStartRowNum() {
         return (getCurrentPage()-1)*getPageSize()+1;
+    }
+
+    public String getLoginConditions() {
+        return loginConditions;
+    }
+
+    public void setLoginConditions(String loginConditions) {
+        this.loginConditions = loginConditions;
     }
 
     public int getMysqlStartRowNum() {

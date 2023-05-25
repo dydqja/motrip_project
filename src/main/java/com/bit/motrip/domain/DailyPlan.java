@@ -58,6 +58,6 @@ public class DailyPlan {
                 ", dailyPlanContents='" + dailyPlanContents + '\'' +
                 ", totalTripTime='" + totalTripTime + '\'' +
                 ", placeResultMap=" + placeResultMap +
-                '}';
+                '}' + "\n";
     }
 }
