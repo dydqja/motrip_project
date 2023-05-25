@@ -15,13 +15,18 @@ import java.util.Map;
 @Service("qnaServiceImpl")
 public class QnaServiceImpl implements QnaService {
 
+    ///Field
     @Autowired
     @Qualifier("qnaDao")
     private QnaDao qnaDao;
 
-    public QnaServiceImpl(QnaDao qnaDao) {
-        System.out.println(this.getClass());
+    ///Constructor
+    public QnaServiceImpl(){
+
+        System.out.println("::"+getClass()+".setQnaDao Call.........");
     }
+
+    ///Method
 
     //질의응답 질의 등록 서비스
     @Override

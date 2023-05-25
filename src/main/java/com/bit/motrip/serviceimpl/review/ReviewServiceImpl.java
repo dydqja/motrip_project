@@ -1,5 +1,6 @@
 package com.bit.motrip.serviceimpl.review;
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.review.ReviewDao;
 import com.bit.motrip.domain.Review;
 import com.bit.motrip.service.review.ReviewService;
@@ -21,11 +22,16 @@ public class ReviewServiceImpl implements ReviewService {
     public void addReview() throws Exception {
     }
 
-    //후기 목록 조회
+    //공개된 후기 목록 조회
     @Override
-    public List<Review> getReviewList() throws Exception {
+    public List<Review> getPublicReviewList(Search search) throws Exception {
+        return reviewDao.getPublicReviewList(search);
+    }
 
-        return reviewDao.getReviewList();
+    //나의 후기 목록 조회
+    @Override
+    public List<Review> getMyReviewList(String reviewAuthor, Search search) throws Exception {
+        return reviewDao.getMyReviewList(reviewAuthor, search);
     }
 
     //특정 후기 조회

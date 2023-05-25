@@ -1,5 +1,6 @@
 package com.bit.motrip.service.review;
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.Review;
 import java.util.List;
 
@@ -7,8 +8,11 @@ public interface ReviewService {
     //INSERT C 후기 등록
     public void addReview() throws Exception;
 
-    //SELECT LIST 후기 목록 조회
-    public List<Review> getReviewList() throws Exception;
+    //SELECT All Public ReviewList 공개된 후기 목록 조회
+    public List<Review> getPublicReviewList(Search search) throws Exception;
+
+    //SELECT All My ReviewList 나의 후기 목록 조회
+    public List<Review> getMyReviewList(String reviewAuthor, Search search) throws Exception;
 
     //SELECT ONE R 특정 후기 조회
     public Review getReview(int reviewNo) throws Exception;

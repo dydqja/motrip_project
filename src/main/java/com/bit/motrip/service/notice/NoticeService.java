@@ -10,6 +10,9 @@ public interface NoticeService {
     //공지 등록 서비스
     public void addNotice(Notice notice) throws Exception;
 
+    //조회수 증가 서비스
+    public void increaseViews(Notice notice) throws Exception;
+
     //공지 상세 조회 서비스
     public Notice getNotice(int noticeNo) throws Exception;
 
