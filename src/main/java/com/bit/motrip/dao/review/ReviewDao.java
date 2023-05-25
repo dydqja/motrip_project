@@ -1,5 +1,6 @@
 package com.bit.motrip.dao.review;
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.Review;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
@@ -9,14 +10,17 @@ public interface ReviewDao {
     //INSERT C 후기 작성
     public void addReview(Review review)throws Exception ;
 
-    //SELECT LIST 후기 목록 조회
-    public List<Review> getReviewList() throws Exception;
+    //SELECT All Public ReviewList 공개된 후기 목록 조회
+    public List<Review> getPublicReviewList(Search search) throws Exception;
+
+    //SELECT All My ReviewList 나의 후기 목록 조회
+    public List<Review> getMyReviewList(String reviewAuthor, Search search) throws Exception;
 
     //SELECT ONE R 특정 후기 조회
     public Review getReview(int reviewNo)throws Exception;
 
     //UPDATE U 후기 수정
-    public Review updateReview() throws Exception;
+    public int updateReview(Review review) throws Exception;
 
     //DELETE D 후기 삭제
     public void deleteReview(int reviewNo);
