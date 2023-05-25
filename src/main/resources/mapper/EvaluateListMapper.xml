@@ -36,11 +36,11 @@
         FROM evaluate_list
         WHERE
             <choose>
-                <when test="'evaluated_trip_plan_no' == searchCondition">
-                    evaluated_trip_plan_no = #{evaluated_trip_plan_no}
+                <when test="'tripPlan' == searchCondition">
+                    evaluated_trip_plan_no = #{evaluatedTripPlanNo}
                 </when>
-                <when test="'evaluated_review_no' == searchCondition">
-                    evaluated_review_no = #{evaluated_review_no}
+                <when test="'review' == searchCondition">
+                    evaluated_review_no = #{evaluatedReviewNo}
                 </when>
                 <otherwise>
                     evaluater_id = #{evaluaterId}
