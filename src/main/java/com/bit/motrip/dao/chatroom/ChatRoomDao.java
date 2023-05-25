@@ -1,6 +1,7 @@
 package com.bit.motrip.dao.chatroom;
 import java.util.List; // chatRoomList에서 사용
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.ChatRoom;; //ChatRoom 도메인
 import org.apache.ibatis.annotations.Mapper; //Mapper 연결
 

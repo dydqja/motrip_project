@@ -10,11 +10,10 @@ import com.bit.motrip.domain.TripPlan;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 @Service("tripPlanServiceImpl")
 public class TripPlanServiceImpl implements TripPlanService {
@@ -32,15 +31,24 @@ public class TripPlanServiceImpl implements TripPlanService {
     private TripPlan tripPlan;
     private List<DailyPlan> dailyPlan;
     private List<Place> place;
+    private Search search;
 
-    @Override
+    @Value("${tripPlanPageSize}")
+    private int tripPlanPageSize;
+
+    @Override // 공유된 여행플랜 목록
     public List<TripPlan> selectPublicTripPlanList(Search search) throws Exception {
+        search.setPageSize(tripPlanPageSize);
+        search.setCurrentPage(search.getCurrentPage()); // 추후 스타트값 설정하였을때 변경 mapper.xml도 같이
         return tripPlanDao.selectPublicTripPlanList(search);
     }
 
-    @Override
-    public List<TripPlan> selectMyTripPlanList(String tripPlanAuthor, Search search) throws Exception {
-        return tripPlanDao.selectMyTripPlanList(tripPlanAuthor, search);
+    @Override // 나의 여행플랜 목록
+    public List<TripPlan> selectMyTripPlanList(Map parameterMap) throws Exception {
+        parameterMap.put("tripPlanAuthor", "user2"); // 여기 세션 들어갈거임
+        parameterMap.put("currentPage", search.getCurrentPage()); // 추후 스타트값 설정하였을때 변경 변경 mapper.xml도 같이
+        parameterMap.put("pageSize", search.getPageSize());
+        return tripPlanDao.selectMyTripPlanList(parameterMap);
     }
 
     @Override // 여행플랜 저장
@@ -68,7 +76,7 @@ public class TripPlanServiceImpl implements TripPlanService {
 
     @Override // 여행플랜 수정
     public TripPlan updateTripPlan(TripPlan tripPlan) throws Exception{
-        this.tripPlan = tripPlan;
+        this.tripPlan = tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
         if(!this.tripPlan.isTripCompleted()){
             tripPlanDao.updateTripPlan(tripPlan);
             dailyPlan = tripPlan.getDailyplanResultMap();
@@ -125,5 +133,10 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Override // 여행플랜 완료 설정 (완료 이후 권한제외 수정 불가능)
     public void tripPlanCompleted(int tripPlanNo) throws Exception {
         tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), true);
+    }
+
+    @Override // 여행플랜 추천수 증가
+    public void tripPlanLikes(TripPlan tripPlan) throws Exception {
+        tripPlanDao.tripPlanLikes(tripPlan);
     }
 }

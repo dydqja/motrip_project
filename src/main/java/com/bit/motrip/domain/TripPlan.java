@@ -135,7 +135,7 @@ public class TripPlan {
 
     @Override
     public String toString() {
-        return "TripPlan{" +
+        return "\n TripPlan{" +
                 "tripPlanNo=" + tripPlanNo +
                 ", tripPlanAuthor='" + tripPlanAuthor + '\'' +
                 ", tripPlanTitle='" + tripPlanTitle + '\'' +
@@ -149,6 +149,7 @@ public class TripPlan {
                 ", isTripCompleted=" + isTripCompleted +
                 ", tripPlanLikes=" + tripPlanLikes +
                 ", tripPlanViews=" + tripPlanViews +
-                '}';
+                ", dailyplanResultMap=" + dailyplanResultMap +
+                '}' + "\n";
     }
 }

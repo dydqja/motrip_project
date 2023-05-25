@@ -39,16 +39,16 @@ class EvaluateListServiceImplTest {
         evaluateListService.addEvaluation(evaluateList);
     }
 
-//    @Test
+    //@Test
     void getEvaluation() throws Exception {
         EvaluateList evaluateList = new EvaluateList();
 
-        evaluateList.setEvaluaterId("testUser41");
+        //evaluateList.setEvaluaterId("testUser41");
 
+        Map<String, Object> parameter = new HashMap<>();
+        parameter.put("evaluaterId", "user2");
         //evaluaterId 값에 해당하는 모든 칼럼정보 가져온다.
-        List<EvaluateList> getEvaluateList = evaluateListService.getEvaluation(evaluateList.getEvaluaterId());
-
-        System.out.println(getEvaluateList);
+        List<EvaluateList> getEvaluateList = evaluateListService.getEvaluation(parameter);
 
         //모든 칼럼정보에서 원하는 값(blacklistUserId / evaluatedReviewNo / 등)만 가져온다
         List<String> blacklistUserId = new ArrayList<>();
@@ -57,7 +57,6 @@ class EvaluateListServiceImplTest {
                 blacklistUserId.add(evaluateList1.getBlacklistedUserId());
             }
         }
-        System.out.println(blacklistUserId);
     }
 //    @Test
     void deleteBlacklist() throws Exception {

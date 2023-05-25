@@ -1,5 +1,6 @@
 package com.bit.motrip.serviceimpl.chatroom;
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.chatroom.ChatMemberDao;
 import com.bit.motrip.dao.chatroom.ChatRoomDao;
 import com.bit.motrip.domain.ChatMember;
@@ -10,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service("chatRoomServiceImpl")
@@ -67,8 +72,16 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public Map<String, Object> chatRoomList() throws Exception {
-        return null;
+    public List<ChatRoom> chatRoomList() throws Exception {
+        List<ChatRoom> chatRoomList = chatRoomDao.chatRoomList();
+        System.out.println(chatRoomList.get(1).getTravelStartDate());
+        for (ChatRoom cr:chatRoomList) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+            String strDate = simpleDateFormat.format(cr.getTravelStartDate());
+            cr.setStrDate(strDate);
+        }
+
+        return chatRoomList;
     }
 
     //채팅 상태 변환

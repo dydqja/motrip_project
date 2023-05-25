@@ -8,7 +8,7 @@
 	<resultMap id="chatRoomResultMap" type="com.bit.motrip.domain.ChatRoom">
 		<id column="chat_room_no" property="chatRoomNo" jdbcType="INTEGER"/>
 		<result column="chat_room_title" property="chatRoomTitle" jdbcType="VARCHAR"/>
-		<result column="travel_start_date" property="travelStartDate" jdbcType="DATE"/>
+		<result column="travel_start_date" property="travelStartDate" jdbcType="DATE" javaType="java.util.Date" />
 		<result column="age_range" property="ageRange" jdbcType="VARCHAR" />
 		<result column="max_persons" property="maxPersons" jdbcType="INTEGER"/>
 		<result column="current_persons" property="currentPersons" jdbcType="INTEGER"/>
@@ -22,6 +22,9 @@
 		<result column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
 		<result column="is_chat_room_author" property="isChatRoomAuthor" jdbcType="TINYINT"/>
 	</resultMap>
+
+
+
 
 	<insert id="addChatRoom" parameterType="com.bit.motrip.domain.ChatRoom">
 		<selectKey keyProperty="chatRoomNo" resultType="int" order="AFTER">
@@ -71,4 +74,11 @@
 		where
 			chat_room_no = #{chatRoomNo}
 	</update>
+
+	<select id="chatRoomList" resultMap="chatRoomResultMap">
+		select
+			*, DATE_FORMAT(travel_start_date, '%Y-%m-%d')
+		from
+			chat_rooms
+	</select>
 </mapper>

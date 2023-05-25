@@ -15,7 +15,7 @@ public interface EvaluateListService {
     public void addEvaluation(EvaluateList evaluateList) throws Exception;
 
     // select
-    public List<EvaluateList> getEvaluation(String evaluaterId) throws Exception;
+    public List<EvaluateList> getEvaluation(Map evaluaterId) throws Exception;
 
     // delete
     public void deleteBlacklist(EvaluateList evaluateList) throws Exception;

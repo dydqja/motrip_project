@@ -169,7 +169,7 @@ class MemoDaoTest {
         Search search = new Search();
         search.setCurrentPage(1);
         search.setPageSize(10);
-        search.setSearchKeyword("user1");
+        search.setSearchKeyword("admin");
         System.out.println("시작행"+search.getStartRowNum());
         System.out.println("종료행"+search.getEndRowNum());
 
