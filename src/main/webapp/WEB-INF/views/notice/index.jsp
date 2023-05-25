@@ -9,11 +9,7 @@
 
 <h1>모여행</h1>
 
-<div>
-    <a href="#">
-        <h2>공지사항</h2>
-    </a>
-</div>
+
 <div>
     <a href="#">
         <h2>질의응답</h2>
@@ -24,7 +20,7 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
 
-    $(function() {
+    $(function() {항
 
         //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
         $("a:contains('공지사항')").on("click" , function() {

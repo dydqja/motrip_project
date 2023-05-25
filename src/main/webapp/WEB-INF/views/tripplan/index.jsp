@@ -10,6 +10,8 @@
         });
     });
 
+
+
     $(function() {
            $("button[id='addTripPlan']").on("click", function() {
                window.location.href = "/tripPlan/addTripPlanView";
@@ -20,7 +22,7 @@
 </head>
 <body>
 <h1>Hello World!</h1>
-<button type="button">여행플랜 목록이동</button>
+
 <button type="button" id="addTripPlan">여행플랜 작성</button>
 </body>
 </html>
