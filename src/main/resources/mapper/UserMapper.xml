@@ -119,4 +119,16 @@
         WHERE user_id = #{userId}
     </delete>
 
+    <select id="checkId" parameterType="String" resultType="int">
+        SELECT count(*)
+        FROM users
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="checkNickname" parameterType="String" resultType="int">
+        SELECT count(*)
+        FROM users
+        WHERE nickname = #{nickname}
+    </select>
+
 </mapper>

@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserService{
@@ -115,6 +116,32 @@ public class UserServiceImpl implements UserService{
         result.put("gender", genderStr);
 
         return result;
+    }
+
+    public int checkId(String userId) throws Exception {
+
+        int checkId = userDao.checkId(userId);
+
+        if (checkId > 0) { // 아이디가 이미 존재함
+            checkId = 0;
+        } else { // 사용 가능한 아이디
+            checkId = 1;
+        }
+
+        return checkId;
+    }
+
+    public int checkNickname(String nickname) throws Exception {
+
+        int checkNickname = userDao.checkId(nickname);
+
+        if (checkNickname > 0) { // 아이디가 이미 존재함
+            checkNickname = 0;
+        } else { // 사용 가능한 아이디
+            checkNickname = 1;
+        }
+
+        return checkNickname;
     }
 
 }
