@@ -47,7 +47,7 @@ class TripPlanDaoTest {
     @Value("${tripPlanPageSize}")
     private int tripPlanPageSize; // 한화면에 보여질 여행계획 수
     private int currentPage = 0;
-    int tripPlanNo = 15; // 여행플랜 번호
+    int tripPlanNo = 18; // 여행플랜 번호
     String tripPlnaAuthor = "user1"; // 작성자 아이디
     String searchCondition = "trip_plan_views"; // 옵션
 
@@ -57,7 +57,8 @@ class TripPlanDaoTest {
         Search search = new Search();
         search.setCurrentPage(currentPage);
         search.setSearchCondition(searchCondition);
-        search.setPageSize(tripPlanPageSize);
+        search.setLimit(tripPlanPageSize);
+        search.setOffset(0);
 
         Map<String, Object> paramaters = new HashMap<>();
         paramaters.put("search", search);
@@ -80,13 +81,13 @@ class TripPlanDaoTest {
         int placeNo = 2;
 
         tripPlan.setTripPlanAuthor(tripPlnaAuthor);
-        tripPlan.setTripPlanTitle("모여행 테스트 입니다.");
-        tripPlan.setTripPlanThumbnail("123151389347312841.jpg");
+        tripPlan.setTripPlanTitle("모여행 추가 테스트 입니다.");
+        tripPlan.setTripPlanThumbnail("532434234.jpg");
         tripPlan.setTripDays(tripDays);
         tripPlan.setTripPlanRegDate(new Date());
         tripPlan.setTripPlanDelDate(null);
         tripPlan.setPlanDeleted(false);
-        tripPlan.setPlanPublic(false);
+        tripPlan.setPlanPublic(true);
         tripPlan.setPlanDownloadable(false);
         tripPlan.setTripCompleted(false);
         tripPlan.setTripPlanLikes(0);
@@ -109,11 +110,11 @@ class TripPlanDaoTest {
             // 명소 저장
             for(int placeCount=0; placeCount<placeNo; placeCount++){
                 place.setDailyPlanNo(dailyPlanNo);
-                place.setPlaceTags("#" + placeCount + "확인 테스트");
-                place.setPlaceCoordinates("33.242452," + placeCount + "27.0124124");
+                place.setPlaceTags("#" + placeCount + "태그 입력 테스트");
+                place.setPlaceCoordinates("42.623242," + placeCount + "129.4323413");
                 place.setPlaceImage("abcdef.jpg");
-                place.setPlacePhoneNumber("010-3333-3333");
-                place.setPlaceAddress("테스트으아으아");
+                place.setPlacePhoneNumber("010-5555-5555");
+                place.setPlaceAddress("확인용 확인용");
                 place.setPlaceCategory(0);
                 place.setTripTime(null);
                 placeDao.addPlace(place);
@@ -151,10 +152,8 @@ class TripPlanDaoTest {
         if(!tripPlan.isTripCompleted()) {
             dailyPlanList.get(0).setDailyPlanContents("업데이트");
             dailyPlanList.get(1).setDailyPlanContents("완료");
-            placeList.get(0).setPlaceTags("서울2");
-            placeList.get(1).setPlaceTags("영종도3");
-            placeList.get(2).setPlaceTags("부산4");
-            placeList.get(3).setPlaceTags("여수5");
+            placeList.get(0).setPlaceTags("#서울 업데이트");
+            placeList.get(1).setPlaceTags("#충북 업데이트");
 
             // tripPlan 업데이트
             tripPlanDao.updateTripPlan(tripPlan);
@@ -209,12 +208,17 @@ class TripPlanDaoTest {
     //@Test // 여행플랜 삭제유무
     public void tripPlanDeleted() throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        if(tripPlan.isTripCompleted()){
-            tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), !tripPlan.isPlanDeleted());
+        if(tripPlan.isPlanDeleted()){
+            tripPlan.setPlanDeleted(false);
+            tripPlan.setTripPlanDelDate(null);
+            tripPlanDao.tripPlanDeleted(tripPlan);
         } else {
-            tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), !tripPlan.isPlanDeleted());
+            tripPlan.setPlanDeleted(true);
+            tripPlan.setTripPlanDelDate(new Date());
+            tripPlanDao.tripPlanDeleted(tripPlan);
         }
-        System.out.println("삭제유무 " + !tripPlan.isTripCompleted());
+        System.out.println("삭제유무 " + tripPlan.isPlanDeleted());
+        System.out.println("삭제날짜 " + tripPlan.getTripPlanDelDate());
         System.out.println(tripPlan.toString());
     }
 

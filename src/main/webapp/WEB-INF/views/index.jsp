@@ -22,11 +22,6 @@
                 });
             });
 
-         $(function() {
-                 $("button[id='addTripPlan']").on("click", function() {
-                       window.location.href = "/tripPlan/addTripPlanView";
-                  });
-         });
 
          //공지사
          $(function() {

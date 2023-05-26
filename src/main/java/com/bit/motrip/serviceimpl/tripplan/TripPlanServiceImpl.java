@@ -39,14 +39,21 @@ public class TripPlanServiceImpl implements TripPlanService {
     private int tripPlanPageSize;
 
     @Override // 공유된 여행플랜 목록
-    public List<TripPlan> selectTripPlanList(Search search) throws Exception {
-        search.setPageSize(tripPlanPageSize);
+    public Map<String, Object> selectTripPlanList(Search search) throws Exception {
+
+        int offset = (search.getCurrentPage() - 1) * tripPlanPageSize;
+
+        search.setTotalCount(tripPlanDao.selectTripPlanCount()); // 여행플랜 총 카운트
+        search.setCurrentPage(search.getCurrentPage()); // 클라이언트에서 요청한 페이지 번호
+        search.setLimit(tripPlanPageSize); // LIMIT 값은 페이지당 항목 수와 동일합니다.
+        search.setOffset(offset); //
 
         Map<String, Object> paramaters = new HashMap<>();
         paramaters.put("tripPlanAuthor", "");
         paramaters.put("search", search);
+        paramaters.put("tripPlanList", tripPlanDao.selectTripPlanList(paramaters));
 
-        return tripPlanDao.selectTripPlanList(paramaters);
+        return paramaters;
     }
 
     @Override // 여행플랜 저장
@@ -125,16 +132,20 @@ public class TripPlanServiceImpl implements TripPlanService {
     public void tripPlanDeleted(int tripPlanNo) throws Exception {
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
         if(tripPlan.isPlanDeleted()){
-            tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), false);
+            tripPlan.setTripPlanDelDate(null);
+            tripPlan.setPlanDeleted(false);
+            tripPlanDao.tripPlanDeleted(tripPlan);
         } else {
-            tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), true);
+            tripPlan.setTripPlanDelDate(new Date());
+            tripPlan.setPlanDeleted(true);
+            tripPlanDao.tripPlanDeleted(tripPlan);
         }
     }
 
     @Override // 여행플랜 완료 설정 (완료 이후 권한제외 수정 불가능)
     public void tripPlanCompleted(int tripPlanNo) throws Exception {
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), true);
+        tripPlanDao.tripPlanCompleted(tripPlan.getTripPlanNo(), true);
     }
 
     @Override // 여행플랜 추천수 증가

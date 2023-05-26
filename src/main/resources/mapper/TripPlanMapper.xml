@@ -40,7 +40,7 @@
         </collection>
     </resultMap>
 
-    <!-- 여행플랜 조회 -->
+    <!-- 여행플랜 목록 조회 -->
     <select id="selectTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
         SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail, tp.trip_days, tp.trip_plan_reg_date,
         tp.trip_plan_del_date, tp.is_plan_deleted, tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed,
@@ -76,7 +76,12 @@
                     tp.trip_plan_no DESC
                 </otherwise>
             </choose>
-        LIMIT #{search.currentPage}, #{search.pageSize};
+        LIMIT #{search.offset}, #{search.limit};
+    </select>
+
+    <select id="selectTripPlanCount" resultType="int">
+        SELECT COUNT(*) FROM trip_plan
+        WHERE is_plan_public = TRUE AND is_plan_deleted = FALSE
     </select>
 
     <!-- 서치 쿼리문 추가해야함 -->
@@ -123,7 +128,7 @@
         trip_days = #{tripDays},
         trip_plan_reg_date = #{tripPlanRegDate},
         is_plan_public = #{isPlanPublic},
-        is_plan_downloadable = #{isPlanDownloadable},
+        is_plan_downloadable = #{isPlanDownloadable}
         WHERE trip_plan_no = #{tripPlanNo}
     </update>
 
@@ -147,9 +152,10 @@
     </update>
 
     <!-- 여행플랜 삭제시 더이상 조회 불가능하도록 -->
-    <update id="tripPlanDeleted" parameterType="Map">
+    <update id="tripPlanDeleted" parameterType="com.bit.motrip.domain.TripPlan">
         UPDATE trip_plan
-        SET is_plan_deleted = #{isPlanDeleted}
+        SET is_plan_deleted = #{isPlanDeleted},
+        trip_plan_del_date = #{tripPlanDelDate}
         WHERE trip_plan_no = #{tripPlanNo}
     </update>
 
