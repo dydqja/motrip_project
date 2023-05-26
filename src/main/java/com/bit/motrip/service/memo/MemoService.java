@@ -4,6 +4,7 @@ import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MemoService {
 
@@ -18,7 +19,7 @@ public interface MemoService {
     //메모를 만들면서 동시에 memo_access테이블에도 is_author = true 인 접근권한을 추가해야한다.
     //add이후 add된 Memo를 get해서 return 하는 것으로 화면단에 즉시 출력한다.
 
-    List<Memo> getMemoList(String userId, Search search) throws Exception;
+    Map<String,MemoDoc> getMemoList(String userId, Search search) throws Exception;
     //세션으로부터 user 를 검출해서 보내주는 것은 컨트롤단에서 하기로 한다.
 
     //회원이 접근할 수 있는 모든 메모를 조회하는 기능.

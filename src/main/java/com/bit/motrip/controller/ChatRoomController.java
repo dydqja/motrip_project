@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@CrossOrigin
 @Controller
 @RequestMapping("/chatRoom/*")
 public class ChatRoomController {

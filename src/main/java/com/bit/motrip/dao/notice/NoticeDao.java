@@ -15,7 +15,7 @@ public interface NoticeDao {
     public void addNotice(Notice notice) throws Exception;
 
     //조회수 증가 서비스
-    public void increaseViews(Notice notice) throws Exception;
+    public void increaseViews(int noticeNo) throws Exception;
 
     //공지 상세 조회 서비스
     public Notice getNotice(int noticeNo) throws Exception;
@@ -34,5 +34,5 @@ public interface NoticeDao {
     public void updateNotice(Notice notice) throws Exception;
 
     //공지 삭제 서비스
-    public void deleteNotice(Notice notice) throws Exception;
+    public void deleteNotice(int noticeNo) throws Exception;
 }

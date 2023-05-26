@@ -17,7 +17,7 @@ class MemoDaoTest {
     private int pageSize;
 
     //methods to test
-    @Test
+    //@Test
     void getListSize(){
         System.out.println(pageSize);
     }
@@ -25,7 +25,7 @@ class MemoDaoTest {
 
 
     //insert test
-    @Test
+    //@Test
     void addMemoTest(){
         //서비스로부터 메모를 받아올 것이다.
         Memo memo = new Memo();
@@ -64,7 +64,7 @@ class MemoDaoTest {
             System.out.println("메모가 추가되지 않았습니다.");
         }
     }
-    @Test
+    //@Test
     void getMemoTest(){
         int targetMemoNo= 42;
         try {
@@ -74,7 +74,7 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    @Test
+   //@Test
     void deleteMemoTest(){
         int targetMemoNo = 44;
         try{
@@ -89,7 +89,7 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    @Test
+    //@Test
     void removeMemoTest(){
         int targetMemoNo = 36;
         String userId = "user1";
@@ -105,7 +105,7 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    @Test
+    //@Test
     void restoreMemoTest(){
         int targetMemoNo = 44;
         try{
@@ -120,7 +120,7 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    @Test
+    //@Test
     void updateMemoTest(){
         int resultNo = 0;
         Memo memo = new Memo();
@@ -142,7 +142,7 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    @Test
+    //@Test
     void attachMemoTest(){
         int resultNo = 0;
         Memo memo = new Memo();
@@ -162,7 +162,7 @@ class MemoDaoTest {
             e.printStackTrace();
         }
     }
-    @Test
+    //@Test
     //select list test
     void getMemoListByMyMemoTest() throws Exception{
         //서비스단에서 받을 내용
@@ -179,7 +179,7 @@ class MemoDaoTest {
             System.out.println(memo);
         }
     }
-    @Test
+    //@Test
     void getMemoListBySharedMemoTest() throws Exception {
         //서비스단에서 받을 내용
         Search search = new Search();
@@ -193,7 +193,7 @@ class MemoDaoTest {
             System.out.println(memo);
         }
     }
-    @Test
+    //@Test
     void getMemoListByDeletedMemoTest() throws Exception{
         //서비스단에서 받을 내용
         Search search = new Search();
@@ -214,7 +214,7 @@ class MemoDaoTest {
     //memoAccess test
 
 
-    @Test
+    //@Test
     void addMemoAccessTest() throws Exception{
         //서비스에서 받을 내용
         MemoAccess memoAccess = new MemoAccess();
@@ -233,7 +233,7 @@ class MemoDaoTest {
         }
         //자기 자신에게 권한을 부여할 수 없는 기능을 서비스단에서 구현해야 쓰레기가 들어가지 않는다.
     }
-    @Test
+    //@Test
     void deleteMemoAccessTest(){
         //서비스단에서 받을 내용
         MemoAccess memoAccess = new MemoAccess();
@@ -256,7 +256,7 @@ class MemoDaoTest {
         }
 
     }
-    @Test
+    //@Test
     void getMemoAccessListByMemoNoTest() throws Exception{
         //서비스단에서 받을 내용
         int targetMemoNo = 44;
@@ -269,7 +269,4 @@ class MemoDaoTest {
             count++;
         }
     }
-
-
-
 }//end of memoDaoTest

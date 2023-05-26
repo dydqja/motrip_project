@@ -13,10 +13,38 @@ public class Search {
     private int startRowNum;
 
     private int mysqlStartRowNum;
+    private int limit; // 한화면에 몇개를 보여줄지
+    private int offset; // 리스트 어디부터 보여줄지
+    private int totalCount; // 리스트 총 갯수
+
 
     //Constructor
     public Search() {
 
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 
     //Method

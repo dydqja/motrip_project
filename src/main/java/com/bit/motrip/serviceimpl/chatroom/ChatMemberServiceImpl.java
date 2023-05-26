@@ -1,8 +1,10 @@
 package com.bit.motrip.serviceimpl.chatroom;
 
 import com.bit.motrip.dao.chatroom.ChatMemberDao;
+import com.bit.motrip.dao.chatroom.ChatRoomDao;
 import com.bit.motrip.domain.ChatMember;
 import com.bit.motrip.service.chatroom.ChatMemberService;
+import com.bit.motrip.service.chatroom.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,11 @@ public class ChatMemberServiceImpl implements ChatMemberService {
     @Autowired
     @Qualifier("chatMemberDao")
     ChatMemberDao chatMemberDao;
+
+    @Autowired
+    @Qualifier("chatRoomDao")
+    private ChatRoomDao chatRoomDao;
+
     //멤버 더하기
     @Override
     public void addChatMember(ChatMember chatMember) throws Exception {
@@ -32,7 +39,19 @@ public class ChatMemberServiceImpl implements ChatMemberService {
                 return;
             }
         }
-        chatMemberDao.addChatMember(chatMember);
+
+        //회원이 maxPersons 이면 참여불가 chatRoomStatus 가 0 이 아니면 참여 불가
+        int chatRoomMaxPersons = chatRoomDao.getChatRoom(chatMember.getChatRoomNo()).getMaxPersons();
+        int chatRoomCurrentPersons = chatRoomDao.getChatRoom(chatMember.getChatRoomNo()).getCurrentPersons();
+        int chatRoomStatus = chatRoomDao.getChatRoom(chatMember.getChatRoomNo()).getChatRoomStatus();
+
+        if(chatRoomMaxPersons>chatRoomCurrentPersons && chatRoomStatus == 0){
+            chatMemberDao.addChatMember(chatMember);
+        }
+        else{
+            System.out.println("참여 불가능합니다.");
+        }
+
     }
 
     @Override

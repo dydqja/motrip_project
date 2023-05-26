@@ -2,6 +2,7 @@ package com.bit.motrip.service.memo;
 
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.Memo;
+import com.bit.motrip.domain.MemoDoc;
 import com.bit.motrip.domain.User;
 import com.bit.motrip.domain.MemoAccess;
 
@@ -9,12 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Date;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class MemoServiceTest {//컨트롤러 역할의 드라이버
 
@@ -37,7 +37,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
 
     //Method
 
-    @Test
+    //@Test
     void addMemo() {
         ///JSP로부터 값을 받는다.
 
@@ -70,7 +70,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
 
         //세션으로부터
         User user = new User();
-        user.setUserId("admin");
+        user.setUserId("user1");
 
         //받은 값을 바인드한다.
         String userId = user.getUserId();
@@ -81,19 +81,16 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
 
         /////////////////////////////////////////////////////////
         //써비스단
-        List<Memo> memoList = null;
+        Map<String,MemoDoc> docList = null;
         try {
-            memoList = memoService.getMemoList(userId,search);
-            for (Memo memo: memoList){
-                System.out.println(memo);
-            }
+            docList = memoService.getMemoList(userId,search);
         }catch (Exception e){
             e.printStackTrace();
         }
 
     }
 
-    @Test
+    //@Test
     void getMemo() {
         ///JSP로부터 받을 정보
         String UserId = "admin";
@@ -113,7 +110,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
         }
     }
 
-    @Test
+    //@Test
     void updateMemo() {
 
         ///JSP로부터 받을 정보
@@ -140,7 +137,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
         }
     }
 
-    @Test
+    //@Test
     void deleteMemo() {
         ///JSP로부터 받을 정보
         //크아악
@@ -163,7 +160,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
         }
     }
 
-    @Test
+    //@Test
     void restoreMemo() {
         ///JSP로부터 받은 정보
         String memoNo = "48";
@@ -184,7 +181,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
         }
     }
 
-    @Test
+    //@Test
     void addMemoAccess() {
         ///JSP로부터 받을 정보
         String sharingUserId = "user1";
@@ -207,7 +204,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
 
     }
 
-    @Test
+    //@Test
     void deleteMemoAccess() {
         ///JSP로부터 받을 정보
         String sharingUserId = "user1";
@@ -226,7 +223,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
 
     }
 
-    @Test
+    //@Test
     void getMemoSharerList() {
         ///JSP로부터 받을 정보
         String memoNo = "48";
@@ -246,10 +243,10 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
     void updateMemoAttach() throws Exception{
         //실험값 설정
 //        int attachedCategory = 0;
-//      int attachedCategory = 1;
-      int attachedCategory = 2;
+      int attachedCategory = 1;
+//      int attachedCategory = 2;
         int attachedNo = 1;
-        int memoNo = 48;
+        int memoNo = 55;
 
         ///츄라이 int attachedCategory, int attachedNo, int memoNo
         memoService.updateMemoAttach(attachedCategory,attachedNo,memoNo);

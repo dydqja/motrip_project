@@ -2,6 +2,7 @@ package com.bit.motrip.qna;
 
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.qna.QnaDao;
+import com.bit.motrip.domain.Notice;
 import com.bit.motrip.domain.Qna;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,11 +115,10 @@ class QnaDaoTest {
 
         // Arrange
         Qna qna = new Qna();
-        qna.setQnaNo(4);
-
-        Qna getQna = qnaDao.getQna(qna.getQnaNo());
+        qna.setQnaNo(2);
 
         // Act
-        qnaDao.deleteQna(getQna);
+        qnaDao.deleteQna(qna.getQnaNo());
+
     }
 }

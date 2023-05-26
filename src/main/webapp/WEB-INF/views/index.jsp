@@ -15,8 +15,22 @@
         });
 
 
+        //여행플랜리스트
+        $(function() {
+                $("button[id='tripPlanList']").on("click", function() {
+                    window.location.href = "/tripPlan/tripPlanList";
+                });
+            });
 
 
+         //공지사
+         $(function() {
+                   //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+                   $("a:contains('공지사항')").on("click" , function() {
+
+                       self.location = "/notice/getNoticeList"
+                   });
+        });
 
 
     </script>
@@ -26,6 +40,24 @@
 
     <div>
         <button id="login">로그인/회원가입</button>
+    </div>
+
+    <button type="button" id="tripPlanList">여행플랜 목록이동</button>
+
+    <div>
+        <a href="#">
+            <h2>공지사항</h2>
+        </a>
+    </div>
+
+    <div>
+        <p>
+            이미지 테스트용
+            이것은 프로젝트 폴더 내부의 이미지를 불러오는 것입니다.
+            <img src="images/vpvp.jpg" width="100" height="100">
+            이것은 업로드되는 이미지를 불러오는 것입니다.
+            <img src="images/mountpoint/pika.jpg" width="100" height="100">
+        </p>
     </div>
 
 

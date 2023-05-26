@@ -31,13 +31,17 @@ public class TripPlanController {
     public String tripPlanList(@ModelAttribute("search")Search search, Model model) throws Exception {
         System.out.println("GET : TripPlanList()");
 
-        if(search.getPageSize() == 0){search.setCurrentPage(0);}
-        search.setCurrentPage(search.getCurrentPage());
+        if(search.getPageSize() == 0){
+            search.setCurrentPage(1);
+        } else {
+            search.setCurrentPage(search.getCurrentPage());
+        }
 
-        List<TripPlan> tripPlanList = tripPlanService.selectTripPlanList(search);
+        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(search);
+        tripPlanList.get("tripPlanList");
 
-        System.out.println(tripPlanList.toString());
-        model.addAttribute("tripPlanList", tripPlanList);
+        System.out.println(tripPlanList.get("tripPlanList").toString());
+        model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
 
         return "tripplan/tripPlanList.jsp";
     }
