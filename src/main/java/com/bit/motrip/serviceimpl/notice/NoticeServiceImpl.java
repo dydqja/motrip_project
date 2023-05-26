@@ -36,8 +36,8 @@ public class NoticeServiceImpl implements NoticeService {
     
     //조회수 증가 서비스
     @Override
-    public void increaseViews(Notice notice) throws Exception {
-        noticeDao.increaseViews(notice);
+    public void increaseViews(int noticeNo) throws Exception {
+        noticeDao.increaseViews(noticeNo);
     }
 
     //공지 상세 조회 서비스
@@ -70,7 +70,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     //공지 삭제 서비스
     @Override
-    public void deleteNotice(Notice notice) throws Exception{
-        noticeDao.deleteNotice(notice);
+    public void deleteNotice(int noticeNo) throws Exception{
+        noticeDao.deleteNotice(noticeNo);
     }
 }
