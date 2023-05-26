@@ -2,17 +2,15 @@ package com.bit.motrip.serviceimpl.memo;
 
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.memo.MemoDao;
-import com.bit.motrip.domain.Memo;
-import com.bit.motrip.domain.MemoAccess;
-import com.bit.motrip.domain.User;
+import com.bit.motrip.domain.*;
 import com.bit.motrip.service.memo.MemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import java.sql.Date;
-import java.util.List;
+import java.util.*;
+
 @Service("memoServiceImpl")
 public class MemoServiceImpl implements MemoService {
 
@@ -76,7 +74,10 @@ public class MemoServiceImpl implements MemoService {
     }
 
     @Override
-    public List<Memo> getMemoList(String userId, Search search) {
+    public Map<String,MemoDoc> getMemoList(String userId, Search search) {
+
+        List<Map<Integer,MemoDoc>> memoDocList = new ArrayList<>();
+        List<Memo> memoList = null;
 
         //컨트롤러로부터 유저와 검색조건을 받을 것이다. 확실히 User 를 받고 나면, Search 내부의 서치키워드에 User를 넣는 방법으로 변경하자.
         search.setSearchKeyword(userId);
@@ -87,16 +88,46 @@ public class MemoServiceImpl implements MemoService {
             switch (search.getSearchCondition()) {
                 case "myMemo":
                     System.out.println("myMemo");
-                    return memoDao.getMemoListByMyMemo(search);
+                    memoList = memoDao.getMemoListByMyMemo(search);
+                    break;
                 case "sharedMemo":
                     System.out.println("sharedMemo");
-                    return memoDao.getMemoListBySharedMemo(search);
+                    memoList = memoDao.getMemoListBySharedMemo(search);
+                    break;
                 case "deletedMemo":
                     System.out.println("deletedMemo");
-                    return memoDao.getMemoListByDeletedMemo(search);
+                    memoList = memoDao.getMemoListByDeletedMemo(search);
+                    break;
                 default:
                     throw new Exception("searchCondition이 잘못되었습니다.");
             }
+
+            //디버그문구
+            System.out.println("DB로부터 갖고온 메모들의 정보를 출력합니다.");
+            for(Memo memo : memoList){
+                System.out.println(memo);
+            }
+            System.out.println("DB로부터 갖고온 메모들의 정보의 출력이 끝났습니다.");
+            //디버그 끝
+
+            //중복을 제거한 memoDoc들을 만든다.
+            MemoDocContainer docCon = new MemoDocContainer();
+            for(Memo memo:memoList){
+                docCon.putMemo(memo);
+            }
+            //로직 종료 및 리턴
+            System.out.println("리턴할 맵의 내부 상태를 출력합니다.");
+            Map<String,MemoDoc> targetMap = docCon.getNoDupMap();
+            Set<String> keys = targetMap.keySet();
+            List<String> keyList = new ArrayList<>(keys);
+
+            for(String key:keyList){
+                System.out.println(targetMap.get(key));
+            }
+
+            return docCon.getNoDupMap();
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,12 +175,12 @@ public class MemoServiceImpl implements MemoService {
                 attachingMemo.setAttachedTripPlanNo(attachedNo);
                 break;
             case 1:
-                //chatRoom
-                attachingMemo.setAttachedChatRoomNo(attachedNo);
-                break;
-            default:
                 //review
                 attachingMemo.setAttachedReviewNo(attachedNo);
+                break;
+            default:
+                //chatRoom
+                attachingMemo.setAttachedChatRoomNo(attachedNo);
                 break;
         }
 
@@ -259,6 +290,8 @@ public class MemoServiceImpl implements MemoService {
         }
         return isSuccess;
     }
+
+
 
 }
 

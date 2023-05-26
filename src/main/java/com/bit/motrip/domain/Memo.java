@@ -22,6 +22,9 @@ public class Memo {
     private Review attachedReview;
     private ChatRoom attachedChatRoom;
 
+    //메모의 부착 카테고리
+    // 0: 미부착 1: 여행계획, 2: 리뷰, 3: 채팅방
+
     //getter and setter
 
 
@@ -129,6 +132,7 @@ public class Memo {
         this.attachedChatRoom = attachedChatRoom;
     }
 
+
     @Override
     public String toString() {
         return "Memo{" +
@@ -142,6 +146,10 @@ public class Memo {
                 ", attachedTripPlanNo=" + attachedTripPlanNo +
                 ", attachedReviewNo=" + attachedReviewNo +
                 ", attachedChatRoomNo=" + attachedChatRoomNo +
+                ", attachedTripPlan=" + attachedTripPlan +
+                ", attachedReview=" + attachedReview +
+                ", attachedChatRoom=" + attachedChatRoom +
                 '}';
     }
 }
+

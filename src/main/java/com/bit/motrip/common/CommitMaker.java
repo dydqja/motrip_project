@@ -28,15 +28,14 @@ public class CommitMaker {
         //                        0         1          2            3                4                5
         String[] commitType = {"Create", "Update", "Delete", "Create&Update", "Update&Delete", "Create&Delete"};
         //커밋 소제목
-        String commitTitle = "MemoService 초벌 테스트& 보완완료";
+        String commitTitle = "MemoService 5단조인 목록보기 보완";
         //수정내역
-        String commitBody = "MemoService 간단 테스트 완료." +
-                "MemoAccess 를 추가할 때 중복 체크가 없던 문제를 해결 " +
-                "MemoService 단의 각종 메소드들의 리턴 타입을 Memo로 지정해서 화면단이 바뀐 것을 바로 받아보도록 수정" +
-                "memo 프로퍼티로부터 각종 메타데이터를 받아와서 서비스에서 활용하도록 변경" +
+        String commitBody = "MemoDoc = 메모가 부착된 문서를 표현하기 위한 DTO를 만들었다." +
+                "MemoDocContainer = Memo들이 부착된 문서들을 중복을 제거하고 하나로 엮기 위한 메소드를 가진 객체를 만들었다." +
+                "MemoMapper = 조인할 때 조건을 잘못 설정했었다. MemoAccess테이블을 기준으로 조인하여 논리오류 없이 목록을 가져올 수 있도록 수정했다." +
                 "";
         //수정파일
-        String changedFiles = "(Memo.java, MemoDao.java, MemoService.java, MemoMapper.xml, MemoServiceImpl.java)";
+        String changedFiles = "(Memo.java, MemoDoc.java, MemoDocContainer.java, MemoMapper.xml)";
         gitCommitMSGBuilder(committers[0],commitType[1],commitTitle,commitBody,changedFiles);
     }
 }
