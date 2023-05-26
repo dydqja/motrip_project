@@ -42,7 +42,7 @@ class NoticeDaoTest {
         notice.setNoticeNo(5);
 
         // Increase views
-        noticeDao.increaseViews(notice);
+        noticeDao.increaseViews(notice.getNoticeNo());
 
         // Act
         Notice getNotice = noticeDao.getNotice(notice.getNoticeNo());
@@ -51,7 +51,7 @@ class NoticeDaoTest {
 
     //공지 목록 조회 테스트
     //@Test
-    public void getNoticeListDaoTest() throws Exception {
+    void getNoticeListDaoTest() throws Exception {
 
         // Arrange
         Search search = new Search();
@@ -70,7 +70,7 @@ class NoticeDaoTest {
 
     //공지 수정 테스트
     //@Test
-    public void updateNoticeDaoTest() throws Exception {
+    void updateNoticeDaoTest() throws Exception {
 
         // Arrange
         Notice notice = new Notice();
@@ -91,16 +91,14 @@ class NoticeDaoTest {
 
     //공지 삭제 테스트
     //@Test
-    public void deleteNoticeDaoTest() throws Exception {
+    void deleteNoticeDaoTest() throws Exception {
 
         // Arrange
         Notice notice = new Notice();
         notice.setNoticeNo(2);
 
-        Notice getNotice = noticeDao.getNotice(notice.getNoticeNo());
-
         // Act
-        noticeDao.deleteNotice(getNotice);
+        noticeDao.deleteNotice(notice.getNoticeNo());
 
     }
 }

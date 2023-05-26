@@ -1,20 +1,21 @@
 package com.bit.motrip.serviceimpl.tripplan;
 
 import com.bit.motrip.common.Search;
+import com.bit.motrip.dao.evaluateList.EvaluateListDao;
 import com.bit.motrip.dao.tripplan.DailyPlanDao;
 import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
 import com.bit.motrip.domain.DailyPlan;
+import com.bit.motrip.domain.EvaluateList;
 import com.bit.motrip.domain.Place;
 import com.bit.motrip.domain.TripPlan;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 @Service("tripPlanServiceImpl")
 public class TripPlanServiceImpl implements TripPlanService {
@@ -28,28 +29,40 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Autowired
     @Qualifier("placeDao")
     private PlaceDao placeDao;
+    @Autowired
+    @Qualifier("evaluateListDao")
+    private EvaluateListDao evaluateListDao;
 
-    private TripPlan tripPlan;
-    private List<DailyPlan> dailyPlan;
-    private List<Place> place;
 
-    @Override
-    public List<TripPlan> selectPublicTripPlanList(Search search) throws Exception {
-        return tripPlanDao.selectPublicTripPlanList(search);
-    }
+    //화면에 보여줄 리스트의 수
+    @Value("${tripPlanPageSize}")
+    private int tripPlanPageSize;
 
-    @Override
-    public List<TripPlan> selectMyTripPlanList(String tripPlanAuthor, Search search) throws Exception {
-        return tripPlanDao.selectMyTripPlanList(tripPlanAuthor, search);
+    @Override // 공유된 여행플랜 목록
+    public Map<String, Object> selectTripPlanList(Search search) throws Exception {
+
+        int offset = (search.getCurrentPage() - 1) * tripPlanPageSize;
+
+        search.setTotalCount(tripPlanDao.selectTripPlanCount()); // 여행플랜 총 카운트
+        search.setCurrentPage(search.getCurrentPage()); // 클라이언트에서 요청한 페이지 번호
+        search.setLimit(tripPlanPageSize); // LIMIT 값은 페이지당 항목 수와 동일합니다.
+        search.setOffset(offset); //
+
+        Map<String, Object> paramaters = new HashMap<>();
+        paramaters.put("tripPlanAuthor", "");
+        paramaters.put("search", search);
+        paramaters.put("tripPlanList", tripPlanDao.selectTripPlanList(paramaters));
+
+        return paramaters;
     }
 
     @Override // 여행플랜 저장
     public void addTripPlan(TripPlan tripPlan) throws Exception {
         tripPlanDao.addTripPlan(tripPlan);
-        dailyPlan = tripPlan.getDailyplanResultMap();
+        List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
         for(int i=0; i<dailyPlan.size(); i++) {
             dailyPlanDao.addDailyPlan(dailyPlan.get(i));
-            place = dailyPlan.get(i).getPlaceResultMap();
+            List<Place> place = dailyPlan.get(i).getPlaceResultMap();
             for(int j=0; j<place.size(); j++){
                 placeDao.addPlace(place.get(j));
             }
@@ -61,33 +74,36 @@ public class TripPlanServiceImpl implements TripPlanService {
         return tripPlanDao.getTripPlan();
     }
 
-    @Override // 선택한 여행플랜에 대한 정보 가져오기
+    @Override // 선택한 여행플랜에 대한 조회수를 올리고 정보 가져오기
     public TripPlan selectTripPlan(int tripPlanNo) throws Exception {
+        TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
+        tripPlan.setTripPlanViews(tripPlan.getTripPlanViews() + 1);
+        tripPlanDao.tripPlanViews(tripPlan);
         return tripPlanDao.selectTripPlan(tripPlanNo);
     }
 
     @Override // 여행플랜 수정
     public TripPlan updateTripPlan(TripPlan tripPlan) throws Exception{
-        this.tripPlan = tripPlan;
-        if(!this.tripPlan.isTripCompleted()){
-            tripPlanDao.updateTripPlan(tripPlan);
-            dailyPlan = tripPlan.getDailyplanResultMap();
-            for(int i=0; i<dailyPlan.size(); i++){
-                dailyPlanDao.updateDailyPlan(dailyPlan.get(i));
-                place = dailyPlan.get(i).getPlaceResultMap();
-                for(int j=0; j<place.size(); j++){
-                    placeDao.updatePlace(place.get(j));
-                }
-            }
-            this. tripPlan = tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
-        } else {
-            System.out.println("여행이 완료된 플랜은 더이상 수정할수없습니다.");
-        }
-        return this.tripPlan;
+//        if(!tripPlan.isTripCompleted()){
+//            tripPlanDao.updateTripPlan(tripPlan);
+//            List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
+//            for(int i=0; i<dailyPlan.size(); i++){
+//                dailyPlanDao.updateDailyPlan(dailyPlan.get(i));
+//                List<Place> place = dailyPlan.get(i).getPlaceResultMap();
+//                for(int j=0; j<place.size(); j++){
+//                    placeDao.updatePlace(place.get(j));
+//                }
+//            }
+//            tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+//        } else {
+//            System.out.println("여행이 완료된 플랜은 더이상 수정할수없습니다.");
+//        }
+        return tripPlan;
     }
 
     @Override // 여행플랜 완전삭제
     public void deleteTripPlan(int tripPlanNo) throws Exception {
+        TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
         tripPlanDao.deleteTripPlan(tripPlanNo);
     }
 
@@ -116,14 +132,43 @@ public class TripPlanServiceImpl implements TripPlanService {
     public void tripPlanDeleted(int tripPlanNo) throws Exception {
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
         if(tripPlan.isPlanDeleted()){
-            tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), false);
+            tripPlan.setTripPlanDelDate(null);
+            tripPlan.setPlanDeleted(false);
+            tripPlanDao.tripPlanDeleted(tripPlan);
         } else {
-            tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), true);
+            tripPlan.setTripPlanDelDate(new Date());
+            tripPlan.setPlanDeleted(true);
+            tripPlanDao.tripPlanDeleted(tripPlan);
         }
     }
 
     @Override // 여행플랜 완료 설정 (완료 이후 권한제외 수정 불가능)
     public void tripPlanCompleted(int tripPlanNo) throws Exception {
-        tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), true);
+        TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
+        tripPlanDao.tripPlanCompleted(tripPlan.getTripPlanNo(), true);
     }
+
+    @Override // 여행플랜 추천수 증가
+    public void tripPlanLikes(TripPlan tripPlan) throws Exception {
+        EvaluateList evaluate = new EvaluateList();
+        Map<String,Object> paramaters = new HashMap<>();
+        paramaters.put("evaluatedTripPlanNo", tripPlan.getTripPlanNo());
+        paramaters.put("searchCondition", "tripPlan");
+        List<EvaluateList> tripPlanEvaluateList = evaluateListDao.getEvaluation(paramaters);
+        for (int i=0; i<tripPlanEvaluateList.size(); i++){
+            if(tripPlanEvaluateList.get(i).getEvaluaterId().equals(tripPlan.getTripPlanAuthor())){
+                System.out.println("이미 추천을 누른 여행플랜입니다.");
+                return;
+            }
+        }
+        // 중복체크를 확인하여 이상이없다면 추천수를 올린다.
+        evaluate.setEvaluaterId(tripPlan.getTripPlanAuthor());
+        evaluate.setEvaluatedTripPlanNo(tripPlan.getTripPlanNo());
+        evaluateListDao.addEvaluation(evaluate);
+        // 추천수를 올리고 다시한번 조회하여 총 추천수를 저장
+        tripPlan.setTripPlanLikes(evaluateListDao.getEvaluation(paramaters).size());
+        tripPlan.setTripPlanNo(tripPlan.getTripPlanNo());
+        tripPlanDao.tripPlanLikes(tripPlan);
+    }
+
 }

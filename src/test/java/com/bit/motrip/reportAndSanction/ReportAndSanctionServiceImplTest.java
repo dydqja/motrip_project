@@ -1,5 +1,7 @@
 package com.bit.motrip.reportAndSanction;
 
+import com.bit.motrip.common.Page;
+import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.EvaluateList;
 import com.bit.motrip.domain.ReportAndSanction;
 import com.bit.motrip.service.ReportAndSanction.ReportAndSanctionService;
@@ -10,9 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @SpringBootTest
 class ReportAndSanctionServiceImplTest {
@@ -44,10 +49,64 @@ class ReportAndSanctionServiceImplTest {
             reportAndSanction.setReportedUserId("testUser21");
             reportAndSanction.setReportReason(json);
             reportAndSanction.setReportContents("욕설과 부적절한 내용을 도배했습니다.");
-            reportAndSanction.setReportChatRoomNo(1);
+            reportAndSanction.setReportReviewNo(1);
 
             reportAndSanctionService.addReport(reportAndSanction);
         }
     }
+
+//    @Test
+    void getList() throws Exception {
+        Search search = new Search();
+        Page page = new Page();
+        int pageSize = 3;
+        int pageUnit = 5;
+
+        if(search.getCurrentPage() ==0 ){
+            search.setCurrentPage(1);
+        }
+        search.setPageSize(pageSize);
+
+        Map<String , Object> map=reportAndSanctionService.getList(search);
+
+        Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+        System.out.println(resultPage);
+    }
+
+//    @Test
+    void getReport() throws Exception {
+
+        ReportAndSanction reportAndSanction = new ReportAndSanction();
+
+        reportAndSanction.setReportNo(4);
+
+        ReportAndSanction getReport = reportAndSanctionService.getReport(reportAndSanction.getReportNo());
+
+        System.out.println(getReport.toString());
+
+    }
+
+    @Test
+    void updateSanction() throws Exception {
+
+        ReportAndSanction reportAndSanction = new ReportAndSanction();
+
+        reportAndSanction.setReportNo(4);
+
+        ReportAndSanction getReport = reportAndSanctionService.getReport(reportAndSanction.getReportNo());
+
+        Timestamp sanctionDate = new Timestamp(System.currentTimeMillis());
+
+        getReport.setSanctionDetail("경고");
+        getReport.setSanctionResult(1);
+        getReport.setSanctionDate(sanctionDate);
+
+        System.out.println(getReport.toString());
+
+        reportAndSanctionService.updateSanction(getReport);
+
+    }
+
+
 
 }

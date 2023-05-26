@@ -7,11 +7,11 @@ import com.bit.motrip.domain.TripPlan;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TripPlanService {
 
-    public List<TripPlan> selectPublicTripPlanList(Search search) throws Exception;
-    public List<TripPlan> selectMyTripPlanList(String tripPlanAuthor, Search search) throws Exception;
+    public Map<String, Object> selectTripPlanList(Search search) throws Exception;
     public void addTripPlan(TripPlan tripPlan) throws Exception;
     public int getTripPlan() throws Exception;
     public TripPlan selectTripPlan(int tripPlanNo) throws Exception;
@@ -21,5 +21,6 @@ public interface TripPlanService {
     public void tripPlanDownloadable(int tripPlanNo) throws Exception;
     public void tripPlanDeleted(int tripPlanNo) throws Exception;
     public void tripPlanCompleted(int tripPlanNo) throws Exception;
+    public void tripPlanLikes(TripPlan tripPlan) throws Exception;
 
 }

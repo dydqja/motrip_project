@@ -6,6 +6,7 @@ import com.bit.motrip.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface EvaluateListDao {
@@ -14,7 +15,7 @@ public interface EvaluateListDao {
     public void addEvaluation(EvaluateList evaluateList) throws Exception;
 
     //select
-    public List<EvaluateList> getEvaluation(String evaluaterId) throws Exception;
+    public List<EvaluateList> getEvaluation(Map evaluaterId) throws Exception;
 
     //delete
     public void deleteBlacklist(EvaluateList evaluateList) throws Exception;

@@ -1,5 +1,6 @@
 package com.bit.motrip.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ChatRoom { //채팅방 도메인
@@ -13,10 +14,18 @@ public class ChatRoom { //채팅방 도메인
 
     private int chatRoomStatus; // 0 모집중 1 모집완료
     //getter & setter
+    private String strDate;
+    public String getStrDate() {
+        return strDate;
+    }
+
+    public void setStrDate(String strDate) {
+        this.strDate = strDate;
+    }
+
     public int getChatRoomNo() {
         return chatRoomNo;
     }
-
     public int getChatRoomStatus() {
         return chatRoomStatus;
     }
@@ -43,6 +52,7 @@ public class ChatRoom { //채팅방 도메인
 
     public void setTravelStartDate(Date travelStartDate) {
         this.travelStartDate = travelStartDate;
+
     }
 
     public String getAgeRange() {
