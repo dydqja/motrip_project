@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,13 +13,14 @@
 <%--      crossorigin="anonymous"--%>
 <%--    />--%>
 
-<%--    <link rel="stylesheet" type="text/css" href="/css/style.css">--%>
+    <link rel="stylesheet" href="/css/style.css">
+
     <title>ChatCord App</title>
   </head>
   <body>
     <div class="chat-container">
       <header class="chat-header">
-        <h1><i class="fas fa-smile"></i> 이승현의 채팅방</h1>
+        <h1><i class="fas fa-smile"></i> 이승현의 JSP 채팅방</h1>
         <a id="leave-btn" class="btn">Leave Room</a>
       </header>
       <main class="chat-main">
@@ -52,6 +53,6 @@
       crossorigin="anonymous"
     ></script> -->
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
   </body>
 </html>

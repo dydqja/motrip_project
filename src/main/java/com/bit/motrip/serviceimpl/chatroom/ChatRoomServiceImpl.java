@@ -35,6 +35,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public int addChatRoom(ChatRoom chatRoom,String userId,int tripPlanNo) throws Exception {
         System.out.println("addChatRoom");
+        chatRoom.setMaxPersons(1); // 채팅방 인원 1로 설정
         int newChatRoomNo = chatRoomDao.addChatRoom(chatRoom);
         if(newChatRoomNo == 1) {
             ChatMember chatMember = new ChatMember();
@@ -47,6 +48,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         else{
             System.out.println("채팅방 생성 실패하였습니다.");
         }
+
         //chatMemberDao.addChatMember();
         return chatRoom.getChatRoomNo();
     }
@@ -74,7 +76,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public List<ChatRoom> chatRoomList() throws Exception {
         List<ChatRoom> chatRoomList = chatRoomDao.chatRoomList();
-        System.out.println(chatRoomList.get(1).getTravelStartDate());
+
         for (ChatRoom cr:chatRoomList) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
             String strDate = simpleDateFormat.format(cr.getTravelStartDate());
