@@ -20,7 +20,13 @@
                 $("button[id='tripPlanList']").on("click", function() {
                     window.location.href = "/tripPlan/tripPlanList";
                 });
+
+                 $("button[id='addReview']").on("click", function() {
+                     window.location.href = "/review/addReviewView";
             });
+            });
+
+
 
 
          //공지사
@@ -58,6 +64,10 @@
             이것은 업로드되는 이미지를 불러오는 것입니다.
             <img src="images/mountpoint/pika.jpg" width="100" height="100">
         </p>
+    </div>
+
+    <div>
+        <button id="addReview">후기작성</button>
     </div>
 
 

@@ -19,7 +19,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     //후기 작성
     @Override
-    public void addReview() throws Exception {
+    public void addReview(Review review) throws Exception {
+
     }
 
     //공개된 후기 목록 조회

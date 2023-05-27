@@ -33,12 +33,51 @@
         <result property="parentCommentNo" column="parent_comment_no" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="tripPlanResultMap" type="com.bit.motrip.domain.TripPlan">
+        <id column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
+        <result column="trip_plan_author" property="tripPlanAuthor" jdbcType="VARCHAR"/>
+        <result column="trip_plan_title" property="tripPlanTitle" jdbcType="VARCHAR"/>
+        <result column="trip_plan_thumbnail" property="tripPlanThumbnail" jdbcType="VARCHAR"/>
+        <result column="trip_days" property="tripDays" jdbcType="INTEGER"/>
+        <result column="trip_plan_reg_date" property="tripPlanRegDate" jdbcType="DATE"/>
+        <result column="trip_plan_del_date" property="tripPlanDelDate" jdbcType="DATE"/>
+        <result column="is_plan_deleted" property="isPlanDeleted" jdbcType="TINYINT"/>
+        <result column="is_plan_public" property="isPlanPublic" jdbcType="TINYINT"/>
+        <result column="is_plan_downloadable" property="isPlanDownloadable" jdbcType="TINYINT"/>
+        <result column="is_trip_completed" property="isTripCompleted" jdbcType="TINYINT"/>
+        <result column="trip_plan_likes" property="tripPlanLikes" jdbcType="INTEGER"/>
+        <result column="trip_plan_views" property="tripPlanViews" jdbcType="INTEGER"/>
+    </resultMap>
+
     <!-- INSERT C -->
     <insert id="addReview" parameterType="com.bit.motrip.domain.Review">
         insert into review (
-        review_no, review_title, review_contents, review_thumbnail, insta_post_link, is_review_public, review_likes, view_count, review_date, is_review_deleted, review_del_date, trip_plan_no, review_author
+        trip_plan_no,
+        review_author,
+        review_title,
+        review_contents,
+        review_thumbnail,
+        insta_post_link,
+        is_review_public,
+        review_likes,
+        view_count,
+        review_reg_date,
+        is_review_deleted,
+        review_del_date
+
         ) values (
-        #{reviewNo}, #{reviewTitle}, #{reviewContents}, #{reviewThumbnail}, #{instaPostLink}, #{isReviewPublic}, #{reviewLikes}, #{viewCount}, #{reviewDate}, #{isReviewDeleted}, #{reviewDelDate}, #{tripPlanNo}, #{reviewAuthor}
+        #{tripPlanNo},
+        #{reviewAuthor},
+        #{reviewTitle},
+        #{reviewContents},
+        #{reviewThumbnail},
+        #{instaPostLink},
+        #{isReviewPublic},
+        #{reviewLikes},
+        #{viewCount},
+        CURRENT_TIMESTAMP,
+        #{isReviewDeleted},
+        #{reviewDelDate}
         )
     </insert>
 
