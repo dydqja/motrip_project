@@ -47,36 +47,27 @@ class TripPlanDaoTest {
     @Value("${tripPlanPageSize}")
     private int tripPlanPageSize; // 한화면에 보여질 여행계획 수
     private int currentPage = 0;
-    int tripPlanNo = 8; // 여행플랜 번호
+    int tripPlanNo = 18; // 여행플랜 번호
     String tripPlnaAuthor = "user1"; // 작성자 아이디
     String searchCondition = "trip_plan_views"; // 옵션
 
-    //@Test // 공유된 여행플랜 목록 확인
-    public void selectPublicTripPlanList() throws Exception {
+    //@Test // 여행플랜 목록 확인
+    public void selectTripPlanList() throws Exception {
         // 페이징 처리 및 옵션에 따른 정렬을 위해 세팅
         Search search = new Search();
         search.setCurrentPage(currentPage);
         search.setSearchCondition(searchCondition);
-        search.setPageSize(tripPlanPageSize);
+        search.setLimit(tripPlanPageSize);
+        search.setOffset(0);
 
-        List<TripPlan> tripPlan = tripPlanDao.selectPublicTripPlanList(search);
+        Map<String, Object> paramaters = new HashMap<>();
+        paramaters.put("search", search);
+        paramaters.put("tripPlanAuthor", "");
+
+        List<TripPlan> tripPlan = tripPlanDao.selectTripPlanList(paramaters);
 
         System.out.println(tripPlan.toString());
     }
-
-    //@Test // 내가 작성한 여행플랜 목록 확인
-    public void selectMyTripPlanList() throws Exception {
-        // 페이징 처리 및 옵션에 따른 정렬을 위해 세팅과 나의 아이디와 화면에 띄우고자 하는 게시물수
-        Map<String, Object> parameterMap = new HashMap<>();
-        parameterMap.put("tripPlanAuthor", tripPlnaAuthor);
-        parameterMap.put("currentPage", tripPlanPageSize);
-        parameterMap.put("pageSize", tripPlanPageSize);
-        parameterMap.put("searchCondition", searchCondition);
-
-        List<TripPlan> tripPlan = tripPlanDao.selectMyTripPlanList(parameterMap);
-        System.out.println(tripPlan.toString());
-    }
-
 
     //@Test // 여행플랜, 일차별여행플랜, 명소 한번에 저장
     public void addTripPlan() throws Exception {
@@ -85,18 +76,18 @@ class TripPlanDaoTest {
         Place place = new Place();
 
         // 여행일수 및 일차별 여행플랜의 수
-        int tripDays = 2;
+        int tripDays = 4;
         // 명소 갯수
-        int placeNo = 3;
+        int placeNo = 2;
 
         tripPlan.setTripPlanAuthor(tripPlnaAuthor);
-        tripPlan.setTripPlanTitle("용범과 함께하는 비트캠프 단일인입조 여행");
-        tripPlan.setTripPlanThumbnail("Seoul_city");
+        tripPlan.setTripPlanTitle("모여행 추가 테스트 입니다.");
+        tripPlan.setTripPlanThumbnail("532434234.jpg");
         tripPlan.setTripDays(tripDays);
         tripPlan.setTripPlanRegDate(new Date());
         tripPlan.setTripPlanDelDate(null);
         tripPlan.setPlanDeleted(false);
-        tripPlan.setPlanPublic(false);
+        tripPlan.setPlanPublic(true);
         tripPlan.setPlanDownloadable(false);
         tripPlan.setTripCompleted(false);
         tripPlan.setTripPlanLikes(0);
@@ -119,11 +110,11 @@ class TripPlanDaoTest {
             // 명소 저장
             for(int placeCount=0; placeCount<placeNo; placeCount++){
                 place.setDailyPlanNo(dailyPlanNo);
-                place.setPlaceTags("#" + placeCount + "확인");
-                place.setPlaceCoordinates("33.242452,127.0124124");
+                place.setPlaceTags("#" + placeCount + "태그 입력 테스트");
+                place.setPlaceCoordinates("42.623242," + placeCount + "129.4323413");
                 place.setPlaceImage("abcdef.jpg");
-                place.setPlacePhoneNumber("010-2222-2222");
-                place.setPlaceAddress("지하철1번출구");
+                place.setPlacePhoneNumber("010-5555-5555");
+                place.setPlaceAddress("확인용 확인용");
                 place.setPlaceCategory(0);
                 place.setTripTime(null);
                 placeDao.addPlace(place);
@@ -147,47 +138,35 @@ class TripPlanDaoTest {
     //@Test // 선택한 여행플랜 업데이트 및 일차별 여행플랜, 명소도 함께
     public void updateTripPlan() throws Exception {
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        List<DailyPlan> dailyPlanList = new ArrayList<>();
+        List<DailyPlan> dailyPlanList = tripPlan.getDailyplanResultMap();
         List<Place> placeList = new ArrayList<>();
-        
-        System.out.println(tripPlan.toString());
-        tripPlan.setTripPlanTitle("테스트 함께하는 태국 여행");
-
-        for(DailyPlan dailyPlan : tripPlan.getDailyplanResultMap()) {
-            System.out.println(dailyPlan.toString());
-            dailyPlanList.add(dailyPlan);
-            for (Place place : dailyPlan.getPlaceResultMap()) {
-                System.out.println(place.toString());
-                placeList.add(place);
-            }
+        for(DailyPlan dailyPlan : dailyPlanList) {
+            placeList = dailyPlan.getPlaceResultMap();
         }
+
+        System.out.println(tripPlan.toString());
+        System.out.println("변경전 ^^^^^^^^^^^^^^^^^^^^^^^^^");
+
+        tripPlan.setTripPlanTitle("함께하는 국내 여행");
         // 여행플랜이 완료되었다면 더이상 수정이 불가능
         if(!tripPlan.isTripCompleted()) {
-            System.out.println(dailyPlanList.get(0).toString());
-            System.out.println(placeList.get(2).toString());
-
             dailyPlanList.get(0).setDailyPlanContents("업데이트");
             dailyPlanList.get(1).setDailyPlanContents("완료");
-            placeList.get(0).setPlaceTags("서울2");
-            placeList.get(1).setPlaceTags("영종도3");
-            placeList.get(2).setPlaceTags("부산4");
-            placeList.get(3).setPlaceTags("여수5");
-            placeList.get(4).setPlaceTags("차이나타운6");
-
-            System.out.println(dailyPlanList.get(0).toString());
-            System.out.println(placeList.get(2).toString());
+            placeList.get(0).setPlaceTags("#서울 업데이트");
+            placeList.get(1).setPlaceTags("#충북 업데이트");
 
             // tripPlan 업데이트
             tripPlanDao.updateTripPlan(tripPlan);
             // dailyPlans 업데이트
-            for (int i = 0; i < dailyPlanList.size(); i++) {
-                dailyPlanDao.updateDailyPlan(dailyPlanList.get(i));
+            for(DailyPlan dailyPlan : dailyPlanList) {
+                dailyPlanDao.updateDailyPlan(dailyPlan);
             }
             // places 업데이트
-            for (int i = 0; i < placeList.size(); i++) {
-                placeDao.updatePlace(placeList.get(i));
+            for (Place place : placeList) {
+                placeDao.updatePlace(place);
             }
-            System.out.println("테스트 완료");
+            System.out.println("변경후 vvvvvvvvvvvvvvvvvvvvvvvv");
+            System.out.println(tripPlan.toString());
         }
     }
 
@@ -215,10 +194,12 @@ class TripPlanDaoTest {
     //@Test // 여행플랜 가져가기 유무
     public void tripPlanDownloadable() throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        if(tripPlan.isPlanDownloadable()){
-            tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), !tripPlan.isPlanDownloadable());
-        } else {
-            tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), !tripPlan.isPlanDownloadable());
+        if(tripPlan.isPlanPublic()) {
+            if (tripPlan.isPlanDownloadable()) {
+                tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), !tripPlan.isPlanDownloadable());
+            } else {
+                tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), !tripPlan.isPlanDownloadable());
+            }
         }
         System.out.println("가져가기 " + !tripPlan.isPlanDownloadable());
         System.out.println(tripPlan.toString());
@@ -227,12 +208,17 @@ class TripPlanDaoTest {
     //@Test // 여행플랜 삭제유무
     public void tripPlanDeleted() throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        if(tripPlan.isTripCompleted()){
-            tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), !tripPlan.isPlanDeleted());
+        if(tripPlan.isPlanDeleted()){
+            tripPlan.setPlanDeleted(false);
+            tripPlan.setTripPlanDelDate(null);
+            tripPlanDao.tripPlanDeleted(tripPlan);
         } else {
-            tripPlanDao.tripPlanDeleted(tripPlan.getTripPlanNo(), !tripPlan.isPlanDeleted());
+            tripPlan.setPlanDeleted(true);
+            tripPlan.setTripPlanDelDate(new Date());
+            tripPlanDao.tripPlanDeleted(tripPlan);
         }
-        System.out.println("삭제유무 " + !tripPlan.isTripCompleted());
+        System.out.println("삭제유무 " + tripPlan.isPlanDeleted());
+        System.out.println("삭제날짜 " + tripPlan.getTripPlanDelDate());
         System.out.println(tripPlan.toString());
     }
 
@@ -268,6 +254,14 @@ class TripPlanDaoTest {
         tripPlan.setTripPlanLikes(evaluateListDao.getEvaluation(paramaters).size());
         tripPlan.setTripPlanNo(tripPlanNo);
         tripPlanDao.tripPlanLikes(tripPlan);
+    }
+
+    //@Test // 여행플랜 조회수
+    public void tripPlanViews() throws Exception {
+        TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
+        tripPlan.setTripPlanViews(tripPlan.getTripPlanViews() + 1);
+        tripPlanDao.tripPlanViews(tripPlan);
+        System.out.println(tripPlan.getTripPlanViews());
     }
 
 }

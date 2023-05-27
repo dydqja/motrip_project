@@ -42,6 +42,14 @@ public class User {
 
     }
 
+    public User(String phone) {
+        this.phone = newphone(phone);
+    }
+
+    private String newphone(String phone) {
+        return phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7);
+    }
+
     public String getUserId() {
         return userId;
     }

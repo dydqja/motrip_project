@@ -40,65 +40,51 @@
         </collection>
     </resultMap>
 
-    <!-- 공유된 모든 여행플랜 조회 삭제유무도 조회-->
-    <select id="selectPublicTripPlanList" parameterType="com.bit.motrip.common.Search" resultMap="tripPlanResultMap">
-        SELECT
-        tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail,
-        tp.trip_days, tp.trip_plan_reg_date, tp.trip_plan_del_date, tp.is_plan_deleted,
-        tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed, tp.trip_plan_likes, tp.trip_plan_views,
-        dp.daily_plan_no, dp.trip_plan_no, dp.daily_plan_contents, dp.total_trip_time,
-        p.place_no, p.daily_plan_no, p.place_tags, p.place_coordinates, p.place_image,
-        p.place_phone_number, p.place_address, p.place_category, p.trip_time
-        FROM
-        trip_plan tp
+    <!-- 여행플랜 목록 조회 -->
+    <select id="selectTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
+        SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail, tp.trip_days, tp.trip_plan_reg_date,
+        tp.trip_plan_del_date, tp.is_plan_deleted, tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed,
+        tp.trip_plan_likes, tp.trip_plan_views,
+        GROUP_CONCAT(DISTINCT dp.daily_plan_no) AS daily_plan_nos, GROUP_CONCAT(DISTINCT dp.daily_plan_contents) AS daily_plan_contents,
+        GROUP_CONCAT(DISTINCT dp.total_trip_time) AS total_trip_times,
+        GROUP_CONCAT(DISTINCT p.place_no) AS place_nos, GROUP_CONCAT(DISTINCT p.place_tags) AS place_tags,
+        GROUP_CONCAT(DISTINCT p.place_coordinates) AS place_coordinates, GROUP_CONCAT(DISTINCT p.place_image) AS place_images,
+        GROUP_CONCAT(DISTINCT p.place_phone_number) AS place_phone_numbers, GROUP_CONCAT(DISTINCT p.place_address) AS place_addresses,
+        GROUP_CONCAT(DISTINCT p.place_category) AS place_categories, GROUP_CONCAT(DISTINCT p.trip_time) AS trip_times
+        FROM trip_plan tp
         LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
         LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
-        WHERE tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
+        WHERE
+            <choose>
+                <when test="'' != tripPlanAuthor">
+                    tp.trip_plan_author = #{tripPlanAuthor}
+                </when>
+                <otherwise>
+                    tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
+                </otherwise>
+            </choose>
+        GROUP BY tp.trip_plan_no
         ORDER BY
             <choose>
-                <when test="'trip_plan_views' == searchCondition">
+                <when test="'trip_plan_views' == search.searchCondition">
                     tp.trip_plan_views DESC, tp.trip_plan_no DESC
                 </when>
-                <when test="'trip_plan_likes' == searchCondition">
+                <when test="'trip_plan_likes' == search.searchCondition">
                     tp.trip_plan_likes DESC, tp.trip_plan_no DESC
                 </when>
                 <otherwise>
                     tp.trip_plan_no DESC
                 </otherwise>
             </choose>
-        LIMIT #{currentPage}, #{pageSize};
+        LIMIT #{search.offset}, #{search.limit};
+    </select>
+
+    <select id="selectTripPlanCount" resultType="int">
+        SELECT COUNT(*) FROM trip_plan
+        WHERE is_plan_public = TRUE AND is_plan_deleted = FALSE
     </select>
 
     <!-- 서치 쿼리문 추가해야함 -->
-
-    <!-- 나의 모든 여행플랜 조회 -->
-    <select id="selectMyTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
-        SELECT
-        tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail,
-        tp.trip_days, tp.trip_plan_reg_date, tp.trip_plan_del_date, tp.is_plan_deleted,
-        tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed, tp.trip_plan_likes, tp.trip_plan_views,
-        dp.daily_plan_no, dp.trip_plan_no, dp.daily_plan_contents, dp.total_trip_time,
-        p.place_no, p.daily_plan_no, p.place_tags, p.place_coordinates, p.place_image,
-        p.place_phone_number, p.place_address, p.place_category, p.trip_time
-        FROM
-        trip_plan tp
-        LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
-        LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
-        WHERE trip_plan_author = #{tripPlanAuthor}
-        ORDER BY
-            <choose>
-                <when test="'trip_plan_views' == searchCondition">
-                    tp.trip_plan_views DESC, tp.trip_plan_no DESC
-                </when>
-                <when test="'trip_plan_likes' == searchCondition">
-                    tp.trip_plan_likes DESC, tp.trip_plan_no DESC
-                </when>
-                <otherwise>
-                    tp.trip_plan_no DESC
-                </otherwise>
-            </choose>
-        LIMIT #{currentPage}, #{pageSize};
-    </select>
 
     <!-- 여행플랜 작성 -->
     <insert id="addTripPlan" parameterType="com.bit.motrip.domain.TripPlan">
@@ -137,13 +123,12 @@
     <!-- 여행플랜에서 업데이트를 하기위한 쿼리 -->
     <update id="updateTripPlan" parameterType="com.bit.motrip.domain.TripPlan">
         UPDATE trip_plan
-        SET trip_plan_author = #{tripPlanAuthor},
-        trip_plan_title = #{tripPlanTitle},
+        SET trip_plan_title = #{tripPlanTitle},
         trip_plan_thumbnail = #{tripPlanThumbnail},
         trip_days = #{tripDays},
         trip_plan_reg_date = #{tripPlanRegDate},
         is_plan_public = #{isPlanPublic},
-        is_plan_downloadable = #{isPlanDownloadable},
+        is_plan_downloadable = #{isPlanDownloadable}
         WHERE trip_plan_no = #{tripPlanNo}
     </update>
 
@@ -167,9 +152,10 @@
     </update>
 
     <!-- 여행플랜 삭제시 더이상 조회 불가능하도록 -->
-    <update id="tripPlanDeleted" parameterType="Map">
+    <update id="tripPlanDeleted" parameterType="com.bit.motrip.domain.TripPlan">
         UPDATE trip_plan
-        SET is_plan_deleted = #{isPlanDeleted}
+        SET is_plan_deleted = #{isPlanDeleted},
+        trip_plan_del_date = #{tripPlanDelDate}
         WHERE trip_plan_no = #{tripPlanNo}
     </update>
 
@@ -188,5 +174,12 @@
     </update>
 
     <!-- 조회수(진행예정) -->
+    <update id="tripPlanViews" parameterType="com.bit.motrip.domain.TripPlan">
+        UPDATE trip_plan
+        SET trip_plan_views = #{tripPlanViews}
+        WHERE trip_plan_no = #{tripPlanNo}
+    </update>
+
+    <!-- 태그 찾아오기 -->
 
 </mapper>

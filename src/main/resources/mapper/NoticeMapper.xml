@@ -22,7 +22,8 @@
     <insert id="addNotice" parameterType="com.bit.motrip.domain.Notice" >
         INSERT INTO board (BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, IS_NOTICE_IMPORTANT, BOARD_CATEGORY)
         VALUES (
-            (SELECT USER_ID FROM users WHERE USER_ID = #{noticeAuthor}),
+            <!--(SELECT USER_ID FROM users WHERE USER_ID = #{noticeAuthor}),-->
+            "admin",
             #{noticeTitle},
             #{noticeContents},
             0,
@@ -46,7 +47,7 @@
         FROM (
                  SELECT
                      BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, BOARD_CATEGORY, IS_NOTICE_IMPORTANT,
-                     ROW_NUMBER() OVER (ORDER BY BOARD_NO) AS row_seq
+                     ROW_NUMBER() OVER (ORDER BY CASE WHEN IS_NOTICE_IMPORTANT = 1 THEN 0 ELSE 1 END, BOARD_NO DESC) AS row_seq
                  FROM
                      board
                  WHERE

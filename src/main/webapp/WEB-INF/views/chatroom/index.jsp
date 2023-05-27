@@ -13,8 +13,8 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
 			integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
 			crossorigin="anonymous"
-		/>
-		<link rel="stylesheet" href="css/style.css" /> -->
+		/>-->
+<%--		<link rel="stylesheet" href="/css/style.css" />--%>
 		<title>motip</title>
 	</head>
 	<body>
@@ -24,7 +24,7 @@
 			</header>
 			<main class="join-main">
 <%--				<form action="http://localhost:3000/chat.html" method="get">--%>
-				<form action="http://localhost:8080/chatRoom/chat" method="get">
+				<form action="http://192.168.0.28:8080/chatRoom/chat" method="get">
 					<div class="form-control">
 						<label for="username">Username(삭제예정)</label>
 						<input
@@ -35,17 +35,10 @@
 							required
 						/>
 					</div>
-					<div class="form-control">
-						<label for="room">Room(삭제예정)</label>
-						<select name="room" id="room">
-							<option value="1번방">1번방</option>
-							<option value="2번방">2번방</option>
-							<option value="3번방">3번방</option>
-						</select>
-					</div>
+
 					<table>
 						<tr>
-							<td class="ct_list_b" width="200">채팅방 번호</td>
+							<td class="ct_list_b" width="200">채팅방 번호(삭제예정)</td>
 							<td class="ct_line02"></td>
 							<td class="ct_list_b" width="200">채팅방 이름</td>
 							<td class="ct_line02"></td>
@@ -53,8 +46,9 @@
 							<td class="ct_line02"></td>
 							<td class="ct_list_b" width="200">여행 플랜 번호</td>
 							<td class="ct_line02"></td>
-							<td class="ct_list_b" width="200">최대 인원수</td>
+							<td class="ct_list_b" width="200">인원수</td>
 							<td class="ct_line02"></td>
+
 							<td class="ct_list_b" width="200">모집 상태</td>
 						</tr>
 						<tr>
@@ -72,21 +66,25 @@
 								<td></td>
 								<td align="center" width="200">planTitle예정</td>
 								<td></td>
-								<td align="center" width="200">${chatRoom.maxPersons}</td>
+								<td align="center" width="200">${chatRoom.currentPersons}/${chatRoom.maxPersons}</td>
 								<td></td>
-								<td align="center" width="200">
+
+								<td width="200">
 									<c:if test="${chatRoom.chatRoomStatus eq 0}">
-										모집중
+										<button type="submit" class="btn" style="color: blue;" name="room" value="${chatRoom.chatRoomNo}">
+											채팅방 참여
+										</button>
 									</c:if>
 									<c:if test="${chatRoom.chatRoomStatus eq 1}">
-										모집완료
+										<button class="btn" style="color: red;" disabled>모집 완료</button>
 									</c:if>
 									<c:if test="${chatRoom.chatRoomStatus eq 2}">
-										여행완료
+										<button class="btn" style="color: forestgreen;" disabled>여행 완료</button>
 									</c:if>
 								</td>
 								<td></td>
-								<td><button type="submit" class="btn">Join Chat</button></td>							</tr>
+
+							</tr>
 						</c:forEach>
 					</table>
 				</form>

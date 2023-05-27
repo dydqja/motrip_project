@@ -15,19 +15,30 @@ import java.util.Map;
 @Service("qnaServiceImpl")
 public class QnaServiceImpl implements QnaService {
 
+    ///Field
     @Autowired
     @Qualifier("qnaDao")
     private QnaDao qnaDao;
 
-    public QnaServiceImpl(QnaDao qnaDao) {
-        System.out.println(this.getClass());
+    ///Constructor
+    public QnaServiceImpl(){
+
+        System.out.println("::"+getClass()+".setQnaDao Call.........");
     }
+
+    ///Method
 
     //질의응답 질의 등록 서비스
     @Override
     public void addQna(Qna qna) throws Exception {
         qnaDao.addQna(qna);
     }
+
+    //조회수 증가 서비스
+    @Override
+    public void increaseViews(Qna qna) throws Exception {
+        qnaDao.increaseViews(qna);
+    };
 
     //질의응답 응답 등록 서비스
     @Override
@@ -61,7 +72,7 @@ public class QnaServiceImpl implements QnaService {
 
     //질의응답 삭제 서비스
     @Override
-    public void deleteQna(Qna qna) throws Exception{
-        qnaDao.deleteQna(qna);
+    public void deleteQna(int qnaNo) throws Exception{
+        qnaDao.deleteQna(qnaNo);
     }
 }

@@ -44,4 +44,5 @@ public interface MemoDao {
 
     List<MemoAccess> getMemoAccessListByMemoNo(int memoNo) throws Exception;
     //현재 이 메모를 공유받고 사람이 누가 있는지 알 때 쓴다.
+
 }

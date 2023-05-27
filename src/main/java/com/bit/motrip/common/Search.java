@@ -6,16 +6,45 @@ public class Search {
     private int currentPage;
     private String searchCondition;
     private int[] searchConditions;
+    private String loginConditions;
     private String searchKeyword;
     private int pageSize;
     private int endRowNum;
     private int startRowNum;
 
     private int mysqlStartRowNum;
+    private int limit; // 한화면에 몇개를 보여줄지
+    private int offset; // 리스트 어디부터 보여줄지
+    private int totalCount; // 리스트 총 갯수
+
 
     //Constructor
     public Search() {
 
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 
     //Method
@@ -53,6 +82,14 @@ public class Search {
 
     public int getStartRowNum() {
         return (getCurrentPage()-1)*getPageSize()+1;
+    }
+
+    public String getLoginConditions() {
+        return loginConditions;
+    }
+
+    public void setLoginConditions(String loginConditions) {
+        this.loginConditions = loginConditions;
     }
 
     public int getMysqlStartRowNum() {

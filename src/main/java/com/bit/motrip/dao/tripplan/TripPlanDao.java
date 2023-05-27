@@ -12,8 +12,8 @@ import java.util.Map;
 @Mapper
 public interface TripPlanDao {
 
-    public List<TripPlan> selectPublicTripPlanList(Search search) throws Exception;
-    public List<TripPlan> selectMyTripPlanList(Map parameterMap) throws Exception;
+    public List<TripPlan> selectTripPlanList(Map<String, Object> paramaters) throws Exception;
+    public int selectTripPlanCount() throws Exception;
     public void addTripPlan(TripPlan tripPlan) throws Exception;
     public int getTripPlan() throws Exception;
     public TripPlan selectTripPlan(int tripPlanNo) throws Exception;
@@ -21,8 +21,9 @@ public interface TripPlanDao {
     public void deleteTripPlan(int tripPlanNo) throws Exception;
     public void tripPlanPublic(int tripPlanNo, boolean isPlanPublic) throws Exception;
     public void tripPlanDownloadable(int tripPlanNo, boolean isPlanDownloadable) throws Exception;
-    public void tripPlanDeleted(int tripPlanNo, boolean isPlanDeleted) throws Exception;
+    public void tripPlanDeleted(TripPlan tripPlan) throws Exception;
     public void tripPlanCompleted(int tripPlanNo, boolean isTripCompleted) throws Exception;
     public void tripPlanLikes(TripPlan tripPlan) throws Exception;
+    public void tripPlanViews(TripPlan tripPlan) throws Exception;
 
 }

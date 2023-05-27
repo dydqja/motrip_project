@@ -15,18 +15,29 @@ import java.util.Map;
 @Service("noticeServiceImpl")
 public class NoticeServiceImpl implements NoticeService {
 
+    ///Field
     @Autowired
     @Qualifier("noticeDao")
     private NoticeDao noticeDao;
 
-    public NoticeServiceImpl(NoticeDao noticeDao) {
-        System.out.println(this.getClass());
+    ///Constructor
+    public NoticeServiceImpl(){
+
+        System.out.println("::"+getClass()+".setNoticeDao Call.........");
     }
+
+    ///Method
 
     //공지 등록 서비스
     @Override
     public void addNotice(Notice notice) throws Exception {
         noticeDao.addNotice(notice);
+    }
+    
+    //조회수 증가 서비스
+    @Override
+    public void increaseViews(int noticeNo) throws Exception {
+        noticeDao.increaseViews(noticeNo);
     }
 
     //공지 상세 조회 서비스
@@ -37,12 +48,16 @@ public class NoticeServiceImpl implements NoticeService {
 
     //공지 목록 조회 서비스
     public Map<String , Object > getNoticeList(Search search) throws Exception {
+
         List<Notice> list= noticeDao.getNoticeList(search);
-        int noticeTotalCount = noticeDao.getNoticeTotalCount(search);
+
+        int totalCount = noticeDao.getNoticeTotalCount(search);
 
         Map<String, Object> map = new HashMap<String, Object>();
+
         map.put("list", list );
-        map.put("totalCount", new Integer(noticeTotalCount));
+
+        map.put("totalCount", new Integer(totalCount));
 
         return map;
     }
@@ -55,7 +70,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     //공지 삭제 서비스
     @Override
-    public void deleteNotice(Notice notice) throws Exception{
-        noticeDao.deleteNotice(notice);
+    public void deleteNotice(int noticeNo) throws Exception{
+        noticeDao.deleteNotice(noticeNo);
     }
 }
