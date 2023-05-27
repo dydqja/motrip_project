@@ -23,6 +23,18 @@
     .input-text {
       font-size: 12px;
     }
+
+    #drop_zone {
+      width: 150px;
+      height: 100px;
+      padding: 10px;
+      border: 2px dashed #bbb;
+      border-radius: 20px;
+
+    .previewImage {
+      width: 75px !important;
+      height: auto !important;
+    }
   </style>
 
     <script type="text/javascript">
@@ -50,6 +62,29 @@
 
         $("#sendSms").on("click", function() {
           $("#PhCodeGroup").show();
+
+          var smsMessage = ($('#phone').val())
+          console.log(smsMessage);
+
+          $.ajax({
+
+            url: "/user/sendSms",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(smsMessage),
+            dataType: "json",
+            success: function(response) {
+
+              console.log(response);
+              // console.log(response.smsConfirmNum);
+
+            },
+            error: function(error) {
+
+              alert("실패");
+
+            }
+          });
         });
 
       });
@@ -274,6 +309,66 @@
         }
       });
 
+      // Drag & Drop 파일업로드
+      $(document).ready(function() {
+
+
+        var dropZone = $('#drop_zone');
+        dropZone.on('dragover', function (e) {
+          console.log('이미지파일 드래그해서 드랍존에 올린상태###');
+          e.preventDefault();
+          dropZone.css('background-color', '#E8F0FF');
+        });
+        dropZone.on('dragleave', function (e) {
+          console.log('드랍존에 올렸다가 밖으로 나온상태 ###');
+          e.preventDefault();
+          dropZone.css('background-color', '#FFFFFF');
+        });
+        dropZone.on('drop', function (e) {
+          console.log('이미지파일 드래그해서 드랍존에 올린상태로 마우스 땐 상태 ###');
+          e.preventDefault();
+          console.log(e);
+          dropZone.css('background-color', '#FFFFFF');
+
+          var files = e.originalEvent.dataTransfer.files;
+          console.log(files)
+          if (files != null) {
+            if (files.length > 1) {
+              alert("파일은 하나씩만 업로드 가능합니다");
+              return;
+            }
+            selectFile(files)
+          } else {
+            alert("ERROR");
+          }
+        });
+      });
+
+      function selectFile(fileObject) {
+        var files = fileObject;
+        var file = files[0];
+        console.log(file);
+
+        var formData = new FormData();
+        formData.append("file", file);
+        console.log(formData);
+
+        $.ajax({
+          url: '/user/fileUpload', // Controller에 설정한 url
+          processData: false,
+          contentType: false,
+          data: formData,
+          type: 'POST',
+          success: function(result) {
+            console.log(result);
+
+            // document.querySelector('#imagePreview').src = result;
+
+
+          }
+        });
+      }
+
 
     </script>
 </head>
@@ -402,12 +497,12 @@
             </div>
 
             <div class="form-group">
-              <label for="uploadFile" class="col-sm-4 control-label">회원사진등록</label>
-              <div class="col-sm-6">
-              <input type="file" id="uploadFile" name="uploadFile">
-              </div>
+              <label for="drop_zone" class="col-sm-4 control-label">회원사진등록</label>
+              <div id="drop_zone" name="uploadFile">사진 파일을 올려주세요</div>
+              <!--
+              <img class="previewImage" id="imagePreview" src="" alt="Image preview">
+              -->
             </div>
-
 
             <div class="form-group">
               <label class="col-sm-12 control-label">자기소개 공개여부</label>

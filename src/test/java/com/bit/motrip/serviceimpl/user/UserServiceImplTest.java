@@ -106,10 +106,10 @@ class UserServiceImplTest {
     }
 
 //    @Test
-    void checkDuplication() throws Exception{
-
-        boolean result=userService.checkDuplication("userTest6");
-    }
+//    void checkDuplication() throws Exception{
+//
+//        boolean result=userService.checkDuplication("userTest6");
+//    }
 
 //    @Test
     void deleteUser() throws Exception{
