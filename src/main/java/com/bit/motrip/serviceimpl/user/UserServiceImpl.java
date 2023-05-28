@@ -9,6 +9,7 @@ import com.bit.motrip.domain.User;
 import com.bit.motrip.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -361,6 +362,20 @@ public class UserServiceImpl implements UserService{
         }
 
         return key.toString();
+    }
+
+    //인증번호 확인
+    public String phCodeConfirm(String phCodeConfirm, String smsConfirmNum) throws Exception {
+        boolean result=false;
+
+        if(phCodeConfirm != null && phCodeConfirm.equals(smsConfirmNum)) {
+            result = true;
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("result", result);
+
+        return jsonObject.toString();
     }
 
 
