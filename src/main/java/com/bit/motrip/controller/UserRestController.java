@@ -1,13 +1,12 @@
 package com.bit.motrip.controller;
 
+import com.bit.motrip.domain.PhCodeConfirmRequest;
 import com.bit.motrip.domain.SmsMessage;
 import com.bit.motrip.domain.SmsResponse;
-import com.bit.motrip.domain.User;
 import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,7 +56,7 @@ public class UserRestController {
     }
 
     @RequestMapping( value="sendSms", method=RequestMethod.POST )
-    public SmsResponse sendSms(@RequestBody SmsMessage smsMessage) throws Exception {
+    public String sendSms(@RequestBody SmsMessage smsMessage) throws Exception {
 
         System.out.println("/sms/send :: POST");
 
@@ -65,7 +64,25 @@ public class UserRestController {
 
         System.out.println("controller에 return된 SmsResponseDto값은? ==> " + smsResponse);
 
-        return smsResponse;
+        String smsConfirmNum = smsResponse.getSmsConfirmNum();
+        System.out.println(smsConfirmNum);
+
+        return smsConfirmNum;
+    }
+
+    @RequestMapping( value="/phCodeConfirm", method=RequestMethod.POST )
+    public String phCodeConfirm( @RequestBody PhCodeConfirmRequest request) throws Exception{
+
+        System.out.println("/user/phCodeConfirm : POST");
+
+        String phCodeConfirm = request.getPhCodeConfirm();
+        String smsConfirmNum = request.getSmsConfirmNum();
+
+        String result=userService.phCodeConfirm(phCodeConfirm,smsConfirmNum);
+
+        System.out.println("controller에 return된 result값은? ==> " + result);
+
+        return result;
     }
 
 }

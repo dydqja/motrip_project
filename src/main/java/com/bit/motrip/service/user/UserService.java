@@ -38,4 +38,7 @@ public interface UserService {
     //sms 전송
     SmsResponse sendSms(SmsMessage smsMessage) throws Exception;
 
+    //인증번호 확인
+    public String phCodeConfirm(String phCodeConfirm, String smsConfirmNum) throws Exception;
+
 }
