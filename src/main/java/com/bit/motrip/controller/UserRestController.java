@@ -70,7 +70,7 @@ public class UserRestController {
         return smsConfirmNum;
     }
 
-    @RequestMapping( value="/phCodeConfirm", method=RequestMethod.POST )
+    @RequestMapping( value="phCodeConfirm", method=RequestMethod.POST )
     public String phCodeConfirm( @RequestBody PhCodeConfirmRequest request) throws Exception{
 
         System.out.println("/user/phCodeConfirm : POST");

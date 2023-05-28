@@ -60,14 +60,8 @@ public class UserController {
     }
 
     @RequestMapping( value="addUser", method=RequestMethod.POST )
-    public String addUser(@ModelAttribute("user") User user, HttpServletRequest request) throws Exception {
+    public String addUser(@ModelAttribute("user") User user) throws Exception {
         System.out.println("/user/addUser : POST");
-
-        System.out.println("isSelfIntroPublic from request: " + request.getParameter("selfIntroPublic"));
-        System.out.println("isUserPhotoPublic from request: " + request.getParameter("userPhotoPublic"));
-
-        System.out.println("회원사진 공개여부 => " + user.isUserPhotoPublic());
-        System.out.println("자기소개 공개여부 => " + user.isSelfIntroPublic());
 
         //Business Logic
         userService.addUser(user);
