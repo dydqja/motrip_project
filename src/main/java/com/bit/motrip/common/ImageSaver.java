@@ -3,10 +3,14 @@ package com.bit.motrip.common;
 import com.bit.motrip.domain.Memo;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -19,12 +23,16 @@ public class ImageSaver {
     //constructor
     public ImageSaver() throws IOException {
     }
+    @Autowired
+    public ImageSaver(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
 
     ///field
     public static String path1 = "/static/images/";
     public static String path2 = "C:\\mainproject\\motrip_main_project\\static\\images\\mountpoint\\";
-
+    private ResourceLoader resourceLoader;
     //getter & setter
 
     //method
@@ -35,12 +43,11 @@ public class ImageSaver {
         FileCopyUtils.copy(imageFile, targetFile);
     }
 
-    public void imageSave(byte[] imageFile, String fileName) throws IOException {
-        //저장경로 설정해주는곳
-        String prefix = path2;
-        File targetFile = new File(prefix + fileName);
-        FileCopyUtils.copy(imageFile, targetFile);
-
+    public void saveImage(byte[] imageBytes, String filename) throws IOException {
+        //동적인 경로를 만들어낸다.
+        Resource resource = resourceLoader.getResource("classpath:static/images/mountpoint/" + filename);
+        File file = resource.getFile();
+        FileCopyUtils.copy(imageBytes, file);
     }
     public Memo imageSave(Memo memo) throws Exception{
         String htmlContents = memo.getMemoContents();
