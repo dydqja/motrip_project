@@ -1,7 +1,6 @@
 package com.bit.motrip.controller;
 
 import com.bit.motrip.common.Search;
-import com.bit.motrip.domain.DailyPlan;
 import com.bit.motrip.domain.TripPlan;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,15 +43,17 @@ public class TripPlanController {
         return "tripplan/tripPlanList.jsp";
     }
 
-    @GetMapping("addTripPlanView")
+    @GetMapping("addTripPlanView") // addTripPlanView 일반 네비게이션
     public String addTripPlanView() {
         System.out.println("GET : addTripPlanView()");
         return "tripplan/addTripPlan.jsp";
     }
 
-    @PostMapping("addTripPlan")
-    public String addTripPlan() {
+    @PostMapping("addTripPlan") // 여행플랜 저장
+    public String addTripPlan(@RequestBody TripPlan tripPlan) {
         System.out.println("POST : addTripPlan()");
+        System.out.println(tripPlan.toString());
+
         return "tripplan/tripPlanList.jsp";
     }
 
