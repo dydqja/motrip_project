@@ -11,7 +11,7 @@
 
 </head>
 <body>
-
+<%--https://goldswan.tistory.com/41--%>
 <tiles:insertAttribute name="header" />
 <tiles:insertAttribute name="contents" />
 <tiles:insertAttribute name="footer" />
