@@ -20,8 +20,11 @@ public class ReviewServiceImpl implements ReviewService {
     //후기 작성
     @Override
     public void addReview(Review review) throws Exception {
-
+        // Debug: Print Review Object in Service
+        System.out.println("Review data in Service: " + review.toString());
+        reviewDao.addReview(review);
     }
+
 
     //공개된 후기 목록 조회
     @Override

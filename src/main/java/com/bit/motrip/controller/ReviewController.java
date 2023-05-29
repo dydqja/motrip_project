@@ -57,13 +57,20 @@ public class ReviewController {
 
     @PostMapping(value = "addReview")
     public String addReview(@ModelAttribute("review") Review review,
-                            @RequestParam("tripPlanNo") int tripPlanNo) throws Exception {
+                            @RequestParam("tripPlanNo") int tripPlanNo,  Model model) throws Exception {
         System.out.println("/review/addReview : POST");
+
+        // Debug: Print review object
+        System.out.println("Review data: " + review.toString());
 
         // 선택한 여행 계획 ID 설정
         TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
-
         reviewService.addReview(review);
+        System.out.println("addReview 컨트롤러는 들어오니?"+tripPlanNo);
+
+        // tripPlan 객체를 모델에 추가
+        model.addAttribute("tripPlan", tripPlan);
+
         return "review/addReview.jsp";
     }
 
