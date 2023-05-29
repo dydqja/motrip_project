@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <!-- tiles 적용 -->
+    <definition name="baseLayout" template="/WEB-INF/views/layout/baseLayout.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/layout/topBar.jsp" />
+        <put-attribute name="contents" value="" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/memoFooter.jsp" />
+    </definition>
+
+    <definition name="*.tiles" extends="baseLayout">
+        <put-attribute name="contents" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+
+    <definition name="*/*.tiles" extends="baseLayout">
+        <put-attribute name="contents" value="/WEB-INF/views/{1}/{2}.jsp" />
+    </definition>
+
+
+
+    <!-- 타일즈 미 적용 -->
+    <definition name="normalLayout" template="/WEB-INF/jsp/layout/NormalLayout.jsp">
+        <put-attribute name="NormalLayout" value="" />
+    </definition>
+
+    <definition name="*.jsp" extends="normalForm">
+        <put-attribute name="NormalLayout" value="/WEB-INF/jsp/{1}.jsp" />
+    </definition>
+
+    <definition name="*/*.jsp" extends="normalForm">
+        <put-attribute name="NormalLayout" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+    </definition>
+
+</tiles-definitions>
