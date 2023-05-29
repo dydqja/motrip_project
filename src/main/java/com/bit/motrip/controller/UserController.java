@@ -39,7 +39,7 @@ public class UserController {
     public String login() throws Exception{
         System.out.println("/user/logon : GET");
 
-        return "user/login.jsp";
+        return "user/login.tiles";
     }
 
     @RequestMapping( value="login", method=RequestMethod.POST )
