@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ReviewService {
     //INSERT C 후기 등록
-    public void addReview() throws Exception;
+    public void addReview(Review review) throws Exception;
 
     //SELECT All Public ReviewList 공개된 후기 목록 조회
     public List<Review> getPublicReviewList(Search search) throws Exception;

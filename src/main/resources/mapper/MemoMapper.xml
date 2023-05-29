@@ -5,20 +5,6 @@
 
 <mapper namespace="com.bit.motrip.dao.memo.MemoDao">
 
-    <!--ResultMap-->
-    <resultMap id="memoResultMap" type="com.bit.motrip.domain.Memo">
-        <id column="memo_no" property="memoNo"/>
-        <result column="memo_title" property="memoTitle"/>
-        <result column="memo_contents" property="memoContents"/>
-        <result column="memo_reg_date" property="memoRegDate"/>
-        <result column="memo_del_date" property="memoDelDate"/>
-        <result column="memo_color" property="memoColor"/>
-        <result column="attached_trip_plan_no" property="attachedTripPlanNo"/>
-        <result column="attached_review_no" property="attachedReviewNo"/>
-        <result column="attached_chat_room_no" property="attachedChatRoomNo"/>
-        <result column="memo_author" property="memoAuthor"/>
-    </resultMap>
-
     <resultMap id="memoAccessResultMap" type="com.bit.motrip.domain.MemoAccess">
         <id column="memo_access_no" property="memoAccessNo"/>
         <result column="memo_access_user" property="memoAccessUser"/>
@@ -26,30 +12,57 @@
         <result column="is_memo_author" property="isMemoAuthor"/>
     </resultMap>
 
-    <resultMap id="memoDetailedResultMap" type="com.bit.motrip.domain.Memo">
+    <resultMap id="memoResultMap" type="com.bit.motrip.domain.Memo">
         <id column="memo_no" property="memoNo"/>
         <result column="memo_title" property="memoTitle"/>
         <result column="memo_contents" property="memoContents"/>
         <result column="memo_reg_date" property="memoRegDate"/>
         <result column="memo_del_date" property="memoDelDate"/>
         <result column="memo_color" property="memoColor"/>
-        <association column="attached_trip_plan" property="attachedTripPlan">
+        <result column="memo_author" property="memoAuthor"/>
+        <result column="attached_trip_plan_no" property="attachedTripPlanNo"/>
+        <result column="attached_review_no" property="attachedReviewNo"/>
+        <result column="attached_chat_room_no" property="attachedChatRoomNo"/>
+        <association property="attachedTripPlan" javaType="com.bit.motrip.domain.TripPlan">
             <id column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
-            <result column="trip_plan_title" property="tripPlanTitle" jdbcType="VARCHAR"/>
             <result column="trip_plan_author" property="tripPlanAuthor" jdbcType="VARCHAR"/>
-            <result column="trip_plan_reg_date" property="tripPlanRegDate" jdbcType="DATE"/>
+            <result column="trip_plan_title" property="tripPlanTitle" jdbcType="VARCHAR"/>
             <result column="trip_plan_thumbnail" property="tripPlanThumbnail" jdbcType="VARCHAR"/>
+            <result column="trip_days" property="tripDays" jdbcType="INTEGER"/>
+            <result column="trip_plan_reg_date" property="tripPlanRegDate" jdbcType="DATE"/>
+            <result column="trip_plan_del_date" property="tripPlanDelDate" jdbcType="DATE"/>
+            <result column="is_plan_deleted" property="isPlanDeleted" jdbcType="TINYINT"/>
+            <result column="is_plan_public" property="isPlanPublic" jdbcType="TINYINT"/>
+            <result column="is_plan_downloadable" property="isPlanDownloadable" jdbcType="TINYINT"/>
+            <result column="is_trip_completed" property="isTripCompleted" jdbcType="TINYINT"/>
+            <result column="trip_plan_likes" property="tripPlanLikes" jdbcType="INTEGER"/>
+            <result column="trip_plan_views" property="tripPlanViews" jdbcType="INTEGER"/>
         </association>
-       <!-- <association column="attached_review" property="attachedTripPlan">
-        </association>-->
+        <association property="attachedReview" javaType="com.bit.motrip.domain.Review">
+            <id property="reviewNo"             column="review_no"          jdbcType="INTEGER" />
+            <result property="tripPlanNo"       column="trip_plan_no"       jdbcType="INTEGER" />
+            <result property="reviewAuthor"     column="review_author"      jdbcType="VARCHAR" />
+            <result property="reviewTitle"      column="review_title"       jdbcType="VARCHAR" />
+            <result property="reviewContents"   column="review_contents"    jdbcType="VARCHAR" />
+            <result property="reviewThumbnail"  column="review_thumbnail"   jdbcType="VARCHAR" />
+            <result property="instaPostLink"    column="insta_post_link"    jdbcType="VARCHAR" />
+            <result property="isReviewPublic"   column="is_review_public"   jdbcType="BOOLEAN" />
+            <result property="reviewLikes"      column="review_likes"       jdbcType="INTEGER" />
+            <result property="viewCount"        column="view_count"         jdbcType="INTEGER" />
+            <result property="reviewRegDate"    column="review_reg_date"    jdbcType="DATE" />
+            <result property="isReviewDeleted"  column="is_review_deleted"  jdbcType="BOOLEAN" />
+            <result property="reviewDelDate"    column="review_del_date"    jdbcType="DATE" />
+        </association>
+        <association property="attachedChatRoom" javaType="com.bit.motrip.domain.ChatRoom">
+            <id column="chat_room_no" property="chatRoomNo" jdbcType="INTEGER"/>
+            <result column="chat_room_title" property="chatRoomTitle" jdbcType="VARCHAR"/>
+            <result column="travel_start_date" property="travelStartDate" jdbcType="DATE"/>
+            <result column="age_range" property="ageRange" jdbcType="VARCHAR" />
+            <result column="max_persons" property="maxPersons" jdbcType="INTEGER"/>
+            <result column="current_persons" property="currentPersons" jdbcType="INTEGER"/>
+            <result column="chat_room_status" property="chatRoomStatus" jdbcType="INTEGER"/>
+        </association>
     </resultMap>
-
-    <sql id="memo_author">
-        SELECT memo_access.memo_no AS memo_no, memo_access.memo_access_user AS memo_author
-        FROM memo_access
-        WHERE is_memo_author = 1
-        ORDER BY memo_access.memo_no DESC
-    </sql>
 
 
     <!--Memo-->
@@ -94,16 +107,6 @@
         memo_no = #{memoNo}
     </update>
 
-    <update id="updateMemoAttach" parameterType="com.bit.motrip.domain.Memo">
-        UPDATE memo
-        SET
-        attached_trip_plan_no = #{attachedTripPlanNo},
-        attached_review_no = #{attachedReviewNo},
-        attached_chat_room_no = #{attachedChatRoomNo}
-        WHERE
-        memo_no = #{memoNo}
-    </update>
-
     <delete id="deleteMemo" parameterType="int">
         UPDATE memo
         SET
@@ -128,70 +131,60 @@
 
     <select id="getMemoListByMyMemo" parameterType="com.bit.motrip.common.Search" resultMap="memoResultMap">
         SELECT
-        memo.memo_no AS memo_no,
-        memo.memo_title AS memo_title,
-        memo.memo_contents AS memo_contents,
-        memo.memo_reg_date AS memo_reg_date,
-        memo.memo_color AS memo_color,
-        memo_author.memo_author AS memo_author
-        FROM
-        memo
-        LEFT JOIN memo_access ON memo.memo_no = memo_access.memo_no
-        LEFT JOIN (
-        <include refid="memo_author"/>
-        ) AS memo_author ON memo.memo_no = memo_author.memo_no
-        WHERE
-        memo.memo_no = memo_access.memo_no
-        AND memo_access.is_memo_author = 1
-        AND memo_access.memo_access_user = #{searchKeyword}
-        ORDER BY memo.memo_reg_date DESC
+        memo.memo_no,memo.memo_title,memo.memo_contents,memo.memo_reg_date,memo.memo_del_date,memo.memo_color
+        ,access.memo_access_user AS memo_author
+        ,trip_plan.trip_plan_no,trip_plan.trip_plan_author,trip_plan.trip_plan_title,trip_plan.trip_plan_thumbnail,trip_plan.trip_plan_reg_date,trip_plan.is_plan_public
+        ,review.review_no,review.review_title,review.review_thumbnail,review.review_reg_date,review.review_author,review.is_review_public
+        ,chat_rooms.chat_room_no,chat_rooms.chat_room_title,chat_rooms.travel_start_date,chat_rooms.current_persons,chat_rooms.max_persons
+        FROM memo_access AS access
+        LEFT JOIN memo ON access.memo_no = memo.memo_no
+        LEFT JOIN trip_plan ON memo.attached_trip_plan_no = trip_plan.trip_plan_no
+        LEFT JOIN review ON memo.attached_review_no = review.review_no
+        LEFT JOIN chat_rooms ON memo.attached_chat_room_no = chat_rooms.chat_room_no
+        WHERE access.memo_access_user = #{searchKeyword}
+        AND access.is_memo_author = 1
+        ORDER BY memo.memo_no DESC
         LIMIT #{mysqlStartRowNum}, #{pageSize}
     </select>
 
     <select id="getMemoListBySharedMemo" parameterType="com.bit.motrip.common.Search" resultMap="memoResultMap">
         SELECT
-        memo.memo_no AS memo_no,
-        memo.memo_title AS memo_title,
-        memo.memo_contents AS memo_contents,
-        memo.memo_reg_date AS memo_reg_date,
-        memo.memo_color AS memo_color,
-        memo_author.memo_author AS memo_author
-        FROM
-        memo
-        LEFT JOIN memo_access ON memo.memo_no = memo_access.memo_no
-        LEFT JOIN (
-        <include refid="memo_author"/>
-        ) AS memo_author ON memo.memo_no = memo_author.memo_no
-        WHERE
-        memo.memo_no = memo_access.memo_no
-        AND memo_access.is_memo_author = 0
-        AND memo_access.memo_access_user = #{searchKeyword}
-        ORDER BY memo.memo_reg_date DESC
-        LIMIT #{mysqlStartRowNum}, #{pageSize}
+        memo.memo_no,memo.memo_title,memo.memo_contents,memo.memo_reg_date,memo.memo_del_date,memo.memo_color
+        ,memo_author.memo_access_user AS memo_author
+        ,trip_plan.trip_plan_no,trip_plan.trip_plan_author,trip_plan.trip_plan_title,trip_plan.trip_plan_thumbnail,trip_plan.trip_plan_reg_date,trip_plan.is_plan_public
+        ,review.review_no,review.review_title,review.review_thumbnail,review.review_reg_date,review.review_author,review.is_review_public
+        ,chat_rooms.chat_room_no,chat_rooms.chat_room_title,chat_rooms.travel_start_date,chat_rooms.current_persons,chat_rooms.max_persons
+        FROM memo_access AS access
+        LEFT JOIN memo ON access.memo_no = memo.memo_no
+        LEFT JOIN trip_plan ON memo.attached_trip_plan_no = trip_plan.trip_plan_no
+        LEFT JOIN review ON memo.attached_review_no = review.review_no
+        LEFT JOIN chat_rooms ON memo.attached_chat_room_no = chat_rooms.chat_room_no
+        LEFT JOIN memo_access AS memo_author ON access.memo_no = memo_author.memo_no
+        WHERE access.memo_access_user = #{searchKeyword}
+        AND access.is_memo_author = 0
+        ORDER BY memo.memo_no DESC
+            LIMIT #{mysqlStartRowNum}, #{pageSize}
     </select>
 
     <select id="getMemoListByDeletedMemo" parameterType="com.bit.motrip.common.Search" resultMap="memoResultMap">
         SELECT
-        memo.memo_no AS memo_no,
-        memo.memo_title AS memo_title,
-        memo.memo_contents AS memo_contents,
-        memo.memo_reg_date AS memo_reg_date,
-        memo.memo_color AS memo_color,
-        memo_author.memo_author AS memo_author
-        FROM
-        memo
-        LEFT JOIN memo_access ON memo.memo_no = memo_access.memo_no
-        LEFT JOIN (
-        <include refid="memo_author"/>
-        ) AS memo_author ON memo.memo_no = memo_author.memo_no
-        WHERE
-        memo.memo_no = memo_access.memo_no
-        AND memo_access.is_memo_author = 1
-        AND memo_access.memo_access_user = #{searchKeyword}
+        memo.memo_no,memo.memo_title,memo.memo_contents,memo.memo_reg_date,memo.memo_del_date,memo.memo_color
+        ,access.memo_access_user AS memo_author
+        ,trip_plan.trip_plan_no,trip_plan.trip_plan_author,trip_plan.trip_plan_title,trip_plan.trip_plan_thumbnail,trip_plan.trip_plan_reg_date,trip_plan.is_plan_public
+        ,review.review_no,review.review_title,review.review_thumbnail,review.review_reg_date,review.review_author,review.is_review_public
+        ,chat_rooms.chat_room_no,chat_rooms.chat_room_title,chat_rooms.travel_start_date,chat_rooms.current_persons,chat_rooms.max_persons
+        FROM memo_access AS access
+        LEFT JOIN memo ON access.memo_no = memo.memo_no
+        LEFT JOIN trip_plan ON memo.attached_trip_plan_no = trip_plan.trip_plan_no
+        LEFT JOIN review ON memo.attached_review_no = review.review_no
+        LEFT JOIN chat_rooms ON memo.attached_chat_room_no = chat_rooms.chat_room_no
+        WHERE access.memo_access_user = #{searchKeyword}
+        AND access.is_memo_author = 1
         AND memo.memo_del_date IS NOT NULL
-        ORDER BY memo.memo_reg_date DESC
+        ORDER BY memo.memo_no DESC
         LIMIT #{mysqlStartRowNum}, #{pageSize}
     </select>
+
 
 
 
@@ -229,6 +222,17 @@
         where memo_no = #{memoNo} and memo_access_user = #{memoAccessUser}
     </delete>
 
+    <!--Memo attach-->
+
+    <update id="updateMemoAttach" parameterType="com.bit.motrip.domain.Memo">
+        UPDATE memo
+        SET
+            attached_trip_plan_no = #{attachedTripPlanNo},
+            attached_review_no = #{attachedReviewNo},
+            attached_chat_room_no = #{attachedChatRoomNo}
+        WHERE
+            memo_no = #{memoNo}
+    </update>
 
 
 </mapper>
