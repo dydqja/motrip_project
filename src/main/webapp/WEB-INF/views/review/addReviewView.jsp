@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>✈️Motrip🚤</title>
-    <style>
+    <style>️
         /* 토글스위치 CSS */
         label {
             display: inline-flex;
@@ -89,7 +90,6 @@
     <!-- Form 유효성 검증 -->
     <script type="text/javascript">
 
-
         function fncAddReview() {
             var reviewTitle = $("input[name='reviewTitle']").val();
             var reviewContents = $("textarea[name='reviewContents']").val();
@@ -124,6 +124,16 @@
         });
     </script>
 
+    <!-- 모달 JavaScript 코드 -->
+    <script>
+        $(document).ready(function() {
+            $("#tripPlanModal").modal("show");
+        });
+    </script>
+
+
+
+
     <!-- Bootstrap, jQuery CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
@@ -131,14 +141,38 @@
 </head>
 <body>
 <!-- 화면구성 div Start -->
+<!-- 모달 창 내용 -->
+<div id="tripPlanModal" class="modal">
+    <div class="modal-content">
+        <h4>✈️✈️Trip Plans✈️✈️</h4>
+        <ul>
+            <c:if test="${not empty tripPlanList['tripPlanList']}">
+                <ul>
+                    <c:forEach items="${tripPlanList['tripPlanList']}" var="tripPlan">
+                        <li>${tripPlan.tripPlanTitle}</li>
+                    </c:forEach>
+                </ul>
+            </c:if>
+        </ul>
+    </div>
+</div>
+
 <div class="container">
     <h1>후기 작성</h1>
     <!-- form Start -->
     <form action="/review/addReview" method="post">
         <div class="form-group">
-            <label for="tripPlanNo">Trip Plan No:</label>
-            <input type="number" id="tripPlanNo" name="tripPlanNo" required><br><br>
+            <label for="tripPlanNo">여행 계획 선택:</label>
+            <select id="tripPlanNo" name="tripPlanNo">
+                <c:if test="${not empty tripPlanList['tripPlanList']}">
+                    <c:forEach items="${tripPlanList['tripPlanList']}" var="tripPlan">
+                        <option value="${tripPlan.tripPlanNo}">${tripPlan.tripPlanTitle}</option>
+                    </c:forEach>
+                </c:if>
+            </select>
+            <br><br>
         </div>
+
         <div class="form-group">
             <label for="reviewAuthor">Review Author:</label>
             <input type="text" id="reviewAuthor" name="reviewAuthor" required><br><br>
@@ -195,7 +229,7 @@
 
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-4 text-center">
-                <button type="submit" class="btn btn-primary mr-2">확인</button>
+                <button type="submit" class="btn btn-primary mr-2">작성완료</button>
                 <a class="btn btn-primary" href="#" role="button">취소</a>
             </div>
         </div>
