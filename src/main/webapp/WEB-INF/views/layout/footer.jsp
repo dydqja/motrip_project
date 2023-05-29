@@ -13,10 +13,13 @@
     <div class = left-section>
         <c:if test="${empty sessionScope.user}">
             로그인되지 않은 사람은 메모를 사용할 수 없습니다.
+            <input type="hidden" id="memoListBtn" value=""/>
+            <input type="hidden" id="userId" value=""/>
         </c:if>
         <c:if test="${not empty sessionScope.user}">
-            ${user.userId}님의 메모 바입니다.<br/>
-            <button type="button" class="btn btn-primary" onclick="footerBtnClick()">메모목록 로드</button>
+            <input type="hidden" id="userId" value="${user.userId}"/>
+            <button type="button" id="memoListBtn" class="btn btn-primary">메모목록 로드</button>
+            <div id="content"></div>
         </c:if>
     </div>
     <div class = "middle-section">
@@ -27,9 +30,24 @@
     </div>
 </footer>
 <hr/>
-
-<script type="text/javascript">
-    function footerBtnClick(){
-        console.log("footer btn click")
-    }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var userId = $("#userId").val();
+    $(document).ready(function() {
+        $("#memoListBtn").click(function() {
+            $.ajax({
+                url: "/memo/test/"+userId,
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    var jsonString = JSON.stringify(response);
+                    var newParagraph = $("<p></p>").text(jsonString);
+                    $("#content").append(newParagraph);
+                },
+                error: function(xhr, status, error) {
+                    console.log("AJAX Error:", error);
+                }
+            });
+        });
+    });
 </script>

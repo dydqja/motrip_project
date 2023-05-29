@@ -28,12 +28,13 @@ public class CommitMaker {
         //                        0         1          2            3                4                5
         String[] commitType = {"Create", "Update", "Delete", "Create&Update", "Update&Delete", "Create&Delete"};
         //커밋 소제목
-        String commitTitle = "AlarmDao 생성, 테스트 완료.";
+        String commitTitle = "footer memo ajax 간략 예제 작성";
         //수정내역
-        String commitBody = "alarmDao, mapper, 추가. "+
+        String commitBody = "MemoRestController 테스트메소드 하나 작성" +
+                "footer에서 메모 부분 수정"+
                 "";
         //수정파일
-        String changedFiles = "(Memo.java, MemoDoc.java, MemoDocContainer.java, MemoMapper.xml)";
-        gitCommitMSGBuilder(committers[0],commitType[0],commitTitle,commitBody,changedFiles);
+        String changedFiles = "(memoRestController.java, footer.jsp)";
+        gitCommitMSGBuilder(committers[0],commitType[1],commitTitle,commitBody,changedFiles);
     }
 }
