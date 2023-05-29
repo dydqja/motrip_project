@@ -12,11 +12,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE-edge">
     <title>Motrip Home</title>
+
+
 </head>
 <body>
 
 <tiles:insertAttribute name="header" />
-<tiles:insertAttribute name="body" />
+<tiles:insertAttribute name="contents" />
 <tiles:insertAttribute name="footer" />
 
 </body>
