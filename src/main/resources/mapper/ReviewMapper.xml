@@ -47,7 +47,64 @@
         <result column="is_trip_completed" property="isTripCompleted" jdbcType="TINYINT"/>
         <result column="trip_plan_likes" property="tripPlanLikes" jdbcType="INTEGER"/>
         <result column="trip_plan_views" property="tripPlanViews" jdbcType="INTEGER"/>
+
+        <collection property="dailyplanResultMap" ofType="com.bit.motrip.domain.DailyPlan">
+            <id column="daily_plan_no" property="dailyPlanNo" jdbcType="INTEGER"/>
+            <result column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
+            <result column="daily_plan_contents" property="dailyPlanContents" jdbcType="VARCHAR"/>
+            <result column="total_trip_time" property="totalTripTime" jdbcType="VARCHAR"/>
+
+            <collection property="placeResultMap" ofType="com.bit.motrip.domain.Place">
+                <id column="place_no" property="placeNo" jdbcType="INTEGER"/>
+                <result column="daily_plan_no" property="dailyPlanNo" jdbcType="INTEGER"/>
+                <result column="place_tags" property="placeTags" jdbcType="VARCHAR"/>
+                <result column="place_coordinates" property="placeCoordinates" jdbcType="VARCHAR"/>
+                <result column="place_image" property="placeImage" jdbcType="VARCHAR"/>
+                <result column="place_phone_number" property="placePhoneNumber" jdbcType="VARCHAR"/>
+                <result column="place_address" property="placeAddress" jdbcType="VARCHAR"/>
+                <result column="place_category" property="placeCategory" jdbcType="INTEGER"/>
+                <result column="trip_time" property="tripTime" jdbcType="VARCHAR"/>
+            </collection>
+        </collection>
     </resultMap>
+
+    <select id="selectTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
+        SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail, tp.trip_days, tp.trip_plan_reg_date,
+        tp.trip_plan_del_date, tp.is_plan_deleted, tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed,
+        tp.trip_plan_likes, tp.trip_plan_views,
+        GROUP_CONCAT(DISTINCT dp.daily_plan_no) AS daily_plan_nos, GROUP_CONCAT(DISTINCT dp.daily_plan_contents) AS daily_plan_contents,
+        GROUP_CONCAT(DISTINCT dp.total_trip_time) AS total_trip_times,
+        GROUP_CONCAT(DISTINCT p.place_no) AS place_nos, GROUP_CONCAT(DISTINCT p.place_tags) AS place_tags,
+        GROUP_CONCAT(DISTINCT p.place_coordinates) AS place_coordinates, GROUP_CONCAT(DISTINCT p.place_image) AS place_images,
+        GROUP_CONCAT(DISTINCT p.place_phone_number) AS place_phone_numbers, GROUP_CONCAT(DISTINCT p.place_address) AS place_addresses,
+        GROUP_CONCAT(DISTINCT p.place_category) AS place_categories, GROUP_CONCAT(DISTINCT p.trip_time) AS trip_times
+        FROM trip_plan tp
+        LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
+        LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
+        WHERE
+        <choose>
+            <when test="'' != tripPlanAuthor">
+                tp.trip_plan_author = #{tripPlanAuthor}
+            </when>
+            <otherwise>
+                tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
+            </otherwise>
+        </choose>
+        GROUP BY tp.trip_plan_no
+        ORDER BY
+        <choose>
+            <when test="'trip_plan_views' == search.searchCondition">
+                tp.trip_plan_views DESC, tp.trip_plan_no DESC
+            </when>
+            <when test="'trip_plan_likes' == search.searchCondition">
+                tp.trip_plan_likes DESC, tp.trip_plan_no DESC
+            </when>
+            <otherwise>
+                tp.trip_plan_no DESC
+            </otherwise>
+        </choose>
+        LIMIT #{search.offset}, #{search.limit};
+    </select>
 
     <!-- INSERT C -->
     <insert id="addReview" parameterType="com.bit.motrip.domain.Review">

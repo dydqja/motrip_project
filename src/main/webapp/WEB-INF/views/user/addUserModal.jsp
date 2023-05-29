@@ -36,6 +36,25 @@
       width: 75px !important;
       height: auto !important;
     }
+
+    .shake {
+      animation: shake 0.5s;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      10% { transform: translate(-1px, -2px) rotate(-1deg); }
+      20% { transform: translate(-3px, 0px) rotate(1deg); }
+      30% { transform: translate(3px, 2px) rotate(0deg); }
+      40% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-3px, 1px) rotate(0deg); }
+      70% { transform: translate(3px, 1px) rotate(-1deg); }
+      80% { transform: translate(-1px, -1px) rotate(1deg); }
+      90% { transform: translate(1px, 2px) rotate(0deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
   </style>
 
     <script type="text/javascript">
@@ -44,19 +63,102 @@
       $(function() {
 
         $( "#commit" ).on("click" , function() {
-
-          var value = "";
-          if( $("input:text[name='ssn1']").val() != ""  &&  $("input:text[name='ssn2']").val() != "") {
-            var value = $("input[name='ssn1']").val() + "-"
-                      + $("input[name='ssn2']").val();
-          }
-
-          $("input:hidden[name='ssn']").val( value );
-
-          $("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
-
+          fncAddUser();
         });
       });
+
+      function fncAddUser() {
+
+        var id = $("#modalUserId").val();
+        var pw = $("#modalPwd").val();
+        var pw_confirm = $("#pwdConfirm").val();
+        var name = $("input[name='userName']").val();
+        var ssn = "";
+
+        if (id == null || id.length < 4 || idChecked == false) {
+
+          $('#modalUserId').focus().addClass('shake');
+          setTimeout(function () {
+            $('#modalUserId').removeClass('shake');
+          }, 1000);
+          return;
+        }
+
+        if(pw == null || pw.length <1 ){
+
+          $('#modalPwd').focus().addClass('shake');
+          setTimeout(function () {
+            $('#modalPwd').removeClass('shake');
+          }, 1000);
+          return;
+        }
+
+        if(pw_confirm == null || pw_confirm.length <1 ){
+          console.log("비빌번호확인 유효성 체크 결과 : " +pw_confirm);
+
+          $('#pwdConfirm').focus().addClass('shake');
+          setTimeout(function () {
+            $('#pwdConfirm').removeClass('shake');
+          }, 1000);
+          return;
+        }
+
+        if(name == null || name.length <1){
+
+          $('#userName').focus().addClass('shake');
+          setTimeout(function () {
+            $('#userName').removeClass('shake');
+          }, 1000);
+          return;
+        }
+
+        if( pw != pw_confirm || pwdChecked == false) {
+
+          $('#pwdConfirm').focus().addClass('shake');
+          setTimeout(function () {
+            $('#pwdConfirm').removeClass('shake');
+          }, 1000);
+          return;
+        }
+
+        if ($("#sendSms").text() == "인증번호전송") {
+
+          $('#phone').focus().addClass('shake');
+          setTimeout(function () {
+            $('#phone').removeClass('shake');
+          }, 1000);
+          return;
+        }
+
+        if( $("input:text[name='ssn1']").val() != ""  &&  $("input:text[name='ssn2']").val() != "") {
+
+          var ssn = $("input[name='ssn1']").val() + "-"
+                  + $("input[name='ssn2']").val();
+
+          $("input:hidden[name='ssn']").val( ssn );
+        }
+        $('input[name="userPhoto"]').val(fileRoute);
+
+          $("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+        }
+
+        //==>"이메일" 유효성Check  Event 처리 및 연결
+        $(function() {
+
+          $("input[name='email']").on("change" , function() {
+
+            var email=$("input[name='email']").val();
+
+            if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1) ){
+
+              $('#email').focus().addClass('shake');
+              setTimeout(function () {
+                $('#email').removeClass('shake');
+              }, 1000);
+              return;
+            }
+          });
+        });
 
       //인증번호 클릭시 인증번호 입력창 생성
       $(document).ready(function() {
@@ -256,9 +358,8 @@
       });
 
       //아이디 중복체크
+      let idChecked = false; // 중복 확인을 거쳤는지 확인
       $(document).ready(function() {
-
-        let idChecked = false; // 중복 확인을 거쳤는지 확인
 
         $("#modalUserId").keyup(function () { // 아이디를 입력할때 마다 중복검사 실행
 
@@ -304,9 +405,8 @@
       });
 
       //비밀번호 중복체크
+      let pwdChecked=false;
       $(document).ready(function() {
-
-        let pwdChecked=false;
 
         $("#pwdConfirm").focusout(function() { // 비밀번호 확인 텍스트박스에서 포커스 아웃되면 실행
           checkPwd($(this).val())
@@ -362,8 +462,6 @@
             data: {value: nickname},
             dataType: "json",
             success: function (result) {
-
-              console.log(result);
 
               if (result == 0) {
                 $("#checkNickname").text('사용할 수 없는 닉네임입니다.').css({
@@ -423,6 +521,7 @@
         });
       });
 
+      var fileRoute;
       function selectFile(fileObject) {
         var files = fileObject;
         var file = files[0];
@@ -440,6 +539,7 @@
           type: 'POST',
           success: function (result) {
             console.log(result);
+            fileRoute = result;
 
             // document.querySelector('#imagePreview').src = result;
 
@@ -539,7 +639,7 @@
             </div>
 
             <div class="form-group">
-              <label for="sample3_detailAddress" class="col-sm-4 control-label">상세주소<span style="color:red"> *</span></label>
+              <label for="sample3_detailAddress" class="col-sm-4 control-label">상세주소</label>
               <div class="col-sm-6">
                 <input type="text" class="form-control" name="addrDetail" id="sample3_detailAddress" placeholder="상세주소" required>
               </div>
@@ -579,7 +679,8 @@
 
             <div class="form-group">
               <label for="drop_zone" class="col-sm-4 control-label">회원사진등록</label>
-              <div id="drop_zone" name="uploadFile">사진 파일을 올려주세요</div>
+              <div id="drop_zone" name="userPhoto">사진 파일을 올려주세요</div>
+              <input type="hidden" name="userPhoto"  />
               <!--
               <img class="previewImage" id="imagePreview" src="" alt="Image preview">
               -->
@@ -610,8 +711,8 @@
               </div>
             </div>
 
-            <!-- 추가 필요한 폼 요소들 -->
           </form>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" id="commit">가입</button>
