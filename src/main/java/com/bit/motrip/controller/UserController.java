@@ -42,19 +42,19 @@ public class UserController {
 
     @RequestMapping( value="login", method=RequestMethod.GET)
     public String login(HttpSession session) throws Exception{
-        System.out.println("/user/logon : GET");
+        System.out.println("/user/login : GET");
 
         session.setAttribute("naverClientId", naverClientId);
         session.setAttribute("naverCallbackUrl", naverCallbackUrl);
 
-        return "user/login.jsp";
+        return "user/login.tiles";
     }
 
     @RequestMapping( value="naverLoginSuccess", method=RequestMethod.GET)
     public String naverLogin() throws Exception{
         System.out.println("/user/naverLoginSuccess : GET");
 
-        return "/index.jsp";
+        return "/index.tiles";
     }
 
     @RequestMapping( value="login", method=RequestMethod.POST )
@@ -70,29 +70,9 @@ public class UserController {
             session.setAttribute("user", dbUser);
         }
 
-        return "/index.jsp";
+        return "/index.tiles";
     }
-//    @PostMapping("login")
-//    public String login( @ModelAttribute("user") User user) throws Exception{
-//        System.out.println("/user/login : POST");
-////        System.out.println("id" + id);
-////        System.out.println("formdata로 넘어온 userId값 = : "+request.getParameter("userId"));
-////        System.out.println("formdata로 넘어온 pwd값 = : "+request.getParameter("pwd"));
-//        System.out.println("User 객체로 바인딩된 userId 값 = : "+user.getUserId());
-//        System.out.println("User 객체로 바인딩된 pwd 값 = : "+ user.getPwd());
-//        //System.out.println(user.getUserId());
-//
-//        //Business Logic
-////        User dbUser=userService.getUser(user.getUserId());
-////
-////        System.out.println(dbUser);
-////
-////        if( user.getPwd().equals(dbUser.getPwd())){
-////            session.setAttribute("user", dbUser);
-////        }
-//
-//        return null;
-//    }
+
     @RequestMapping( value="addUser", method=RequestMethod.POST )
     public String addUser(@ModelAttribute("user") User user) throws Exception {
         System.out.println("/user/addUser : POST");
@@ -101,14 +81,14 @@ public class UserController {
         //Business Logic
         userService.addUser(user);
 
-        return "redirect:/index.jsp";
+        return "redirect:/index.tiles";
     }
 
     @RequestMapping( value="naverLogin", method=RequestMethod.GET )
     public String checkUser(HttpSession session, User user) throws Exception {
         System.out.println("/user/naverLogin : GET");
 
-        return "user/naverLoginCallback.jsp";
+        return "user/naverLoginCallback.tiles";
     }
 
     @RequestMapping( value="addNaverUser", method=RequestMethod.GET )
@@ -120,7 +100,7 @@ public class UserController {
 
         System.out.println("addNaverUser.jsp 로 보내질 user의 값은? => "+user);
 
-        return "user/addNaverUser.jsp";
+        return "user/addNaverUser.tiles";
     }
 
     @RequestMapping( value="listUser" )
@@ -144,7 +124,7 @@ public class UserController {
         model.addAttribute("resultPage", resultPage);
         model.addAttribute("search", search);
 
-        return "forward:/user/listUser.jsp";
+        return "forward:/user/listUser.tiles";
     }
 
 }
