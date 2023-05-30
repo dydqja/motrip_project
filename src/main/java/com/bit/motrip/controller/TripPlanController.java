@@ -68,7 +68,7 @@ public class TripPlanController {
         System.out.println(tripPlan.toString());
         model.addAttribute("tripPlan", tripPlan);
 
-        return "tripplan/selectTripPlan.jsp";
+        return "tripplan/selectTripPlan.tiles";
     }
 
     @GetMapping("updateTripPlan")

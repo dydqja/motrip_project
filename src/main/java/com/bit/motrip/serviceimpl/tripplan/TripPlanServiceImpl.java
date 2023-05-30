@@ -33,7 +33,6 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Qualifier("evaluateListDao")
     private EvaluateListDao evaluateListDao;
 
-
     //화면에 보여줄 리스트의 수
     @Value("${tripPlanPageSize}")
     private int tripPlanPageSize;
@@ -49,7 +48,7 @@ public class TripPlanServiceImpl implements TripPlanService {
         search.setOffset(offset); //
 
         Map<String, Object> paramaters = new HashMap<>();
-        paramaters.put("tripPlanAuthor", "");
+        paramaters.put("tripPlanAuthor", "user1");
         paramaters.put("search", search);
         paramaters.put("tripPlanList", tripPlanDao.selectTripPlanList(paramaters));
 
