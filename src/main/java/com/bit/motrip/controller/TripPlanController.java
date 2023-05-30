@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -40,21 +39,24 @@ public class TripPlanController {
         System.out.println(tripPlanList.get("tripPlanList").toString());
         model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
 
-        return "tripplan/tripPlanList.jsp";
+        return "tripplan/tripPlanList.tiles";
     }
 
     @GetMapping("addTripPlanView") // addTripPlanView 일반 네비게이션
     public String addTripPlanView() {
         System.out.println("GET : addTripPlanView()");
-        return "tripplan/addTripPlan.jsp";
+        return "tripplan/addTripPlan.tiles";
     }
 
     @PostMapping("addTripPlan") // 여행플랜 저장
-    public String addTripPlan(@RequestBody TripPlan tripPlan) {
+    public String addTripPlan(@RequestBody TripPlan tripPlan) throws Exception {
         System.out.println("POST : addTripPlan()");
+
         System.out.println(tripPlan.toString());
 
-        return "tripplan/tripPlanList.jsp";
+        tripPlanService.addTripPlan(tripPlan);
+        System.out.println("여기까지오나요?");
+        return "tripplan/tripPlanList.tiles";
     }
 
     @GetMapping("selectTripPlan")

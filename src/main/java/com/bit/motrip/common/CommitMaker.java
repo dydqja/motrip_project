@@ -28,12 +28,11 @@ public class CommitMaker {
         //                        0         1          2            3                4                5
         String[] commitType = {"Create", "Update", "Delete", "Create&Update", "Update&Delete", "Create&Delete"};
         //커밋 소제목
-        String commitTitle = "AlarmDao 생성, 테스트 완료.";
+        String commitTitle = "Tiles single layout 생성";
         //수정내역
-        String commitBody = "alarmDao, mapper, 추가. "+
-                "";
+        String commitBody = ".jsp로 들어갈 시, 따로 돌아갈 수 있도록 변경";
         //수정파일
-        String changedFiles = "(Memo.java, MemoDoc.java, MemoDocContainer.java, MemoMapper.xml)";
-        gitCommitMSGBuilder(committers[0],commitType[0],commitTitle,commitBody,changedFiles);
+        String changedFiles = "(tiles.xml, singleLayout.jsp)";
+        gitCommitMSGBuilder(committers[0],commitType[1],commitTitle,commitBody,changedFiles);
     }
 }

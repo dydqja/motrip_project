@@ -2,14 +2,20 @@ package com.bit.motrip.serviceimpl.user;
 
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.user.UserDao;
-import com.bit.motrip.domain.SmsMessage;
-import com.bit.motrip.domain.SmsRequest;
-import com.bit.motrip.domain.SmsResponse;
-import com.bit.motrip.domain.User;
+import com.bit.motrip.domain.*;
 import com.bit.motrip.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuth20Service;
 import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -22,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
@@ -30,6 +38,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -64,6 +73,18 @@ public class UserServiceImpl implements UserService{
     @Value(value = "#{user['naver-cloud-sms.senderPhone']}")
     private String phone;
 
+    @Value(value = "#{user['naver.client.id']}")
+    private String CLIENT_ID;
+
+    @Value(value = "#{user['naver.client.secret']}")
+    private String CLIENT_SECRET;
+
+    @Value(value = "#{user['naver.redirect.url']}")
+    private String REDIRECT_URI;
+
+    // naverLogin 프로필 조회 API URL
+    private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
+
 
 
     ///Constructor
@@ -73,21 +94,29 @@ public class UserServiceImpl implements UserService{
 
     //회원가입
     public void addUser(User user) throws Exception {
+        System.out.println("UserServiceImpl에서 addUser 실행됨.");
 
         String getSsn = user.getSsn();
         String phone = user.getPhone();
 
-        phone = phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7);
+        //일반 회원가입 일 때 실행
+        if(!phone.contains("-") || getSsn != null) {
+            phone = phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7);
 
-        Map<String, String> extractSsn = extractSsn(getSsn);
-        String age = extractSsn.get("age");
-        String gender = extractSsn.get("gender");
+            Map<String, String> extractSsn = extractSsn(getSsn);
+            String age = extractSsn.get("age");
+            String gender = extractSsn.get("gender");
 
-        user.setAge(age);
-        user.setGender(gender);
-        user.setPhone(phone);
+            user.setAge(age);
+            user.setGender(gender);
+            user.setPhone(phone);
 
-        userDao.addUser(user);
+            userDao.addUser(user);
+
+        //네이버 회원가입 일 때 실행
+        } else {
+            userDao.addUser(user);
+        }
     }
     
     //회원정보가져오기
@@ -377,6 +406,56 @@ public class UserServiceImpl implements UserService{
 
         return jsonObject.toString();
     }
+
+    public OAuth2AccessToken getAccessToken(HttpSession session, String code, String state) throws IOException, ExecutionException, InterruptedException {
+
+        System.out.println("UserServiceImpl 에서 getAccessToken 실행됨.");
+        // Callback으로 전달받은 세션검증용 난수값과 세션에 저장되어있는 값이 일치하는지 확인
+        String sessionState = (String) session.getAttribute("oauth_state");
+        //sessionState와 state 비교 ==> CSRF공격 방지
+        if (StringUtils.pathEquals(sessionState, state)) {
+
+            OAuth20Service oauthService = new ServiceBuilder()
+                    .apiKey(CLIENT_ID)
+                    .apiSecret(CLIENT_SECRET)
+                    .callback(REDIRECT_URI)
+                    .state(state)
+                    .build(NaverLogin.instance());
+
+            // Scribe에서 제공하는 AccessToken 획득 기능으로 네아로 Access Token을 획득
+            OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
+            return accessToken;
+        }
+        System.out.println("세션검증실패");
+        return null;
+    }
+
+    public String getUserProfile(HttpSession session, OAuth2AccessToken oauthToken) throws IOException {
+
+        System.out.println("NaverLoginServiceImpl 에서 getUserProfile 실행됨.");
+
+        OAuth20Service oauthService = new ServiceBuilder()
+                .apiKey(CLIENT_ID)
+                .apiSecret(CLIENT_SECRET)
+                .callback(REDIRECT_URI).build(NaverLogin.instance());
+
+        OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL, oauthService);
+        oauthService.signRequest(oauthToken, request);
+        //사용자정보를 JSON문자열로 받음.
+        Response response = request.send();
+        return response.getBody();
+    }
+
+//    public Map<String , Object > getList(Search search) throws Exception {
+//        List<User> list= userDao.getList(search);
+//        int totalCount = userDao.getTotalCount(search);
+//
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("list", list );
+//        map.put("totalCount", new Integer(totalCount));
+//
+//        return map;
+//    }
 
 
 }

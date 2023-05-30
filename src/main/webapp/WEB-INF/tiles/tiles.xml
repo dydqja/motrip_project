@@ -6,10 +6,10 @@
 <tiles-definitions>
 
     <!-- tiles 적용 -->
-    <definition name="baseLayout" template="/WEB-INF/views/layout/baseLayout.jsp">
+    <definition name="baseLayout" template="/WEB-INF/views/baseLayout.jsp">
         <put-attribute name="header" value="/WEB-INF/views/layout/topBar.jsp" />
         <put-attribute name="contents" value="" />
-        <put-attribute name="footer" value="/WEB-INF/views/layout/memoFooter.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
     </definition>
 
     <definition name="*.tiles" extends="baseLayout">
@@ -20,19 +20,23 @@
         <put-attribute name="contents" value="/WEB-INF/views/{1}/{2}.jsp" />
     </definition>
 
+    <definition name="memo/*.tiles" extends="baseLayout">
+        <put-attribute name="footer" value="/WEB-INF/views/memo/{1}.jsp" />
+    </definition>
+
 
 
     <!-- 타일즈 미 적용 -->
-    <definition name="normalLayout" template="/WEB-INF/jsp/layout/NormalLayout.jsp">
-        <put-attribute name="NormalLayout" value="" />
+    <definition name="singleLayout" template="/WEB-INF/views/singleLayout.jsp">
+        <put-attribute name="contents" value="" />
     </definition>
 
-    <definition name="*.jsp" extends="normalForm">
-        <put-attribute name="NormalLayout" value="/WEB-INF/jsp/{1}.jsp" />
+    <definition name="*.jsp" extends="singleLayout">
+        <put-attribute name="contents" value="/WEB-INF/views/{1}.jsp" />
     </definition>
 
-    <definition name="*/*.jsp" extends="normalForm">
-        <put-attribute name="NormalLayout" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+    <definition name="*/*.jsp" extends="singleLayout">
+        <put-attribute name="contents" value="/WEB-INF/views/{1}/{2}.jsp" />
     </definition>
 
 </tiles-definitions>
