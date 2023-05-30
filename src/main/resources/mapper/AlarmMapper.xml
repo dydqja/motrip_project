@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.alarm.AlarmDao">
+
+    <resultMap id="alarmResultMap" type="com.bit.motrip.domain.Alarm">
+        <id column="alarm_no" property="alarmNo" jdbcType="INTEGER"/>
+        <result column="alarm_title" property="alarmTitle" jdbcType="VARCHAR"/>
+        <result column="alarm_contents" property="alarmContents" jdbcType="VARCHAR"/>
+        <result column="alarm_sender" property="alarmSender" jdbcType="VARCHAR"/>
+        <result column="alarm_receiver" property="alarmReceiver" jdbcType="VARCHAR"/>
+        <result column="alarm_reg_date" property="alarmRegDate" jdbcType="DATE"/>
+        <result column="alarm_read_date" property="alarmReadDate" jdbcType="DATE"/>
+        <result column="alarm_uri_one" property="alarmUriOne" jdbcType="VARCHAR"/>
+        <result column="alarm_btn_one" property="alarmBtnOne" jdbcType="VARCHAR"/>
+        <result column="alarm_uri_two" property="alarmUriTwo" jdbcType="VARCHAR"/>
+        <result column="alarm_btn_two" property="alarmBtnTwo" jdbcType="VARCHAR"/>
+        <result column="alarm_uri_three" property="alarmUriThree" jdbcType="VARCHAR"/>
+        <result column="alarm_btn_three" property="alarmBtnThree" jdbcType="VARCHAR"/>
+    </resultMap>
+    <insert id="addAlarm" parameterType="com.bit.motrip.domain.Alarm" useGeneratedKeys="true" keyProperty="alarmNo" keyColumn="alarm_no">
+        INSERT INTO alarm
+        (alarm_title, alarm_contents, alarm_sender, alarm_receiver, alarm_reg_date, alarm_read_date
+        , alarm_uri_one, alarm_btn_one, alarm_uri_two, alarm_btn_two, alarm_uri_three, alarm_btn_three)
+        VALUES
+        (#{alarmTitle}, #{alarmContents}, #{alarmSender}, #{alarmReceiver}, NOW(), #{alarmReadDate}
+        , #{alarmUriOne}, #{alarmBtnOne}, #{alarmUriTwo}, #{alarmBtnTwo}, #{alarmUriThree}, #{alarmBtnThree})
+    </insert>
+
+    <update id="deleteAlarm" parameterType="int">
+        UPDATE alarm
+        SET
+        alarm_read_date = NOW()
+        WHERE alarm_no = #{alarmNo}
+    </update>
+
+    <delete id="removeAlarm" parameterType="int">
+        DELETE FROM alarm
+        WHERE alarm_no = #{alarmNo}
+    </delete>
+
+    <select id="getAlarm" parameterType="int" resultMap="alarmResultMap">
+        SELECT
+        alarm_no, alarm_title, alarm_contents, alarm_sender, alarm_receiver, alarm_reg_date, alarm_read_date
+        , alarm_uri_one, alarm_btn_one, alarm_uri_two, alarm_btn_two, alarm_uri_three, alarm_btn_three
+        FROM alarm
+        WHERE alarm_no = #{alarmNo}
+    </select>
+
+    <select id="getAlarmList" parameterType="com.bit.motrip.common.Search" resultMap="alarmResultMap">
+        SELECT
+        alarm_no, alarm_title, alarm_contents, alarm_sender, alarm_receiver, alarm_reg_date, alarm_read_date
+        , alarm_uri_one, alarm_btn_one, alarm_uri_two, alarm_btn_two, alarm_uri_three, alarm_btn_three
+        FROM alarm
+        WHERE alarm_receiver = #{searchKeyword}
+        ORDER BY alarm_reg_date DESC
+        LIMIT #{mysqlStartRowNum}, #{pageSize}
+    </select>
+
+    <select id="getAlarmCount" parameterType="com.bit.motrip.common.Search" resultType="int">
+        SELECT
+        COUNT(alarm_no)
+        FROM alarm
+        WHERE alarm_receiver = #{searchKeyword}
+    </select>
+
+
+</mapper>

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class User {
 
@@ -264,6 +265,17 @@ public class User {
 //    public void setAceessableMemos(List<String> aceessableMemos) {
 //        this.accessibleMemos = aceessableMemos;
 //    }
+
+    public static User naverUser(Map<String, String> map) {
+        User user = new User();
+        user.setUserId(map.get("id"));
+        user.setUserName(map.get("name"));
+        user.setPhone(map.get("mobile"));
+        user.setEmail(map.get("email"));
+        user.setGender(map.get("gender"));
+        user.setAge(map.get("age"));
+        return user;
+    }
 
     @Override
     public String toString() {

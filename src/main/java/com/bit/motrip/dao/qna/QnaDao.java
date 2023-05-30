@@ -31,5 +31,5 @@ public interface QnaDao {
     public void updateQna(Qna qna) throws Exception;
 
     //질의응답 삭제 서비스
-    public void deleteQna(Qna qna) throws Exception;
+    public void deleteQna(int qnaNo) throws Exception;
 }

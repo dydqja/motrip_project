@@ -17,6 +17,12 @@
                 window.location.href = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
             });
         });
+
+        $(function() {
+              $("button[id='addTripPlan']").on("click", function() {
+                      window.location.href = "/tripPlan/addTripPlanView";
+              });
+        });
     </script>
 
 </head>
@@ -26,7 +32,7 @@
 			<h1><i class="fas fa-smile">
 			</i> 여행플랜 리스트 테스트 </h1>
 			</header>
-			<main class="join-main">
+		<main class="join-main">
 
 			<table>
 					<tr>
@@ -77,5 +83,6 @@
 
     </main>
 </div>
+<button type="button" id="addTripPlan">여행플랜 작성</button>
 </body>
 </html>

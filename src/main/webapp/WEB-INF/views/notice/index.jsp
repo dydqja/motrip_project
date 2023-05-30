@@ -20,7 +20,7 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
 
-    $(function() {항
+    $(function() {
 
         //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
         $("a:contains('공지사항')").on("click" , function() {

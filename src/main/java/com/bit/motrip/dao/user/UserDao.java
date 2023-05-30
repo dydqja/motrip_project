@@ -26,4 +26,10 @@ public interface UserDao {
     //delete
     public void deleteUser(User user) throws Exception;
 
+    public int checkId(String userId) throws Exception;
+
+    public int checkNickname(String nickname) throws Exception;
+
+
+
 }

@@ -1,5 +1,9 @@
 package com.bit.motrip.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Review {
@@ -13,8 +17,11 @@ public class Review {
     private boolean isReviewPublic;
     private int reviewLikes;
     private int viewCount;
+    @DateTimeFormat(pattern = "yyyyMMdd")
     private Date reviewRegDate;
+
     private boolean isReviewDeleted;
+    @DateTimeFormat(pattern = "yyyyMMdd")
     private Date reviewDelDate;
 
 
@@ -106,11 +113,20 @@ public class Review {
         return reviewRegDate;
     }
 
-    public void setReviewRegDate(Date reviewRegDate) {
-        this.reviewRegDate = reviewRegDate;
+    public Date setReviewRegDate(Date reviewRegDate) {
+        if (reviewRegDate != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            String formattedDate = sdf.format(reviewRegDate);
+            try {
+                return sdf.parse(formattedDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return reviewRegDate;
     }
 
-    public boolean isReviewDeleted(boolean b) {
+    public boolean isReviewDeleted() {
         return isReviewDeleted;
     }
 
@@ -123,8 +139,19 @@ public class Review {
     }
 
     public void setReviewDelDate(Date reviewDelDate) {
-        this.reviewDelDate = reviewDelDate;
+        if (reviewDelDate != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); // 날짜 형식을 지정하는 SimpleDateFormat 객체 생성
+            String formattedDate = sdf.format(reviewDelDate); // 받아온 reviewDelDate를 yyyyMMdd 형식으로 변환하여 문자열로 저장
+            try {
+                this.reviewDelDate = sdf.parse(formattedDate); // yyyyMMdd 형식의 문자열을 Date 객체로 변환하여 reviewDelDate 필드에 설정
+            } catch (ParseException e) { // 변환 중 예외가 발생한 경우 처리
+                e.printStackTrace(); // 예외 내용 출력
+            }
+        } else {
+            this.reviewDelDate = null; // reviewDelDate가 null인 경우 reviewDelDate 필드도 null로 설정
+        }
     }
+
 
     @Override
     public String toString() {

@@ -28,7 +28,15 @@ public class PropertyConfig {
     }//end of reviewPropertiesFactoryBean
 
 
+    @Bean(name = "user")
+    public PropertiesFactoryBean userPropertiesFactoryBean() throws Exception {
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        ClassPathResource classPathResource = new ClassPathResource("properties/user.properties");
 
+        propertiesFactoryBean.setLocation(classPathResource);
+
+        return propertiesFactoryBean;
+    }
 
 
 }

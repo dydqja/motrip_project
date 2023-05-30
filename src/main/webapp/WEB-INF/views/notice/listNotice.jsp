@@ -9,7 +9,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>공지 목록 조회</title>
+        <title>공지사항 목록</title>
 
         <%-- CSS START --%>
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
@@ -18,6 +18,10 @@
             .selector-for-some-widget {
                 box-sizing: content-box;
             }
+
+            .centered-table {
+                text-align: center;
+            }
         </style>
         <%-- CSS END --%>
 
@@ -25,13 +29,13 @@
 
     <body>
 
-        <h1>공지사항</h1>
+        <h1>공지사항 목록</h1>
 
         <br>
         <br>
         <br>
 
-        <table>
+        <table class="centered-table">
 
             <thead>
                 <tr>
@@ -65,8 +69,7 @@
             <ul class="pagination">
                 <li class="page-item">
                     <c:if test="${noticeListData.currentPage > 1}">
-                        <a class="page-link" href="#" onclick="goToPage(${noticeListData.currentPage - 1})"
-                           aria-label="Previous">
+                        <a class="page-link" href="#" onclick="goToPage(${noticeListData.currentPage - 1})" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </c:if>
@@ -80,8 +83,7 @@
 
                 <li class="page-item">
                     <c:if test="${noticeListData.currentPage < totalPages}">
-                        <a class="page-link" href="#" onclick="goToPage(${noticeListData.currentPage + 1})"
-                           aria-label="Next">
+                        <a class="page-link" href="#" onclick="goToPage(${noticeListData.currentPage + 1})" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </c:if>

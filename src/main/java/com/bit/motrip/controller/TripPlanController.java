@@ -1,7 +1,6 @@
 package com.bit.motrip.controller;
 
 import com.bit.motrip.common.Search;
-import com.bit.motrip.domain.DailyPlan;
 import com.bit.motrip.domain.TripPlan;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -31,27 +27,36 @@ public class TripPlanController {
     public String tripPlanList(@ModelAttribute("search")Search search, Model model) throws Exception {
         System.out.println("GET : TripPlanList()");
 
-        if(search.getPageSize() == 0){search.setCurrentPage(0);}
-        search.setCurrentPage(search.getCurrentPage());
+        if(search.getPageSize() == 0){
+            search.setCurrentPage(1);
+        } else {
+            search.setCurrentPage(search.getCurrentPage());
+        }
 
-        List<TripPlan> tripPlanList = tripPlanService.selectTripPlanList(search);
+        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(search);
+        tripPlanList.get("tripPlanList");
 
-        System.out.println(tripPlanList.toString());
-        model.addAttribute("tripPlanList", tripPlanList);
+        System.out.println(tripPlanList.get("tripPlanList").toString());
+        model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
 
-        return "tripplan/tripPlanList.jsp";
+        return "tripplan/tripPlanList.tiles";
     }
 
-    @GetMapping("addTripPlanView")
+    @GetMapping("addTripPlanView") // addTripPlanView 일반 네비게이션
     public String addTripPlanView() {
         System.out.println("GET : addTripPlanView()");
-        return "tripplan/addTripPlan.jsp";
+        return "tripplan/addTripPlan.tiles";
     }
 
-    @PostMapping("addTripPlan")
-    public String addTripPlan() {
+    @PostMapping("addTripPlan") // 여행플랜 저장
+    public String addTripPlan(@RequestBody TripPlan tripPlan) throws Exception {
         System.out.println("POST : addTripPlan()");
-        return "tripplan/tripPlanList.jsp";
+
+        System.out.println(tripPlan.toString());
+
+        tripPlanService.addTripPlan(tripPlan);
+        System.out.println("여기까지오나요?");
+        return "tripplan/tripPlanList.tiles";
     }
 
     @GetMapping("selectTripPlan")

@@ -31,21 +31,25 @@ class ReviewDaoTest {
     @Value(value = "#{review['reviewPageSize']}")
     private int reviewPageSize;
 
-    //@Test
-    void addReview() {
+    @Test
+    void addReview() throws Exception {
         Review review = new Review();
-        review.setReviewNo(1);
-        review.setReviewAuthor("user1");
-        review.setReviewTitle("My first review");
-        review.setReviewContents("This is my first review.");
+        review.setReviewNo(4);
+        review.setTripPlanNo(2);
+        review.setReviewAuthor("testUser103");
+        review.setReviewTitle("송용범의 블랙리스트 추가 이론");
+        review.setReviewContents("블랙리스트 잘되어가고 있나요? 플랜하나에는 후기를 여러개 쓸수 있삼요");
         review.setReviewThumbnail("https://example.com/thumbnail.jpg");
-        review.setInstaPostLink("https://www.instagram.com/p/Cd23456789/");
-        review.setReviewPublic(true);
-        review.setReviewLikes(0);
-        review.setViewCount(0);
+        review.setInstaPostLink("https://www.instagram.com/p/Casdw89/");
+        review.setReviewPublic(false);
+        review.setReviewLikes(4);
+        review.setViewCount(2);
         review.setReviewRegDate(new Date());
         review.setReviewDeleted(false);
         review.setReviewDelDate(null);
+        reviewDao.addReview(review);
+
+        System.out.println(review);
         System.out.println("~테스트 완료~");
     }
     //@Test

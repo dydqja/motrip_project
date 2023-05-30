@@ -42,7 +42,7 @@ class NoticeDaoTest {
         notice.setNoticeNo(5);
 
         // Increase views
-        noticeDao.increaseViews(notice);
+        noticeDao.increaseViews(notice.getNoticeNo());
 
         // Act
         Notice getNotice = noticeDao.getNotice(notice.getNoticeNo());
@@ -97,10 +97,8 @@ class NoticeDaoTest {
         Notice notice = new Notice();
         notice.setNoticeNo(2);
 
-        Notice getNotice = noticeDao.getNotice(notice.getNoticeNo());
-
         // Act
-        noticeDao.deleteNotice(getNotice);
+        noticeDao.deleteNotice(notice.getNoticeNo());
 
     }
 }
