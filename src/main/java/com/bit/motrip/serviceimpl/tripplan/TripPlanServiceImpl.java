@@ -58,12 +58,18 @@ public class TripPlanServiceImpl implements TripPlanService {
 
     @Override // 여행플랜 저장
     public void addTripPlan(TripPlan tripPlan) throws Exception {
+        tripPlan.setTripPlanAuthor("user1");
+        tripPlan.setTripPlanRegDate(new Date());
         tripPlanDao.addTripPlan(tripPlan);
+        int tripPlanNo = tripPlanDao.getTripPlan();
         List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
         for(int i=0; i<dailyPlan.size(); i++) {
+            dailyPlan.get(i).setTripPlanNo(tripPlanNo);
             dailyPlanDao.addDailyPlan(dailyPlan.get(i));
+            int dailyPlanNo = dailyPlanDao.getDailyPlan();
             List<Place> place = dailyPlan.get(i).getPlaceResultMap();
             for(int j=0; j<place.size(); j++){
+                place.get(j).setDailyPlanNo(dailyPlanNo);
                 placeDao.addPlace(place.get(j));
             }
         }
