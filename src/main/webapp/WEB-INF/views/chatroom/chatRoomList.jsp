@@ -1,6 +1,7 @@
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +17,31 @@
 		/>-->
 <%--		<link rel="stylesheet" href="/css/style.css" />--%>
 		<title>motip</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script type="text/javascript">
+
+			function fncGoChatroom(){
+
+				$("form").attr("method","POST").attr("action","/chatRoom/chat").submit();
+			}
+
+			function fncAddChatroom(){
+				$("form").attr("method","get").attr("action","/chatRoom/addChatRoom").submit();
+			}
+
+			$(function() {
+				$(".btn").on("click", function() {
+
+					fncGoChatroom();
+				});
+			});
+
+			$(function() {
+				$("#addChatRoom").on("click", function() {
+					fncAddChatroom();
+				});
+			});
+		</script>
 	</head>
 	<body>
 		<div class="join-container">
@@ -24,7 +50,8 @@
 			</header>
 			<main class="join-main">
 <%--				<form action="http://localhost:3000/chat.html" method="get">--%>
-				<form action="http://192.168.0.28:8080/chatRoom/chat" method="get">
+<%--				<form action="http://192.168.0.28:8080/chatRoom/chat" method="get">--%>
+					<form>
 					<div class="form-control">
 						<label for="username">Username(삭제예정)</label>
 						<input
@@ -35,7 +62,7 @@
 							required
 						/>
 					</div>
-
+					<button id="addChatRoom" type="submit">AddChatRoom</button>
 					<table>
 						<tr>
 							<td class="ct_list_b" width="200">채팅방 번호(삭제예정)</td>
@@ -48,7 +75,6 @@
 							<td class="ct_line02"></td>
 							<td class="ct_list_b" width="200">인원수</td>
 							<td class="ct_line02"></td>
-
 							<td class="ct_list_b" width="200">모집 상태</td>
 						</tr>
 						<tr>
@@ -64,14 +90,15 @@
 								<td></td>
 								<td align="center" width="200">${chatRoom.strDate}</td>
 								<td></td>
-								<td align="center" width="200">planTitle예정</td>
+								<td align="center" width="200">${chatRoom.tripPlanNo}</td>
 								<td></td>
 								<td align="center" width="200">${chatRoom.currentPersons}/${chatRoom.maxPersons}</td>
 								<td></td>
 
 								<td width="200">
 									<c:if test="${chatRoom.chatRoomStatus eq 0}">
-										<button type="submit" class="btn" style="color: blue;" name="room" value="${chatRoom.chatRoomNo}">
+										<button id="sub" class="btn" style="color: blue;"
+											name="chatRoomNo" value="${chatRoom.chatRoomNo}" >
 											채팅방 참여
 										</button>
 									</c:if>
