@@ -1,22 +1,35 @@
 package com.bit.motrip.restcontroller;
 
 import com.bit.motrip.domain.Memo;
+import com.bit.motrip.service.memo.MemoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/memo/*")
 public class MemoRestController {
+
+    //Constructor wiring
+    public MemoRestController(MemoService memoService) {
+        this.memoService = memoService;
+    }
+    //Field
+    private final MemoService memoService;
+
+    //Method
     @GetMapping("test/{id}")
-    public Memo test(@PathVariable("id") String id, HttpSession session)  {
-        System.out.println("메모 컨트롤러가 받았음.");
-        Memo memo = new Memo();
-        memo.setMemoNo(1);
-            memo.setMemoContents("즉석에서 만든 메모");
-        memo.setMemoTitle("즉석에서 만든 메모제목");
-        memo.setMemoAuthor(id);
-        return memo;
+    public String test(@PathVariable("id") String id, HttpSession session)  {
+
+
+
+        //json 으로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = "";
+
+        return json;
     }
 }

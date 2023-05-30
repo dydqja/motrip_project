@@ -4,9 +4,11 @@ import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.SmsMessage;
 import com.bit.motrip.domain.SmsResponse;
 import com.bit.motrip.domain.User;
+import com.github.scribejava.core.model.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 @Service
 public interface UserService {
@@ -35,10 +37,18 @@ public interface UserService {
 
     public String fileUpload(MultipartFile file) throws  Exception;
 
-    //sms 전송
+    //SMS 인증번호 발송
     SmsResponse sendSms(SmsMessage smsMessage) throws Exception;
 
-    //인증번호 확인
+    //발송한 인증번호와 입력받은 인증번호 확인
     public String phCodeConfirm(String phCodeConfirm, String smsConfirmNum) throws Exception;
+
+    // NaverLogin AccessToken 발급
+    OAuth2AccessToken getAccessToken(HttpSession session, String code, String state) throws Exception;
+
+    // Token을 이용하여 사용자 프로필 정보 가져오기
+    String getUserProfile(HttpSession session, OAuth2AccessToken oauthToken) throws Exception;
+
+
 
 }

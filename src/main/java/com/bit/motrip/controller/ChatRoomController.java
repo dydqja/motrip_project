@@ -25,19 +25,27 @@ public class ChatRoomController {
     public ChatRoomController(){
         System.out.println("==> ChatRoomController default Constructor call....");
     }//chatroom 생성자
-    @GetMapping("index")
+    @GetMapping("chatRoomList")
     public String index(Model model) throws Exception{
+
         model.addAttribute("list",chatRoomService.chatRoomList());
-        return "chatroom/index.jsp";
+        return "chatroom/chatRoomList.jsp";
     }
-    @GetMapping("chat")
-    public String chat(Model model) throws Exception{
+    @PostMapping("chat")
+    public String chat(@ModelAttribute("chatRoom") ChatRoom chatRoom,
+                       @RequestParam("username") String userName, Model model) throws Exception{
+        model.addAttribute("username",userName);
+        model.addAttribute("chatRoomNo", chatRoom.getChatRoomNo());
+ //       System.out.println(chatInfo.username);
+        System.out.println(chatRoom.getChatRoomNo());
+        System.out.println(userName);
         return "chatroom/chatRoom.jsp";
     }
     //chatRoom/addChatRoom
     @GetMapping("addChatRoom")
-    public String addChatRoom() throws Exception{
+    public String addChatRoom(    @RequestParam("username") String username) throws Exception{
         System.out.println("/chatRoom/addChatRoom/GET");
+        System.out.println(username);
         return "chatroom/addChatRoom.jsp";
     }//채팅방 생성 페이지
     @PostMapping("addChatRoom")
@@ -48,6 +56,7 @@ public class ChatRoomController {
                               Model model) throws Exception{
         System.out.println("/chatRoom/addChatRoom/POST");
         System.out.println(travelStartDateHtml);
+
         //Date에 값 파싱해서 넣어주는 코드
         chatRoom.setTravelStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(travelStartDateHtml));
         ChatRoom NewchatRoom = chatRoomService.getChatRoom(chatRoomService.addChatRoom(chatRoom,userId,tripPlanNo));
@@ -56,7 +65,10 @@ public class ChatRoomController {
         return "chatroom/addChatRoomView.jsp";
     }//채팅방 생성 후
 
-
+    @GetMapping("updateChatRoom")
+    public String updateChatRoom() throws Exception{
+        return "chatroom/updateChatRoom.jsp";
+    }
 
 
 

@@ -12,6 +12,8 @@ public class ChatRoom { //채팅방 도메인
     private int maxPersons; // 최대 인원수
     private int currentPersons; // 현재 인원수
 
+    private int tripPlanNo;
+
     private int chatRoomStatus; // 0 모집중 1 모집완료
     //getter & setter
     private String strDate;
@@ -21,6 +23,14 @@ public class ChatRoom { //채팅방 도메인
 
     public void setStrDate(String strDate) {
         this.strDate = strDate;
+    }
+
+    public int getTripPlanNo() {
+        return tripPlanNo;
+    }
+
+    public void setTripPlanNo(int tripPlanNo) {
+        this.tripPlanNo = tripPlanNo;
     }
 
     public int getChatRoomNo() {

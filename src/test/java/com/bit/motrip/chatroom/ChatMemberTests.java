@@ -20,8 +20,8 @@ public class ChatMemberTests {
     @Test
     public void addTest() throws Exception{
         ChatMember chatMember = new ChatMember();
-        chatMember.setChatRoomNo(1);
-        chatMember.setUserId("user101");
+        chatMember.setChatRoomNo(16);
+        chatMember.setUserId("user1");
         chatMember.setTripPlanNo(2);
         chatMember.setChatRoomAuthor(false);
         chatMemberService.addChatMember(chatMember);
