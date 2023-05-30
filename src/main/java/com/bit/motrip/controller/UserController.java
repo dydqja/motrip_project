@@ -47,7 +47,7 @@ public class UserController {
         session.setAttribute("naverClientId", naverClientId);
         session.setAttribute("naverCallbackUrl", naverCallbackUrl);
 
-        return "user/login.tiles";
+        return "user/login.jsp";
     }
 
     @RequestMapping( value="naverLoginSuccess", method=RequestMethod.GET)
@@ -117,14 +117,16 @@ public class UserController {
         Map<String , Object> map=userService.getList(search);
 
         Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+        System.out.println(map.get("list"));
         System.out.println(resultPage);
+        System.out.println(search);
 
         // Model 과 View 연결
         model.addAttribute("list", map.get("list"));
         model.addAttribute("resultPage", resultPage);
         model.addAttribute("search", search);
 
-        return "forward:/user/listUser.tiles";
+        return "user/listUser.tiles";
     }
 
 }
