@@ -74,9 +74,8 @@ public class MemoServiceImpl implements MemoService {
     }
 
     @Override
-    public Map<String,MemoDoc> getMemoList(String userId, Search search) {
+    public List<MemoDoc> getMemoList(String userId, Search search) {
 
-        List<Map<Integer,MemoDoc>> memoDocList = new ArrayList<>();
         List<Memo> memoList = null;
 
         //컨트롤러로부터 유저와 검색조건을 받을 것이다. 확실히 User 를 받고 나면, Search 내부의 서치키워드에 User를 넣는 방법으로 변경하자.
@@ -118,14 +117,8 @@ public class MemoServiceImpl implements MemoService {
             //로직 종료 및 리턴
             System.out.println("리턴할 맵의 내부 상태를 출력합니다.");
             Map<String,MemoDoc> targetMap = docCon.getNoDupMap();
-            Set<String> keys = targetMap.keySet();
-            List<String> keyList = new ArrayList<>(keys);
-
-            for(String key:keyList){
-                System.out.println(targetMap.get(key));
-            }
-
-            return docCon.getNoDupMap();
+            List<MemoDoc> memoDocList = new ArrayList<>(targetMap.values());
+            return memoDocList;
 
 
         } catch (Exception e) {

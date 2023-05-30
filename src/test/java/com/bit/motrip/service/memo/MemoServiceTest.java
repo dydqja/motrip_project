@@ -81,7 +81,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
 
         /////////////////////////////////////////////////////////
         //써비스단
-        Map<String,MemoDoc> docList = null;
+        List<MemoDoc> docList = null;
         try {
             docList = memoService.getMemoList(userId,search);
         }catch (Exception e){
