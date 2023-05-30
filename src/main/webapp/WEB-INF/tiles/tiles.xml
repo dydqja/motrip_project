@@ -27,16 +27,16 @@
 
 
     <!-- 타일즈 미 적용 -->
-    <definition name="normalLayout" template="/WEB-INF/jsp/layout/NormalLayout.jsp">
-        <put-attribute name="NormalLayout" value="" />
+    <definition name="singleLayout" template="/WEB-INF/views/singleLayout.jsp">
+        <put-attribute name="contents" value="" />
     </definition>
 
-    <definition name="*.jsp" extends="normalForm">
-        <put-attribute name="NormalLayout" value="/WEB-INF/jsp/{1}.jsp" />
+    <definition name="*.jsp" extends="singleLayout">
+        <put-attribute name="contents" value="/WEB-INF/views/{1}.jsp" />
     </definition>
 
-    <definition name="*/*.jsp" extends="normalForm">
-        <put-attribute name="NormalLayout" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+    <definition name="*/*.jsp" extends="singleLayout">
+        <put-attribute name="contents" value="/WEB-INF/views/{1}/{2}.jsp" />
     </definition>
 
 </tiles-definitions>
