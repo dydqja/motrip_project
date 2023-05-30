@@ -9,83 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>✈️Motrip🚤</title>
-    <style>️
-        /* 토글스위치 CSS */
-        label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-        }
 
-        [type="checkbox"] {
-            appearance: none;
-            position: relative;
-            border: max(2px, 0.1em) solid gray;
-            border-radius: 1.25em;
-            width: 2.25em;
-            height: 1.25em;
-        }
-
-        [type="checkbox"]::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            width: 1em;
-            height: 1em;
-            border-radius: 50%;
-            transform: scale(0.8);
-            background-color: gray;
-            transition: left 250ms linear;
-        }
-
-        [type="checkbox"]:checked::before {
-            background-color: white;
-            left: 1em;
-        }
-
-        [type="checkbox"]:checked {
-            background-color: #5eb95f;
-            border-color: #5eb95f;
-        }
-
-        [type="checkbox"]:disabled {
-            border-color: lightgray;
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        [type="checkbox"]:disabled:before {
-            background-color: lightgray;
-        }
-
-        [type="checkbox"]:disabled + span {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        [type="checkbox"]:focus-visible {
-            outline-offset: max(2px, 0.1em);
-            outline: max(2px, 0.1em) solid #0c7a0d;
-        }
-
-        [type="checkbox"]:enabled:hover {
-            box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
-        }
-
-        [type="checkbox"]::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            width: 1em;
-            height: 1em;
-            border-radius: 50%;
-            transform: scale(0.8);
-            background-color: gray;
-            transition: left 250ms linear;
-        }
-        /* 토글스위치 CSS */
-    </style>
 
     <!-- Form 유효성 검증 -->
     <script type="text/javascript">
@@ -93,16 +17,20 @@
         function fncAddReview() {
             var reviewTitle = $("input[name='reviewTitle']").val();
             var reviewContents = $("textarea[name='reviewContents']").val();
+            var tripPlanNo = $("input[name='selectedTripPlanNo']").val();
 
             if (reviewTitle == null || reviewTitle.length < 1) {
-                alert("제목을 반드시 입력하여야 합니다.");
+                alert("후기 제목을 반드시 입력하여야 합니다.");
                 return;
             }
             if (reviewContents == null || reviewContents.length < 1) {
-                alert("본문을 반드시 입력하여야 합니다.");
+                alert("후기 본문을 반드시 입력하여야 합니다.");
                 return;
             }
-            $("form").attr("method", "post").attr("action", "/review/addReview").submit();
+            $("form")
+                .attr("method", "post")
+                .attr("action", "/review/addReview")
+                .submit();
         }
 
         $(function () {
@@ -111,7 +39,7 @@
             });
 
             $("a[href='#']").on("click", function () {
-                $("form")[0].reset();
+                $("form")[0].reset(); 0
             });
         });
 
@@ -130,9 +58,16 @@
             $("#tripPlanModal").modal("show");
         });
     </script>
+    <script>
+        function selectTripPlan(tripPlanTitle, tripPlanNo) {
+            $("#selectedTripPlanTitle").val(tripPlanTitle);
+            $("#selectedTripPlanNo").val(tripPlanNo); // Set the tripPlanNo value
+            $("#displaySelectedTripPlanNo").text(tripPlanNo);
+            $("#displaySelectedTripPlanTitle").text(tripPlanTitle);
+            $("#tripPlanModal").modal("hide");
+        }
 
-
-
+    </script>
 
     <!-- Bootstrap, jQuery CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -149,7 +84,9 @@
             <c:if test="${not empty tripPlanList['tripPlanList']}">
                 <ul>
                     <c:forEach items="${tripPlanList['tripPlanList']}" var="tripPlan">
-                        <li>${tripPlan.tripPlanTitle}</li>
+                        <li>
+                            <a href="#" onclick="selectTripPlan('${tripPlan.tripPlanTitle}', '${tripPlan.tripPlanNo}')">${tripPlan.tripPlanTitle}</a>
+                        </li>
                     </c:forEach>
                 </ul>
             </c:if>
@@ -161,16 +98,13 @@
     <h1>후기 작성</h1>
     <!-- form Start -->
     <form action="/review/addReview" method="post">
-        <div class="form-group">
-            <label for="tripPlanNo">여행 계획 선택:</label>
-            <select id="tripPlanNo" name="tripPlanNo">
-                <c:if test="${not empty tripPlanList['tripPlanList']}">
-                    <c:forEach items="${tripPlanList['tripPlanList']}" var="tripPlan">
-                        <option value="${tripPlan.tripPlanNo}">${tripPlan.tripPlanTitle}</option>
-                    </c:forEach>
-                </c:if>
-            </select>
-            <br><br>
+        <div class="row">
+            <div class="col-xs-4 col-md-2"><strong>Selected TripPlanTitle:</strong></div>
+            <div class="col-xs-8 col-md-4">
+                <input type="hidden" id="selectedTripPlanTitle" name="selectedTripPlanTitle" value="${TripPlan.tripPlanTitle}" />
+                <input type="hidden" id="selectedTripPlanNo" name="tripPlanNo" value="" />
+                <span id="displaySelectedTripPlanTitle"></span>
+            </div>
         </div>
 
         <div class="form-group">

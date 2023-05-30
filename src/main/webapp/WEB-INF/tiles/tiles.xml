@@ -6,18 +6,22 @@
 <tiles-definitions>
 
     <!-- tiles 적용 -->
-    <definition name="baseLayout" template="/WEB-INF/views/layout/baseLayout.jsp">
+    <definition name="baseLayout" template="/WEB-INF/views/baseLayout.jsp">
         <put-attribute name="header" value="/WEB-INF/views/layout/topBar.jsp" />
-        <put-attribute name="body" value="" />
-        <put-attribute name="footer" value="/WEB-INF/views/layout/memoFooter.jsp" />
+        <put-attribute name="contents" value="" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
     </definition>
 
     <definition name="*.tiles" extends="baseLayout">
-        <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+        <put-attribute name="contents" value="/WEB-INF/views/{1}.jsp" />
     </definition>
 
     <definition name="*/*.tiles" extends="baseLayout">
-        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+        <put-attribute name="contents" value="/WEB-INF/views/{1}/{2}.jsp" />
+    </definition>
+
+    <definition name="memo/*.tiles" extends="baseLayout">
+        <put-attribute name="footer" value="/WEB-INF/views/memo/{1}.jsp" />
     </definition>
 
 

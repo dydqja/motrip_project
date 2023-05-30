@@ -1,4 +1,4 @@
-<!--//////////////////////////////////////////////////////////////////////////-->
+
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -42,8 +42,10 @@
     <hr/>
 
     <div class="row">
-        <div class="col-xs-4 col-md-2"><strong>Selected Trip Plan No:</strong></div>
+        <div class="col-xs-4 col-md-2"><strong>Trip Plan No:</strong></div>
         <div class="col-xs-8 col-md-4">${review.tripPlanNo}</div>
+        <div class="col-xs-4 col-md-2"><strong>Trip Plan Title:</strong></div>
+        <div class="col-xs-8 col-md-4">${tripPlan.tripPlanTitle}</div>
     </div>
 
     <hr/>
