@@ -90,7 +90,7 @@
     <insert id="addTripPlan" parameterType="com.bit.motrip.domain.TripPlan">
         INSERT INTO trip_plan (
         trip_plan_author, trip_plan_title, trip_plan_thumbnail, trip_days, trip_plan_reg_date, trip_plan_del_date, is_plan_deleted,
-        is_plan_public, is_plan_downloadable, is_trip_completed, trip_plan_likes, trip_plan_views )
+        is_plan_public, is_plan_downloadable, is_trip_completed, trip_plan_likes, trip_plan_views)
         VALUES (
         #{tripPlanAuthor}, #{tripPlanTitle}, #{tripPlanThumbnail}, #{tripDays}, #{tripPlanRegDate}, #{tripPlanDelDate}, #{isPlanDeleted},
         #{isPlanPublic}, #{isPlanDownloadable}, #{isTripCompleted}, #{tripPlanLikes}, #{tripPlanViews}

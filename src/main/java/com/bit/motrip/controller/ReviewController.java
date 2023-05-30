@@ -1,6 +1,7 @@
 package com.bit.motrip.controller;
 
 
+import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.Review;
 import com.bit.motrip.domain.TripPlan;
 import com.bit.motrip.service.review.ReviewService;
@@ -9,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -41,20 +39,41 @@ public class ReviewController {
         this.tripPlanService = tripPlanService;
     }
 
-
-
-    @RequestMapping( value="addReviewView", method= RequestMethod.GET )
-    public String addReviewView() throws Exception{
+    @GetMapping(value = "addReviewView")
+    public String addReviewView(Search search,Model model) throws Exception {
         System.out.println("/review/addReviewView: GET");
+        if(search.getPageSize() == 0){
+            search.setCurrentPage(1);
+        } else {
+            search.setCurrentPage(search.getCurrentPage());
+        }
+        // selectTripPlanList를 호출하여 tripPlanList를 가져옴
+        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(search);
+        model.addAttribute("tripPlanList", tripPlanList);
+        System.out.println("제발 모달창 나와주겠니"+tripPlanList);
+
         return "review/addReviewView.jsp";
     }
 
-    @RequestMapping( value="addReview", method=RequestMethod.POST )
-    public String addReview(@ModelAttribute("review") Review review) throws Exception {
+    @PostMapping(value = "addReview")
+    public String addReview(@ModelAttribute("review") Review review,
+                            @RequestParam("tripPlanNo") int tripPlanNo,  Model model) throws Exception {
         System.out.println("/review/addReview : POST");
+
+        // Debug: Print review object
+        System.out.println("Review data: " + review.toString());
+
+        // 선택한 여행 계획 ID 설정
+        TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
         reviewService.addReview(review);
+        System.out.println("addReview 컨트롤러는 들어오니?"+tripPlanNo);
+
+        // tripPlan 객체를 모델에 추가
+        model.addAttribute("tripPlan", tripPlan);
+
         return "review/addReview.jsp";
     }
+
 
 
 
