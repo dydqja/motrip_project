@@ -19,12 +19,12 @@ public class userApplicationTests {
     @Autowired
     private UserDao userDao;
 
-    //@Test
+//    @Test
     public void addUserTest() throws Exception {
         User user = new User();
 
-        user.setUserId("testUser6");
-        user.setNickname("테스트좀하자제발");
+        user.setUserId("J2IRjXNXVfL1S_50gh8mShg0yoyzowQZb1D_gfqz3O4");
+        user.setNickname("네이버가입테스트4");
         user.setPwd("1234");
         user.setUserName("홍길동");
         user.setPhone("010-1234-1234");

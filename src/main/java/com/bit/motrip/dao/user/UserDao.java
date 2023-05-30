@@ -30,4 +30,6 @@ public interface UserDao {
 
     public int checkNickname(String nickname) throws Exception;
 
+
+
 }

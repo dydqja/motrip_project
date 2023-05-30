@@ -73,6 +73,7 @@
         var pw = $("#modalPwd").val();
         var pw_confirm = $("#pwdConfirm").val();
         var name = $("input[name='userName']").val();
+        var nickname = $("input[name='nickname']").val();
         var ssn = "";
 
         if (id == null || id.length < 4 || idChecked == false) {
@@ -99,6 +100,16 @@
           $('#pwdConfirm').focus().addClass('shake');
           setTimeout(function () {
             $('#pwdConfirm').removeClass('shake');
+          }, 1000);
+          return;
+        }
+
+        if(nickname == null || nickname.length <1 || nicknameChecked == false ){
+          console.log("닉네임 유효성 체크 결과 : " +nickname);
+
+          $('#nickname').focus().addClass('shake');
+          setTimeout(function () {
+            $('#nickname').removeClass('shake');
           }, 1000);
           return;
         }
@@ -439,9 +450,8 @@
       });
 
       //닉네임 중복체크
+      let nicknameChecked = false;
       $(document).ready(function() {
-
-        let nicknameChecked = false; // 중복 확인을 거쳤는지 확인
 
         $("#nickname").keyup(function () { // 아이디를 입력할때 마다 중복검사 실행
 
@@ -539,7 +549,7 @@
           type: 'POST',
           success: function (result) {
             console.log(result);
-            fileRoute = result;
+            $('#userPhoto').val(result);
 
             // document.querySelector('#imagePreview').src = result;
 
@@ -680,7 +690,7 @@
             <div class="form-group">
               <label for="drop_zone" class="col-sm-4 control-label">회원사진등록</label>
               <div id="drop_zone" name="userPhoto">사진 파일을 올려주세요</div>
-              <input type="hidden" name="userPhoto"  />
+              <input type="hidden" name="userPhoto" id="userPhoto"  />
               <!--
               <img class="previewImage" id="imagePreview" src="" alt="Image preview">
               -->
