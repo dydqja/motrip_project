@@ -18,8 +18,17 @@
         </c:if>
         <c:if test="${not empty sessionScope.user}">
             <input type="hidden" id="userId" value="${user.userId}"/>
-            <button type="button" id="memoListBtn" class="btn btn-primary">메모목록 로드</button>
-            <div id="content"></div>
+            <input type="hidden" id="memoSearchCon" value="${sessionScope.memoSearchCon}">
+            <input type="hidden" id="">
+            <button type="button" id="memoListBtn" class="btn btn-primary" onclick="toggleMemo()">메모 토글</button>
+            <div id="memoListOn">
+                <button type="button" id="myMemo" value="">내 메모 보기</button>
+                <button type="button" id="sharedMemo" value="">공유받은 메모 보기</button>
+                <button type="button" id="delMemo" value="">삭제된 메모 보기</button>
+                <div id="memoListArea">
+
+                </div>
+            </div>
         </c:if>
     </div>
     <div class = "middle-section">
@@ -32,22 +41,11 @@
 <hr/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    var userId = $("#userId").val();
+    function toggleMemo() {
+        $('#memoListOn').toggle();
+    }
+
     $(document).ready(function() {
-        $("#memoListBtn").click(function() {
-            $.ajax({
-                url: "/memo/test/"+userId,
-                type: "GET",
-                dataType: "json",
-                success: function(response) {
-                    var jsonString = JSON.stringify(response);
-                    var newParagraph = $("<p></p>").text(jsonString);
-                    $("#content").append(newParagraph);
-                },
-                error: function(xhr, status, error) {
-                    console.log("AJAX Error:", error);
-                }
-            });
-        });
+        $('#memoListOn').hide(); //초기에 메모리스트 온을 숨김.
     });
 </script>
