@@ -21,6 +21,9 @@ public class TripPlan {
     private int tripPlanViews;
     private List<DailyPlan> dailyplanResultMap;
 
+    public TripPlan() {
+    }
+
     public int getTripPlanNo() {
         return tripPlanNo;
     }

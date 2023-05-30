@@ -48,23 +48,39 @@
 $(document).ready(function(){
 
     $("#btnAddTripPlan").click(function () {
-        var tripPlanTitle = $('#tripPlanTitle').val();
-        var dailyPlanContents = [];
-        var placesInfo = [];
+        var tripPlanTitle = $('#tripPlanTitle').val(); // 여행플랜 제목
+        var dailyPlanContents = []; // 일차별 여행플랜 본문과 명소들을 모두 저장하는곳
+        var placesInfo; // 없어도될거같은데? 나중에확인
 
         for(var i=0; i<mapCounter; i++) {
-            if(i == 0){
-                dailyPlanContents.push($('#dailyPlanContents').val());
+            var dailyPlanContent; // 일차별 여행플랜 본문
+            var placeInfo = [] // 명소를 저장하는 배열
+            var hiddenCount = 0; // 명소의 갯수 파악
+
+            if (i == 0) {
+                dailyPlanContent = $('#dailyPlanContents').val();
+                hiddenCount = $("#listPlaceTags").find("div[hidden]").length;
+                console.log("hiddenCount : " + hiddenCount);
+                for(var j=0; j<hiddenCount; j++){
+                    var placeText = $("#listPlaceTags").find("#place"+(j+1)).text();
+                    console.log(placeText);
+                    placeInfo.push(placeText);
+                }
             } else {
-                dailyPlanContents.push($('#dailyPlanContents' + i).val());
+                dailyPlanContent = $('#dailyPlanContents' + i).val();
+                hiddenCount = $("#listPlaceTags"+i).find("div[hidden]").length;
+                console.log("hiddenCount : " + hiddenCount);
+                for(var j=0; j<hiddenCount; j++){
+                     var placeText = $("#listPlaceTags" + i).find("#place"+(j+1)).text();
+                     console.log(placeText);
+                     placeInfo.push(placeText);
+                }
             }
-        }
-        for(var i=0; i<mapCounter; i++) {
-            if(i == 0){
-                placesInfo.push($("#listPlaceTags").text());
-            } else {
-                placesInfo.push($("#listPlaceTags" + i).text());
-            }
+
+            dailyPlanContents.push({
+                dailyPlanContents: dailyPlanContent,
+                placesInfo: placeInfo
+            });
         }
 
         if(tripPlanTitle == null || tripPlanTitle.length<1){
@@ -76,42 +92,39 @@ $(document).ready(function(){
                 return;
         }
 
-        console.log(placesInfo.placeAddress);
-
         var tripPlan = {
-                tripPlanTitle: tripPlanTitle,
-                dailyplanResultMap: [
-                    {
-                        dailyPlanContents: dailyPlanContents,
-                        placeResultMap: [
-                            {
-                                placeTags: placesInfo
-                            }
-                        ]
-                    }
-                ]
-        };
+            tripPlanTitle: tripPlanTitle,
+            tripDays: mapCounter,
+            dailyplanResultMap: dailyPlanContents.map(function (dailyPlan) {
+              return {
+                dailyPlanContents: dailyPlan.dailyPlanContents,
+                placeResultMap: dailyPlan.placesInfo.map(function (place) {
+                  return JSON.parse(place); // JSON 문자열을 객체로 변환
+                }),
+              };
+            }),
+          };
 
         console.log(JSON.stringify(tripPlan));
 
         $.ajax({
                 url: "/tripPlan/addTripPlan",
                 type: "POST",
-                data: JSON.stringify({
-                    tripPlan
-                }),
-                contentType: "application/json",
+                data: JSON.stringify(tripPlan),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
                 success: function (response) {
-                    console.log("여행플랜 저장 성공");
+
                 },
                 error: function (xhr, status, error) {
-                    console.log("여행플랜 저장 실패");
+
                 }
         });
+
     });
 
     let mapOptions = []; // 지도 옵션을 저장할 배열
-    let maps = []; // 생성된 지도를 저장할 배열
+    let maps = []; // 생성    된 지도를 저장할 배열
     let mapCounter = 1; // 지도 갯수 카운트
     let markers = []; // 마커를 담을 배열입니다
 
@@ -210,6 +223,7 @@ $(document).ready(function(){
 
            var idCount = this.id.split('placeSearch')[1];
            var mapIndex = idCount;
+
            if(idCount == 0){ // startMap의 경우는 id 마지막에 숫자가 없기때문에 설정
              idCount = '';
              mapIndex = 0;
@@ -288,16 +302,24 @@ $(document).ready(function(){
                            var doc = parser.parseFromString(this.innerHTML, "text/html");
                            var placePositionId = this.innerHTML.split('marker_')[1].split('"')[0]; // 몇번째 id인지 파싱
 
-                           var placeInfo = {
+                           var place = {
                              placeTags: doc.querySelector('.info h5').textContent.trim(),
                              placeAddress: doc.querySelector('.info span:not(.tel)').textContent.trim(),
                              placeCoordinates: positions[placePositionId - 1].coordinates,
+                             placeCategory: 0,
                              placePhoneNumber: doc.querySelector('.info .tel').textContent.trim()
                            };
 
-                           $("#listPlaceTags" + idCount).append("<div id='placeTags'" + idCount + ">#" + title
-                           + "</div><div id='child' class='circle' />"
-                           + "<div hidden>" + JSON.stringify(placeInfo) + "</div>");
+                           var placeCount = $("#listPlaceTags" + idCount + " div[hidden]").length; // 기존 hidden place 개수
+                           var newPlaceId = "place" + (placeCount + 1);
+
+                           $("#listPlaceTags" + idCount)
+                                   .append("<div id='placeTags" + idCount + "'>#" + title + "</div>")
+                                   .append("<div id='child' class='circle' />")
+                                   .append("<div hidden id='" + newPlaceId + "'>" + JSON.stringify(place) + "</div>");
+
+                           console.log(newPlaceId);
+
                            maps[mapIndex].setBounds(bounds);
                        };
                    })(marker, places[i].place_name);
