@@ -58,8 +58,10 @@
             <ul id="currentUsers"></ul>
         </div>
         <div class="chat-messages">
+
         </div>
       </main>
+      <div id="image-preview"></div> <!-- Container for image preview -->
       <div class="chat-form-container">
         <form id="chat-form" enctype="multipart/form-data">
           <input
@@ -71,11 +73,15 @@
           />
             <input multiple="multiple" type="file" class="form-control"
                    id="uploadFile" name="uploadFile">
+
             <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
         </form>
       </div>
     </div>
-<!-- 
+
+
+
+<!--
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
       integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
@@ -83,5 +89,6 @@
     ></script> -->
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
     <script src="/js/main.js"></script>
+<%--    <script src="/js/imagepreview.js"></script>--%>
   </body>
 </html>

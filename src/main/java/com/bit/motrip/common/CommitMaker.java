@@ -28,11 +28,11 @@ public class CommitMaker {
         //                        0         1          2            3                4                5
         String[] commitType = {"Create", "Update", "Delete", "Create&Update", "Update&Delete", "Create&Delete"};
         //커밋 소제목
-        String commitTitle = "Tiles single layout 생성";
+        String commitTitle = "채팅 이미지 넣기 완료";
         //수정내역
-        String commitBody = ".jsp로 들어갈 시, 따로 돌아갈 수 있도록 변경";
+        String commitBody = "채팅 이미지는 로칼프로젝트에 넣지 말고!!";
         //수정파일
-        String changedFiles = "(tiles.xml, singleLayout.jsp)";
-        gitCommitMSGBuilder(committers[0],commitType[1],commitTitle,commitBody,changedFiles);
+        String changedFiles = "(server.js, main.js)";
+        gitCommitMSGBuilder(committers[3],commitType[0],commitTitle,commitBody,changedFiles);
     }
 }

@@ -36,6 +36,7 @@
         <button type="button" id="tripPlanList" onclick="location.href='/tripPlan/tripPlanList'">여행플랜 목록이동</button>
         <button id="addReview" onclick="location.href='/review/addReviewView'">후기작성</button>
         <button id="noticeList" onclick="location.href='/notice/getNoticeList'">공지사항</button>
+        <button id="chatRoomList" onclick="location.href='/chatRoom/chatRoomList'">채팅리스트</button>
     </nav>
     <div class="middle-section">
         <c:if test="${empty sessionScope.user}">

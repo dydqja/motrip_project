@@ -1,7 +1,7 @@
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-
+<%@page import="com.bit.motrip.domain.*"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,6 +45,7 @@
 	</head>
 	<body>
 		<div class="join-container">
+
 			<header class="join-header">
 				<h1><i class="fas fa-smile"></i> 채팅방 리스트 데수우~</h1>
 			</header>
@@ -52,16 +53,17 @@
 <%--				<form action="http://localhost:3000/chat.html" method="get">--%>
 <%--				<form action="http://192.168.0.28:8080/chatRoom/chat" method="get">--%>
 					<form>
-					<div class="form-control">
-						<label for="username">Username(삭제예정)</label>
-						<input
-							type="text"
-							name="username"
-							id="username"
-							placeholder="Enter username..."
-							required
-						/>
-					</div>
+<%--					<div class="form-control">--%>
+<%--						<label for="username">Username(삭제예정)</label>--%>
+<%--						<input--%>
+<%--							type="text"--%>
+<%--							name="username"--%>
+<%--							id="username"--%>
+<%--							placeholder="Enter username..."--%>
+<%--							required--%>
+<%--						/>--%>
+<%--					</div>--%>
+					<input type="hidden" name="userId" value="${sessionScope.user.userId}" >
 					<button id="addChatRoom" type="submit">AddChatRoom</button>
 					<table>
 						<tr>
