@@ -80,35 +80,35 @@ public class TripPlan {
         this.tripPlanDelDate = tripPlanDelDate;
     }
 
-    public boolean isPlanDeleted() {
+    public boolean getisPlanDeleted() {
         return isPlanDeleted;
     }
 
-    public void setPlanDeleted(boolean planDeleted) {
+    public void setisPlanDeleted(boolean planDeleted) {
         isPlanDeleted = planDeleted;
     }
 
-    public boolean isPlanPublic() {
+    public boolean getisPlanPublic() {
         return isPlanPublic;
     }
 
-    public void setPlanPublic(boolean planPublic) {
+    public void setisPlanPublic(boolean planPublic) {
         isPlanPublic = planPublic;
     }
 
-    public boolean isPlanDownloadable() {
+    public boolean getisPlanDownloadable() {
         return isPlanDownloadable;
     }
 
-    public void setPlanDownloadable(boolean planDownloadable) {
+    public void setisPlanDownloadable(boolean planDownloadable) {
         isPlanDownloadable = planDownloadable;
     }
 
-    public boolean isTripCompleted() {
+    public boolean getisTripCompleted() {
         return isTripCompleted;
     }
 
-    public void setTripCompleted(boolean tripCompleted) {
+    public void setisTripCompleted(boolean tripCompleted) {
         isTripCompleted = tripCompleted;
     }
 
