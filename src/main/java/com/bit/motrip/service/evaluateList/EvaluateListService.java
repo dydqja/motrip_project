@@ -21,6 +21,15 @@ public interface EvaluateListService {
     public void deleteBlacklist(EvaluateList evaluateList) throws Exception;
 
     //update
-    public void userEvaluateCancle(EvaluateList evaluateList) throws Exception;
+    public void userEvaluateCancle(String sessionUserId, String getUserId) throws Exception;
+
+    // select
+    public String evaluateState(String sessionUserId,String getUserId) throws Exception;
+
+    // select
+    public String getScorePlus(String getUserId) throws Exception;
+
+    //select
+    public String blacklistState(String sessionUserId, String getUserId) throws Exception;
 
 }

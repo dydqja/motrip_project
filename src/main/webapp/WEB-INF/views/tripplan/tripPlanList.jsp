@@ -23,6 +23,29 @@
                       window.location.href = "/tripPlan/addTripPlanView";
               });
         });
+
+        $(function() {
+              $("button[id='btnDelete']").on("click", function() {
+                    var tripPlanNo = this.value;
+                    alert("여행플랜번호 : " + tripPlanNo);
+
+                    $.ajax({
+                            url: "/tripPlan/tripPlanDeleted",
+                            type: "GET",
+                            data: { "tripPlanNo" : tripPlanNo},
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (response) {
+                                console.log("여행플랜 삭제 성공");
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("여행플랜 삭제 실패");
+                            }
+                    });
+
+              });
+        });
+
     </script>
 
 </head>
@@ -52,6 +75,7 @@
 						<td></td>
 						<td align="center" width="200">여행플랜 번호</td>
                         <td></td>
+                        <td></td>
 					</tr>
 					<tr>
 						<td colspan="15" bgcolor="808285" height="1"></td>
@@ -75,7 +99,10 @@
                         <td align="center" width="200">${tripPlan.tripPlanViews}</td>
                         <td></td>
                         <td align="center" width="200">${tripPlan.tripPlanNo}</td>
-                        <td></tr>
+                        <td></td>
+                        <td align="center" width="200">
+                            <button id="btnDelete" value="${tripPlan.tripPlanNo}">여행플랜 삭제</button>
+                        </td>
 				    </tr>
 				    <td colspan="15" bgcolor="808285" height="1"></td>
 			    </c:forEach>
