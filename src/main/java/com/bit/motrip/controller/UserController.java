@@ -2,13 +2,15 @@ package com.bit.motrip.controller;
 
 import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
-import com.bit.motrip.domain.ChatRoom;
+
+import com.bit.motrip.domain.EvaluateList;
 import com.bit.motrip.domain.User;
+import com.bit.motrip.service.evaluateList.EvaluateListService;
 import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -61,12 +63,13 @@ public class UserController {
     public String login(@ModelAttribute("user") User user , HttpSession session, HttpServletRequest request) throws Exception{
         System.out.println("/user/login : POST");
 
-        //Business Logic
+        //사용자가 입력한 아이디값이 DB에 저장된(회원가입된) 아이디인지 확인
         User dbUser=userService.getUser(user.getUserId());
-
         System.out.println(dbUser);
 
+        //회원가입된 아이디에 저장된 비밀번호 값과, 사용자가 입력한 비밀번호값이 같은지 확인
         if( user.getPwd().equals(dbUser.getPwd())){
+            //저장된 비밀번호와 입력한 비밀번호값이 같다면, session에 아이디값 저장
             session.setAttribute("user", dbUser);
         }
 
@@ -127,6 +130,20 @@ public class UserController {
         model.addAttribute("search", search);
 
         return "user/listUser.tiles";
+    }
+
+    @RequestMapping( value="getUser", method=RequestMethod.GET )
+    public String getUser( @RequestParam("userId") String userId , Model model ) throws Exception {
+
+        System.out.println("/user/getUser : GET");
+        System.out.println(userId);
+        //Business Logic
+        User user = userService.getUser(userId);
+        System.out.println(user);
+        // Model 과 View 연결
+        model.addAttribute("user", user);
+
+        return "/user/getUser.jsp";
     }
 
 }

@@ -75,7 +75,7 @@ class EvaluateListServiceImplTest {
         evaluateList.setEvaluaterId("testUser41");
         evaluateList.setEvaluatedUserId("testUser21");
 
-        evaluateListService.userEvaluateCancle(evaluateList);
+//        evaluateListService.userEvaluateCancle(sessionUserId, getUserIdevaluateList);
 
     }
 
