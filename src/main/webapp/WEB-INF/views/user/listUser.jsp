@@ -76,7 +76,8 @@
     $(function() {
 
       //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-      $( "td:nth-child(2)" ).on("click" , function() {
+      $( "#getUser" ).on("click" , function() {
+        console.log("회원ID 클릭됨"+$(this).text().trim());
         self.location ="/user/getUser?userId="+$(this).text().trim();
       });
 
@@ -156,7 +157,7 @@
       <c:set var="i" value="${ i+1 }" />
       <tr>
         <td align="center">${ i }</td>
-        <td align="left"  title="Click : 회원정보 확인">${user.userId}</td>
+        <td align="left"  id="getUser" title="Click : 회원정보 확인">${user.userId}</td>
         <td align="left">${user.userName}</td>
         <td align="left">${user.nickname}</td>
         <td align="left">${user.userRegDate}</td>

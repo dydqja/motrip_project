@@ -43,9 +43,10 @@ public class ChatRoomController {
     }
     //chatRoom/addChatRoom
     @GetMapping("addChatRoom")
-    public String addChatRoom(    @RequestParam("username") String username) throws Exception{
+    public String addChatRoom(@RequestParam("userId") String userId,Model model) throws Exception{
         System.out.println("/chatRoom/addChatRoom/GET");
-        System.out.println(username);
+        System.out.println(userId);
+        model.addAttribute("userId",userId);
         return "chatroom/addChatRoom.jsp";
     }//채팅방 생성 페이지
     @PostMapping("addChatRoom")

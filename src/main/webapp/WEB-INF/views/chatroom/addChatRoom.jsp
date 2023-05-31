@@ -28,7 +28,7 @@
     <input type="text" name="ageRange" placeholder="나잇대" />
     <input type="number" name="maxPersons" placeholder="최대 인원수" />
     <input type="number" name="tripPlanNo" placeholder="여행 번호" />
-    <input type="text" name="userId" placeholder="유저이름 히든예정" /> <!--hidden 예정 -->
+    <input type="hidden" name="userId" value="${userId}"/> <!--hidden 예정 -->
 
     <input id="sub" type="submit" value="생성" />
 </form>
