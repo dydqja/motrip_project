@@ -3,18 +3,17 @@ const chatMessage = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
 
-
-const queryString = window.location.search;
-const params = new URLSearchParams(queryString);
-
-const username = params.get("username");
-const room = params.get("room");
+// const queryString = window.location.search;
+// const params = new URLSearchParams(queryString);
+// console.log(queryString);
+// const username = params.get("username");
+// const room = params.get("chatRoomNo");
 
 console.log(username,room);
 
-
-const socket = io.connect("http://192.168.0.28:3000", {
-  cors:{origin:"http://192.168.0.28:3000"}
+//cors 에러 해결
+const socket = io.connect("http://localhost:3000", {
+  cors:{origin:"http//localhost:3000"}//"http://192.168.0.28:3000"}
 });
 //join chatroom
 socket.emit('joinRoom',{username,room});
@@ -24,7 +23,10 @@ socket.on('roomUsers', ({ room, users }) => {
   outputRoomName(room);
   outputUsers(users);
 });
-
+socket.on('roomUsersRemove', ({ room, users }) => {
+  outputRoomName(room);
+  removeUsers(users);
+});
 //client side
 //Message from server
 socket.on('message',message => {
@@ -41,11 +43,12 @@ chatForm.addEventListener('submit', (e) => {
 
   //get message text
   const msg = e.target.elements.msg.value;
-  
+  const photo = e.target.elements.uploadFile.value;
   //Emit message to server
-  socket.emit('chatMessage',msg);
 
-  //clear inpu
+  socket.emit('chatMessage',msg,photo);
+
+  //clear input
   e.target.elements.msg.value='';
   //e.target.elements.msg.value.focus();
 });
@@ -66,11 +69,18 @@ function outputRoomName(room) {
   roomName.innerText = room;
 }
 
-function outputUsers(users){
+function outputUsers(users){ //이거는 참여한 유저 리스트
   userList.innerHTML = `
-    ${users.map(user => `<li>${user.username}<li>`).join('')}
+    ${users.map(user => `<li id="${user.username}">${user.username}</li>`).join('')}
   `;
 };
+function removeUsers(users) {
+    const userElement = document.getElementById(users);
+    if (userElement) {
+      userElement.innerHTML = "";
+    };
+}
+//현재 참여 유저 리스트
 
 const leaveBtn = document.getElementById('leave-btn');
 

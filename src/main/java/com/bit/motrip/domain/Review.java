@@ -126,7 +126,7 @@ public class Review {
         return reviewRegDate;
     }
 
-    public boolean isReviewDeleted(boolean b) {
+    public boolean isReviewDeleted() {
         return isReviewDeleted;
     }
 

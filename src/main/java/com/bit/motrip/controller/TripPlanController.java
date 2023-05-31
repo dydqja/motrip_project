@@ -68,7 +68,7 @@ public class TripPlanController {
         System.out.println(tripPlan.toString());
         model.addAttribute("tripPlan", tripPlan);
 
-        return "tripplan/selectTripPlan.jsp";
+        return "tripplan/selectTripPlan.tiles";
     }
 
     @GetMapping("updateTripPlan")
@@ -76,6 +76,13 @@ public class TripPlanController {
         System.out.println("GET : updateTripPlan()");
 
         return "null";
+    }
+
+    @GetMapping("tripPlanDeleted")
+    public void tripPlanDeleted(@RequestParam("tripPlanNo") int tripPlanNo) throws Exception {
+        System.out.println("GET : deleteTripPlan()");
+        tripPlanService.tripPlanDeleted(tripPlanNo);
+        System.out.println("여행플랜 삭제 대기중 변경");
     }
 
 }
