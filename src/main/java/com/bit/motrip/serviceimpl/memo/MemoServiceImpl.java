@@ -1,5 +1,6 @@
 package com.bit.motrip.serviceimpl.memo;
 
+import com.bit.motrip.common.ImageSaveService;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.memo.MemoDao;
 import com.bit.motrip.domain.*;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.sql.Date;
 import java.util.*;
 
@@ -34,6 +37,9 @@ public class MemoServiceImpl implements MemoService {
     String newMemoContents;
     @Value(value = "#{memo['newMemoColor']}")
     String newMemoColor;
+
+    @Autowired
+    ImageSaveService imageSaveService;
 
 
     //Method
@@ -74,9 +80,8 @@ public class MemoServiceImpl implements MemoService {
     }
 
     @Override
-    public Map<String,MemoDoc> getMemoList(String userId, Search search) {
+    public List<MemoDoc> getMemoList(String userId, Search search) {
 
-        List<Map<Integer,MemoDoc>> memoDocList = new ArrayList<>();
         List<Memo> memoList = null;
 
         //컨트롤러로부터 유저와 검색조건을 받을 것이다. 확실히 User 를 받고 나면, Search 내부의 서치키워드에 User를 넣는 방법으로 변경하자.
@@ -103,11 +108,11 @@ public class MemoServiceImpl implements MemoService {
             }
 
             //디버그문구
-            System.out.println("DB로부터 갖고온 메모들의 정보를 출력합니다.");
-            for(Memo memo : memoList){
-                System.out.println(memo);
-            }
-            System.out.println("DB로부터 갖고온 메모들의 정보의 출력이 끝났습니다.");
+//            System.out.println("DB로부터 갖고온 메모들의 정보를 출력합니다.");
+//            for(Memo memo : memoList){
+//                System.out.println(memo);
+//            }
+//            System.out.println("DB로부터 갖고온 메모들의 정보의 출력이 끝났습니다.");
             //디버그 끝
 
             //중복을 제거한 memoDoc들을 만든다.
@@ -116,16 +121,9 @@ public class MemoServiceImpl implements MemoService {
                 docCon.putMemo(memo);
             }
             //로직 종료 및 리턴
-            System.out.println("리턴할 맵의 내부 상태를 출력합니다.");
             Map<String,MemoDoc> targetMap = docCon.getNoDupMap();
-            Set<String> keys = targetMap.keySet();
-            List<String> keyList = new ArrayList<>(keys);
-
-            for(String key:keyList){
-                System.out.println(targetMap.get(key));
-            }
-
-            return docCon.getNoDupMap();
+            List<MemoDoc> memoDocList = new ArrayList<>(targetMap.values());
+            return memoDocList;
 
 
         } catch (Exception e) {
@@ -146,6 +144,19 @@ public class MemoServiceImpl implements MemoService {
 
     @Override
     public Memo updateMemo(Memo memo) {
+
+        //썸머노트 내부의 html 문자를 빼낸다.
+        String html = memo.getMemoContents();
+        //이미지를 저장하고, html 내부의 이미지 경로를 변경한다.
+        try {
+            String userId = memo.getMemoAuthor();
+            String subSystem = "memo";
+            html = imageSaveService.saveImage(html, userId, subSystem);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //경로가 변경된 html을 memo에 넣는다.
+        memo.setMemoContents(html);
 
         //컨트롤러로부터 memo의 정보를 받는다.
         int isSuccess = 0;

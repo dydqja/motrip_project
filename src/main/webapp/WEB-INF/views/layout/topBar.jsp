@@ -53,7 +53,7 @@
         </c:if>
     </div>
     <div class="right-section">
-        알람이 들어올 곳
+        <button id="alarmTest" onclick="location.href='/alarm/test'"></button>
     </div>
 
     <hr/>

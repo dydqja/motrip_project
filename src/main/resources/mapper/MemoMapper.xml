@@ -131,20 +131,21 @@
 
     <select id="getMemoListByMyMemo" parameterType="com.bit.motrip.common.Search" resultMap="memoResultMap">
         SELECT
-        memo.memo_no,memo.memo_title,memo.memo_contents,memo.memo_reg_date,memo.memo_del_date,memo.memo_color
-        ,access.memo_access_user AS memo_author
-        ,trip_plan.trip_plan_no,trip_plan.trip_plan_author,trip_plan.trip_plan_title,trip_plan.trip_plan_thumbnail,trip_plan.trip_plan_reg_date,trip_plan.is_plan_public
-        ,review.review_no,review.review_title,review.review_thumbnail,review.review_reg_date,review.review_author,review.is_review_public
-        ,chat_rooms.chat_room_no,chat_rooms.chat_room_title,chat_rooms.travel_start_date,chat_rooms.current_persons,chat_rooms.max_persons
+            memo.memo_no, memo.memo_title, memo.memo_contents, memo.memo_reg_date, memo.memo_del_date, memo.memo_color,
+            access.memo_access_user AS memo_author,
+            trip_plan.trip_plan_no, trip_plan.trip_plan_author, trip_plan.trip_plan_title, trip_plan.trip_plan_thumbnail, trip_plan.trip_plan_reg_date, trip_plan.is_plan_public,
+            review.review_no, review.review_title, review.review_thumbnail, review.review_reg_date, review.review_author, review.is_review_public,
+            chat_rooms.chat_room_no, chat_rooms.chat_room_title, chat_rooms.travel_start_date, chat_rooms.current_persons, chat_rooms.max_persons
         FROM memo_access AS access
-        LEFT JOIN memo ON access.memo_no = memo.memo_no
-        LEFT JOIN trip_plan ON memo.attached_trip_plan_no = trip_plan.trip_plan_no
-        LEFT JOIN review ON memo.attached_review_no = review.review_no
-        LEFT JOIN chat_rooms ON memo.attached_chat_room_no = chat_rooms.chat_room_no
+                 LEFT JOIN memo ON access.memo_no = memo.memo_no
+                 LEFT JOIN trip_plan ON memo.attached_trip_plan_no = trip_plan.trip_plan_no
+                 LEFT JOIN review ON memo.attached_review_no = review.review_no
+                 LEFT JOIN chat_rooms ON memo.attached_chat_room_no = chat_rooms.chat_room_no
         WHERE access.memo_access_user = #{searchKeyword}
-        AND access.is_memo_author = 1
+          AND access.is_memo_author = 1
+          AND memo.memo_del_date IS NULL
         ORDER BY memo.memo_no DESC
-        LIMIT #{mysqlStartRowNum}, #{pageSize}
+            LIMIT #{mysqlStartRowNum}, #{pageSize}
     </select>
 
     <select id="getMemoListBySharedMemo" parameterType="com.bit.motrip.common.Search" resultMap="memoResultMap">
