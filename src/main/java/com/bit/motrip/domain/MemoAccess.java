@@ -18,6 +18,10 @@ public class MemoAccess {
     private String memoAccessUser;
     private boolean isMemoAuthor;
 
+    private String userNickname;
+    private String userEmail;
+    private String userGender;
+
     //getter and setter
 
     public int getMemoAccessNo() {
@@ -50,6 +54,30 @@ public class MemoAccess {
 
     public void setMemoAuthor(boolean memoAuthor) {
         isMemoAuthor = memoAuthor;
+    }
+
+    public String getUserNickname() {
+        return userNickname;
+    }
+
+    public void setUserNickname(String userNickname) {
+        this.userNickname = userNickname;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserGender() {
+        return userGender;
+    }
+
+    public void setUserGender(String userGender) {
+        this.userGender = userGender;
     }
 
     @Override

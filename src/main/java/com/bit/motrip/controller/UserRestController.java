@@ -1,9 +1,7 @@
 package com.bit.motrip.controller;
 
-import com.bit.motrip.domain.PhCodeConfirmRequest;
-import com.bit.motrip.domain.SmsMessage;
-import com.bit.motrip.domain.SmsResponse;
-import com.bit.motrip.domain.User;
+import com.bit.motrip.domain.*;
+import com.bit.motrip.service.evaluateList.EvaluateListService;
 import com.bit.motrip.service.user.UserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +27,10 @@ public class UserRestController {
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
+
+    @Autowired
+    @Qualifier("evaluateListServiceImpl")
+    private EvaluateListService evaluateListService;
 
     public UserRestController() {
         System.out.println(this.getClass());
@@ -163,6 +165,94 @@ public class UserRestController {
             return "/user/naverLoginSuccess";
         }
     }
+
+    // 유저평가값 가져와서 값에따라 버튼 비교한다
+    @RequestMapping(value = "evaluateState", method = RequestMethod.POST)
+    public String evaluateState(@RequestBody Map<String, String> request) throws Exception {
+        System.out.println("/user/evaluateState : POST");
+
+        String sessionUserId = request.get("sessionUserId");
+        String getUserId = request.get("getUserId");
+
+
+        String evaluateState = evaluateListService.evaluateState(sessionUserId,getUserId);
+        System.out.println("return 된 evaluateState 값은 ? => : " + evaluateState);
+
+        return evaluateState;
+    }
+
+    // 회원 좋아요취소 또는 싫어요취소 클릭시 평가데이터 삭제한다
+    @RequestMapping(value = "userEvaluateCancle", method = RequestMethod.POST)
+    public @ResponseBody String userEvaluateCancle(@RequestBody Map<String, String> request) throws Exception {
+        System.out.println("/user/userEvaluateCancle : POST");
+
+        String sessionUserId = request.get("sessionUserId");
+        String getUserId = request.get("getUserId");
+
+        //좋아요 또는 싫어요 데이터 삭제한다
+        evaluateListService.userEvaluateCancle(sessionUserId,getUserId);
+        //평가점수 합산해서 가져온다
+        String getScorePlus = evaluateListService.getScorePlus(getUserId);
+        System.out.println(getScorePlus);
+
+        return getScorePlus;
+    }
+
+    // 회원 좋아요 또는 싫어요 클릭시 평가데이터 추가한다
+    @RequestMapping(value = "addEvaluation", method = RequestMethod.POST)
+    public @ResponseBody String addEvaluation(@RequestBody EvaluateList evaluateList) throws Exception {
+        System.out.println("/user/addEvaluation : POST");
+        System.out.println(evaluateList);
+        String getUserId = evaluateList.getEvaluatedUserId();
+
+        evaluateListService.addEvaluation(evaluateList);
+        System.out.println("addEvaluation 완료");
+        //평가점수 합산해서 가져온다
+        String getScorePlus = evaluateListService.getScorePlus(getUserId);
+        System.out.println(getScorePlus);
+
+        return getScorePlus;
+    }
+
+    // 블랙리스트 추가
+    @RequestMapping(value = "addBlacklist", method = RequestMethod.POST)
+    public @ResponseBody String addBlackList(@RequestBody EvaluateList evaluateList) throws Exception {
+        System.out.println("/user/addBlacklist : POST");
+        System.out.println(evaluateList);
+
+        evaluateListService.addEvaluation(evaluateList);
+        System.out.println("addBlacklist 완료");
+
+        return "";
+    }
+
+    // 블랙리스트 삭제
+    @RequestMapping(value = "deleteBlacklist", method = RequestMethod.POST)
+    public @ResponseBody String deleteBlacklist(@RequestBody EvaluateList evaluateList) throws Exception {
+        System.out.println("/user/deleteBlacklist : POST");
+        System.out.println(evaluateList);
+
+        evaluateListService.deleteBlacklist(evaluateList);
+        System.out.println("deleteBlacklist 완료");
+
+        return "";
+    }
+
+    // 유저블랙리스트값 가져와서 값에따라 버튼 비교한다
+    @RequestMapping(value = "blacklistState", method = RequestMethod.POST)
+    public String blacklistState(@RequestBody Map<String, String> request) throws Exception {
+        System.out.println("/user/blacklistState : POST");
+
+        String sessionUserId = request.get("sessionUserId");
+        String getUserId = request.get("getUserId");
+
+
+        String blacklistState = evaluateListService.blacklistState(sessionUserId,getUserId);
+        System.out.println("return 된 evaluateState 값은 ? => : " + blacklistState);
+
+        return blacklistState;
+    }
+
 }
 
 
