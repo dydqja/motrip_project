@@ -272,13 +272,14 @@ public class MemoServiceImpl implements MemoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return isSuccess;
+        return 1;
     }
 
     @Override
     public List<MemoAccess> getMemoSharerList(int memoNo){
         try{
-            return memoDao.getMemoAccessListByMemoNo(memoNo);
+            List<MemoAccess> memoAccessList = memoDao.getMemoAccessListByMemoNo(memoNo);
+            return memoAccessList;
         }catch (Exception e) {
             e.printStackTrace();
         }

@@ -10,6 +10,9 @@
         <result column="memo_access_user" property="memoAccessUser"/>
         <result column="memo_no" property="memoNo"/>
         <result column="is_memo_author" property="isMemoAuthor"/>
+        <result column="nickname" property="userNickname"/>
+        <result column="email" property="userEmail"/>
+        <result column="gender" property="userGender"/>
     </resultMap>
 
     <resultMap id="memoResultMap" type="com.bit.motrip.domain.Memo">
@@ -200,10 +203,12 @@
 
     <!--현재 이 메모에 접근 가능한 사람을 불러옴. 이제 추후에 누군가에게 공유를 해제할 때 사용할 것임.-->
     <select id="getMemoAccessListByMemoNo" parameterType="int" resultMap="memoAccessResultMap">
-        select memo_access_no, memo_no, memo_access_user, is_memo_author
-        from memo_access
-        where memo_no = #{memoNo}
-        AND is_memo_author = 0
+        select ma.memo_access_user,u.nickname,u.email,u.gender
+        FROM
+            memo_access AS ma
+            LEFT JOIN users AS u ON ma.memo_access_user = u.user_id
+        WHERE ma.is_memo_author = 0
+          AND memo_no = #{memoNo}
     </select>
 
     <select id="getMemoAccessListByUserId" parameterType="String" resultMap="memoAccessResultMap">

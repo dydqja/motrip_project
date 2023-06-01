@@ -51,7 +51,7 @@
         </c:if>
     </div>
     <div class="right-section">
-        <button id="alarmTest" onclick="location.href='/alarm/test'"></button>
+        <button id="alarmTest" onclick="location.href='/test/alarmTest'">알람테스트</button>
     </div>
 
     <hr/>

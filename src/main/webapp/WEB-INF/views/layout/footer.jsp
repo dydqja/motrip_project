@@ -40,6 +40,9 @@
         </c:if>
     </div>
     <div class = "middle-section">
+        <div id="memoModalArea">
+            <div id="memoShareListModal"></div>
+        </div>
         <div id="memoDialogsArea">
             <form class="memoDialog" name="memoDialogCount">
                 <div id="memoDetailArea">
@@ -63,6 +66,27 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style>
+    .memoAttachedNoneBtn {
+        background-color: black;
+        color: white;
+    }
+
+    .memoAttachedTripPlanBtn {
+        background-color: lime;
+        color: black;
+    }
+
+    .memoAttachedReviewBtn {
+        background-color: skyblue;
+        color: black;
+    }
+
+    .memoAttachedChatRoomBtn {
+        background-color: red;
+        color: white;
+    }
+</style>
 <script>
     //메모 섹션을 토글하는 펑션
     function toggleMemo() {
@@ -363,6 +387,9 @@
                 let memoContentsDiv = memoDialogForm.find('.memoContentsDiv').first();
                 memoContentsDiv.html(memoContents);
 
+                //memoContentsDiv.css('display', 'none') 를 취소한다.
+                memoContentsDiv.css('display', '');
+
                 let memoContentsText = memoDialogForm.children('.memoContentsText');
                 memoContentsText.val(memoContents);
 
@@ -385,6 +412,11 @@
                     deleteButton.addClass('deleteMemoBtn');
                     deleteButton.text('삭제');
                     memoControlArea.append(deleteButton);
+                    //공유버튼을 만든다.
+                    let shareButton = $('<button>');
+                    shareButton.addClass('shareMemoBtn');
+                    shareButton.text('공유');
+                    memoControlArea.append(shareButton);
                 }
                 //delDate 가 null이 아니라면 복구버튼을 만든다.
                 if(delDate !== null){
@@ -408,25 +440,40 @@
 
     // 부착된 여행플랜 보러가기
     $(document).on('click', '.memoAttachedTripPlanBtn', function() {
-        let tripPlanNo = $(this).attr('id');
-        let url = '/selectTripPlanList?tripPlanNo=' + tripPlanNo;
-        alert(url);
+        event.preventDefault();
+        let tripPlanNo = $(this).val();
+        let url = '/tripPlan/selectTripPlan?tripPlanNo=' + tripPlanNo;
+        window.location.href = url;
+
     });
 
     // 부착된 리뷰 보러가기
     $(document).on('click', '.memoAttachedReviewBtn', function() {
-        let reviewNo = $(this).attr('id');
-        let url = '/selectReviewList?reviewNo=' + reviewNo;
+        event.preventDefault();
+        let reviewNo = $(this).val();
+        let url = '/review/getReview?reviewNo=' + reviewNo;
         alert(url);
     });
 
     // 부착된 채팅방 보러가기
     $(document).on('click', '.memoAttachedChatRoomBtn', function() {
-        let chatRoomNo = $(this).attr('id');
-        let url = '/selectChatRoomList?chatRoomNo=' + chatRoomNo;
+        event.preventDefault();
+        let chatRoomNo = $(this).val();
+        let url = '/chatRoom/getChatRoom?chatRoomNo=' + chatRoomNo;
         alert(url);
         //window.location.href = url;
     });
+    // 유저 자세히보기 리스너 showDetailedUserBtn
+    $(document).on('click', '.showDetailedUserBtn', function() {
+        event.preventDefault();
+        //해당 유저의 유저넘버를 가져온다.
+        let userId = $(this).val();
+        let url = '/user/getUser?userId=' + userId;
+        window.location.href = url;
+    });
+
+
+
 
     //메모 상세보기 리스너
     $(document).on('click', '.getMemoBtn', function() {
@@ -437,6 +484,164 @@
         let memoDialogNo = buildMemoDialog();
         getMemo(memoNo, memoDialogNo);
     });
+
+    //메모 공유 리스너
+    $(document).on('click', '.shareMemoBtn', function() {
+        event.preventDefault();
+        //메모의 번호를 받는다.
+        let memoNo = $(this).parent().parent().children('.memoDialogForm').children('.memoNoInput').val();
+
+        //현재 이 메모를 공유중인 모든 사람을 받아온다.
+
+        //공유할 유저의 아이디를 보낸다.
+            $.ajax({
+                type: 'post',
+                url: '/memo/getMemoSharerList',
+                dataType: 'json',
+                data: {
+                    memoNo: memoNo,
+                },
+                success: function(response) {
+                    let memoAccessList = response;
+                    //모달을 형성할 영역을 잡는다.
+                    let memoShareListModal = $('#memoShareListModal');
+                    //영역의 내용을 비운다.
+                    memoShareListModal.html('');
+                    //모달의 헤더를 만든다.
+                    let modalHeader = $('<div>');
+                    modalHeader.addClass('memo-modal-header');
+                    memoShareListModal.append(modalHeader);
+                    let modalTitle = $('<h5>');
+                    modalTitle.addClass('modal-title');
+                    modalTitle.text('이 메모를 공유중인 사람들');
+                    modalHeader.append(modalTitle);
+
+                    for(let memoAccess of memoAccessList){
+                        let userId = 'null';
+                        userId = memoAccess.memoAccessUser;
+                        let userNickname = 'null';
+                        userNickname = memoAccess.userNickname;
+                        let userEmail = 'null';
+                        userEmail = memoAccess.userEmail;
+                        let userGender = 'null';
+                        userGender = memoAccess.userGender;
+
+                        //모달에 공유중인 유저의 정보를 추가한다.
+                        let info = $('<span>');
+                        info.addClass('memo-modal-body');
+                        info.html('이름: ' + userNickname + ' 이메일: ' + userEmail + ' 성별: ' + userGender);
+                        memoShareListModal.append(info);
+                        let showDetailBtn = $('<button>');
+                        showDetailBtn.addClass('showDetailedUserBtn');
+                        showDetailBtn.text('자세히 보기');
+                        showDetailBtn.val(userId);
+                        memoShareListModal.append(showDetailBtn);
+                        let unShareBtn = $('<button>');
+                        unShareBtn.addClass('unShareMemoBtn');
+                        unShareBtn.text('공유 해제');
+                        unShareBtn.val(memoNo);
+                        memoShareListModal.append(unShareBtn);
+                    }
+                    //모달에 공유할 사람 추가하는 div를 만든다.
+                    let addShareUserDiv = $('<div>');
+                    addShareUserDiv.addClass('memo-modal-body');
+                    memoShareListModal.append(addShareUserDiv);
+                    //거기에 공유할 사람 추가하는 input을 만든다.
+                    let addShareUserInput = $('<input>');
+                    addShareUserInput.addClass('addShareUserInput');
+                    addShareUserInput.attr('type', 'text');
+                    addShareUserInput.attr('placeholder', '공유할 유저의 아이디');
+                    addShareUserDiv.append(addShareUserInput);
+
+                    //공유할 유저를 추가하는 버튼을 만든다.
+                    let addShareUserBtn = $('<button>');
+                    addShareUserBtn.addClass('addMemoAccessBtn');
+                    addShareUserBtn.text('공유');
+                    addShareUserBtn.val(memoNo);
+                    addShareUserDiv.append(addShareUserBtn);
+                    //존재하지 않는 유저입니다. 를 띄울 div를 만든다.
+                    let idAvail = $('<div>');
+                    idAvail.addClass('memo-modal-body');
+                    idAvail.addClass('idAvail');
+                    memoShareListModal.append(idAvail);
+
+
+                    //모달을 연다
+                    $('#memoShareListModal').dialog({
+                        resizable: false,
+                        height: "auto",
+                        width: 400,
+                        modal: true
+                    });
+                },
+                error: function(error) {
+                    alert('메모 공유 실패');
+                }
+            });
+    });
+
+    //공유 해제 리스너
+    $(document).on('click', '.unShareMemoBtn', function() {
+        event.preventDefault();
+        //공유 해제할 유저의 아이디를 받는다.
+        //이 객체의 형제인 .showDetailedUserBtn의 value값을 받는다.
+        let userId = $(this).siblings('.showDetailedUserBtn').val();
+        //공유 해제할 메모의 번호를 받는다.
+        let memoNo = $(this).val();
+        alert('공유 해제할 유저의 아이디: ' + userId + ' 공유 해제할 메모의 번호: ' + memoNo)
+        //공유 해제할 유저의 아이디와 메모의 번호를 보낸다.
+        $.ajax({
+            type: 'post',
+            url: '/memo/deleteMemoAccess',
+            dataType: 'json',
+            data: {
+                memoNo: memoNo,
+                userId: userId
+            },
+            success: function(response) {
+                alert('공유 해제 성공');
+                //모달을 닫는다.
+                $('#memoShareListModal').dialog('close');
+            },
+            error: function(error) {
+                alert('공유 해제 실패');
+            }
+        });
+    });
+    //TODO
+    //공유할 유저를 추가할 때 존재하는 아이디인지 체크하는 ajax 리스너
+
+    //
+
+
+    //메모에 유저를 공유하는 리스너
+    $(document).on('click', '.addMemoAccessBtn', function() {
+        event.preventDefault();
+        //공유할 유저의 아이디를 받는다.
+        let userId = $(this).siblings('.addShareUserInput').val();
+        //공유할 메모의 번호를 받는다.
+        let memoNo = $(this).val();
+        //공유할 유저의 아이디와 메모의 번호를 보낸다.
+        $.ajax({
+            type: 'post',
+            url: '/memo/addMemoAccess',
+            dataType: 'json',
+            data: {
+                memoNo: memoNo,
+                userId: userId
+            },
+            success: function(response) {
+                alert('메모 공유 성공');
+                //모달을 닫는다.
+                $('#memoShareListModal').dialog('close');
+            },
+            error: function(error) {
+                alert('메모 공유 실패');
+            }
+        });
+    });
+
+
 
     //메모 수정 리스너
     $(document).on('click', '.editMemoBtn', function() {
@@ -456,7 +661,7 @@
         memoTitleInput.attr('readonly', false);
 
         //폼의 자식인 memoContentsDiv를 객체로 잡는다.
-        let memoContentsDiv = memoDialogForm.children('.memoContentsDiv');;
+        let memoContentsDiv = memoDialogForm.children('.memoContentsDiv');
 
         //폼의 자식인 memoContentsText를 객체로 잡는다.
         let memoContentsText = memoDialogForm.children('.memoContentsText');
@@ -506,9 +711,85 @@
             data: formData,
             dataType: 'json',
             success: function(response) {
-                let noUse = response
+                let memo = response
                 getMemoList();
-                getMemo(memoNo, memoDialogNo);
+                let memoNo = memo.memoNo;
+                let memoAuthor = memo.memoAuthor;
+                let memoTitle = memo.memoTitle;
+                let memoContents = memo.memoContents;
+                let memoRegDate = memo.memoRegDate;
+                let regDate = new Date(memoRegDate);
+                let memoDelDate = memo.memoDelDate;
+                let delDate = memoDelDate ? new Date(memoDelDate) : null;
+
+                //memoDialog의 자식인 memoDialogForm클래스를 객체로 잡는다.
+                let memoDialogForm = memoDialog.children('.memoDialogForm');
+
+                //memoDialogForm 안의 input들을 찾아서 값을 넣어준다.
+                let memoNoInput = memoDialogForm.children('.memoNoInput');
+                memoNoInput.val(memoNo);
+                memoNoInput.attr('readonly', true);
+
+                let memoTitleInput = memoDialogForm.children('.memoTitleInput');
+                memoTitleInput.val(memoTitle);
+                memoTitleInput.attr('readonly', true);
+
+                let memoAuthorInput = memoDialogForm.children('.memoAuthorInput');
+                memoAuthorInput.val(memoAuthor);
+                memoAuthorInput.attr('readonly', true);
+
+                let memoRegDateInput = memoDialogForm.children('.memoRegDateInput');
+                memoRegDateInput.val(regDate);
+                memoRegDateInput.attr('readonly', true);
+
+                if(delDate !== null){
+                    let memoDelDateInput = memoDialogForm.children('.memoDelDateInput');
+                    memoDelDateInput.val(delDate);
+                    memoDelDateInput.attr('readonly', true);
+                } else {
+                    let memoDelDateInput = memoDialogForm.children('.memoDelDateInput');
+                    memoDelDateInput.remove();
+                }
+
+                let memoContentsDiv = memoDialogForm.find('.memoContentsDiv').first();
+                memoContentsDiv.html(memoContents);
+
+                let memoContentsText = memoDialogForm.children('.memoContentsText');
+                memoContentsText.val(memoContents);
+
+                // 다이얼로그의 자식인 memoControlArea를 객체로 잡는다.
+                let memoControlArea = memoDialog.children('.memoControlArea');
+                //memoControlArea를 비운다.
+                memoControlArea.empty();
+
+                //로그인중인 유저의 자격을 판단하기 위해 유저 아이디를 받는다.
+                let userId = $('#memoUserId').val();
+                //유저아이디가 현재 메모의 작성자와 같다면 수정버튼을 생성한다. 그러나, delDate 가 null이 아니라면 생성하지 않는다.
+                if(userId === memoAuthor && delDate === null){
+                    //수정버튼을 만든다.
+                    let editButton = $('<button>');
+                    editButton.addClass('editMemoBtn');
+                    editButton.text('수정');
+                    memoControlArea.append(editButton);
+                    //삭제버튼을 만든다.
+                    let deleteButton = $('<button>');
+                    deleteButton.addClass('deleteMemoBtn');
+                    deleteButton.text('삭제');
+                    memoControlArea.append(deleteButton);
+                }
+                //delDate 가 null이 아니라면 복구버튼을 만든다.
+                if(delDate !== null){
+                    //복구버튼을 만든다.
+                    let restoreButton = $('<button>');
+                    restoreButton.addClass('restoreMemoBtn');
+                    restoreButton.text('복구');
+                    memoControlArea.append(restoreButton);
+                    //완전삭제버튼을 만든다.
+                    let removeButton = $('<button>');
+                    removeButton.addClass('removeMemoBtn');
+                    removeButton.text('완전삭제');
+                    memoControlArea.append(removeButton);
+                }
             },
             error: function(error) {
                 alert('메모 수정 실패');
@@ -690,10 +971,7 @@
                 alert('새 메모 생성 실패');
             }
         });
-
     });
-
-
 
 
 

@@ -10,9 +10,6 @@ import javax.servlet.http.HttpSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -26,7 +23,8 @@ public class MemoRestController {
     }
     //Field
     private final MemoService memoService;
-    private final String fakeJason = "{\"key1\": \"value1\", \"key2\": \"value2\", \"key3\": \"value3\"}";
+    private final String successJson = "{\"status\": \"success\", \"key2\": \"value2\", \"key3\": \"value3\"}";
+    private final String failJson = "{\"status\": \"fail\", \"key2\": \"value2\", \"key3\": \"value3\"}";
 
     @PostMapping("getMemoList")
     public String getMemoList(HttpSession session,
@@ -153,7 +151,7 @@ public class MemoRestController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return fakeJason;
+        return successJson;
     }
     @PostMapping("removeMemo")
     public String removeMemo(@RequestParam("memoNo") String memoNo)  {
@@ -171,7 +169,7 @@ public class MemoRestController {
             throw new RuntimeException(e);
         }
 
-        return fakeJason;
+        return successJson;
     }
     //restore
     @PostMapping("restoreMemo")
@@ -192,7 +190,7 @@ public class MemoRestController {
             throw new RuntimeException(e);
         }
 
-        return fakeJason;
+        return successJson;
     }
     //새 메모 생성
     @PostMapping("addMemo")
@@ -218,5 +216,64 @@ public class MemoRestController {
 
         return memoJson;
 
+    }
+    //getMemoSharerList
+    @PostMapping("getMemoSharerList")
+    public String getMemoSharerList(
+            @RequestParam("memoNo") String memoNo)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+
+        List<MemoAccess> memoAccessList = null;
+        try {
+            memoAccessList = memoService.getMemoSharerList(memoNoInt);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String memoAccessListJson = "";
+        try {
+            memoAccessListJson = objectMapper.writeValueAsString(memoAccessList);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(memoAccessListJson);
+        return memoAccessListJson;
+    }
+
+    @PostMapping("deleteMemoAccess")
+    public String deleteMemoAccess(
+            @RequestParam("memoNo") String memoNo,
+            @RequestParam("userId") String userId)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+
+
+        try {
+            memoService.deleteMemoAccess(userId,memoNoInt);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return successJson;
+    }
+    @PostMapping("addMemoAccess")
+    public String addMemoAccess(
+            @RequestParam("memoNo") String memoNo,
+            @RequestParam("userId") String userId)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+
+        int isSuccess = 0;
+        try {
+            isSuccess = memoService.addMemoAccess(userId,memoNoInt);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if (isSuccess == 0) {
+            return null;
+        }
+        return successJson;
     }
 }

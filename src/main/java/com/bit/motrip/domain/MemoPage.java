@@ -8,6 +8,8 @@ public class MemoPage {
     private String searchCondition;
     private int currentPage;
     private int dialogCount;
+
+    private List<Integer> dialogNos;
     private List<MemoDoc> memoDocList;
 
     public String getSearchCondition() {
