@@ -63,6 +63,11 @@
                 fncKickChatroom();
             });
         });
+        //delete
+        function fncDeleteChatroom(){
+            $("form").attr("method","get").attr("action","/chatRoom/deleteChatRoom").submit();
+        }
+        $(function() {$("#delete").on("click", function() {fncDeleteChatroom();});});
     </script>
       <script>
           const username = "${username}";
@@ -80,7 +85,12 @@
             <button class="btn" id="updateChatRoom">채팅창 수정</button>
           </c:if>
         <a class="btn" id="leave-btn">채팅방 뒤로가기</a>
-        <a class="btn" id="out">채팅방 나가기</a>
+          <c:if test="${author.userId eq username}">
+              <a class="btn" id="delete">채팅방 삭제</a>
+          </c:if>
+          <c:if test="${author.userId ne username}">
+              <a class="btn" id="out">채팅방 나가기</a>
+          </c:if>
         <a class="btn">음성챗(모달 예정)</a>
         <a class="btn" id="roomPhotos">사진첩(모달 예정)</a>
 <%--          <script>--%>
@@ -91,7 +101,8 @@
       </header>
       <form id="chat-room">
           <input type="hidden" name="chatRoomNo" value="${chatRoom.chatRoomNo}">
-      <main class="chat-main">
+
+          <main class="chat-main">
         <div class="chat-sidebar">
           <h3><i class="fas fa-comments"></i>채팅방 번호</h3>
           <h2 id="room-name"></h2>
