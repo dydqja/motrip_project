@@ -33,12 +33,12 @@ public class MemoRestController {
                               @RequestParam("searchCondition") String searchCondition,
                               @RequestParam("currentPage") String currentPage)  {
 
-        System.out.println("레스트컨트롤러 겟메모리스트 동작");
+        //System.out.println("레스트컨트롤러 겟메모리스트 동작");
         //리퀘스트 파람 둘과 유저를 모아서 필요한 데이터를 모두 수집했다.
         User user = (User) session.getAttribute("user");
-        System.out.println("받은 유저아이디는"+user.getUserId());
-        System.out.println("받은 서치컨디션은"+searchCondition);
-        System.out.println("받은 현재페이지는"+currentPage);
+        //System.out.println("받은 유저아이디는"+user.getUserId());
+        //System.out.println("받은 서치컨디션은"+searchCondition);
+        //System.out.println("받은 현재페이지는"+currentPage);
         if (currentPage == null || currentPage.equals("")){
             currentPage = "1";
         }
@@ -51,7 +51,7 @@ public class MemoRestController {
         //비즈니스 로직 수행
         List<MemoDoc> memoDocList = null;
         try {
-            System.out.println("trying to get memoDocList on MemoRestController");
+            //System.out.println("trying to get memoDocList on MemoRestController");
             memoDocList = memoService.getMemoList(user.getUserId(), search);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -65,8 +65,7 @@ public class MemoRestController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("이것은 변환된 쩨이쓴");
-        System.out.println(memoDocListJson);
+        //System.out.println(memoDocListJson);
 
         //세션에 현재조건을 저장
         MemoPage memoPage = new MemoPage();
@@ -83,8 +82,8 @@ public class MemoRestController {
         User user = (User) session.getAttribute("user");
         int memoNoInt = Integer.parseInt(memoNo);
 
-        System.out.println("로그인한 유저의 아이디는 "+user.getUserId()+"입니다.");
-        System.out.println("메모번호는 "+memoNo+"입니다.");
+        //System.out.println("로그인한 유저의 아이디는 "+user.getUserId()+"입니다.");
+        //System.out.println("메모번호는 "+memoNo+"입니다.");
 
         Memo memo = null;
         try {
@@ -110,11 +109,11 @@ public class MemoRestController {
             ,@RequestParam("memoTitle") String memoTitle
             ,@RequestParam("memoDialogNo") String memoDialogNo
              )  {
-        System.out.println("레스트컨트롤러 업데이트메모 동작");
-        System.out.println("메모번호는 "+memoNo+"입니다.");
-        System.out.println("메모제목은 "+memoTitle+"입니다.");
-        System.out.println("메모내용은 "+memoContents+"입니다.");
-        System.out.println("메모다이얼로그번호는 "+memoDialogNo+"입니다.");
+        //System.out.println("레스트컨트롤러 업데이트메모 동작");
+        //System.out.println("메모번호는 "+memoNo+"입니다.");
+        //System.out.println("메모제목은 "+memoTitle+"입니다.");
+        //System.out.println("메모내용은 "+memoContents+"입니다.");
+        //System.out.println("메모다이얼로그번호는 "+memoDialogNo+"입니다.");
 
         User user = (User) session.getAttribute("user");
         int memoNoInt = Integer.parseInt(memoNo);
@@ -139,7 +138,7 @@ public class MemoRestController {
         Memo memo = new Memo();
         memo.setMemoNo(memoNoInt);
 
-        System.out.println("메모번호는 "+memoNo+"입니다.");
+        //System.out.println("메모번호는 "+memoNo+"입니다.");
 
         try {
             memoService.deleteMemo(memo);
@@ -156,7 +155,7 @@ public class MemoRestController {
         memo.setMemoNo(memoNoInt);
         memo.setMemoDelDate(    new Date(System.currentTimeMillis())    );
 
-        System.out.println("메모번호는 "+memoNo+"입니다.");
+        //System.out.println("메모번호는 "+memoNo+"입니다.");
 
         try {
             memoService.deleteMemo(memo);
@@ -177,7 +176,7 @@ public class MemoRestController {
         memo.setMemoNo(memoNoInt);
         memo.setMemoDelDate(new Date(System.currentTimeMillis()));
 
-        System.out.println("메모번호는 "+memoNo+"입니다.");
+        //System.out.println("메모번호는 "+memoNo+"입니다.");
 
         try {
             memoService.restoreMemo(memo);
@@ -192,7 +191,7 @@ public class MemoRestController {
     public String addMemo(
             HttpSession session,
             @RequestParam("memoDialogNo") String memoDialogNo) {
-        System.out.println("레스트컨트롤러 addMemo 동작");
+        //System.out.println("레스트컨트롤러 addMemo 동작");
         Memo memo = null;
         User user = (User) session.getAttribute("user");
         try {
