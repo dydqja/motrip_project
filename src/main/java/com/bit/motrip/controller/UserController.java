@@ -67,10 +67,21 @@ public class UserController {
         User dbUser=userService.getUser(user.getUserId());
         System.out.println(dbUser);
 
+        //아이디가 존재하지 않는경우
+        if (dbUser == null) {
+//            model.addAttribute("loginError", "아이디가 존재하지 않습니다.");
+            return "user/login.jsp"; // 로그인 페이지로 이동
+        }
+
         //회원가입된 아이디에 저장된 비밀번호 값과, 사용자가 입력한 비밀번호값이 같은지 확인
         if( user.getPwd().equals(dbUser.getPwd())){
             //저장된 비밀번호와 입력한 비밀번호값이 같다면, session에 아이디값 저장
             session.setAttribute("user", dbUser);
+            System.out.println("user stored in session: " + session.getAttribute("user"));
+        } else {
+            // 비밀번호가 일치하지 않는 경우
+//            model.addAttribute("loginError", "비밀번호가 일치하지 않습니다.");
+            return "user/login.jsp"; // 로그인 페이지로 이동
         }
 
         return "/index.tiles";
@@ -84,7 +95,7 @@ public class UserController {
         //Business Logic
         userService.addUser(user);
 
-        return "redirect:/index.tiles";
+        return "redirect:/index.jsp";
     }
 
     @RequestMapping( value="naverLogin", method=RequestMethod.GET )

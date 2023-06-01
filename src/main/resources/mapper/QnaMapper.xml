@@ -21,43 +21,13 @@
 
     </resultMap>
 
-    <insert id="addQna" parameterType="com.bit.motrip.domain.Qna" >
-        INSERT INTO board (BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, BOARD_CATEGORY)
-        VALUES (
-            (SELECT USER_ID FROM users WHERE USER_ID = #{qnaAuthor}),
-            #{qnaTitle},
-            #{qnaContents},
-            0,
-            CURDATE(),
-            #{qnaCategory},
-            0,
-            1)
-    </insert>
-
-    <update id="addQnaAnswer" parameterType="com.bit.motrip.domain.Qna">
-        UPDATE board
-        SET IS_QNA_ANSWERED = 1,
-            QNA_ANSWER_CONTENTS = #{qnaAnswerContents}
-        WHERE BOARD_NO = #{qnaNo}
-    </update>
-
-    <select id="getQna" parameterType="com.bit.motrip.domain.Qna" resultMap="qnaSelectMap">
-        SELECT BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, QNA_ANSWER_CONTENTS, BOARD_CATEGORY
-        FROM board
-        WHERE BOARD_NO = #{qnaNo}
-    </select>
-
-    <update id="increaseViews" parameterType="com.bit.motrip.domain.Qna" >
-        UPDATE board SET BOARD_VIEWS = BOARD_VIEWS + 1 WHERE BOARD_NO = #{qnaNo}
-    </update>
-
     <select id="getQnaList" parameterType="com.bit.motrip.common.Search"	resultMap="qnaSelectMap">
         SELECT *
         FROM (
                  SELECT
                      BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS,
                      BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, QNA_ANSWER_CONTENTS, BOARD_CATEGORY,
-                     ROW_NUMBER() OVER (ORDER BY BOARD_NO) AS row_seq
+                     ROW_NUMBER() OVER (ORDER BY CASE WHEN IS_QNA_ANSWERED = 1 THEN 0 ELSE 1 END, BOARD_NO DESC) AS row_seq
                  FROM
                      board
                  WHERE
@@ -82,14 +52,42 @@
             ) countTable
     </select>
 
+    <select id="getQna" parameterType="com.bit.motrip.domain.Qna" resultMap="qnaSelectMap">
+        SELECT BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, QNA_ANSWER_CONTENTS, BOARD_CATEGORY
+        FROM board
+        WHERE BOARD_NO = #{qnaNo}
+    </select>
+
+    <update id="increaseViews" parameterType="com.bit.motrip.domain.Qna" >
+        UPDATE board SET BOARD_VIEWS = BOARD_VIEWS + 1 WHERE BOARD_NO = #{qnaNo}
+    </update>
+
+    <insert id="addQna" parameterType="com.bit.motrip.domain.Qna" >
+        INSERT INTO board (BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, BOARD_CATEGORY)
+        VALUES (
+            (SELECT USER_ID FROM users WHERE USER_ID = #{qnaAuthor}),
+            #{qnaTitle},
+            #{qnaContents},
+            0,
+            CURDATE(),
+            #{qnaCategory},
+            0,
+            1)
+    </insert>
+
+    <update id="addQnaAnswer" parameterType="com.bit.motrip.domain.Qna">
+        UPDATE board
+        SET IS_QNA_ANSWERED = 1,
+            QNA_ANSWER_CONTENTS = #{qnaAnswerContents}
+        WHERE BOARD_NO = #{qnaNo}
+    </update>
+
     <update id="updateQna" parameterType="com.bit.motrip.domain.Qna">
-        <if test="isQnaAnswered != 1">
-            UPDATE board
-            SET BOARD_TITLE = #{qnaTitle},
-                BOARD_CONTENTS = #{qnaContents},
-                QNA_CATEGORY = #{qnaCategory}
-            WHERE BOARD_NO = #{qnaNo}
-        </if>
+        UPDATE board
+        SET BOARD_TITLE = #{qnaTitle},
+            BOARD_CONTENTS = #{qnaContents},
+            QNA_CATEGORY = #{qnaCategory}
+        WHERE BOARD_NO = #{qnaNo}
     </update>
 
     <delete id="deleteQna" parameterType="com.bit.motrip.domain.Qna">

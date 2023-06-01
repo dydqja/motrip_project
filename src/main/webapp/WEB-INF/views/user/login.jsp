@@ -78,14 +78,14 @@
     <form >
 
         <div class="form-group">
-            <label for="userId" class="col-sm-4 control-label">아 이 디</label>
+            <label for="loginUserId" class="col-sm-4 control-label">아 이 디</label>
             <div class="col-sm-6">
                 <input class="form-control" type="text" name="userId" id="loginUserId"  placeholder="아이디" />
             </div>
         </div>
 
         <div class="form-group">
-            <label for="pwd" class="col-sm-4 control-label">패 스 워 드</label>
+            <label for="loginPwd" class="col-sm-4 control-label">패 스 워 드</label>
             <div class="col-sm-6">
                 <input class="form-control" type="password" name="pwd" id="loginPwd" placeholder="패스워드" />
             </div>
