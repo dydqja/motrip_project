@@ -5,10 +5,7 @@ import com.bit.motrip.dao.evaluateList.EvaluateListDao;
 import com.bit.motrip.dao.tripplan.DailyPlanDao;
 import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
-import com.bit.motrip.domain.DailyPlan;
-import com.bit.motrip.domain.EvaluateList;
-import com.bit.motrip.domain.Place;
-import com.bit.motrip.domain.TripPlan;
+import com.bit.motrip.domain.*;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,6 +39,7 @@ public class TripPlanServiceImpl implements TripPlanService {
 
     @Override // 공유된 여행플랜 목록
     public Map<String, Object> selectTripPlanList(Search search) throws Exception {
+
         int offset = (search.getCurrentPage() - 1) * tripPlanPageSize;
         search.setTotalCount(tripPlanDao.selectTripPlanCount()); // 여행플랜 총 카운트
         search.setCurrentPage(search.getCurrentPage()); // 클라이언트에서 요청한 페이지 번호
@@ -58,6 +56,7 @@ public class TripPlanServiceImpl implements TripPlanService {
 
     @Override // 여행플랜 저장
     public void addTripPlan(TripPlan tripPlan) throws Exception {
+
         tripPlan.setTripPlanAuthor("user1");
         tripPlan.setTripPlanRegDate(new Date());
 

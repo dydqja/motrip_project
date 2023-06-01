@@ -57,7 +57,7 @@
 		<div class="join-container">
 			<header class="join-header">
 			<h1><i class="fas fa-smile">
-			${tripPlan.tripPlanAuthor == '' ? '</i>여행플랜 리스트</h1>' : '</i>나의 여행플랜 리스트</h1>'}
+			${tripPlan.tripPlanAuthor == '' ? '</i>여행플랜 리스트</h1>' : '</i>여행플랜 리스트</h1>'}
 			</header>
 		<main class="join-main">
 
