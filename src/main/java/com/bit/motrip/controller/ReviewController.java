@@ -145,9 +145,9 @@ public class ReviewController {
         Map<String, Object> reviewList = reviewService.selectReviewList(search);
         reviewList.get("reviewList");
 
-        List<Review> reviews = (List<Review>) reviewList.get("reviewList");
-        List<Map<String, Object>> publicReviews = new ArrayList<>();
-        List<Map<String, Object>> myReviews = new ArrayList<>();
+        List<Review> review = (List<Review>) reviewList.get("reviewList");
+        List<Map<String, Object>> publicReview = new ArrayList<>();
+        List<Map<String, Object>> myReview = new ArrayList<>();
 
         System.out.println(reviewList.get("reviewList").toString());
         model.addAttribute("reviewList", reviewList.get("reviewList"));

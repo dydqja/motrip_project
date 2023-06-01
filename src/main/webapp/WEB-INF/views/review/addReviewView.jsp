@@ -106,6 +106,7 @@
     /* 토글스위치 CSS */
     </style>
     <style>
+        /* kakao Map CSS */
         .overlaybox {position:relative;width:360px;height:350px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/box_movie.png') no-repeat;padding:15px 10px;}
         .overlaybox div, ul {overflow:hidden;margin:0;padding:0;}
         .overlaybox li {list-style: none;}
@@ -126,6 +127,7 @@
         .overlaybox li:hover {color:#fff;background:#d24545;}
         .overlaybox li:hover .up {background-position:0 0px;}
         .overlaybox li:hover .down {background-position:0 -20px;}
+        /* kakao Map CSS */
     </style>
     <script>
         $(document).ready(function() {
@@ -233,7 +235,8 @@
 <!-- 모달 창 내용 -->
 <div id="tripPlanModal" class="modal">
     <div class="modal-content">
-        <h4>✈️✈️Trip Plans✈️✈️</h4>
+        <h4>✈️✈️Trip Plans(이렇게 보여도 모달창입니다..)✈️✈️</h4>
+        <h6>✈️✈️Trip Plan을 반드시 선택해야하므로 모달 외부는 클릭방지입니다✈️✈️</h6>
         <ul>
             <c:if test="${not empty tripPlanList['tripPlanList']}">
                 <ul>
@@ -263,19 +266,20 @@
         </div>
         <hr/>
         <div class="form-group">
-            <label for="reviewAuthor">Review Author:</label>
-            <input type="text" id="reviewAuthor" name="reviewAuthor" required><br><br>
+            <c:set var="reviewAuthor" value="${userId}" />
+            <input type="hidden" name="reviewAuthor" value="${reviewAuthor}">
         </div>
-        <hr/>
 
         <div class="form-group">
             <label for="reviewTitle">제목:</label>
             <input type="text" id="reviewTitle" name="reviewTitle" required /><br><br>
         </div>
 
+
         <!-- 지도를 표시할 div 입니다 -->
         <div id="map" style="width:100%;height:350px;"></div>
         <script>
+
             var mapContainer = document.getElementById('map'), // 지도를 표시할 div
                 mapOption = {
                     center: new kakao.maps.LatLng(37.502, 127.026581), // 지도의 중심좌표
@@ -287,10 +291,10 @@
             // 커스텀 오버레이에 표시할 내용입니다
             // HTML 문자열 또는 Dom Element 입니다
             var content = '<div class="overlaybox">' +
-                '    <div class="boxtitle">금주 영화순위</div>' +
+                '    <div class="boxtitle">앗 여행사진띄울예정</div>' +
                 '    <div class="first">' +
                 '        <div class="triangle text">1</div>' +
-                '        <div class="movietitle text">드래곤 길들이기2</div>' +
+                '        <div class="movietitle text">헉스바리따쉬</div>' +
                 '    </div>' +
                 '    <ul>' +
                 '        <li class="up">' +
@@ -356,31 +360,6 @@
                 <span class="switch-handle"></span>
             </label>
             <button type="button" class="btn btn-primary" id="checkStatusBtn">상태 확인</button>
-
-        </div>
-        <div class="form-group">
-            <label for="reviewLikes">Review Likes:</label>
-            <input type="number" id="reviewLikes" name="reviewLikes" required><br><br>
-        </div>
-        <div class="form-group">
-            <label for="viewCount">View Count:</label>
-            <input type="number" id="viewCount" name="viewCount" required><br><br>
-        </div>
-
-
-        <div class="form-group">
-            <label class="switch">
-                <input class="reviewDeleted" type="checkbox" name="reviewDeleted"/>
-                <span class="switch-label" data-on="True" data-off="False"></span>
-                <span>isReviewDeleted</span>
-                <span class="switch-handle"></span>
-            </label>
-            <button class="btn btn-primary" id="reviewDeleted">상태 확인</button>
-        </div>
-
-        <div class="form-group">
-            <label for="reviewDelDate">Review Delete Date:</label>
-            <input type="date" id="reviewDelDate" name="reviewDelDate"><br><br>
         </div>
 
         <div class="form-group">
