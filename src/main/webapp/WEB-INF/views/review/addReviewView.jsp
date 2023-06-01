@@ -275,9 +275,11 @@
             <input type="text" id="reviewTitle" name="reviewTitle" required /><br><br>
         </div>
 
+
         <!-- 지도를 표시할 div 입니다 -->
         <div id="map" style="width:100%;height:350px;"></div>
         <script>
+
             var mapContainer = document.getElementById('map'), // 지도를 표시할 div
                 mapOption = {
                     center: new kakao.maps.LatLng(37.502, 127.026581), // 지도의 중심좌표
