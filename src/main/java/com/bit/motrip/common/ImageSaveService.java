@@ -59,7 +59,7 @@ public class ImageSaveService {
             System.out.println("이미지 base64는" + base64String);
 
             try {
-                saveBase64Image(base64String, hardPath,fileName);//TODO 이미지파일명 줘야함
+                saveBase64Image(base64String, hardPath,fileName);
                 System.out.println("이미지가 성공적으로 저장되었습니다.");
             } catch (IOException e) {
                 System.out.println("이미지 저장 중에 오류가 발생하였습니다: " + e.getMessage());
