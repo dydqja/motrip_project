@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService{
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
+
     private Path fileStorageLocation = Paths.get("C:\\Projects\\motrip_main_project\\src\\main\\resources\\static\\images");
 
     @Value(value = "#{user['naver-cloud-sms.accessKey']}")
@@ -92,6 +93,12 @@ public class UserServiceImpl implements UserService{
         System.out.println(this.getClass());
     }
 
+    // 전화번호에 '-' 붙이기
+    public String addDash(String phone) throws Exception {
+
+        return phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7);
+    }
+
     //회원가입
     public void addUser(User user) throws Exception {
         System.out.println("UserServiceImpl에서 addUser 실행됨.");
@@ -101,7 +108,7 @@ public class UserServiceImpl implements UserService{
 
         //일반 회원가입 일 때 실행
         if(!phone.contains("-") || getSsn != null) {
-            phone = phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7);
+            addDash(phone);
 
             Map<String, String> extractSsn = extractSsn(getSsn);
             String age = extractSsn.get("age");
@@ -121,6 +128,7 @@ public class UserServiceImpl implements UserService{
     
     //회원정보가져오기
     public User getUser(String userId) throws Exception {
+
         return userDao.getUser(userId);
     }
 
@@ -138,6 +146,13 @@ public class UserServiceImpl implements UserService{
 
     //회원정보 업데이트
     public void updateUser(User user) throws Exception {
+
+        if(!user.getPhone().contains("-")) {
+
+            String phone = addDash(user.getPhone());
+            user.setPhone(phone);
+        }
+
         userDao.updateUser(user);
     }
 
@@ -211,7 +226,7 @@ public class UserServiceImpl implements UserService{
     //회원가입시 비동기방식 닉네임 중복체크
     public int checkNickname(String nickname) throws Exception {
 
-        int checkNickname = userDao.checkId(nickname);
+        int checkNickname = userDao.checkNickname(nickname);
 
         if (checkNickname > 0) { // 아이디가 이미 존재함
             checkNickname = 0;

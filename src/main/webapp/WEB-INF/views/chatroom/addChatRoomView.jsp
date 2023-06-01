@@ -6,7 +6,7 @@
     <title>채팅방 추가</title>
 </head>
 <body>
-<h1>채팅방 추가</h1>
+<h1>채팅방 추가완료</h1>
 <table>
     <tr>
         <td width="104" class="ct_write">채팅방 제목</td>
@@ -38,6 +38,7 @@
         <td bgcolor="D6D6D6" width="1"></td>
         <td class="ct_write01">${chatMember.userId}</td>
     </tr>
+    <button id="chatRoomList" onclick="location.href='/chatRoom/chatRoomList'">채팅리스트</button>
 </table>
 </body>
 </html>

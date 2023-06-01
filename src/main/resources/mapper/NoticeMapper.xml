@@ -19,29 +19,6 @@
 
     </resultMap>
 
-    <insert id="addNotice" parameterType="com.bit.motrip.domain.Notice" >
-        INSERT INTO board (BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, IS_NOTICE_IMPORTANT, BOARD_CATEGORY)
-        VALUES (
-            <!--(SELECT USER_ID FROM users WHERE USER_ID = #{noticeAuthor}),-->
-            "admin",
-            #{noticeTitle},
-            #{noticeContents},
-            0,
-            CURDATE(),
-            #{isNoticeImportant},
-            0)
-    </insert>
-
-    <select id="getNotice" parameterType="com.bit.motrip.domain.Notice" resultMap="noticeSelectMap">
-        SELECT BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, IS_NOTICE_IMPORTANT, BOARD_CATEGORY
-        FROM board
-        WHERE BOARD_NO = #{noticeNo}
-    </select>
-
-    <update id="increaseViews" parameterType="com.bit.motrip.domain.Notice" >
-        UPDATE board SET BOARD_VIEWS = BOARD_VIEWS + 1 WHERE BOARD_NO = #{noticeNo}
-    </update>
-
     <select id="getNoticeList"  parameterType="com.bit.motrip.common.Search"	resultMap="noticeSelectMap">
         SELECT *
         FROM (
@@ -70,6 +47,28 @@
                     BOARD_CATEGORY = 0
             ) countTable
     </select>
+
+    <select id="getNotice" parameterType="com.bit.motrip.domain.Notice" resultMap="noticeSelectMap">
+        SELECT BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, IS_NOTICE_IMPORTANT, BOARD_CATEGORY
+        FROM board
+        WHERE BOARD_NO = #{noticeNo}
+    </select>
+
+    <update id="increaseViews" parameterType="com.bit.motrip.domain.Notice" >
+        UPDATE board SET BOARD_VIEWS = BOARD_VIEWS + 1 WHERE BOARD_NO = #{noticeNo}
+    </update>
+
+    <insert id="addNotice" parameterType="com.bit.motrip.domain.Notice" >
+        INSERT INTO board (BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, IS_NOTICE_IMPORTANT, BOARD_CATEGORY)
+        VALUES (
+            (SELECT USER_ID FROM users WHERE USER_ID = #{noticeAuthor}),
+            #{noticeTitle},
+            #{noticeContents},
+            0,
+            CURDATE(),
+            #{isNoticeImportant},
+            0)
+    </insert>
 
     <update id="updateNotice" parameterType="com.bit.motrip.domain.Notice">
         UPDATE board

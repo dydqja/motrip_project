@@ -17,20 +17,32 @@
             });
         });
 
+        const leaveBtn = document.getElementById('leave-btn');
+        leaveBtn.addEventListener('click', () => {
+            window.history.back();
+        });
     </script>
 </head>
 </head>
 <body>
 <h1>채팅방 추가</h1>
 <form name="addChatRoom">
-    <input type="text" name="chatRoomTitle" placeholder="채팅방 제목" />
-    <input type="date" name="travelStartDateHtml" placeholder="여행 시작일" />
-    <input type="text" name="ageRange" placeholder="나잇대" />
-    <input type="number" name="maxPersons" placeholder="최대 인원수" />
-    <input type="number" name="tripPlanNo" placeholder="여행 번호" />
-    <input type="text" name="userId" placeholder="유저이름 히든예정" /> <!--hidden 예정 -->
 
-    <input id="sub" type="submit" value="생성" />
+    <input type="hidden" name="chatRoomNo" value="${chatRoom.chatRoomNo}"/>
+    <input type="text" name="chatRoomTitle" value="${chatRoom.chatRoomTitle}" />
+    <input type="date" name="travelStartDateHtml" value="${chatRoom.travelStartDate}" />
+    <input type="text" name="ageRange" value="${chatRoom.ageRange}" />
+    <input type="number" name="maxPersons" value="${chatRoom.maxPersons}" />
+    <input type="number" name="tripPlanNo" value="1" />
+    <input type="hidden" name="userId" value="${sessionScope.user.userId}"  >
+    <table>
+
+        <button id="sub" class="btn insert" style="color: blue;" >
+            채팅방 참여
+        </button>
+        <a id="leave-btn" class="btn">취소</a>
+
+</table>
 </form>
 </body>
 </html>

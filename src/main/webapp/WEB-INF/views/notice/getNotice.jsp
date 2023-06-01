@@ -13,9 +13,10 @@
 
         <title>공지사항 상세</title>
 
-        <%--CSS START--%>
+        <%-- CSS START --%>
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
               integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
         <style>
 
             .selector-for-some-widget {
@@ -23,7 +24,7 @@
             }
 
         </style>
-        <%--CSS END--%>
+        <%-- CSS END --%>
 
     </head>
 
@@ -35,7 +36,6 @@
         <br>
         <br>
 
-
         <form action="/notice/updateNoticeView" method="post">
 
             <input type="hidden" name="noticeNo" value="${noticeGetData.noticeNo}" />
@@ -45,7 +45,9 @@
                 ${noticeGetData.noticeTitle}
 
                 <input type="hidden" name="isNoticeImportant" value="${noticeGetData.isNoticeImportant}" />
-                ${noticeGetData.isNoticeImportant}
+                <c:if test="${noticeGetData.isNoticeImportant == 1}">
+                    중요
+                </c:if>
             </div>
 
             <br>
@@ -57,15 +59,19 @@
 
             <br>
 
-            <div>
-                <input id="updateNotice" type="submit" value="수정" />
-            </div>
+            <c:if test="${sessionScope.user.userId eq 'admin'}">
 
-            <br>
+                <div>
+                    <button id="updateNoticeView" type="submit">내용 수정</button>
+                </div>
 
-            <div>
-                <button id="deleteNotice" type="button">삭제</button>
-            </div>
+                <br>
+
+                <div>
+                    <button id="deleteNotice" type="button">삭제하기</button>
+                </div>
+
+            </c:if>
 
             <br>
 
@@ -75,25 +81,29 @@
 
         </form>
 
-        <%--Bootstrap--%>
+        <%-- Bootstrap --%>
         <script src="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-        <%--Jquery--%>
+        <%-- Jquery --%>
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
-            // 수정 버튼 클릭 시 컨트롤러 실행
-            $(document).on('click', '#updateNotice', function(e) {
 
-                $.post("/notice/addNoticeView", function() {
-                    e.preventDefault(); // 기본 동작 중지
-                    $('form').submit(); // 폼 전송
+            $(function() {
+
+                // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+                $("#updateNoticeView").on("click", function() {
+
+                    $('form').submit();
                 });
             });
 
             $(function() {
+
                 // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
                 $("#deleteNotice").on("click", function() {
-                    var noticeNo = "${noticeGetData.noticeNo}"; // noticeNo 변수 가져오기
+
+                    var noticeNo = "${noticeGetData.noticeNo}";
+
                     window.location.href = "/notice/deleteNotice?noticeNo=" + noticeNo;
                 });
             });
@@ -103,7 +113,7 @@
                 // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
                 $("#getNoticeList").on("click" , function() {
 
-                    window.location.href = "/notice/getNoticeList";
+                    window.location.href = "/notice/noticeList";
                 });
             });
         </script>

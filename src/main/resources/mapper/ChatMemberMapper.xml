@@ -41,7 +41,7 @@
 		  AND user_id = #{userId}
 	</delete>
 
-	<update id="outChatMember" parameterType="Map">
+	<update id="kickChatMember" parameterType="Map">
 		update chat_room_members
 		set status = 1
 		where chat_room_no = #{chatRoomNo}
@@ -52,4 +52,9 @@
 	<select id="listChatMember" parameterType="int" resultMap="chatMemberResultMap">
 		select * from chat_room_members where chat_room_no = #{chatRoomNo}
 	</select>
+
+	<select id="getChatMemberAuthor" parameterType="int" resultMap="chatMemberResultMap">
+		select * from chat_room_members where chat_room_no = #{chatRoomNo} and is_chat_room_author=1
+	</select>
+
 </mapper>

@@ -43,7 +43,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             chatMember.setUserId(userId);
             chatMember.setTripPlanNo(tripPlanNo);
             chatMember.setChatRoomAuthor(true);
-            chatMemberService.addChatMember(chatMember);
+            chatMemberService.addChatRoomMember(chatMember);
         }
         else{
             System.out.println("채팅방 생성 실패하였습니다.");
@@ -67,10 +67,18 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public void deleteChatRoom(int chatRoomNo) throws Exception {
+    public int deleteChatRoom(int chatRoomNo,String userId) throws Exception {
         System.out.println("deleteChatRoom");
-
-        chatRoomDao.deleteChatRoom(chatRoomNo);
+        List<ChatMember> chatMemberList= chatMemberService.chatMemberList(chatRoomNo);
+        for (ChatMember cm: chatMemberList) {
+            System.out.println(cm);
+            System.out.println(userId);
+            if(cm.getUserId().equals(userId) && cm.isChatRoomAuthor() == true){
+                chatRoomDao.deleteChatRoom(chatRoomNo);
+                return 1;
+            }
+        }
+        return 0;
     }
 
     @Override

@@ -21,26 +21,26 @@
 		<script type="text/javascript">
 
 			function fncGoChatroom(){
-
 				$("form").attr("method","POST").attr("action","/chatRoom/chat").submit();
 			}
-
+			function fncJoinChatroom(){
+				alert("join-chatRoom");
+				$("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
+			}
+			function fncDeleteChatroom(){
+				$("form").attr("method","get").attr("action","/chatRoom/deleteChatRoom").submit();
+			}
 			function fncAddChatroom(){
 				$("form").attr("method","get").attr("action","/chatRoom/addChatRoom").submit();
 			}
-
-			$(function() {
-				$(".btn").on("click", function() {
-
-					fncGoChatroom();
-				});
-			});
-
-			$(function() {
-				$("#addChatRoom").on("click", function() {
-					fncAddChatroom();
-				});
-			});
+			//참여된 채팅방 들어가기
+			$(function() {$(".go").on("click", function() {fncGoChatroom();});});
+			//참여안된 채팅방 조인하기
+			$(function() {$(".join-chatRoom").on("click", function() {fncJoinChatroom();});});
+			//채팅방 삭제
+			$(function() {$(".delete").on("click", function() {fncDeleteChatroom();});});
+			//채팅방 생성
+			$(function() {$("#addChatRoom").on("click", function() {fncAddChatroom();});});
 		</script>
 	</head>
 	<body>
@@ -99,9 +99,9 @@
 
 								<td width="200">
 									<c:if test="${chatRoom.chatRoomStatus eq 0}">
-										<button id="sub" class="btn" style="color: blue;"
+										<button id="sub" class="btn go" style="color: blue;"
 											name="chatRoomNo" value="${chatRoom.chatRoomNo}" >
-											채팅방 참여
+											채팅방 들어가기
 										</button>
 									</c:if>
 									<c:if test="${chatRoom.chatRoomStatus eq 1}">
@@ -111,7 +111,18 @@
 										<button class="btn" style="color: forestgreen;" disabled>여행 완료</button>
 									</c:if>
 								</td>
-								<td></td>
+								<td>
+								<button class="btn join-chatRoom" style="color: deepskyblue;"
+										name="chatRoomNo" value="${chatRoom.chatRoomNo}" >
+									채팅방 참여
+								</button>
+								</td>
+								<td>
+								<button class="btn delete" style="color: dimgray;"
+										name="chatRoomNo" value="${chatRoom.chatRoomNo}" >
+									채팅방 삭제
+								</button>
+								</td>
 
 							</tr>
 						</c:forEach>
