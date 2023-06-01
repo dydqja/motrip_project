@@ -45,6 +45,19 @@ public class TripPlanRestController {
         return tripPlanService.selectTripPlan(tripPlanNo);
     }
 
+    @GetMapping("tripPlanLikes") /// 여행플랜 추천하기
+    public int tripPlanLikes(@RequestParam("tripPlanNo") int tripPlanNo,
+                             @RequestParam("tripPlanAuthor") String tripPlanAuthor) throws Exception {
+        System.out.println("GET : tripPlanLikes()");
+        System.out.println(tripPlanNo + "," + tripPlanAuthor);
+
+        Map<String, Object> tripPlanLikes = new HashMap<>();
+        tripPlanLikes.put("tripPlanNo", tripPlanNo);
+        tripPlanLikes.put("tripPlanAuthor", tripPlanAuthor);
+
+        return tripPlanService.tripPlanLikes(tripPlanLikes);
+    }
+
     @GetMapping("tripTime")
     public Map<String, Object> tripTime(@RequestParam("start") String start, @RequestParam("end") String end) {
         // 시작지점과 도착지점을 파라미터로 받아와서 REST API 요청에 사용

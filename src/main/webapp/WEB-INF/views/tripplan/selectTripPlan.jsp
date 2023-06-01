@@ -51,7 +51,7 @@
 </head>
 <body>
     <h1>여행플랜</h1>
-
+    <button id="tripPlanLikes" value="${tripPlan.tripPlanNo}">여행플랜 추천</button>
     <td colspan="5"><hr></td>
     <table>
         <tr>
@@ -67,7 +67,7 @@
             <td align="center" width="200">${tripPlan.tripPlanTitle}</td>
             <td align="center" width="200">${tripPlan.tripDays}</td>
             <td align="center" width="200">${tripPlan.tripPlanRegDate}</td>
-            <td align="center" width="200">${tripPlan.tripPlanLikes}</td>
+            <td id="likes" align="center" width="200">${tripPlan.tripPlanLikes}</td>
             <td align="center" width="200">${tripPlan.tripPlanViews}</td>
         </tr>
     </table>
@@ -248,6 +248,35 @@
 
             })(marker, overlay, mapIndex);
         }
+    });
+
+    $(function() {
+         $("button[id='tripPlanLikes']").on("click", function() {
+         var tripPlanNo = "${tripPlan.tripPlanNo}";
+         var tripPlanAuthor = "${tripPlan.tripPlanAuthor}";
+             if(tripPlanAuthor != null || tripPlanAuthor.length>1){
+                $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
+                      url: "/tripPlan/tripPlanLikes",
+                      type: "GET",
+                      data: { "tripPlanNo" :  tripPlanNo,
+                              "tripPlanAuthor" : tripPlanAuthor },
+                      contentType: "application/json; charset=utf-8",
+                      success: function (data) {
+                        console.log(data);
+                        if(data == -1){
+                            alert("이미 추천한 여행플랜입니다.");
+                        } else {
+                            alert("추천 완료");
+                            $("#likes").text(data);
+                        }
+                      },
+                      error: function (xhr, status, error) {
+                        console.log(error);
+                      }
+                });
+             }
+
+         });
     });
 
 

@@ -167,7 +167,7 @@
     </update>
 
     <!-- 여행플랜 추천 -->
-    <update id="tripPlanLikes" parameterType="com.bit.motrip.domain.TripPlan">
+    <update id="tripPlanLikes" parameterType="com.bit.motrip.domain.TripPlan" >
         UPDATE trip_plan
         SET trip_plan_likes = #{tripPlanLikes}
         WHERE trip_plan_no = #{tripPlanNo}

@@ -155,26 +155,29 @@ public class TripPlanServiceImpl implements TripPlanService {
     }
 
     @Override // 여행플랜 추천수 증가
-    public void tripPlanLikes(TripPlan tripPlan) throws Exception {
-        EvaluateList evaluate = new EvaluateList();
-        Map<String,Object> paramaters = new HashMap<>();
-        paramaters.put("evaluatedTripPlanNo", tripPlan.getTripPlanNo());
-        paramaters.put("searchCondition", "tripPlan");
-        List<EvaluateList> tripPlanEvaluateList = evaluateListDao.getEvaluation(paramaters);
+    public int tripPlanLikes(Map<String, Object> tripPlanLikes) throws Exception {
+
+        TripPlan tripPlan = new TripPlan();
+        EvaluateList evaluateList = new EvaluateList();
+        tripPlanLikes.put("searchCondition", "tripPlan"); // 여행플랜을 기준으로 찾기 위해
+
+        evaluateList.setEvaluaterId((String) tripPlanLikes.get("tripPlanAuthor"));
+        evaluateList.setEvaluatedTripPlanNo((Integer) tripPlanLikes.get("tripPlanNo"));
+
+        List<EvaluateList> tripPlanEvaluateList = evaluateListDao.getEvaluation(tripPlanLikes);
         for (int i=0; i<tripPlanEvaluateList.size(); i++){
-            if(tripPlanEvaluateList.get(i).getEvaluaterId().equals(tripPlan.getTripPlanAuthor())){
+            if(tripPlanEvaluateList.get(i).getEvaluaterId().equals(tripPlanLikes.get("tripPlanAuthor"))){
                 System.out.println("이미 추천을 누른 여행플랜입니다.");
-                return;
+                return -1;
             }
         }
-        // 중복체크를 확인하여 이상이없다면 추천수를 올린다.
-        evaluate.setEvaluaterId(tripPlan.getTripPlanAuthor());
-        evaluate.setEvaluatedTripPlanNo(tripPlan.getTripPlanNo());
-        evaluateListDao.addEvaluation(evaluate);
-        // 추천수를 올리고 다시한번 조회하여 총 추천수를 저장
-        tripPlan.setTripPlanLikes(evaluateListDao.getEvaluation(paramaters).size());
-        tripPlan.setTripPlanNo(tripPlan.getTripPlanNo());
+        // 중복체크를 확인하여 이상이 없다면 새로운 테이블을 생성
+        evaluateListDao.addEvaluation(evaluateList);
+        // 추천수를 높이고 tripPlanEvaluateList의 숫자가 최근 추천수이기에 + 1을 더해주어 최종 저장
+        tripPlan.setTripPlanLikes(tripPlanEvaluateList.size() + 1);
+        tripPlan.setTripPlanNo((Integer) tripPlanLikes.get("tripPlanNo"));
         tripPlanDao.tripPlanLikes(tripPlan);
+        return tripPlan.getTripPlanLikes();
     }
 
 }

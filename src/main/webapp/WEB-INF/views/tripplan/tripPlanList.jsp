@@ -98,7 +98,7 @@
 						        <input type="hidden" value="${tripPlan.tripPlanNo}" id="tripPlanNo" class="tripPlanNo"/>
 						    </c:if>
 						    <c:if test="${tripPlan.isPlanDeleted}">
-						        <input type="hidden" value=0 id="tripPlanNo" />
+						        <input type="hidden" value=0 id="tripPlanNo" id="tripPlanNo" class="tripPlanNo"/>
                             </c:if>
 						</td>
 						<td></td>
