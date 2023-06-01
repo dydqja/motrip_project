@@ -37,8 +37,10 @@
         <button type="button" id="tripPlanList" onclick="location.href='/tripPlan/myTripPlanList'">나의 여행플랜</button>
         <button type="button" id="tripPlanList" onclick="location.href='/tripPlan/addTripPlanView'">여행플랜작성</button>
         <button id="addReview" onclick="location.href='/review/addReviewView'">후기작성</button>
-        <button id="noticeList" onclick="location.href='/notice/getNoticeList'">공지사항</button>
+        <button id="noticeList" onclick="location.href='/notice/noticeList'">공지사항</button>
+        <button id="qnaList" onclick="location.href='/qna/qnaList'">질의응답</button>
         <button id="chatRoomList" onclick="location.href='/chatRoom/chatRoomList'">채팅리스트</button>
+
     </nav>
     <div class="middle-section">
         <c:if test="${empty sessionScope.user}">

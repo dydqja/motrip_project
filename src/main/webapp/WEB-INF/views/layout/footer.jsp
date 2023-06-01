@@ -55,7 +55,10 @@
         </div>
     </div>
     <div class = "right-section">
-        챗봇 칸임
+        <div id="root"></div>
+        <script src="/js/bot/bot.js"></script>
+        <link href="/css/bot/bot.css" rel="stylesheet">
+        <img src="/media/bot.svg" alt="챗봇">
     </div>
 </footer>
 <hr/>

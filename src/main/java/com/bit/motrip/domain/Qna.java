@@ -82,11 +82,11 @@ public class Qna {
         this.qnaCategory = qnaCategory;
     }
 
-    public int getIsAnswerStatus() {
+    public int getIsQnaAnswered() {
         return isQnaAnswered;
     }
 
-    public void setIsAnswerStatus(int isQnaAnswered) {
+    public void setIsQnaAnswered(int isQnaAnswered) {
         this.isQnaAnswered = isQnaAnswered;
     }
 
