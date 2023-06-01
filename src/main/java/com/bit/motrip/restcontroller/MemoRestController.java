@@ -125,11 +125,19 @@ public class MemoRestController {
         memo.setMemoAuthor(user.getUserId());
 
         try {
-            memoService.updateMemo(memo);
+            memo = memoService.updateMemo(memo);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return fakeJason;
+        //memo를 직렬화
+        ObjectMapper objectMapper = new ObjectMapper();
+        String memoJson = "";
+        try {
+            memoJson = objectMapper.writeValueAsString(memo);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return memoJson;
     }
     @PostMapping("deleteMemo")
     public String deleteMemo(@RequestParam("memoNo") String memoNo)  {
