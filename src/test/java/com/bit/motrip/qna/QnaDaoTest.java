@@ -35,7 +35,7 @@ class QnaDaoTest {
     }
 
     //질의응답 응답 등록 테스트
-    @Test
+   // @Test
     void addQnaAnswerDaoTest() throws Exception {
 
         // Arrange

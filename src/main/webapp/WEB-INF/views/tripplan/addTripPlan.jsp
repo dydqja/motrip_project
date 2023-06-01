@@ -1,21 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">
 <title>motrip</title>
-<!-- 지도용 스크립트 -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
-<!-- jquery, css -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css">
-<link rel="stylesheet" href="/css/tripplan/tripplan.css">
+    <!-- 지도용 스크립트 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
+    <!-- jquery, css -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="/css/tripplan/tripplan.css">
 </head>
 <body>
     <div>
-        여행플랜 제목 : <input type"text" id="tripPlanTitle" style='width:450px'/>
+        여행플랜 제목 : <input type="text" id="tripPlanTitle" style='width:450px'/>
+        <div>
+            공개<input type="checkbox" id="chbispublic" class="round" value="true"/>
+            비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true" disabled/>
+            가져가기 가능<input type="checkbox" id="chbIsDownloadle" class="round" value="true" disabled/>
+            가져가기 불가능<input type="checkbox" id="chbDownloadle" class="round" value="false" disabled/>
+        </div>
         <div>
             사용자태그 : 추후 저장예정 <div id="userTags"></div>
             명소태그 : 추후 저장예정 <div id="placeTags"></div>
@@ -28,7 +35,7 @@
     </div>
 
     <div class="map_wrap" style="display: flex;">
-        <input type"text" id="dailyPlanContents"/>
+        <input type="text" id="dailyPlanContents"/>
         <div id="menu_wrap">
             <div class="option">
                 <input type="text" id="placeName" size="15">
@@ -47,10 +54,96 @@
 
 $(document).ready(function(){
 
+    let mapOptions = []; // 지도 옵션을 저장할 배열
+    let maps = []; // 생성    된 지도를 저장할 배열
+    let mapCounter = 1; // 지도 갯수 카운트
+    let markers = []; // 마커를 담을 배열입니다
+    let isPlanPublic = false; // 공유여부
+    let isPlanDownloadable = false; // 가져가기 여부
+
+    // 초기 지도를 생성합니다
+    var startMapContainer = document.getElementById('map'); // 초기 지도를 표시할 div
+    var startMapOption = {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+    var startMap = new kakao.maps.Map(startMapContainer, startMapOption);
+    maps = [startMap];
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 공개 체크박스 클릭
+    $("#chbispublic").click(function() {
+        isPlanPublic = this.value;
+        console.log(isPlanPublic);
+
+        var chbispublic = $(this);
+        var chbpublic = $("#chbpublic");
+        var chbIsDownloadle = $("#chbIsDownloadle");
+        var chbDownloadle = $("#chbDownloadle");
+
+        if (chbispublic.prop("checked")) {
+          chbispublic.prop("disabled", true);
+          chbpublic.prop("disabled", false);
+          chbpublic.prop("checked", false);
+          chbIsDownloadle.prop("disabled", false);
+          chbDownloadle.prop("checked", true);
+          chbDownloadle.prop("disabled", true);
+        }
+    });
+
+    // 비공개 체크박스 클릭 이벤트 핸들러
+    $("#chbpublic").click(function() {
+        isPlanPublic = this.value;
+        isPlanDownloadable = false; // 가져가기 불가능으로 변경
+        console.log(isPlanPublic);
+
+        var chbpublic = $(this);
+        var chbispublic = $("#chbispublic");
+        var chbIsDownloadle = $("#chbIsDownloadle");
+        var chbDownloadle = $("#chbDownloadle");
+
+        if (chbpublic.prop("checked")) {
+          chbpublic.prop("disabled", true);
+          chbispublic.prop("disabled", false);
+          chbispublic.prop("checked", false);
+          chbIsDownloadle.prop("checked", false);
+          chbDownloadle.prop("checked", false);
+          chbIsDownloadle.prop("disabled", true);
+          chbDownloadle.prop("disabled", true);
+        }
+    });
+
+    // 가져가기 가능 체크박스 클릭 이벤트 핸들러
+    $("#chbIsDownloadle").click(function() {
+        isPlanDownloadable = this.value;
+        console.log(isPlanDownloadable);
+        var chbIsDownloadle = $(this);
+        var chbDownloadle = $("#chbDownloadle");
+
+        chbIsDownloadle.prop("disabled", true);
+        chbDownloadle.prop("disabled", false);
+        chbDownloadle.prop("checked", false);
+    });
+
+    // 가져가기 불가능 체크박스 클릭 이벤트 핸들러
+    $("#chbDownloadle").click(function() {
+        isPlanDownloadable = this.value;
+        console.log(isPlanDownloadable);
+        var chbDownloadle = $(this);
+        var chbIsDownloadle = $("#chbIsDownloadle");
+
+        chbDownloadle.prop("disabled", true);
+        chbIsDownloadle.prop("disabled", false);
+        chbIsDownloadle.prop("checked", false);
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     $("#btnAddTripPlan").click(function () {
         var tripPlanTitle = $('#tripPlanTitle').val(); // 여행플랜 제목
         var dailyPlanContents = []; // 일차별 여행플랜 본문과 명소들을 모두 저장하는곳
-        var placesInfo; // 없어도될거같은데? 나중에확인
+        var placesInfo; //
 
         for(var i=0; i<mapCounter; i++) {
             var dailyPlanContent; // 일차별 여행플랜 본문
@@ -92,9 +185,13 @@ $(document).ready(function(){
                 return;
         }
 
+        console.log(isPlanPublic);
+        console.log(isPlanDownloadable);
         var tripPlan = {
             tripPlanTitle: tripPlanTitle,
             tripDays: mapCounter,
+            isPlanPublic: isPlanPublic,
+            isPlanDownloadable: isPlanDownloadable,
             dailyplanResultMap: dailyPlanContents.map(function (dailyPlan) {
               return {
                 dailyPlanContents: dailyPlan.dailyPlanContents,
@@ -105,41 +202,26 @@ $(document).ready(function(){
             }),
           };
 
-        console.log(JSON.stringify(tripPlan));
-
-        $.ajax({
-                url: "/tripPlan/addTripPlan",
-                type: "POST",
-                data: JSON.stringify(tripPlan),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-
-                },
-                error: function (xhr, status, error) {
-
-                }
+        $.ajax({ // JSON 저장하여 RestContoller로 ajax통신
+            url: "/tripPlan/addTripPlan",
+            type: "POST",
+            data: JSON.stringify(tripPlan),
+            contentType: "application/json; charset=utf-8",
+            success: function () {
+                window.location.href = "/tripPlan/listTripPlan";
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
         });
-
     });
 
-    let mapOptions = []; // 지도 옵션을 저장할 배열
-    let maps = []; // 생성    된 지도를 저장할 배열
-    let mapCounter = 1; // 지도 갯수 카운트
-    let markers = []; // 마커를 담을 배열입니다
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // 초기 지도를 생성합니다
-    var startMapContainer = document.getElementById('map'); // 초기 지도를 표시할 div
-    var startMapOption = {
-        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
-    var startMap = new kakao.maps.Map(startMapContainer, startMapOption);
-    maps = [startMap];
-
-    // 추가 지도 생성
-    $("#btnAddTripDay").click(function (){
+    $("#btnAddTripDay").click(function (){ // 추가 지도 생성 최대 10개까지
         // 새로운 요소를 생성
+        if(mapCounter < 10){
+          console.log(mapCounter);
           var newMapWrap = document.createElement('div');
           var newContentsInput = document.createElement('input');
           var newMenuWrap = document.createElement('div');
@@ -157,7 +239,7 @@ $(document).ready(function(){
           };
 
           // 각 요소에 속성 및 내용 설정
-          newMapWrap.className = 'map_wrap';
+          newMapWrap.className = 'map_wrap' + mapCounter;
           newMapWrap.style.display = 'flex';
 
           newContentsInput.setAttribute('type', 'text');
@@ -215,8 +297,25 @@ $(document).ready(function(){
 
           // mapCounter 증가
           mapCounter++;
+        } else {
+          alert("하나의 여행플랜의 일정은 10개가 최대입니다. \n추가적인 일정은 새로운 여행플랜을 작성하여 이용해주시기 바랍니다.");
+        }
     });
 
+    $("#btnRemoveTripDay").click(function () {
+        if (mapCounter > 1) {
+            var lastMapIndex = mapCounter - 1; // 마지막으로 추가된 지도의 인덱스
+            var mapWrap = document.querySelector('.map_wrap' + lastMapIndex);
+            var placeTaglistDiv = document.querySelector('#listPlaceTags' + lastMapIndex);
+            mapWrap.parentNode.removeChild(mapWrap);
+            placeTaglistDiv.parentNode.removeChild(placeTaglistDiv);
+            maps.splice(lastMapIndex - 1, 1); // maps 배열에서 해당 요소 제거
+            mapOptions.splice(lastMapIndex - 1, 1); // mapOptions 배열에서 해당 요소 제거
+            mapCounter--; // mapCounter 감소
+          }
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $(document).on("click", ".placeSearch", function () {
        if(this.id == this.id){  // 내가 누르는 버튼이 일차별여행플랜 몇번의 해당하는 지 알기위한 if문

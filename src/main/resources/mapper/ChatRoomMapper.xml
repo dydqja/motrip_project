@@ -13,6 +13,7 @@
 		<result column="max_persons" property="maxPersons" jdbcType="INTEGER"/>
 		<result column="current_persons" property="currentPersons" jdbcType="INTEGER"/>
 		<result column="chat_room_status" property="chatRoomStatus" jdbcType="INTEGER"/>
+		<result column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
 	</resultMap>
 
 	<resultMap id="chatMemberResultMap" type="com.bit.motrip.domain.ChatMember">
@@ -76,9 +77,11 @@
 	</update>
 
 	<select id="chatRoomList" resultMap="chatRoomResultMap">
-		select
-			*, DATE_FORMAT(travel_start_date, '%Y-%m-%d')
-		from
-			chat_rooms
+		SELECT
+			*
+		FROM
+			chat_rooms cr
+			RIGHT JOIN (select chat_room_no,trip_plan_no from chat_room_members group by chat_room_no, trip_plan_no) crm
+			    on cr.chat_room_no = crm.chat_room_no order by cr.chat_room_no
 	</select>
 </mapper>

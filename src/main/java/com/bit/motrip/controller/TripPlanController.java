@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -23,15 +24,16 @@ public class TripPlanController {
         System.out.println(this.getClass());
     }
 
-    @GetMapping("tripPlanList")
-    public String tripPlanList(@ModelAttribute("search")Search search, Model model) throws Exception {
-        System.out.println("GET : TripPlanList()");
+    @GetMapping("listTripPlan")
+    public String tripPlanList(@ModelAttribute("search")Search search, Model model, HttpSession session) throws Exception {
+        System.out.println("GET : listTripPlan()");
 
         if(search.getPageSize() == 0){
             search.setCurrentPage(1);
         } else {
             search.setCurrentPage(search.getCurrentPage());
         }
+        System.out.println(session.getAttribute("user"));
 
         Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(search);
         tripPlanList.get("tripPlanList");
@@ -39,24 +41,13 @@ public class TripPlanController {
         System.out.println(tripPlanList.get("tripPlanList").toString());
         model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
 
-        return "tripplan/tripPlanList.tiles";
+        return "tripplan/listTripPlan.tiles";
     }
 
     @GetMapping("addTripPlanView") // addTripPlanView 일반 네비게이션
     public String addTripPlanView() {
         System.out.println("GET : addTripPlanView()");
         return "tripplan/addTripPlan.tiles";
-    }
-
-    @PostMapping("addTripPlan") // 여행플랜 저장
-    public String addTripPlan(@RequestBody TripPlan tripPlan) throws Exception {
-        System.out.println("POST : addTripPlan()");
-
-        System.out.println(tripPlan.toString());
-
-        tripPlanService.addTripPlan(tripPlan);
-        System.out.println("여기까지오나요?");
-        return "tripplan/tripPlanList.tiles";
     }
 
     @GetMapping("selectTripPlan")
@@ -68,7 +59,7 @@ public class TripPlanController {
         System.out.println(tripPlan.toString());
         model.addAttribute("tripPlan", tripPlan);
 
-        return "tripplan/selectTripPlan.jsp";
+        return "tripplan/selectTripPlan.tiles";
     }
 
     @GetMapping("updateTripPlan")

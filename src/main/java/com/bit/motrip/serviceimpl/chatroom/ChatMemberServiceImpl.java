@@ -3,6 +3,7 @@ package com.bit.motrip.serviceimpl.chatroom;
 import com.bit.motrip.dao.chatroom.ChatMemberDao;
 import com.bit.motrip.dao.chatroom.ChatRoomDao;
 import com.bit.motrip.domain.ChatMember;
+import com.bit.motrip.domain.ChatRoom;
 import com.bit.motrip.service.chatroom.ChatMemberService;
 import com.bit.motrip.service.chatroom.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +40,19 @@ public class ChatMemberServiceImpl implements ChatMemberService {
                 return;
             }
         }
-
+        System.out.println(chatRoomNo);
         //회원이 maxPersons 이면 참여불가 chatRoomStatus 가 0 이 아니면 참여 불가
-        int chatRoomMaxPersons = chatRoomDao.getChatRoom(chatMember.getChatRoomNo()).getMaxPersons();
-        int chatRoomCurrentPersons = chatRoomDao.getChatRoom(chatMember.getChatRoomNo()).getCurrentPersons();
-        int chatRoomStatus = chatRoomDao.getChatRoom(chatMember.getChatRoomNo()).getChatRoomStatus();
+        ChatRoom chatRoom = chatRoomDao.getChatRoom(chatRoomNo);
+
+        int chatRoomMaxPersons = chatRoom.getMaxPersons();
+        int chatRoomCurrentPersons = chatRoom.getCurrentPersons();
+        int chatRoomStatus = chatRoom.getChatRoomStatus();
 
         if(chatRoomMaxPersons>chatRoomCurrentPersons && chatRoomStatus == 0){
             chatMemberDao.addChatMember(chatMember);
+            chatRoomCurrentPersons+=1;
+            chatRoom.setCurrentPersons(chatRoomCurrentPersons);
+            chatRoomDao.updateChatRoom(chatRoom);
         }
         else{
             System.out.println("참여 불가능합니다.");

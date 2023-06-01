@@ -42,8 +42,20 @@ public class EvaluateListServiceImpl implements EvaluateListService {
         evaluateListDao.deleteBlacklist(evaluateList);
     }
 
-    public void userEvaluateCancle(EvaluateList evaluateList) throws Exception {
-        evaluateListDao.userEvaluateCancle(evaluateList);
+    public void userEvaluateCancle(String sessionUserId, String getUserId) throws Exception {
+        evaluateListDao.userEvaluateCancle(sessionUserId,getUserId);
+    }
+
+    public String evaluateState(String sessionUserId,String getUserId) throws Exception {
+        return evaluateListDao.evaluateState(sessionUserId,getUserId);
+    }
+
+    public String getScorePlus(String getUserId) throws Exception {
+        return evaluateListDao.getScorePlus(getUserId);
+    }
+
+    public String blacklistState(String sessionUserId,String getUserId) throws Exception {
+        return evaluateListDao.blacklistState(sessionUserId,getUserId);
     }
 
 }

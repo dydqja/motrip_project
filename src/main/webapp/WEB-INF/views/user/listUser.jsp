@@ -76,7 +76,8 @@
     $(function() {
 
       //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-      $( "td:nth-child(2)" ).on("click" , function() {
+      $( "#getUser" ).on("click" , function() {
+        console.log("회원ID 클릭됨"+$(this).text().trim());
         self.location ="/user/getUser?userId="+$(this).text().trim();
       });
 
@@ -113,6 +114,7 @@
           <select class="form-control" name="searchCondition" >
             <option value="0"  ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>회원ID</option>
             <option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>회원명</option>
+            <option value="2"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>닉네임</option>
           </select>
         </div>
 
@@ -141,9 +143,10 @@
     <tr>
       <th align="center">No</th>
       <th align="left" >회원 ID</th>
-      <th align="left">회원명</th>
-      <th align="left">이메일</th>
-      <th align="left">간략정보</th>
+      <th align="left">이름</th>
+      <th align="left">닉네임</th>
+      <th align="left">가입일자</th>
+      <th align="left">탈퇴유무</th>
     </tr>
     </thead>
 
@@ -154,13 +157,11 @@
       <c:set var="i" value="${ i+1 }" />
       <tr>
         <td align="center">${ i }</td>
-        <td align="left"  title="Click : 회원정보 확인">${user.userId}</td>
+        <td align="left"  id="getUser" title="Click : 회원정보 확인">${user.userId}</td>
         <td align="left">${user.userName}</td>
-        <td align="left">${user.email}</td>
-        <td align="left">
-          <i class="glyphicon glyphicon-ok" id= "${user.userId}"></i>
-          <input type="hidden" value="${user.userId}">
-        </td>
+        <td align="left">${user.nickname}</td>
+        <td align="left">${user.userRegDate}</td>
+        <td align="left">${user.secession}</td>
       </tr>
     </c:forEach>
 

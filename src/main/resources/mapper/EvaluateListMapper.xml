@@ -54,10 +54,41 @@
         WHERE evaluater_id = #{evaluaterId} and blacklisted_user_id = #{blacklistedUserId}
     </delete>
 
-    <delete	id="userEvaluateCancle"	parameterType="com.bit.motrip.domain.EvaluateList" >
+    <delete	id="userEvaluateCancle"	parameterType="String" >
         DELETE
         FROM evaluate_list
-        WHERE evaluater_id = #{evaluaterId} and evaluated_user_id = #{evaluatedUserId}
+        WHERE evaluater_id = #{sessionUserId} and evaluated_user_id = #{getUserId}
     </delete>
+
+    <select id="evaluateState" parameterType="String" resultType="String" >
+        SELECT is_score_plus
+        FROM evaluate_list
+        WHERE evaluater_id = #{sessionUserId} and evaluated_user_id = #{getUserId};
+    </select>
+
+    <insert id="addLikeUser" parameterType="com.bit.motrip.domain.EvaluateList">
+        INSERT
+        INTO evaluate_list (evaluater_id, evaluated_user_id, evaluated_trip_plan_no, evaluated_review_no, is_score_plus, blacklisted_user_id)
+        VALUES (
+                #{evaluaterId,jdbcType=VARCHAR},
+                #{evaluatedUserId,jdbcType=VARCHAR},
+                #{evaluatedTripPlanNo,jdbcType=INTEGER},
+                #{evaluatedReviewNo,jdbcType=INTEGER},
+                #{isScorePlus,jdbcType=TINYINT},
+                #{blacklistedUserId,jdbcType=VARCHAR}
+                );
+    </insert>
+
+    <select id="getScorePlus" parameterType="String" resultType="String" >
+        SELECT SUM(is_score_plus)
+        FROM evaluate_list
+        WHERE evaluated_user_id = #{getUserId};
+    </select>
+
+    <select id="blacklistState" parameterType="String" resultType="String" >
+        SELECT blacklisted_user_id
+        FROM evaluate_list
+        WHERE evaluater_id = #{sessionUserId} and blacklisted_user_id = #{getUserId};
+    </select>
 
 </mapper>

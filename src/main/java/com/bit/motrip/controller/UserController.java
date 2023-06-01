@@ -2,13 +2,15 @@ package com.bit.motrip.controller;
 
 import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
-import com.bit.motrip.domain.ChatRoom;
+
+import com.bit.motrip.domain.EvaluateList;
 import com.bit.motrip.domain.User;
+import com.bit.motrip.service.evaluateList.EvaluateListService;
 import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +44,7 @@ public class UserController {
 
     @RequestMapping( value="login", method=RequestMethod.GET)
     public String login(HttpSession session) throws Exception{
-        System.out.println("/user/logon : GET");
+        System.out.println("/user/login : GET");
 
         session.setAttribute("naverClientId", naverClientId);
         session.setAttribute("naverCallbackUrl", naverCallbackUrl);
@@ -54,45 +56,26 @@ public class UserController {
     public String naverLogin() throws Exception{
         System.out.println("/user/naverLoginSuccess : GET");
 
-        return "/index.jsp";
+        return "/index.tiles";
     }
 
     @RequestMapping( value="login", method=RequestMethod.POST )
     public String login(@ModelAttribute("user") User user , HttpSession session, HttpServletRequest request) throws Exception{
         System.out.println("/user/login : POST");
 
-        //Business Logic
+        //사용자가 입력한 아이디값이 DB에 저장된(회원가입된) 아이디인지 확인
         User dbUser=userService.getUser(user.getUserId());
-
         System.out.println(dbUser);
 
+        //회원가입된 아이디에 저장된 비밀번호 값과, 사용자가 입력한 비밀번호값이 같은지 확인
         if( user.getPwd().equals(dbUser.getPwd())){
+            //저장된 비밀번호와 입력한 비밀번호값이 같다면, session에 아이디값 저장
             session.setAttribute("user", dbUser);
         }
 
-        return "/index.jsp";
+        return "/index.tiles";
     }
-//    @PostMapping("login")
-//    public String login( @ModelAttribute("user") User user) throws Exception{
-//        System.out.println("/user/login : POST");
-////        System.out.println("id" + id);
-////        System.out.println("formdata로 넘어온 userId값 = : "+request.getParameter("userId"));
-////        System.out.println("formdata로 넘어온 pwd값 = : "+request.getParameter("pwd"));
-//        System.out.println("User 객체로 바인딩된 userId 값 = : "+user.getUserId());
-//        System.out.println("User 객체로 바인딩된 pwd 값 = : "+ user.getPwd());
-//        //System.out.println(user.getUserId());
-//
-//        //Business Logic
-////        User dbUser=userService.getUser(user.getUserId());
-////
-////        System.out.println(dbUser);
-////
-////        if( user.getPwd().equals(dbUser.getPwd())){
-////            session.setAttribute("user", dbUser);
-////        }
-//
-//        return null;
-//    }
+
     @RequestMapping( value="addUser", method=RequestMethod.POST )
     public String addUser(@ModelAttribute("user") User user) throws Exception {
         System.out.println("/user/addUser : POST");
@@ -101,14 +84,14 @@ public class UserController {
         //Business Logic
         userService.addUser(user);
 
-        return "redirect:/index.jsp";
+        return "redirect:/index.tiles";
     }
 
     @RequestMapping( value="naverLogin", method=RequestMethod.GET )
     public String checkUser(HttpSession session, User user) throws Exception {
         System.out.println("/user/naverLogin : GET");
 
-        return "user/naverLoginCallback.jsp";
+        return "user/naverLoginCallback.tiles";
     }
 
     @RequestMapping( value="addNaverUser", method=RequestMethod.GET )
@@ -120,7 +103,7 @@ public class UserController {
 
         System.out.println("addNaverUser.jsp 로 보내질 user의 값은? => "+user);
 
-        return "user/addNaverUser.jsp";
+        return "user/addNaverUser.tiles";
     }
 
     @RequestMapping( value="listUser" )
@@ -137,14 +120,30 @@ public class UserController {
         Map<String , Object> map=userService.getList(search);
 
         Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+        System.out.println(map.get("list"));
         System.out.println(resultPage);
+        System.out.println(search);
 
         // Model 과 View 연결
         model.addAttribute("list", map.get("list"));
         model.addAttribute("resultPage", resultPage);
         model.addAttribute("search", search);
 
-        return "forward:/user/listUser.jsp";
+        return "user/listUser.tiles";
+    }
+
+    @RequestMapping( value="getUser", method=RequestMethod.GET )
+    public String getUser( @RequestParam("userId") String userId , Model model ) throws Exception {
+
+        System.out.println("/user/getUser : GET");
+        System.out.println(userId);
+        //Business Logic
+        User user = userService.getUser(userId);
+        System.out.println(user);
+        // Model 과 View 연결
+        model.addAttribute("user", user);
+
+        return "/user/getUser.jsp";
     }
 
 }

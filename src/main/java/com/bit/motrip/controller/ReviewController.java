@@ -52,7 +52,7 @@ public class ReviewController {
         model.addAttribute("tripPlanList", tripPlanList);
         System.out.println("제발 모달창 나와주겠니"+tripPlanList);
 
-        return "review/addReviewView.jsp";
+        return "review/addReviewView.tiles";
     }
 
     @PostMapping(value = "addReview")
@@ -71,7 +71,7 @@ public class ReviewController {
         // tripPlan 객체를 모델에 추가
         model.addAttribute("tripPlan", tripPlan);
 
-        return "review/addReview.jsp";
+        return "review/addReview.tiles";
     }
 
 

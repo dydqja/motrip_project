@@ -1,7 +1,11 @@
 package com.bit.motrip.restcontroller.tripplan;
 
+import com.bit.motrip.domain.TripPlan;
+import com.bit.motrip.service.tripplan.TripPlanService;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +17,12 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/tripplan/*")
+@RequestMapping("/tripPlan/*")
 public class TripPlanRestController {
+
+    @Autowired
+    @Qualifier("tripPlanServiceImpl")
+    private TripPlanService tripPlanService;
 
     public TripPlanRestController() {
         System.out.println(this.getClass());
@@ -23,10 +31,17 @@ public class TripPlanRestController {
     @Value("${kakao.api.key}")
     private String kakaoApiKey;
 
-    @GetMapping("test")
-    public String test(@RequestParam String test) {
-        System.out.println("test");
-        return test;
+    @PostMapping("addTripPlan") // 여행플랜 저장 (JSON 형태로 받기위해 ajax로 보냄)
+    public void addTripPlan(@RequestBody TripPlan tripPlan) throws Exception {
+        System.out.println("POST : addTripPlan()");
+        tripPlanService.addTripPlan(tripPlan);
+    }
+
+    @GetMapping("tripPlanDeleted") /// 여행플랜 삭제(임시대기)
+    public TripPlan tripPlanDeleted(@RequestParam("tripPlanNo") int tripPlanNo) throws Exception {
+        System.out.println("GET : deleteTripPlan()");
+        tripPlanService.tripPlanDeleted(tripPlanNo);
+        return tripPlanService.selectTripPlan(tripPlanNo);
     }
 
 //    @GetMapping("tripTime")

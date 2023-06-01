@@ -51,7 +51,7 @@
 
     <select 	id="getUser"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
         SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.phone, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
-               u.is_self_intro_public, u.is_user_photo_public, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
+               u.is_self_intro_public, u.is_user_photo_public, u.role, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
         FROM users u
         LEFT JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
         WHERE u.user_id = #{userId}
@@ -71,6 +71,9 @@
                             <if test="searchCondition == 1 and searchKeyword !='' ">
                                 user_name like CONCAT('%', #{searchKeyword}, '%')
                             </if>
+                            <if test="searchCondition == 2 and searchKeyword !='' ">
+                                nickname like CONCAT('%', #{searchKeyword}, '%')
+                            </if>
                         </where>
                     </if>
              ) AS derived_table
@@ -88,6 +91,9 @@
                         </if>
                         <if test="searchCondition == 1 and searchKeyword !='' ">
                             user_name like CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                        <if test="searchCondition == 2 and searchKeyword !='' ">
+                            nickname like CONCAT('%', #{searchKeyword}, '%')
                         </if>
                     </where>
                 </if> ) countTable

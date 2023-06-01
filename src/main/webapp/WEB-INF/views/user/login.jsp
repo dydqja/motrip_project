@@ -19,24 +19,24 @@
         //로그인
         $( function() {
 
-            $("#userId").focus();
+            $("#loginUserId").focus();
 
                 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
                 $("#login").on("click", function () {
 
-                    const userId = $("#userId").val();
-                    const pwd = $("#pwd").val();
+                    const userId = $("#loginUserId").val();
+                    const pwd = $("#loginPwd").val();
 
 
                     if (userId == null || userId.length < 1) {
                         alert('ID 를 입력하지 않으셨습니다.');
-                        $("#userId").focus();
+                        $("#loginUserId").focus();
                         return;
                     }
 
                     if (pwd == null || pwd.length < 1) {
                         alert('패스워드를 입력하지 않으셨습니다.');
-                        $("#pwd").focus();
+                        $("#loginPwd").focus();
                         return;
                     }
 
@@ -80,14 +80,14 @@
         <div class="form-group">
             <label for="userId" class="col-sm-4 control-label">아 이 디</label>
             <div class="col-sm-6">
-                <input class="form-control" type="text" name="userId" id="userId"  placeholder="아이디" />
+                <input class="form-control" type="text" name="userId" id="loginUserId"  placeholder="아이디" />
             </div>
         </div>
 
         <div class="form-group">
             <label for="pwd" class="col-sm-4 control-label">패 스 워 드</label>
             <div class="col-sm-6">
-                <input class="form-control" type="password" name="pwd" id="pwd" placeholder="패스워드" />
+                <input class="form-control" type="password" name="pwd" id="loginPwd" placeholder="패스워드" />
             </div>
         </div>
 

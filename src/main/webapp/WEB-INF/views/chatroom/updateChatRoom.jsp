@@ -3,12 +3,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>채팅방 추가</title>
+    <title>채팅방 수정</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
 
         function fncAddChatroom(){
-            $("form").attr("method","POST").attr("action","addChatRoom").submit();
+            $("form").attr("method","POST").attr("action","updateChatRoom").submit();
         }
 
         $(function() {
@@ -28,7 +28,7 @@
     <input type="text" name="ageRange" placeholder="나잇대" />
     <input type="number" name="maxPersons" placeholder="최대 인원수" />
     <input type="number" name="tripPlanNo" placeholder="여행 번호" />
-    <input type="hidden" name="userId" value="${userId}"/> <!--hidden 예정 -->
+    <input type="text" name="userId" placeholder="유저이름 히든예정" /> <!--hidden 예정 -->
 
     <input id="sub" type="submit" value="생성" />
 </form>
