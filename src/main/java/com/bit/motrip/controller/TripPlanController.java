@@ -2,6 +2,7 @@ package com.bit.motrip.controller;
 
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.TripPlan;
+import com.bit.motrip.domain.User;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,24 +25,41 @@ public class TripPlanController {
         System.out.println(this.getClass());
     }
 
-    @GetMapping("listTripPlan")
+    @GetMapping("tripPlanList")
     public String tripPlanList(@ModelAttribute("search")Search search, Model model, HttpSession session) throws Exception {
-        System.out.println("GET : listTripPlan()");
+        System.out.println("GET : tripPlanList()");
 
         if(search.getPageSize() == 0){
             search.setCurrentPage(1);
         } else {
             search.setCurrentPage(search.getCurrentPage());
         }
-        System.out.println(session.getAttribute("user"));
 
         Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(search);
-        tripPlanList.get("tripPlanList");
 
         System.out.println(tripPlanList.get("tripPlanList").toString());
         model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
 
-        return "tripplan/listTripPlan.tiles";
+        return "tripplan/tripPlanList.tiles";
+    }
+
+    @GetMapping("myTripPlanList")
+    public String myTripPlanList(@ModelAttribute("search")Search search, Model model, HttpSession session) throws Exception {
+        System.out.println("GET : tripPlanList()");
+
+        if(search.getPageSize() == 0){
+            search.setCurrentPage(1);
+        } else {
+            search.setCurrentPage(search.getCurrentPage());
+        }
+
+        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(search);
+
+        System.out.println(tripPlanList.get("tripPlanList").toString());
+        model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
+        model.addAttribute("user", session.getAttribute("user"));
+
+        return "tripplan/tripPlanList.tiles";
     }
 
     @GetMapping("addTripPlanView") // addTripPlanView 일반 네비게이션
@@ -51,13 +69,14 @@ public class TripPlanController {
     }
 
     @GetMapping("selectTripPlan")
-    public String selectTripPlan(@RequestParam("tripPlanNo") int tripPlanNo, Model model) throws Exception {
+    public String selectTripPlan(@RequestParam("tripPlanNo") int tripPlanNo, Model model, HttpSession session) throws Exception {
         System.out.println("GET : selectTripPlan()");
 
         TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
 
         System.out.println(tripPlan.toString());
         model.addAttribute("tripPlan", tripPlan);
+        model.addAttribute("user", session.getAttribute("user"));
 
         return "tripplan/selectTripPlan.tiles";
     }

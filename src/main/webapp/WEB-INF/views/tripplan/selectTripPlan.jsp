@@ -30,6 +30,23 @@
         .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
         .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
         .info .link {color: #5085BB;}
+
+        // 주석위로는 마커 클릭시 나오는 오버레이창
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .plan-contents {
+            text-align: left;
+            margin-right: 20px;
+        }
+
+        .place-info {
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -38,13 +55,12 @@
     <td colspan="5"><hr></td>
     <table>
         <tr>
-            <th align="center" width="200">작성자 아이디</th>
+            <th align="center" width="200">작성자 닉네임</th>
             <th align="center" width="200">여행플랜 제목</th>
             <th align="center" width="200">총 여행일수</th>
             <th align="center" width="200">작성날짜</th>
             <th align="center" width="200">추천수</th>
             <th align="center" width="200">조회수</th>
-           <%--  <th align="center" width="200">여행플랜 번호</th> --%>
         </tr>
         <tr>
             <td align="center" width="200">${tripPlan.tripPlanAuthor}</td>
@@ -53,7 +69,6 @@
             <td align="center" width="200">${tripPlan.tripPlanRegDate}</td>
             <td align="center" width="200">${tripPlan.tripPlanLikes}</td>
             <td align="center" width="200">${tripPlan.tripPlanViews}</td>
-            <%-- <td align="center" width="200">${tripPlan.tripPlanNo}</td> --%>
         </tr>
     </table>
     <td colspan="5"><hr></td>
@@ -63,58 +78,68 @@
         <h2>${i}일차 여행플랜</h2>
         <table>
             <tr>
-                <th align="center" width="200">여행플랜 본문</th>
-                <th align="center" width="200">총 이동시간</th>
-                <%-- <th align="center" width="200">일차별 여행플랜 번호</th> --%>
+                <th align="left" width="400">여행플랜 본문</th>
+                <%-- <th align="center" width="400">일차별 여행플랜 번호</th> --%>
             </tr>
             <tr>
-                <td align="center" width="200">${dailyPlan.dailyPlanContents}</td>
-                <td align="center" width="200">${dailyPlan.totalTripTime}</td>
-                <%-- <td align="center" width="200">${dailyPlan.dailyPlanNo}</td> --%>
+                <td class="plan-contents" width="400">${dailyPlan.dailyPlanContents}</td>
+                <%-- <td align="center" width="400">${dailyPlan.dailyPlanNo}</td> --%>
             </tr>
         </table>
-        <div id="map${i-1}" style="width: 400px; height: 400px;"></div>
-        <button id="reset${i-1}">마커 보기</button>
-        <td>
-            <table>
-                <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+        <div style="display: flex; justify-content: space-between;">
+            <div class="plan-contents">
+                <table>
+                    <tr>
 
-                <%-- <tr>
-                    <td align="center" width="200">명소태그 : ${place.placeTags}</td>
-                    <td align="center" width="200">명소좌표 : ${place.placeCoordinates}</td>
-                    <td align="center" width="200">명소전화번호 : ${place.placePhoneNumber}</td>
-                    <td align="center" width="200">명소주소 : ${place.placeAddress}</td>
-                    <td align="center" width="200">카테고리 : ${place.placeCategory}</td>
-                    <td align="center" width="200">명소번호 : ${place.placeNo}</td>
-                    <td align="center" width="200">명소이미지 : ${place.placeImage}</td>
-                </tr> --%>
+                    </tr>
+                </table>
+            </div>
+            <div id="map${i-1}" style="width: 400px; height: 400px;"></div>
+            <div>
+                <table>
+                    <td class="place-info" width="200">${dailyPlan.totalTripTime}</td>
 
-                <script type="text/javascript">
-                    var placeTags = `${place.placeTags}`;
-                    var placePhoneNumber = `${place.placePhoneNumber}`;
-                    var placeAddress = `${place.placeAddress}`;
-                    var placeCategory = `${place.placeCategory}`;
-                    var placeImage = `${place.placeImage}`;
-                    var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
-                    var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
-                    var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
-                    var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
+                    <%-- 나중에 지울게요 일단 보기좋기용 --%>
+                    <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <%-- 나중에 지울게요 일단 보기좋기용 --%>
 
-                    // markers 배열에 좌표 및 맵 ID 정보 추가
-                    markers.push({
-                        position: markerPosition,
-                        mapId: mapId,
-                        placeTags: placeTags,
-                        placePhoneNumber: placePhoneNumber,
-                        placeAddress: placeAddress,
-                        placeCategory: placeCategory,
-                        placeImage: placeImage
-                    });
-                </script>
+                    <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                        <tr>
+                            <td class="place-info" width="250">#${place.placeTags}</td>
+                        </tr>
+                        <tr>
+                            <td class="place-info" width="250">${place.tripTime}</td>
+                        </tr>
+                        <script type="text/javascript">
+                            var placeTags = "${place.placeTags}";
+                            var placePhoneNumber = "${place.placePhoneNumber}";
+                            var placeAddress = "${place.placeAddress}";
+                            var placeCategory = "${place.placeCategory}";
+                            var placeImage = "${place.placeImage}";
+                            var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
+                            var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
+                            var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
+                            var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
 
-                </c:forEach>
-            </table>
-        </td>
+                            // markers 배열에 좌표 및 맵 ID 정보 추가
+                            markers.push({
+                                position: markerPosition,
+                                mapId: mapId,
+                                placeTags: placeTags,
+                                placePhoneNumber: placePhoneNumber,
+                                placeAddress: placeAddress,
+                                placeCategory: placeCategory,
+                                placeImage: placeImage
+                            });
+                        </script>
+                    </c:forEach>
+                </table>
+            </div>
+        </div>
+        <button id="reset${i-1}">원위치</button>
         <td colspan="5"><hr></td>
     </c:forEach>
     <button type="button" id="updateTripPlan">여행플랜 수정</button>
@@ -183,8 +208,6 @@
                         '                <div class="category">(카테고리) ' + markers[i].placeCategory + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
                         '    </div></div></div></div>';
 
-
-
             var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
                 content: content,
                 map: maps[mapIndex],
@@ -210,8 +233,17 @@
                 });
 
                 // 화면 초기화
-                $('#reset' + i).click(function() {
-                    console.log(this.id);
+                $('#reset' + mapIndex).click(function() {
+                    overlay.setMap(null);
+                    var mapIndex = parseInt(this.id.replace("reset", ""));
+                    var bounds = new kakao.maps.LatLngBounds();
+
+                    for (var j = 0; j < markers.length; j++) {
+                        if (markers[j].mapId === "map" + mapIndex) {
+                            bounds.extend(markers[j].position);
+                        }
+                    }
+                    maps[mapIndex].setBounds(bounds);
                 });
 
             })(marker, overlay, mapIndex);
