@@ -3,10 +3,14 @@ package com.bit.motrip.service.review;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.Review;
 import java.util.List;
+import java.util.Map;
 
 public interface ReviewService {
     //INSERT C 후기 등록
     public void addReview(Review review) throws Exception;
+
+    // 공유된 여행플랜 목록
+    Map<String, Object> selectReviewList(Search search) throws Exception;
 
     //SELECT All Public ReviewList 공개된 후기 목록 조회
     public List<Review> getPublicReviewList(Search search) throws Exception;

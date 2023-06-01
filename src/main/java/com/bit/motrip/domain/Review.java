@@ -17,7 +17,6 @@ public class Review {
     private boolean isReviewPublic;
     private int reviewLikes;
     private int viewCount;
-    @DateTimeFormat(pattern = "yyyyMMdd")
     private Date reviewRegDate;
 
     private boolean isReviewDeleted;
@@ -114,15 +113,6 @@ public class Review {
     }
 
     public Date setReviewRegDate(Date reviewRegDate) {
-        if (reviewRegDate != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            String formattedDate = sdf.format(reviewRegDate);
-            try {
-                return sdf.parse(formattedDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
         return reviewRegDate;
     }
 

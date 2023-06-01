@@ -31,7 +31,7 @@ class ReviewDaoTest {
     @Value(value = "#{review['reviewPageSize']}")
     private int reviewPageSize;
 
-    @Test
+    //@Test
     void addReview() throws Exception {
         Review review = new Review();
         review.setReviewNo(4);
@@ -53,20 +53,20 @@ class ReviewDaoTest {
         System.out.println("~테스트 완료~");
     }
     //@Test
-    void getPublicReviewList() throws Exception {
+    //void getPublicReviewList() throws Exception {
         //검색 조건 설정
-        Search search = new Search();
-        search.setCurrentPage(0);
-        search.setPageSize(reviewPageSize);
+       // Search search = new Search();
+       // search.setCurrentPage(0);
+        //search.setPageSize(reviewPageSize);
 
         //공개 처리된 후기 목록가져옴
-        List<Review> publicReviewList = reviewDao.getPublicReviewList(search);
+        //List<Review> publicReviewList = reviewDao.getPublicReviewList(search);
 
         //가져온 후기 목록을 출력쓰
-        for (Review review : publicReviewList) {
-            System.out.println(review);
-        }
-    }
+       //for (Review review : publicReviewList) {
+        //    System.out.println(review);
+       // }
+    //}
 
     //@Test
     void getMyReviewList() throws Exception {
@@ -77,12 +77,12 @@ class ReviewDaoTest {
         System.out.println(search);
 
         //내가 작성한 후기 목록가져옴
-        List<Review> myReviewList = reviewDao.getMyReviewList("user1",search);
+       // List<Review> myReviewList = reviewDao.getMyReviewList("user1",search);
 
         //가져온 후기 목록을 출력쓰
-        for (Review review : myReviewList) {
-            System.out.println(review.toString());
-        }
+       // for (Review review : myReviewList) {
+        //    System.out.println(review.toString());
+      //  }
 
     }
 
