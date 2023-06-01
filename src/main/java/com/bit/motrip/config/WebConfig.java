@@ -14,6 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
 //    private String resourcePath = "file:///home/uploadedImage";
     private String connectPath = "/imagePath/**";
     private String resourcePath = "file:////Users/sean/Desktop/moimages/";
+
 //    addResourceHandler : 리소스와 연결될 URL path를 지정합니다. (클라이언트가 파일에 접근하기 위해 요청하는 url)
 //    localhost:8080/imagePath*//**
 

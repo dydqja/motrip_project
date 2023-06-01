@@ -24,9 +24,9 @@ public class ChatRoomTests {
     @Qualifier("chatMemberServiceImpl")
     private ChatMemberService chatMemberService;
 
-    //@Test
+    @Test
     public void getTest() throws Exception{
-        ChatRoom chatRoom = chatRoomService.getChatRoom(1);
+        ChatRoom chatRoom = chatRoomService.getChatRoom(23);
         System.out.println(chatRoom);
     }
 
@@ -62,7 +62,7 @@ public class ChatRoomTests {
     }
     //@Test
     public void deleteTest() throws Exception{
-        chatRoomService.deleteChatRoom(5);
+        chatRoomService.deleteChatRoom(5,"user1");
     }
 
     //@Test
