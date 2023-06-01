@@ -74,13 +74,13 @@
 		</dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-servlet -->
+		<!-- tiles-servlet -->
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-servlet</artifactId>
 			<version>3.0.7</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-jsp -->
+		<!-- tiles-jsp -->
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-jsp</artifactId>

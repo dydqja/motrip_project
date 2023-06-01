@@ -33,12 +33,12 @@ public class MemoDocContainer {
             //Map내부의 중복을 체크하고, 있으면 넣고 없으면 만든다.
             if(noDupMap.containsKey(key)){
                 //있으면 넣는다.
-                System.out.println("있으니 넣겠습니다.");
+//                System.out.println("있으니 넣겠습니다.");
                 MemoDoc theDoc = noDupMap.get(key);
                 theDoc.getMemoList().add(memo);
             }else{
                 //없으니 만든다.
-                System.out.println("없으니 만듭니다.");
+//                System.out.println("없으니 만듭니다.");
                 MemoDoc newDoc = new MemoDoc();
                 newDoc.setTripPlan(innerTripPlan);
                 newDoc.setReview(innerReview);
