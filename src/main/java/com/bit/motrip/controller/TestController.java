@@ -30,4 +30,10 @@ public class TestController {
         session.invalidate();
         return "index.tiles";
     }
+
+    @GetMapping("alarmTest")
+    public String alarmTest() throws Exception{
+
+        return "alarm/alarmTest.tiles";
+    }
 }

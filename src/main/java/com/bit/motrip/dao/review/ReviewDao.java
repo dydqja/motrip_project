@@ -2,13 +2,20 @@ package com.bit.motrip.dao.review;
 
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.Review;
+import com.bit.motrip.domain.TripPlan;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface ReviewDao {
     //후기 부분 CRUD
     //INSERT C 후기 작성
     public void addReview(Review review)throws Exception ;
+
+    public int selectReviewCount() throws Exception;
+
+    public List<Review> selectReviewList(Map<String, Object> paramaters) throws Exception;
 
     //SELECT All Public ReviewList 공개된 후기 목록 조회
     public List<Review> getPublicReviewList(Search search) throws Exception;

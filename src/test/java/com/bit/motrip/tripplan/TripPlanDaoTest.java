@@ -86,10 +86,10 @@ class TripPlanDaoTest {
         tripPlan.setTripDays(tripDays);
         tripPlan.setTripPlanRegDate(new Date());
         tripPlan.setTripPlanDelDate(null);
-        tripPlan.setPlanDeleted(false);
-        tripPlan.setPlanPublic(true);
-        tripPlan.setPlanDownloadable(false);
-        tripPlan.setTripCompleted(false);
+        tripPlan.setisPlanDeleted(false);
+        tripPlan.setisPlanPublic(true);
+        tripPlan.setisPlanDownloadable(false);
+        tripPlan.setisTripCompleted(false);
         tripPlan.setTripPlanLikes(0);
         tripPlan.setTripPlanViews(0);
 
@@ -149,7 +149,7 @@ class TripPlanDaoTest {
 
         tripPlan.setTripPlanTitle("함께하는 국내 여행");
         // 여행플랜이 완료되었다면 더이상 수정이 불가능
-        if(!tripPlan.isTripCompleted()) {
+        if(!tripPlan.getisTripCompleted()) {
             dailyPlanList.get(0).setDailyPlanContents("업데이트");
             dailyPlanList.get(1).setDailyPlanContents("완료");
             placeList.get(0).setPlaceTags("#서울 업데이트");
@@ -179,7 +179,7 @@ class TripPlanDaoTest {
     //@Test // 여행플랜 공유권한 설정(공유가 해제되면 가져가기유무도 자동해제)
     public void tripPlanPublic() throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        if(tripPlan.isPlanPublic()){
+        if(tripPlan.getisPlanPublic()){
             tripPlanDao.tripPlanPublic(tripPlan.getTripPlanNo(), false);
             tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), false);
             System.out.println("공유 취소");
@@ -194,30 +194,30 @@ class TripPlanDaoTest {
     //@Test // 여행플랜 가져가기 유무
     public void tripPlanDownloadable() throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        if(tripPlan.isPlanPublic()) {
-            if (tripPlan.isPlanDownloadable()) {
-                tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), !tripPlan.isPlanDownloadable());
+        if(tripPlan.getisPlanPublic()) {
+            if (tripPlan.getisPlanDownloadable()) {
+                tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), !tripPlan.getisPlanDownloadable());
             } else {
-                tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), !tripPlan.isPlanDownloadable());
+                tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), !tripPlan.getisPlanDownloadable());
             }
         }
-        System.out.println("가져가기 " + !tripPlan.isPlanDownloadable());
+        System.out.println("가져가기 " + !tripPlan.getisPlanDownloadable());
         System.out.println(tripPlan.toString());
     }
 
     //@Test // 여행플랜 삭제유무
     public void tripPlanDeleted() throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        if(tripPlan.isPlanDeleted()){
-            tripPlan.setPlanDeleted(false);
+        if(tripPlan.getisPlanDeleted()){
+            tripPlan.setisPlanDeleted(false);
             tripPlan.setTripPlanDelDate(null);
             tripPlanDao.tripPlanDeleted(tripPlan);
         } else {
-            tripPlan.setPlanDeleted(true);
+            tripPlan.setisPlanDeleted(true);
             tripPlan.setTripPlanDelDate(new Date());
             tripPlanDao.tripPlanDeleted(tripPlan);
         }
-        System.out.println("삭제유무 " + tripPlan.isPlanDeleted());
+        System.out.println("삭제유무 " + tripPlan.getisPlanDeleted());
         System.out.println("삭제날짜 " + tripPlan.getTripPlanDelDate());
         System.out.println(tripPlan.toString());
     }

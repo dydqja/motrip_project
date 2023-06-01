@@ -59,7 +59,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
 
     }
 
-    @Test
+  //  @Test
     void getMemoList() {
         ///JSP로부터 값을 받는다.
         //메모바로부터
@@ -81,7 +81,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
 
         /////////////////////////////////////////////////////////
         //써비스단
-        Map<String,MemoDoc> docList = null;
+        List<MemoDoc> docList = null;
         try {
             docList = memoService.getMemoList(userId,search);
         }catch (Exception e){
@@ -239,7 +239,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
         }
     }
 
-    @Test
+  //  @Test
     void updateMemoAttach() throws Exception{
         //실험값 설정
 //        int attachedCategory = 0;

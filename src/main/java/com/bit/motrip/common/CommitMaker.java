@@ -28,11 +28,12 @@ public class CommitMaker {
         //                        0         1          2            3                4                5
         String[] commitType = {"Create", "Update", "Delete", "Create&Update", "Update&Delete", "Create&Delete"};
         //커밋 소제목
-        String commitTitle = "채팅 이미지 넣기 완료";
+        String commitTitle = "메모 공유기능 추가. 못한부분 바디에 적음";
         //수정내역
-        String commitBody = "채팅 이미지는 로칼프로젝트에 넣지 말고!!";
+        String commitBody = "공유자목록보기, 공유해제(메모주인) 구현." +
+                "공유해제(메모공유자), 메모 공유할 때 ajax로 유저검색 구현 필요";
         //수정파일
-        String changedFiles = "(server.js, main.js)";
-        gitCommitMSGBuilder(committers[3],commitType[0],commitTitle,commitBody,changedFiles);
+        String changedFiles = "(memoRestController, footer.jsp)";
+        gitCommitMSGBuilder(committers[0],commitType[1],commitTitle,commitBody,changedFiles);
     }
 }

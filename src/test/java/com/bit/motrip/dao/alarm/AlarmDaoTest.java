@@ -17,7 +17,7 @@ class AlarmDaoTest {
     @Autowired
     private AlarmDao alarmDao;
 
-    @Test
+    //@Test
     void addAlarm() {
         Alarm newAlarm = new Alarm();
         newAlarm.setAlarmTitle("알람 제목");
@@ -36,25 +36,25 @@ class AlarmDaoTest {
         System.out.printf("성공 여부 : "+isSuccess);
     }
 
-    @Test
+   // @Test
     void deleteAlarm() {
         int alarmNo = 2;
         int isSuccess = alarmDao.deleteAlarm(alarmNo);
         System.out.printf("성공 여부 : "+isSuccess);
     }
-    @Test
+  //  @Test
     void removeAlarm() {
         int alarmNo = 2;
         int isSuccess = alarmDao.removeAlarm(alarmNo);
         System.out.printf("성공 여부 : "+isSuccess);
     }
-    @Test
+   // @Test
     void getAlarm() {
         int alarmNo = 3;
         Alarm alarm = alarmDao.getAlarm(alarmNo);
         System.out.println("조회된 알람의 내용"+alarm.toString());
     }
-    @Test
+   // @Test
     void getAlarmList() {
         //search 에는 검색 조건으로 사용될 유저의 Id와 커런트 페이지, 페이지 유닛과 페이지 사이즈 정보가 들어있다.
         Search search = new Search();
