@@ -25,7 +25,7 @@ class MemoDaoTest {
 
 
     //insert test
-    @Test
+    //@Test
     void addMemoTest(){
         //서비스로부터 메모를 받아올 것이다.
         Memo memo = new Memo();

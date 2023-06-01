@@ -1,7 +1,7 @@
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-
+<%@page import="com.bit.motrip.domain.*"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,30 +21,31 @@
 		<script type="text/javascript">
 
 			function fncGoChatroom(){
-
 				$("form").attr("method","POST").attr("action","/chatRoom/chat").submit();
 			}
-
+			function fncJoinChatroom(){
+				alert("join-chatRoom");
+				$("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
+			}
+			function fncDeleteChatroom(){
+				$("form").attr("method","get").attr("action","/chatRoom/deleteChatRoom").submit();
+			}
 			function fncAddChatroom(){
 				$("form").attr("method","get").attr("action","/chatRoom/addChatRoom").submit();
 			}
-
-			$(function() {
-				$(".btn").on("click", function() {
-
-					fncGoChatroom();
-				});
-			});
-
-			$(function() {
-				$("#addChatRoom").on("click", function() {
-					fncAddChatroom();
-				});
-			});
+			//참여된 채팅방 들어가기
+			$(function() {$(".go").on("click", function() {fncGoChatroom();});});
+			//참여안된 채팅방 조인하기
+			$(function() {$(".join-chatRoom").on("click", function() {fncJoinChatroom();});});
+			//채팅방 삭제
+			$(function() {$(".delete").on("click", function() {fncDeleteChatroom();});});
+			//채팅방 생성
+			$(function() {$("#addChatRoom").on("click", function() {fncAddChatroom();});});
 		</script>
 	</head>
 	<body>
 		<div class="join-container">
+
 			<header class="join-header">
 				<h1><i class="fas fa-smile"></i> 채팅방 리스트 데수우~</h1>
 			</header>
@@ -52,16 +53,17 @@
 <%--				<form action="http://localhost:3000/chat.html" method="get">--%>
 <%--				<form action="http://192.168.0.28:8080/chatRoom/chat" method="get">--%>
 					<form>
-					<div class="form-control">
-						<label for="username">Username(삭제예정)</label>
-						<input
-							type="text"
-							name="username"
-							id="username"
-							placeholder="Enter username..."
-							required
-						/>
-					</div>
+<%--					<div class="form-control">--%>
+<%--						<label for="username">Username(삭제예정)</label>--%>
+<%--						<input--%>
+<%--							type="text"--%>
+<%--							name="username"--%>
+<%--							id="username"--%>
+<%--							placeholder="Enter username..."--%>
+<%--							required--%>
+<%--						/>--%>
+<%--					</div>--%>
+					<input type="hidden" name="userId" value="${sessionScope.user.userId}" >
 					<button id="addChatRoom" type="submit">AddChatRoom</button>
 					<table>
 						<tr>
@@ -97,9 +99,9 @@
 
 								<td width="200">
 									<c:if test="${chatRoom.chatRoomStatus eq 0}">
-										<button id="sub" class="btn" style="color: blue;"
+										<button id="sub" class="btn go" style="color: blue;"
 											name="chatRoomNo" value="${chatRoom.chatRoomNo}" >
-											채팅방 참여
+											채팅방 들어가기
 										</button>
 									</c:if>
 									<c:if test="${chatRoom.chatRoomStatus eq 1}">
@@ -109,7 +111,18 @@
 										<button class="btn" style="color: forestgreen;" disabled>여행 완료</button>
 									</c:if>
 								</td>
-								<td></td>
+								<td>
+								<button class="btn join-chatRoom" style="color: deepskyblue;"
+										name="chatRoomNo" value="${chatRoom.chatRoomNo}" >
+									채팅방 참여
+								</button>
+								</td>
+								<td>
+								<button class="btn delete" style="color: dimgray;"
+										name="chatRoomNo" value="${chatRoom.chatRoomNo}" >
+									채팅방 삭제
+								</button>
+								</td>
 
 							</tr>
 						</c:forEach>

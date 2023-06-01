@@ -1,5 +1,6 @@
 package com.bit.motrip.config;
 
+import com.bit.motrip.common.ImageSaveService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -9,10 +10,13 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-
+//
+//    private String connectPath = "/imagePath/**";
+//    private String resourcePath = "file:///home/uploadedImage";
     private String connectPath = "/imagePath/**";
-    public String resourcePath = "file:///Users/LG/Desktop/moImage";
+//    private String resourcePath = "file:////Users/sean/Desktop/moimages/";
 
+    private String resourcePath = "file:///C:\\motripimage/";
 //    addResourceHandler : 리소스와 연결될 URL path를 지정합니다. (클라이언트가 파일에 접근하기 위해 요청하는 url)
 //    localhost:8080/imagePath*//**
 
@@ -46,6 +50,11 @@ public class WebConfig implements WebMvcConfigurer {
         tilesViewResolver.setOrder(1);
         return tilesViewResolver;
     }
+    @Bean
+    public ImageSaveService imageSaveService() {
+        return new ImageSaveService(resourcePath);
+    }
+
 
 
 }

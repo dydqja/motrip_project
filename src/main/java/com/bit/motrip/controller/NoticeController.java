@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -30,65 +31,75 @@ public class NoticeController {
     }
 
     ///Method
-    @RequestMapping("getNoticeList")
+    @RequestMapping("noticeList")
     public String getNoticeList(@RequestParam(defaultValue = "1") int currentPage, Model model) throws Exception {
 
         System.out.println("::");
         System.out.println("[NoticeController] 공지사항 목록 조회 서비스를 실행합니다.");
 
-        System.out.println("::");
-        System.out.println("[NoticeController] 현재 페이지: " + currentPage);
-
         Search search = new Search();
 
-        // 현재 페이지
+        // 현재 위치의 페이지 번호
         search.setCurrentPage(currentPage);
 
-        // 페이지당 게시물 수
+        // 한 페이지 당 출력되는 게시물 수
         int pageSize = 10;
         search.setPageSize(pageSize);
 
         // 리스트 데이터 및 전체 게시물 수
         Map<String, Object> noticeListData = noticeService.getNoticeList(search);
 
-        // 전체 게시물 수
+        // 위에서 전체 게시물 수 만 가져오기
         int totalCount = (int) noticeListData.get("totalCount");
 
-        // 부트스트랩 페이지네이션
-        int pageUnit = 5; // 한 번에 표시할 페이지 수
+        // 화면 하단에 표시할 페이지 수
+        int pageUnit = 3;
+
+        // maxPage, beginUnitPage, endUnitPage 연산
         Page page = new Page(currentPage, totalCount, pageUnit, pageSize);
 
-        // 총 페이지 수 계산
-        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+        // 총 페이지 수
+        int maxPage = page.getMaxPage();
 
-        System.out.println("[NoticeController] 공지사항 목록 정보를 listNotice.jsp로 전달합니다. " + noticeListData);
+        // 화면 하단에 표시할 페이지의 시작 번호
+        int beginUnitPage = page.getBeginUnitPage();
+
+        // 화면 하단에 표시할 페이지의 끝 번호
+        int endUnitPage = page.getEndUnitPage();
 
         model.addAttribute("noticeListData", noticeListData);
         model.addAttribute("page", page);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
 
-        return "notice/listNotice.jsp";
+        return "notice/noticeList.tiles";
     }
 
     @RequestMapping("getNotice")
-    public String getNotice(@RequestParam("noticeNo") int noticeNo, Model model) throws Exception {
+    public String getNotice(@RequestParam("noticeNo") int noticeNo, Model model, HttpSession session) throws Exception {
 
         System.out.println("::");
         System.out.println("[NoticeController] 공지사항 상세 조회 서비스를 실행합니다.");
 
         Notice noticeGetData = noticeService.getNotice(noticeNo);
 
-        System.out.println("::");
-        System.out.println("[NoticeController] 조회수 증가 서비스를 실행합니다.");
+        // 공지사항 조회 세션 체크
+        String sessionKey = "viewedNotice_" + noticeNo;
 
-        noticeService.increaseViews(noticeNo);
+        if (session.getAttribute(sessionKey) == null) {
 
-        System.out.println("::");
-        System.out.println("[NoticeController] 공지사항 상세 정보를 getNotice.jsp 으로 전달합니다.");
+            System.out.println("::");
+            System.out.println("[NoticeController] 조회수 증가 서비스를 실행합니다.");
+
+            noticeService.increaseViews(noticeNo);
+
+            session.setAttribute(sessionKey, true);
+        }
 
         model.addAttribute("noticeGetData", noticeGetData);
 
-        return "notice/getNotice.jsp";
+        return "notice/getNotice.tiles";
     }
 
     @RequestMapping("addNoticeView")
@@ -97,7 +108,7 @@ public class NoticeController {
         System.out.println("::");
         System.out.println("[NoticeController] 공지사항 등록 화면 출력 서비스를 실행합니다.");
 
-        return "notice/addNotice.jsp";
+        return "notice/addNotice.tiles";
     }
 
     @RequestMapping("addNotice")
@@ -108,11 +119,11 @@ public class NoticeController {
 
         noticeService.addNotice(notice);
 
-        return "redirect:getNoticeList";
+        return "redirect:noticeList";
     }
 
     @RequestMapping("updateNoticeView")
-    public String updateNoticeView(@RequestParam("noticeNo") String noticeNo,
+    public String updateNoticeView(@RequestParam("noticeNo") int noticeNo,
                                    @RequestParam("noticeTitle") String noticeTitle,
                                    @RequestParam("isNoticeImportant") int isNoticeImportant,
                                    @RequestParam("noticeContents") String noticeContents, Model model) throws Exception {
@@ -125,12 +136,12 @@ public class NoticeController {
         model.addAttribute("isNoticeImportant", isNoticeImportant);
         model.addAttribute("noticeContents", noticeContents);
 
-        return "/notice/addNotice.jsp";
+        return "notice/addNotice.tiles";
     }
 
     @RequestMapping("updateNotice")
     public String updateNotice(@ModelAttribute("notice") Notice notice,
-                               @RequestParam("noticeNo") String noticeNo) throws Exception {
+                               @RequestParam("noticeNo") int noticeNo) throws Exception {
 
         System.out.println("::");
         System.out.println("[NoticeController] 공지사항 수정 서비스를 실행합니다.");
@@ -148,6 +159,6 @@ public class NoticeController {
 
         noticeService.deleteNotice(noticeNo);
 
-        return "redirect:getNoticeList";
+        return "redirect:noticeList";
     }
 }

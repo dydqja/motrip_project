@@ -5,16 +5,14 @@ import com.bit.motrip.dao.evaluateList.EvaluateListDao;
 import com.bit.motrip.dao.tripplan.DailyPlanDao;
 import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
-import com.bit.motrip.domain.DailyPlan;
-import com.bit.motrip.domain.EvaluateList;
-import com.bit.motrip.domain.Place;
-import com.bit.motrip.domain.TripPlan;
+import com.bit.motrip.domain.*;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Service("tripPlanServiceImpl")
@@ -37,11 +35,12 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Value("${tripPlanPageSize}")
     private int tripPlanPageSize;
 
+    HttpSession httpSession;
+
     @Override // 공유된 여행플랜 목록
     public Map<String, Object> selectTripPlanList(Search search) throws Exception {
 
         int offset = (search.getCurrentPage() - 1) * tripPlanPageSize;
-
         search.setTotalCount(tripPlanDao.selectTripPlanCount()); // 여행플랜 총 카운트
         search.setCurrentPage(search.getCurrentPage()); // 클라이언트에서 요청한 페이지 번호
         search.setLimit(tripPlanPageSize); // LIMIT 값은 페이지당 항목 수와 동일합니다.
@@ -57,8 +56,10 @@ public class TripPlanServiceImpl implements TripPlanService {
 
     @Override // 여행플랜 저장
     public void addTripPlan(TripPlan tripPlan) throws Exception {
+
         tripPlan.setTripPlanAuthor("user1");
         tripPlan.setTripPlanRegDate(new Date());
+
         tripPlanDao.addTripPlan(tripPlan);
         int tripPlanNo = tripPlanDao.getTripPlan();
         List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
@@ -74,7 +75,7 @@ public class TripPlanServiceImpl implements TripPlanService {
         }
     }
 
-    @Override
+    @Override // 가장 최근에 저장된 플랜번호 확인
     public int getTripPlan() throws Exception {
         return tripPlanDao.getTripPlan();
     }
@@ -115,7 +116,7 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Override // 여행플랜 공유설정 (공유를 중단하면 가져가기유무도 자동으로 false)
     public void tripPlanPublic(int tripPlanNo) throws Exception {
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        if(tripPlan.isPlanPublic()){
+        if(tripPlan.getisPlanPublic()){
             tripPlanDao.tripPlanPublic(tripPlan.getTripPlanNo(), false);
             tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), false);
         } else {
@@ -126,7 +127,7 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Override // 여행플랜 가져가기 유무설정
     public void tripPlanDownloadable(int tripPlanNo) throws Exception {
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        if(tripPlan.isPlanDownloadable()){
+        if(tripPlan.getisPlanDownloadable()){
             tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), false);
         } else {
             tripPlanDao.tripPlanDownloadable(tripPlan.getTripPlanNo(), true);
@@ -136,13 +137,13 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Override // 여행플랜 삭제유무 설정
     public void tripPlanDeleted(int tripPlanNo) throws Exception {
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
-        if(tripPlan.isPlanDeleted()){
+        if(tripPlan.getisPlanDeleted()){
             tripPlan.setTripPlanDelDate(null);
-            tripPlan.setPlanDeleted(false);
+            tripPlan.setisPlanDeleted(false);
             tripPlanDao.tripPlanDeleted(tripPlan);
         } else {
             tripPlan.setTripPlanDelDate(new Date());
-            tripPlan.setPlanDeleted(true);
+            tripPlan.setisPlanDeleted(true);
             tripPlanDao.tripPlanDeleted(tripPlan);
         }
     }

@@ -28,51 +28,60 @@ public class QnaServiceImpl implements QnaService {
 
     ///Method
 
-    //질의응답 질의 등록 서비스
-    @Override
-    public void addQna(Qna qna) throws Exception {
-        qnaDao.addQna(qna);
-    }
-
-    //조회수 증가 서비스
-    @Override
-    public void increaseViews(Qna qna) throws Exception {
-        qnaDao.increaseViews(qna);
-    };
-
-    //질의응답 응답 등록 서비스
-    @Override
-    public void addQnaAnswer(Qna qna) throws Exception {
-        qnaDao.addQnaAnswer(qna);
-    }
-
-    //질의응답 상세 조회 서비스
-    @Override
-    public Qna getQna(int qnaNo) throws Exception {
-        return qnaDao.getQna(qnaNo);
-    }
-
     //질의응답 목록 조회 서비스
     public Map<String , Object > getQnaList(Search search) throws Exception {
+
         List<Qna> list= qnaDao.getQnaList(search);
+
         int qnaTotalCount = qnaDao.getQnaTotalCount(search);
 
         Map<String, Object> map = new HashMap<String, Object>();
+
         map.put("list", list );
         map.put("totalCount", new Integer(qnaTotalCount));
 
         return map;
     }
 
-    //질의응답 수정 서비스
+    //질의응답 상세 조회 서비스
+    @Override
+    public Qna getQna(int qnaNo) throws Exception {
+
+        return qnaDao.getQna(qnaNo);
+    }
+
+    //조회수 증가 서비스
+    @Override
+    public void increaseViews(int qnaNo) throws Exception {
+
+        qnaDao.increaseViews(qnaNo);
+    };
+
+    //질의응답 질의 등록 서비스
+    @Override
+    public void addQna(Qna qna) throws Exception {
+
+        qnaDao.addQna(qna);
+    }
+
+    //질의응답 응답 등록 서비스
+    @Override
+    public void addQnaAnswer(Qna qna) throws Exception {
+
+        qnaDao.addQnaAnswer(qna);
+    }
+
+    //질의응답 응답 등록 서비스
     @Override
     public void updateQna(Qna qna) throws Exception {
+
         qnaDao.updateQna(qna);
     }
 
     //질의응답 삭제 서비스
     @Override
     public void deleteQna(int qnaNo) throws Exception{
+
         qnaDao.deleteQna(qnaNo);
     }
 }

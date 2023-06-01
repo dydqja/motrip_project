@@ -7,21 +7,27 @@
 <html lang="ko">
 
     <head>
+
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>공지사항 목록</title>
 
         <%-- CSS START --%>
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
               integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
         <style>
-            .selector-for-some-widget {
-                box-sizing: content-box;
-            }
 
             .centered-table {
                 text-align: center;
             }
+
+            .centered-table th,
+            .centered-table td {
+                text-align: center;
+            }
+
         </style>
         <%-- CSS END --%>
 
@@ -38,6 +44,7 @@
         <table class="centered-table">
 
             <thead>
+
                 <tr>
                     <th>작성자</th>
                     <th>제목</th>
@@ -45,60 +52,78 @@
                     <th>작성날짜</th>
                     <th>조회수</th>
                 </tr>
+
             </thead>
 
             <tbody>
+
                 <c:forEach var="notice" items="${noticeListData.list}">
 
                     <fmt:formatDate value="${notice.noticeRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
 
                     <tr>
+
                         <td>${notice.noticeAuthor}</td>
                         <td><a href="#" onclick="viewDetail(${notice.noticeNo})">${notice.noticeTitle}</a></td>
-                        <td>${notice.isNoticeImportant != 0 ? notice.isNoticeImportant : ''}</td>
+                        <td>${notice.isNoticeImportant == 1 ? '중요' : ''}</td>
                         <td>${formattedDate}</td>
                         <td>${notice.noticeViews}</td>
+
                     </tr>
 
                 </c:forEach>
+
             </tbody>
 
         </table>
 
         <nav aria-label="Page navigation example">
+
             <ul class="pagination">
-                <li class="page-item">
-                    <c:if test="${noticeListData.currentPage > 1}">
-                        <a class="page-link" href="#" onclick="goToPage(${noticeListData.currentPage - 1})" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </c:if>
+
+                <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
+
+                    <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage - 1}" aria-label="Previous">
+                        «
+                    </a>
+
                 </li>
 
-                <c:forEach var="pageUnit" begin="1" end="${totalPages}">
-                    <li class="page-item ${pageUnit eq noticeListData.currentPage ? 'active' : ''}">
-                        <a class="page-link" href="#" onclick="goToPage(${pageUnit})">${pageUnit}</a>
+                <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
+
+                    <li class="page-item ${i == page.currentPage ? 'active' : ''}">
+
+                        <a class="page-link" href="/notice/noticeList?currentPage=${i}">${i}</a>
+
                     </li>
+
                 </c:forEach>
 
-                <li class="page-item">
-                    <c:if test="${noticeListData.currentPage < totalPages}">
-                        <a class="page-link" href="#" onclick="goToPage(${noticeListData.currentPage + 1})" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </c:if>
+                <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
+
+                    <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage + 1}" aria-label="Next">
+                        »
+                    </a>
+
                 </li>
+
             </ul>
+
         </nav>
 
-        <div>
-            <button id="addNoticeView" >공지 등록</button>
-        </div>
+        <c:if test="${sessionScope.user.userId eq 'admin'}">
 
-        <%--Bootstrap--%>
+            <div>
+                <button id="addNoticeView">공지 등록</button>
+            </div>
+
+        </c:if>
+
+        <%-- Bootstrap --%>
         <script src="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-        <%--Jquery--%>
+        <%--
+        Jquery --%>
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
 
@@ -109,8 +134,9 @@
             }
 
             function goToPage(page) {
+
                 // 페이지 번호를 컨트롤러로 전송하여 해당 페이지로 이동
-                window.location.href = "/notice/getNoticeList?currentPage=" + page;
+                window.location.href = "/notice/noticeList?currentPage=" + page;
             }
 
             $(function() {
@@ -123,5 +149,7 @@
             });
 
         </script>
+
     </body>
+
 </html>

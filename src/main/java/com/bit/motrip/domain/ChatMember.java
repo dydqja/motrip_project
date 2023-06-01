@@ -7,6 +7,15 @@ public class ChatMember {
     private String userId; // 유저 아이디
     private int tripPlanNo; // 플랜번호
     private boolean isChatRoomAuthor; //방장여부
+    private int status; //0 , 1강퇴당함
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public int getMemberNo() {
         return memberNo;
@@ -48,5 +57,14 @@ public class ChatMember {
         isChatRoomAuthor = chatRoomAuthor;
     }
 
-
+    @Override
+    public String toString() {
+        return "ChatMember{" +
+                "memberNo=" + memberNo +
+                ", chatRoomNo=" + chatRoomNo +
+                ", userId='" + userId + '\'' +
+                ", tripPlanNo=" + tripPlanNo +
+                ", isChatRoomAuthor=" + isChatRoomAuthor +
+                '}';
+    }
 }

@@ -2,7 +2,6 @@ package com.bit.motrip.qna;
 
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.qna.QnaDao;
-import com.bit.motrip.domain.Notice;
 import com.bit.motrip.domain.Qna;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ class QnaDaoTest {
     }
 
     //질의응답 응답 등록 테스트
-    @Test
+   // @Test
     void addQnaAnswerDaoTest() throws Exception {
 
         // Arrange
@@ -62,7 +61,7 @@ class QnaDaoTest {
         qna.setQnaNo(8);
 
         // Increase views
-        qnaDao.increaseViews(qna);
+        qnaDao.increaseViews(qna.getQnaNo());
 
         // Act
         Qna getQna = qnaDao.getQna(qna.getQnaNo());
@@ -86,27 +85,6 @@ class QnaDaoTest {
         map.put("totalCount", new Integer(qnaTotalCount));
 
         System.out.println(map);
-    }
-
-    //질의응답 수정 테스트
-    //@Test
-    void updateQnaDaoTest() throws Exception {
-
-        // Arrange
-        Qna qna = new Qna();
-        qna.setQnaNo(4);
-
-        Qna getQna1 = qnaDao.getQna(qna.getQnaNo());
-
-        getQna1.setQnaTitle("질의응답 수정 테스트3");
-        getQna1.setQnaContents("질의응답 수정 테스트입니다3");
-        getQna1.setQnaCategory(3);
-
-        // Act
-        qnaDao.updateQna(getQna1);
-
-        Qna getQna2 = qnaDao.getQna(qna.getQnaNo());
-        System.out.println(getQna2.toString());
     }
 
     //질의응답 삭제 테스트

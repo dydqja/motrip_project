@@ -44,7 +44,7 @@ public class ChatMemberTests {
 
     //@Test
     public void outTest() throws Exception{//강퇴
-        chatMemberService.outChatMember(1,"user2",true);
+        chatMemberService.kickChatMember(1,"user2",true);
     }
 
     //@Test

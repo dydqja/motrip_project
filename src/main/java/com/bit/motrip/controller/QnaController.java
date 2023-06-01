@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -30,79 +31,86 @@ public class QnaController {
     }
 
     ///Method
-    @RequestMapping("getQnaList")
+    @RequestMapping("qnaList")
     public String getQnaList(@RequestParam(defaultValue = "1") int currentPage, Model model) throws Exception {
 
         System.out.println("::");
         System.out.println("[QnaController] 질의응답 목록 조회 서비스를 실행합니다.");
 
-        System.out.println("::");
-        System.out.println("[QnaController] 현재 페이지: " + currentPage);
-
         Search search = new Search();
 
-        // 현재 페이지
+        // 현재 위치의 페이지 번호
         search.setCurrentPage(currentPage);
 
-        // 페이지당 게시물 수
+        // 한 페이지 당 출력되는 게시물 수
         int pageSize = 10;
         search.setPageSize(pageSize);
 
         // 리스트 데이터 및 전체 게시물 수
         Map<String, Object> qnaListData = qnaService.getQnaList(search);
 
-        // 전체 게시물 수
+        // 위에서 전체 게시물 수 만 가져오기
         int totalCount = (int) qnaListData.get("totalCount");
 
-        // 부트스트랩 페이지네이션
-        int pageUnit = 5; // 한 번에 표시할 페이지 수
+        // 화면 하단에 표시할 페이지 수
+        int pageUnit = 3;
+
+        // maxPage, beginUnitPage, endUnitPage 연산
         Page page = new Page(currentPage, totalCount, pageUnit, pageSize);
 
-        // 총 페이지 수 계산
-        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+        // 총 페이지 수
+        int maxPage = page.getMaxPage();
 
-        System.out.println("[QnaController] 질의응답 목록 정보를 listQna.jsp로 전달합니다. " + qnaListData);
+        // 화면 하단에 표시할 페이지의 시작 번호
+        int beginUnitPage = page.getBeginUnitPage();
+
+        // 화면 하단에 표시할 페이지의 끝 번호
+        int endUnitPage = page.getEndUnitPage();
 
         model.addAttribute("qnaListData", qnaListData);
         model.addAttribute("page", page);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
 
-        return "qna/listQna.jsp";
+        return "qna/qnaList.tiles";
     }
 
     @RequestMapping("getQna")
-    public String getQna(@RequestParam("qnaNo") int qnaNo, Model model) throws Exception {
+    public String getQna(@RequestParam("qnaNo") int qnaNo, Model model, HttpSession session) throws Exception {
 
         Qna qna = new Qna();
 
         System.out.println("::");
         System.out.println("[QnaController] 질의응답 상세 조회 서비스를 실행합니다.");
 
-        System.out.println("::");
-        System.out.println("[QnaController] 조회수 증가 서비스를 실행합니다.");
-
-        qna.setQnaNo(qnaNo);
-        qnaService.increaseViews(qna);
-
-
-
         Qna qnaGetData = qnaService.getQna(qnaNo);
 
-        System.out.println("::");
-        System.out.println("[QnaController] 질의응답 상세 정보를 getQna.jsp 으로 전달합니다.");
+        // 질의응답 조회 세션 체크
+        String sessionKey = "viewedQna_" + qnaNo;
+
+        if (session.getAttribute(sessionKey) == null) {
+
+            System.out.println("::");
+            System.out.println("[QnaController] 조회수 증가 서비스를 실행합니다.");
+
+            qnaService.increaseViews(qnaNo);
+
+            session.setAttribute(sessionKey, true);
+        }
 
         model.addAttribute("qnaGetData", qnaGetData);
 
-        return "qna/getQna.jsp";
+        return "qna/getQna.tiles";
     }
 
     @RequestMapping("addQnaView")
-    public String addQnaView(String aaa) throws Exception {
+    public String addQnaView() throws Exception {
 
         System.out.println("::");
         System.out.println("[QnaController] 질의응답 등록 화면 출력 서비스를 실행합니다.");
 
-        return "qna/addQna.jsp";
+        return "qna/addQna.tiles";
     }
 
     @RequestMapping("addQna")
@@ -113,13 +121,24 @@ public class QnaController {
 
         qnaService.addQna(qna);
 
-        return "redirect:getQnaList";
+        return "redirect:qnaList";
+    }
+
+    @RequestMapping("addQnaAnswer")
+    public String addQnaAnswer(@ModelAttribute("qna") Qna qna ) throws Exception {
+
+        System.out.println("::");
+        System.out.println("[QnaController] 질의응답 응답 등록 서비스를 실행합니다.");
+
+        qnaService.addQnaAnswer(qna);
+
+        return "redirect:qnaList";
     }
 
     @RequestMapping("updateQnaView")
-    public String updateQnaView(@RequestParam("qnaNo") String qnaNo,
+    public String updateQnaView(@RequestParam("qnaNo") int qnaNo,
                                    @RequestParam("qnaTitle") String qnaTitle,
-                                   @RequestParam("isQnaImportant") int isQnaImportant,
+                                   @RequestParam("qnaCategory") int qnaCategory,
                                    @RequestParam("qnaContents") String qnaContents, Model model) throws Exception {
 
         System.out.println("::");
@@ -127,15 +146,15 @@ public class QnaController {
 
         model.addAttribute("qnaNo", qnaNo);
         model.addAttribute("qnaTitle", qnaTitle);
-        model.addAttribute("isQnaImportant", isQnaImportant);
+        model.addAttribute("qnaCategory", qnaCategory);
         model.addAttribute("qnaContents", qnaContents);
 
-        return "/qna/addQna.jsp";
+        return "qna/addQna.tiles";
     }
 
     @RequestMapping("updateQna")
-    public String updateQna(@ModelAttribute("qna") Qna qna,
-                               @RequestParam("qnaNo") String qnaNo) throws Exception {
+    public String updateNotice(@ModelAttribute("qna") Qna qna,
+                               @RequestParam("qnaNo") int qnaNo) throws Exception {
 
         System.out.println("::");
         System.out.println("[QnaController] 질의응답 수정 서비스를 실행합니다.");
@@ -153,6 +172,6 @@ public class QnaController {
 
         qnaService.deleteQna(qnaNo);
 
-        return "redirect:getQnaList";
+        return "redirect:qnaList";
     }
 }
