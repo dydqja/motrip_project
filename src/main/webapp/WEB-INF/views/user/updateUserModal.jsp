@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+
+
+
+
+
 <!DOCTYPE html>
 
 <html lang="ko">
@@ -59,80 +64,80 @@
 
     <script type="text/javascript">
 
-      //가입
+      //수정버튼
+
       $(function() {
 
-        $( "#commit" ).on("click" , function() {
-          fncAddUser();
+        $( "#commit" ).on("click" , function(e) {
+          e.preventDefault();
+
+          var formData = new FormData($('form')[0]);
+          for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+          }
+            fncUpdateUser(formData);
         });
       });
 
-      function fncAddUser() {
+      function fncUpdateUser(formData) {
 
-        var id = $("#modalUserId").val();
-        var pw = $("#modalPwd").val();
-        var pw_confirm = $("#pwdConfirm").val();
-        var name = $("input[name='userName']").val();
-        var nickname = $("input[name='nickname']").val();
-        var ssn = "";
 
-        if (id == null || id.length < 4 || idChecked == false) {
+        var currentPwd = formData.get('currentPwd');
+        var updatePwd = formData.get('updatePwd');
+        var updatePwdConfirm = formData.get('pwd');
+        var nickname = formData.get('nickname');
+        var phone = formData.get('phone');
+        var addr = formData.get('addr');
+        var addrDetail = formData.get('addrDetail');
+        var email = formData.get('email');
+        var selfIntro = formData.get('selfIntro');
+        var userPhoto = formData.get('userPhoto');
+        var isSelfIntroPublic = formData.get('isSelfIntroPublic');
+        var isSelfPhotoPublic = formData.get('isSelfPhotoPublic');
 
-          $('#modalUserId').focus().addClass('shake');
-          setTimeout(function () {
-            $('#modalUserId').removeClass('shake');
-          }, 1000);
-          return;
+        //전화번호 변경했는지 그대로인지 체크
+        if (updatePwd || updatePwdConfirm) {
+          //변경했다면, 현재비밀번호 유효성 체크
+          if(currentPwd == null || currentPwdCheck == false ){
+            console.log("현재비밀번호 =" + currentPwdCheck);
+            $('#currentPwd').focus().addClass('shake');
+            setTimeout(function () {
+              $('#currentPwd').removeClass('shake');
+            }, 1000);
+            return;
+          }
+          //변경했다면, 새로운비밀번호 유효성 체크
+          if(updatePwdConfirm == null || updatePwdConfirmChecked == false ){
+            console.log("새로운비밀번호 =" + updatePwdConfirmChecked);
+            console.log("updatePwdConfirm = "+updatePwdConfirm);
+            $('#updatePwdConfirm').focus().addClass('shake');
+            setTimeout(function () {
+              $('#updatePwdConfirm').removeClass('shake');
+            }, 1000);
+            return;
+          }
+          //변경했다면, 새로운비밀번호 확인했는지 유효성 체크
+          if(updatePwdChecked == false ){
+            console.log("새로운 비밀번호 확인 =" + updatePwdChecked);
+            $('#updatePwd').focus().addClass('shake');
+            setTimeout(function () {
+              $('#updatePwd').removeClass('shake');
+            }, 1000);
+            return;
+          }
         }
-
-        if(pw == null || pw.length <1 ){
-
-          $('#modalPwd').focus().addClass('shake');
-          setTimeout(function () {
-            $('#modalPwd').removeClass('shake');
-          }, 1000);
-          return;
-        }
-
-        if(pw_confirm == null || pw_confirm.length <1 ){
-          console.log("비빌번호확인 유효성 체크 결과 : " +pw_confirm);
-
-          $('#pwdConfirm').focus().addClass('shake');
-          setTimeout(function () {
-            $('#pwdConfirm').removeClass('shake');
-          }, 1000);
-          return;
-        }
-
+        //닉네임 유효성 체크
         if(nickname == null || nickname.length <1 || nicknameChecked == false ){
           console.log("닉네임 유효성 체크 결과 : " +nickname);
 
-          $('#nickname').focus().addClass('shake');
+          $('#modalNickname').focus().addClass('shake');
           setTimeout(function () {
-            $('#nickname').removeClass('shake');
+            $('#modalNickname').removeClass('shake');
           }, 1000);
           return;
         }
-
-        if(name == null || name.length <1){
-
-          $('#userName').focus().addClass('shake');
-          setTimeout(function () {
-            $('#userName').removeClass('shake');
-          }, 1000);
-          return;
-        }
-
-        if( pw != pw_confirm || pwdChecked == false) {
-
-          $('#pwdConfirm').focus().addClass('shake');
-          setTimeout(function () {
-            $('#pwdConfirm').removeClass('shake');
-          }, 1000);
-          return;
-        }
-
-        if ($("#sendSms").text() == "인증번호전송") {
+        //전화번호 변경했는지 그대로인지 체크
+        if (!isPhoneNumberVerified) {
 
           $('#phone').focus().addClass('shake');
           setTimeout(function () {
@@ -140,18 +145,66 @@
           }, 1000);
           return;
         }
+        //주소 체크
+        if(addr == null || addr.length <1) {
 
-        if( $("input:text[name='ssn1']").val() != ""  &&  $("input:text[name='ssn2']").val() != "") {
-
-          var ssn = $("input[name='ssn1']").val() + "-"
-                  + $("input[name='ssn2']").val();
-
-          $("input:hidden[name='ssn']").val( ssn );
+          $('#sample3_address').focus().addClass('shake');
+          setTimeout(function () {
+            $('#sample3_address').removeClass('shake');
+          }, 1000);
+          return;
         }
+        //상세주소 체크
+        if(addrDetail == null || addrDetail.length <1) {
+          console.log(addrDetail);
+
+          $('#sample3_detailAddress').focus().addClass('shake');
+          setTimeout(function () {
+            $('#sample3_detailAddress').removeClass('shake');
+          }, 1000);
+          return;
+        }
+
         $('input[name="userPhoto"]').val(fileRoute);
 
-          $("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
-        }
+        $.ajax({
+          url: "/user/updateUser",
+          type: 'POST',
+          data: formData,
+          success: function (data) {
+            console.log('회원정보 수정 성공')
+            $('#updateUserModal').modal('hide');
+            $('#nickname1').text(data.nickname);
+            $('#nickname2').text(data.nickname);
+
+            if(data.selfIntroPublic) {
+              console.log("data.selfIntroPublic -> " +data.selfIntroPublic);
+              $('#selfIntro').text(data.selfIntro).show();
+            } else {
+              console.log("data.selfIntroPublic -> " +data.selfIntroPublic);
+              $('#selfIntro').text("비공개정보입니다.").show();
+            }
+
+            if(data.userPhotoPublic) {
+              console.log("data.userPhotoPublic -> " +data.userPhotoPublic);
+              $('#userPhoto').text(data.userPhoto).show();
+            } else {
+              console.log("data.userPhotoPublic -> " +data.userPhotoPublic);
+              $('#userPhoto').text("비공개정보입니다.").show();
+            }
+
+          },
+          error: function (error) {
+            console.log('오류 발생: ', error);
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        });
+
+
+      }
+
 
         //==>"이메일" 유효성Check  Event 처리 및 연결
         $(function() {
@@ -171,9 +224,200 @@
           });
         });
 
+      $(document).ready(function() {
+        var phone = $('#phone').val();
+        phone = phone.replace(/-/g, '');
+        $('#phone').val(phone);
+      });
+
+      //ESC 누를시 모달창 종료
+      $(document).keyup(function(e) {
+        if (e.key === "Escape") {
+          $('#updateUserModal').modal('hide');
+        }
+      });
+
+      //비밀번호 변경 클릭시 비밀번호 변경창 생성
+      $(document).ready(function() {
+        var smsConfirmNum = null;
+
+        $("#modalUpdatePwd").on("click", function() {
+
+          $("#pwdUpdateGroup").toggle();
+        });
+      });
+
+      //현재 비밀번호와 입력 비밀번호가 맞는지 체크
+      let currentPwdCheck=false;
+      $(document).ready(function() {
+
+        $("#currentPwd").focusout(function() { // 현재 비밀번호 텍스트박스에서 포커스 아웃되면 실행
+          currentPwd($(this).val())
+        })
+        function currentPwd(currentPwd){
+          if(currentPwd == ""){
+            $("#currentPwdCheck").text("비밀번호를 입력해주세요").css({
+              'color': 'red',
+              'font-size': '10px' // 문구 출력
+            });
+            currentPwdCheck = false;
+            return; // 아직 입력된 상태가 아니라면 아무런 문구를 출력하지 않는다
+          }
+
+          if($('#currentPwd').val() != '${user.pwd}'){
+            // 입력한 비밀번호와 현재 비밀번호가 일치하지 않는다면
+            $("#currentPwdCheck").text('비밀번호가 일치하지 않습니다').css({
+              'color': 'red',
+              'font-size': '10px' // 문구 출력
+            });
+            $('#currentPwd').val(''); // 값을 비움
+            $('#currentPwd').focus(); // 포인터를 현재비밀번호 로 맞춘다
+            currentPwdCheck=false;
+          }
+          else{
+            $("#currentPwdCheck").text('비밀번호가 일치합니다').css({
+              'color': 'green',
+              'font-size': '10px' // 문구 출력
+            });
+            currentPwdCheck=true;
+          }
+          // setAble();
+        }
+      });
+
+      //변경비밀번호와 변경비밀번호 일치하는지 체크
+      let updatePwdConfirmChecked=false;
+      $(document).ready(function() {
+
+        $("#updatePwdConfirm").focusout(function() { // 비밀번호 확인 텍스트박스에서 포커스 아웃되면 실행
+          updatePwdConfirm($(this).val())
+        })
+        function updatePwdConfirm(updatePwdConfirm){
+          if(updatePwdConfirm == ""){
+            $("#updatePwdConfirmCheck").text("");
+            return; // 아직 입력된 상태가 아니라면 아무런 문구를 출력하지 않는다
+          }
+
+          if($('#updatePwd').val()!=$('#updatePwdConfirm').val()){
+            // 만약 pw1과 pw2가 일치하지 않는다면
+            $("#updatePwdConfirmCheck").text('비밀번호가 일치하지 않습니다').css({
+              'color': 'red',
+              'font-size': '10px' // 문구 출력
+            });
+            $('#updatePwdConfirm').val(''); // 값을 비움
+            $('#updatePwdConfirm').focus(); // 포인터를 pw2 로 맞춘다
+            updatePwdConfirmChecked=false;
+          }
+          else{
+            $("#updatePwdConfirmCheck").text('비밀번호가 일치합니다').css({
+              'color': 'green',
+              'font-size': '10px' // 문구 출력
+            });
+            updatePwdConfirmChecked=true;
+          }
+          // setAble();
+        }
+      });
+
+      //현재 비밀번호와 변경 비밀번호가 같은지 확인(같으면 안됨)
+      let updatePwdChecked=false;
+      $(document).ready(function() {
+
+        $("#updatePwd").focusout(function() { // 비밀번호 확인 텍스트박스에서 포커스 아웃되면 실행
+          updatePwd($(this).val())
+        })
+        function updatePwd(updatePwd){
+          if(updatePwd == ""){
+            $("#updatePwdCheck").text("");
+            return; // 아직 입력된 상태가 아니라면 아무런 문구를 출력하지 않는다
+          }
+
+          if($('#currentPwd').val()!=$('#updatePwd').val()){
+            // 만약 pw1과 pw2가 일치하지 않는다면
+            $("#updatePwdCheck").text('변경 가능한 비밀번호입니다').css({
+              'color': 'green',
+              'font-size': '10px' // 문구 출력
+            });
+
+            updatePwdChecked=true;
+          }
+          else{
+            $("#updatePwdCheck").text('기존 비밀번호와 일치합니다').css({
+              'color': 'red',
+              'font-size': '10px' // 문구 출력
+            });
+
+            $('#updatePwd').val(''); // 값을 비움
+            $('#updatePwd').focus(); // 포인터를 pw1 로 맞춘다
+            updatePwdChecked=false;
+          }
+          // setAble();
+        }
+      });
+
+      //닉네임 중복체크
+      let nicknameChecked = true;
+      let currentNickname = '${sessionScope.user.nickname}';
+      $(document).ready(function() {
+
+        $("#modalNickname").keyup(function () { // 아이디를 입력할때 마다 중복검사 실행
+
+          checkNickname($(this).val())
+        })
+
+        function checkNickname(nickname) {
+          if (nickname == "") {
+            $("#checkNickname").text("");
+
+            return; // 만약 아이디 입력란이 공백일 경우 중복확인 문구 X
+          }
+
+          $.ajax({
+            url: "/user/checkNickname",
+            type: "post",
+            async: true,
+            data: {value: nickname},
+            dataType: "json",
+            success: function (result) {
+
+              if(currentNickname == nickname) {
+
+                $("#checkNickname").text('사용 가능한 닉네임입니다.').css({
+                  'color': 'green',
+                  'font-size': '10px'
+                });
+                nicknameChecked = true;
+              } else if (result == 0) {
+                $("#checkNickname").text('사용할 수 없는 닉네임입니다.').css({
+                  'color': 'red',
+                  'font-size': '10px'
+                });
+                nicknameChecked = false; // id체크 true
+              } else {
+                $("#checkNickname").text('사용 가능한 닉네임입니다.').css({
+                  'color': 'green',
+                  'font-size': '10px'
+                });
+                nicknameChecked = true;
+              }
+            },
+            error: function () {
+              alert("서버요청실패");
+            }
+          })
+          //setAble();
+        }
+      });
+
+      let isPhoneNumberVerified = true;
       //인증번호 클릭시 인증번호 입력창 생성
       $(document).ready(function() {
         var smsConfirmNum = null;
+
+        $("#phoneNumber").on("input", function() {
+          isPhoneNumberVerified = false;
+        });
+
 
         $("#sendSms").on("click", function() {
 
@@ -203,9 +447,10 @@
           }).done(function(response) {
 
             smsConfirmNum = response;
+            isPhoneNumberVerified = true;
 
-              $("#PhCodeGroup").show();
-            }).fail(function(error) {
+            $("#PhCodeGroup").show();
+          }).fail(function(error) {
 
           });
         });
@@ -286,22 +531,17 @@
         $('#modalUserId').trigger('focus')
       })
 
-      //ESC 누를시 모달창 종료
-      $(document).keyup(function(e) {
-        if (e.key === "Escape") {
-          $('#addUserModal').modal('hide');
-        }
-      });
+
 
       //주소찾기 API start
       document.addEventListener("DOMContentLoaded", function(){
-      // 우편번호 찾기 찾기 화면을 넣을 element
-      var element_wrap = document.getElementById('wrap');
+        // 우편번호 찾기 찾기 화면을 넣을 element
+        var element_wrap = document.getElementById('wrap');
 
-       window.foldDaumPostcode = function() {
-        // iframe을 넣은 element를 안보이게 한다.
-        element_wrap.style.display = 'none';
-      }
+        window.foldDaumPostcode = function() {
+          // iframe을 넣은 element를 안보이게 한다.
+          element_wrap.style.display = 'none';
+        }
 
         window.sample3_execDaumPostcode = function() {
           // 현재 scroll 위치를 저장해놓는다.
@@ -368,133 +608,27 @@
         }
       });
 
-      //아이디 중복체크
-      let idChecked = false; // 중복 확인을 거쳤는지 확인
-      $(document).ready(function() {
 
-        $("#modalUserId").keyup(function () { // 아이디를 입력할때 마다 중복검사 실행
 
-          checkId($(this).val())
-        })
 
-        function checkId(userId) {
-          if (userId == "") {
-            $("#checkId").text("");
 
-            return; // 만약 아이디 입력란이 공백일 경우 중복확인 문구 X
-          }
 
-          $.ajax({
-            url: "/user/checkId",
-            type: "post",
-            async: true,
-            data: {value: userId},
-            dataType: "json",
-            success: function (result) {
 
-              if (result == 0) {
-                $("#checkId").text('사용할 수 없는 아이디입니다.').css({
-                  'color': 'red',
-                  'font-size': '10px'
-                });
-                idChecked = false; // id체크 true
 
-              } else {
-                $("#checkId").text('사용 가능한 아이디입니다.').css({
-                  'color': 'green',
-                  'font-size': '10px'
-                });
-                idChecked = true;
-              }
-            },
-            error: function () {
-              alert("서버요청실패");
-            }
-          })
-          //setAble();
-        }
-      });
 
-      //비밀번호 중복체크
-      let pwdChecked=false;
-      $(document).ready(function() {
 
-        $("#pwdConfirm").focusout(function() { // 비밀번호 확인 텍스트박스에서 포커스 아웃되면 실행
-          checkPwd($(this).val())
-        })
-        function checkPwd(pwdConfrim){
-          if(pwdConfrim == ""){
-            $("#checkPwd").text("");
-            return; // 아직 입력된 상태가 아니라면 아무런 문구를 출력하지 않는다
-          }
 
-          if($('#modalPwd').val()!=$('#pwdConfirm').val()){
-            // 만약 pw1과 pw2가 일치하지 않는다면
-            $("#checkPwd").text('비밀번호가 일치하지 않습니다').css({
-              'color': 'red',
-              'font-size': '10px' // 문구 출력
-            });
-            $('#pwdConfirm').val(''); // 값을 비움
-            $('#pwdConfirm').focus(); // 포인터를 pw2 로 맞춘다
-            pwdChecked=false;
-          }
-          else{
-            $("#checkPwd").html('비밀번호가 일치합니다').css({
-              'color': 'green',
-              'font-size': '10px' // 문구 출력
-            });
-            pwdChecked=true;
-          }
-          // setAble();
-        }
-      });
 
-      //닉네임 중복체크
-      let nicknameChecked = false;
-      $(document).ready(function() {
 
-        $("#nickname").keyup(function () { // 아이디를 입력할때 마다 중복검사 실행
 
-          checkNickname($(this).val())
-        })
 
-        function checkNickname(nickname) {
-          if (nickname == "") {
-            $("#checkNickname").text("");
 
-            return; // 만약 아이디 입력란이 공백일 경우 중복확인 문구 X
-          }
 
-          $.ajax({
-            url: "/user/checkNickname",
-            type: "post",
-            async: true,
-            data: {value: nickname},
-            dataType: "json",
-            success: function (result) {
 
-              if (result == 0) {
-                $("#checkNickname").text('사용할 수 없는 닉네임입니다.').css({
-                  'color': 'red',
-                  'font-size': '10px'
-                });
-                nicknameChecked = false; // id체크 true
 
-              } else {
-                $("#checkNickname").text('사용 가능한 닉네임입니다.').css({
-                  'color': 'green',
-                  'font-size': '10px'
-                });
-                nicknameChecked = true;
-              }
-            },
-            error: function () {
-              alert("서버요청실패");
-            }
-          })
-          //setAble();
-        }
-      });
+
+
+
 
       // Drag & Drop 파일업로드
       $(document).ready(function() {
@@ -571,7 +705,7 @@
       <!-- 회원가입 모달 내용 -->
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">회원 가입</h4>
+          <h4 class="modal-title">회원정보 수정</h4>
         </div>
 
         <div class="modal-body">
@@ -579,47 +713,52 @@
           <form class="form-horizontal">
 
             <div class="form-group">
-              <label for="modalUserId" class="col-sm-4 control-label">아 이 디<span style="color:red"> *</span></label>
+              <label for="modalUpdateUserId" class="col-sm-4 control-label">아 이 디</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="userId" id="modalUserId"  placeholder="아이디" required>
-                <span id="checkId"></span>
+                <div id="modalUpdateUserId">${user.userId}</div>
+                <input type="hidden" name="userId" id="userId" value="${user.userId}"  />
               </div>
             </div>
 
             <div class="form-group">
-              <label for="modalPwd" class="col-sm-4 control-label">비밀번호<span style="color:red"> *</span></label>
+              <label for="modalUpdatePwd" class="col-sm-4 control-label">비밀번호</label>
               <div class="col-sm-6">
-                <input type="password" class="form-control" name="pwd" id="modalPwd" placeholder="비밀번호" required>
+                <input type="button" class="btn btn-primary" name="pwd" id="modalUpdatePwd" value="비밀번호 변경">
+              </div>
+            </div>
+
+            <!-- 비밀번호 변경 입력폼 ==> 평상시 숨김 -->
+            <div class="form-group" id="pwdUpdateGroup" style="display: none;">
+              <label for="updatePwd" class="col-sm-4 control-label">비밀번호 변경</label>
+              <div class="col-sm-6">
+                <input type="password" class="form-control" name="currentPwd" id="currentPwd" placeholder="현재 비밀번호">
+                <span id="currentPwdCheck"></span>
+                <input type="password" class="form-control" name="updatePwd" id="updatePwd" placeholder="변경 비밀번호">
+                <span id="updatePwdCheck"></span>
+                <input type="password" class="form-control" name="pwd" id="updatePwdConfirm" placeholder="변경 비밀번호 확인">
+                <span id="updatePwdConfirmCheck"></span>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="pwdConfirm" class="col-sm-4 control-label">비밀번호 확인<span style="color:red"> *</span></label>
+              <label for="modalNickname" class="col-sm-4 control-label">닉 네 임</label>
               <div class="col-sm-6">
-                <input type="password" class="form-control" name="pwdConfrim" id="pwdConfirm" placeholder="비밀번호확인" required>
-                <span id="checkPwd"></span>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="nickname" class="col-sm-4 control-label">닉 네 임<span style="color:red"> *</span></label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control" name="nickname" id="nickname" placeholder="닉네임" required>
+                <input type="text" class="form-control" name="nickname" id="modalNickname" placeholder="닉네임" value="${user.nickname}">
                 <span id="checkNickname"></span>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="userName" class="col-sm-4 control-label">이   름<span style="color:red"> *</span></label>
+              <label for="modalUpdateUserName" class="col-sm-4 control-label">이   름</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="userName" id="userName" placeholder="이름" required>
+                <div id="modalUpdateUserName">${user.userName}</div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="phone" class="col-sm-4 control-label">전화번호<span style="color:red"> *</span></label>
+              <label for="phone" class="col-sm-4 control-label">전화번호</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="phone" id="phone" placeholder="01012345678" required maxlength="11">
+                <input type="text" class="form-control" name="phone" id="phone" placeholder="01012345678" value="${user.phone}" required maxlength="11">
                 <span id="checkPhone"></span>
                 <button type="button" class="btn btn-primary" id="sendSms">인증번호전송</button>
               </div>
@@ -640,7 +779,7 @@
               <label  class="col-sm-4 control-label">주   소<span style="color:red"> *</span></label>
               <div class="col-sm-6">
                 <input type="button" onclick="sample3_execDaumPostcode()" value="주소 찾기">
-                <input type="text" id="sample3_address" name="addr" placeholder="주소">
+                <input type="text" id="sample3_address" name="addr" placeholder="주소" value="${user.addr}">
               </div>
             </div>
 
@@ -651,39 +790,21 @@
             <div class="form-group">
               <label for="sample3_detailAddress" class="col-sm-4 control-label">상세주소</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="addrDetail" id="sample3_detailAddress" placeholder="상세주소" required>
+                <input type="text" class="form-control" name="addrDetail" id="sample3_detailAddress" placeholder="상세주소" value="${user.addrDetail}">
               </div>
             </div>
 
             <div class="form-group">
               <label for="email" class="col-sm-4 control-label">이메일</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="email" id="email" placeholder="bitcmap@motrip.com">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-sm-4 control-label">주민등록번호<span style="color:red"> *</span></label>
-              <div class="col-sm-10">
-                <div class="row">
-                  <div class="col-sm-4">
-                    <input type="text" class="form-control input-text" name="ssn1" id="ssn1" placeholder="앞6자리+뒤1" required maxlength="6">
-                  </div>
-                  <div>
-                    -
-                  </div>
-                  <div class="col-sm-2">
-                  <input type="text" class="form-control" name="ssn2" id="ssn2" required maxlength="1">
-                  </div>
-                  <input type="hidden" name="ssn"  />
-                </div>
+                <input type="text" class="form-control" name="email" id="email" placeholder="bitcmap@motrip.com" value="${user.email}">
               </div>
             </div>
 
             <div class="form-group">
               <label for="selfIntro" class="col-sm-4 control-label">자기소개</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control selfIntroText input-text" name="selfIntro" id="selfIntro" placeholder="300자 이내 자기소개" maxlength="300">
+                <input type="text" class="form-control selfIntroText input-text" name="selfIntro" id="selfIntro" placeholder="300자 이내 자기소개" maxlength="300" value="${user.selfIntro}">
               </div>
             </div>
 
@@ -699,25 +820,25 @@
             <div class="form-group">
               <label class="col-sm-12 control-label">자기소개 공개여부</label>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="selfIntroPublic" id="selfIntroPublic" value="true">
+                <input class="form-check-input" type="radio" name="selfIntroPublic" id="selfIntroPublicButton" value="true">
 
-                <label class="form-check-label" for="selfIntroPublic">공개</label>
+                <label class="form-check-label" for="selfIntroPublicButton">공개</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="selfIntroPublic" id="selfIntroPrivate" value="false" checked>
-                <label class="form-check-label" for="selfIntroPrivate">비공개</label>
+                <input class="form-check-input" type="radio" name="selfIntroPublic" id="selfIntroPrivateButton" value="false" >
+                <label class="form-check-label" for="selfIntroPrivateButton">비공개</label>
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-12 control-label">회원사진 공개여부</label>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="userPhotoPublic" id="userPhotoPublic" value="true">
-                <label class="form-check-label" for="userPhotoPublic">공개</label>
+                <input class="form-check-input" type="radio" name="userPhotoPublic" id="userPhotoPublicButton" value="true">
+                <label class="form-check-label" for="userPhotoPublicButton">공개</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="userPhotoPublic" id="userPhotoPrivate" value="false" checked>
-                <label class="form-check-label" for="userPhotoPrivate">비공개</label>
+                <input class="form-check-input" type="radio" name="userPhotoPublic" id="userPhotoPrivateButton" value="false" >
+                <label class="form-check-label" for="userPhotoPrivateButton">비공개</label>
               </div>
             </div>
 
@@ -725,7 +846,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" id="commit">가입</button>
+          <button type="button" class="btn btn-default" id="commit">수정</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
         </div>
       </div>

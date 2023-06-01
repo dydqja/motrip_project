@@ -47,9 +47,10 @@ public class UserRestController {
 
     @RequestMapping(value = "checkNickname", method = RequestMethod.POST)
     public Integer chekcNickname(@RequestParam("value") String nickname) throws Exception {
-        System.out.println("/user/checkId : POST");
+        System.out.println("/user/checkNickname : POST");
 
-        int checkNickname = userService.checkId(nickname);
+        int checkNickname = userService.checkNickname(nickname);
+        System.out.println(checkNickname);
 
         return checkNickname;
     }
@@ -145,7 +146,7 @@ public class UserRestController {
         }
     }
 
-    @RequestMapping( value="checkUser", method=RequestMethod.POST )
+    @RequestMapping(value = "checkUser", method = RequestMethod.POST)
     public String checkUser(@RequestBody User user, HttpSession session) throws Exception {
         System.out.println("/user/checkUser : POST");
 
@@ -154,13 +155,13 @@ public class UserRestController {
         //Business Logic
         User dbUser = userService.getUser(user.getUserId());
 
-        if(dbUser == null) {
+        if (dbUser == null) {
             //DB에 없는 회원이면 추가정보 입력 후 회원추가
             session.setAttribute("user", user);
 
             return "/user/addNaverUser";
 
-        }else {
+        } else {
             //DB에 있는 회원이면 바로 로그인
             return "/user/naverLoginSuccess";
         }
@@ -175,7 +176,7 @@ public class UserRestController {
         String getUserId = request.get("getUserId");
 
 
-        String evaluateState = evaluateListService.evaluateState(sessionUserId,getUserId);
+        String evaluateState = evaluateListService.evaluateState(sessionUserId, getUserId);
         System.out.println("return 된 evaluateState 값은 ? => : " + evaluateState);
 
         return evaluateState;
@@ -190,7 +191,7 @@ public class UserRestController {
         String getUserId = request.get("getUserId");
 
         //좋아요 또는 싫어요 데이터 삭제한다
-        evaluateListService.userEvaluateCancle(sessionUserId,getUserId);
+        evaluateListService.userEvaluateCancle(sessionUserId, getUserId);
         //평가점수 합산해서 가져온다
         String getScorePlus = evaluateListService.getScorePlus(getUserId);
         System.out.println(getScorePlus);
@@ -247,12 +248,38 @@ public class UserRestController {
         String getUserId = request.get("getUserId");
 
 
-        String blacklistState = evaluateListService.blacklistState(sessionUserId,getUserId);
+        String blacklistState = evaluateListService.blacklistState(sessionUserId, getUserId);
         System.out.println("return 된 evaluateState 값은 ? => : " + blacklistState);
 
         return blacklistState;
     }
 
+    @RequestMapping(value = "updateUser", method = RequestMethod.POST)
+    public @ResponseBody User updateUser(@ModelAttribute User user) throws Exception {
+
+        System.out.println("/user/updateUser : POST");
+        System.out.println(user);
+
+        if (user.getPhone() == null || user.getPhone() == "" || user.getPhone().equals("") || user.getPhone().equals(null)) {
+            System.out.println("user.getPhone() 값은? " + user.getPhone());
+
+            User getUser = userService.getUser(user.getUserId());
+            user.setPhone(getUser.getPhone());
+
+        }else if (user.getPwd() == null || user.getPwd() == "" || user.getPwd().equals("") || user.getPwd().equals(null)) {
+            System.out.println("user.getPwd() 값은? " +user.getPwd());
+
+            User getUser = userService.getUser(user.getUserId());
+            user.setPwd(getUser.getPwd());
+        }else {
+            userService.updateUser(user);
+        }
+
+        return user;
+    }
 }
+
+
+
 
 

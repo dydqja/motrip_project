@@ -14,17 +14,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-
-    <!-- Bootstrap Dropdown Hover CSS -->
-    <link href="/css/animate.min.css" rel="stylesheet">
-    <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Dropdown Hover JS -->
-    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+    <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>
 
     <!--  ///////////////////////// CSS ////////////////////////// -->
     <style>
@@ -306,20 +301,6 @@
             });
         });
 
-
-
-
-
-
-
-        //============= 회원정보수정 Event  처리 =============
-        <%--$(function() {--%>
-        <%--    //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)--%>
-        <%--    $( "button" ).on("click" , function() {--%>
-        <%--        self.location = "/user/updateUser?userId=${user.userId}"--%>
-        <%--    });--%>
-        <%--});--%>
-
     </script>
 
 </head>
@@ -334,8 +315,14 @@
         <h3 class=" text-info">회원상세보기</h3>
     </div>
 
+
     <div class="row">
-        <div class="col-xs-4 col-md-2"><strong>${user.userId}</strong>님, 환영합니다!</div>
+        <c:if test="${sessionScope.user.userId eq user.userId}" >
+            <div class="col-xs-4 col-md-2"><strong id="nickname1">${user.nickname}</strong>님, 환영합니다!</div>
+        </c:if>
+        <c:if test="${sessionScope.user.userId ne user.userId}" >
+            <div class="col-xs-4 col-md-2"><strong id="nickname2">${user.nickname}</strong>님의 회원정보입니다.</div>
+        </c:if>
     </div>
 
     <%-- gender => M == 남자, F == 여자   --%>
@@ -351,12 +338,28 @@
 
     <div class="row">
         <div class="col-xs-4 col-md-2 "><strong>자기소개 표시부분</strong></div>
-        <div class="col-xs-8 col-md-4">${user.selfIntro}</div>
+
+            <div class="col-xs-8 col-md-4" ><span id="selfIntro">
+                 <c:if test="${user.selfIntroPublic == true}">
+                    ${user.selfIntro}
+                 </c:if>
+                 <c:if test="${user.selfIntroPublic == false}">
+                    비공개정보입니다.
+                 </c:if>
+                </span></div>
     </div>
 
     <div class="row">
         <div class="col-xs-4 col-md-2 "><strong>프로필사진 표시부분</strong></div>
-        <div class="col-xs-8 col-md-4">${user.userPhoto}</div>
+
+        <div class="col-xs-8 col-md-4"><span id="userPhoto">
+            <c:if test="${user.userPhotoPublic == true}">
+                ${user.userPhoto}
+            </c:if>
+            <c:if test="${user.userPhotoPublic == false}">
+                비공개정보입니다.
+            </c:if>
+            </span></div>
     </div>
 
     <div class="row">
@@ -380,13 +383,17 @@
     </div>
 
     <div class="row">
-        <button type="button" class="btn btn-default" name="likeUser" id="likeUser">좋아요</button>
-        <button type="button" class="btn btn-primary" name="likeUserCancle" id="likeUserCancle">좋아요취소</button>
+        <c:if test="${sessionScope.user.userId ne user.userId}">
+            <button type="button" class="btn btn-default" name="likeUser" id="likeUser">좋아요</button>
+            <button type="button" class="btn btn-primary" name="likeUserCancle" id="likeUserCancle">좋아요취소</button>
+        </c:if>
     </div>
 
     <div class="row">
-        <button type="button" class="btn btn-default" name="disLikeUser" id="disLikeUser">싫어요</button>
-        <button type="button" class="btn btn-primary" name="disLikeUserCancle" id="disLikeUserCancle">싫어요취소</button>
+        <c:if test="${sessionScope.user.userId ne user.userId}">
+            <button type="button" class="btn btn-default" name="disLikeUser" id="disLikeUser">싫어요</button>
+            <button type="button" class="btn btn-primary" name="disLikeUserCancle" id="disLikeUserCancle">싫어요취소</button>
+        </c:if>
     </div>
 
 
@@ -394,7 +401,7 @@
 </div>
 
 <!-- 회원정보수정 모달 인클루드 -->
-<jsp:include page="addUserModal.jsp"/>
+<jsp:include page="updateUserModal.jsp"/>
 
 
 </body>
