@@ -166,6 +166,7 @@
         LEFT JOIN memo_access AS memo_author ON access.memo_no = memo_author.memo_no
         WHERE access.memo_access_user = #{searchKeyword}
         AND access.is_memo_author = 0
+        AND memo_author.is_memo_author = 1
         ORDER BY memo.memo_no DESC
             LIMIT #{mysqlStartRowNum}, #{pageSize}
     </select>
