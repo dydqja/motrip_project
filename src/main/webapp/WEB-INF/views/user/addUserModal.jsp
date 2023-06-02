@@ -74,6 +74,8 @@
         var pw_confirm = $("#pwdConfirm").val();
         var name = $("input[name='userName']").val();
         var nickname = $("input[name='nickname']").val();
+        var addr = $("#sample3_address").val();
+        var addrDetail = $("#sample3_detailAddress").val();
         var ssn = "";
 
         if (id == null || id.length < 4 || idChecked == false) {
@@ -137,6 +139,24 @@
           $('#phone').focus().addClass('shake');
           setTimeout(function () {
             $('#phone').removeClass('shake');
+          }, 1000);
+          return;
+        }
+
+        if(addr == null || addr.length <1) {
+
+          $('#sample3_address').focus().addClass('shake');
+          setTimeout(function () {
+            $('#sample3_address').removeClass('shake');
+          }, 1000);
+          return;
+        }
+
+        if(addrDetail == null || addrDetail.length <1) {
+
+          $('#sample3_detailAddress').focus().addClass('shake');
+          setTimeout(function () {
+            $('#sample3_detailAddress').removeClass('shake');
           }, 1000);
           return;
         }
