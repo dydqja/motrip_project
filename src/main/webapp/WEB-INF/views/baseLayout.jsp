@@ -17,11 +17,7 @@
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-</head>
-<body>
-<tiles:insertAttribute name="header" />
-<tiles:insertAttribute name="contents" />
-<tiles:insertAttribute name="footer" />
+
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
@@ -36,5 +32,10 @@
 
     <script src="/assets/js/min/countnumbers.min.js"></script>
     <script src="/assets/js/main.js"></script>
+</head>
+<body>
+<tiles:insertAttribute name="header" />
+<tiles:insertAttribute name="contents" />
+<tiles:insertAttribute name="footer" />
 </body>
 </html>
