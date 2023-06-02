@@ -37,10 +37,10 @@
         WHERE
             <choose>
                 <when test="'tripPlan' == searchCondition">
-                    evaluated_trip_plan_no = #{evaluatedTripPlanNo}
+                    evaluated_trip_plan_no = #{tripPlanNo}
                 </when>
                 <when test="'review' == searchCondition">
-                    evaluated_review_no = #{evaluatedReviewNo}
+                    evaluated_review_no = #{reviewNo}
                 </when>
                 <otherwise>
                     evaluater_id = #{evaluaterId}

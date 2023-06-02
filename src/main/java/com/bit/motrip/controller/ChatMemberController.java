@@ -31,16 +31,12 @@ public class ChatMemberController {
         return "redirect:/chatRoom/chatRoomList";
     }
 
-//    @GetMapping("outMember")
-//    public String outMember(@ModelAttribute("chatMember") ChatMember chatMember) throws Exception{
-//        System.out.println("outMember");
-//        System.out.println(chatMember.isChatRoomAuthor());
-////        if(chatMember.isChatRoomAuthor()==false){
-////            chatMemberService.deleteChatMember(chatMember.getChatRoomNo(),chatMember.getUserId());
-////            return "redirect:/chatRoom/chatRoomList";
-////        }else{
-////            return "redirect:/chatRoom/chat";
-////        }
-//        return "redirect:/chatRoom/chat";
-//    }
+    @GetMapping("outMember")
+    public String outMember(@ModelAttribute("chatMember") ChatMember chatMember) throws Exception{
+        System.out.println("outMember");
+
+        chatMemberService.deleteChatMember(chatMember.getChatRoomNo(),chatMember.getUserId());
+        return "redirect:/chatRoom/chatRoomList";
+
+    }
 }

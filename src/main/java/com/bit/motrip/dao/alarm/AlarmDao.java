@@ -10,10 +10,10 @@ import java.util.Map;
 @Mapper
 public interface AlarmDao {
     public int addAlarm(Alarm alarm); //알람을 추가하고 success 여부만 반환한다.
-    public int deleteAlarm(int alarmNo); //알람을 삭제 대기 상태로 한다. readDate를 업데이트하는 작업이다.
-    public int removeAlarm(int alarmNo); //알람을 진짜 지우는 작업이다.
 
-    public Alarm getAlarm(int alarmNo); //알람의 상세 내역을 조회하는 작업이다.
+    public int updateAlarm(int alarmNo, int alarmLevel); //알람의 상태를 전환한다.
+    public int deleteAlarm(int alarmNo); //알람을 삭제 대기 상태로 한다. delDate 기록하고 alarmLevel 도 4로 한다.
+    public int removeAlarm(int alarmNo); //알람을 진짜 지우는 작업이다.
     public List<Alarm> getAlarmList(Search search);
     //알람의 목록을 만들어 화면에 던져주는 작업이다.
     //key에는 count 와 alarmList를 쓸 것이다.

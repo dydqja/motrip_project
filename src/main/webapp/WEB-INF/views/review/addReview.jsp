@@ -66,8 +66,20 @@
 
     <div class="row">
         <div class="col-xs-4 col-md-2"><strong>Review Author:</strong></div>
-        <div class="col-xs-8 col-md-4">${review.reviewAuthor}</div>
+        <div class="col-xs-8 col-md-4" id="reviewAuthor"></div>
     </div>
+
+    <script>
+        // 현재 로그인된 회원의 userId 가져오기
+        var loggedInUserId = getUserIdFromSession(); // 세션에서 userId를 가져오는 함수를 구현해야 합니다.
+
+        // userId를 사용하여 회원 정보 가져오기
+        var user = getUserById(loggedInUserId); // userId를 사용하여 회원 정보를 가져오는 함수를 구현해야 합니다.
+
+        // reviewAuthor 출력
+        document.getElementById("reviewAuthor").textContent = user.reviewAuthor;
+    </script>
+
 
 
     <hr/>
