@@ -75,4 +75,6 @@ public interface MemoService {
     //부착시에는 해당 도메인의 No를 받아서, 메모의 attached_XXX_no 에 업데이트한다.
     //탈착시에는 모든 메모의 attached_XXX_no 를 null로 업데이트한다.
 
+
+
 }

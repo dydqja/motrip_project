@@ -455,7 +455,7 @@
         event.preventDefault();
         let reviewNo = $(this).val();
         let url = '/review/getReview?reviewNo=' + reviewNo;
-        alert(url);
+        window.location.href = url;
     });
 
     // 부착된 채팅방 보러가기

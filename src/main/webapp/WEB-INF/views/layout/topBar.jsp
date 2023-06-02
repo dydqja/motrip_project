@@ -55,7 +55,30 @@
         </c:if>
     </div>
     <div class="right-section">
-        <button id="alarmTest" onclick="location.href='/test/alarmTest'">알람테스트</button>
+        <button id="alarmTest" onclick="location.href='/test/alarmTest'">알람테스트</button><br>
+        <c:if test="${empty sessionScope.user}">
+            <div>
+                <div class="user-photo-area">
+                    [회원 사진]
+                </div>
+
+                <div class="alarm-area">
+                    <div class="alarm-list-control-area">
+                        <input type="text" id="alarmCurrentPage" value="${empty sessionScope.alarmCurrentPage ? '1' : sessionScope.alarmCurrentPage}" readonly><br/>
+                        <button type="button" id="alarmPrevPage">이전</button>
+                        <button type="button" id="alarmNextPage">다음</button>
+                    </div>
+                    <div class="alarm-list-area">
+
+                    </div>
+                </div>
+                <div class="alarm-modal-area">
+
+                </div>
+
+
+
+        </c:if>
     </div>
 
     <hr/>
