@@ -28,11 +28,11 @@ public class CommitMaker {
         //                        0         1          2            3                4                5
         String[] commitType = {"Create", "Update", "Delete", "Create&Update", "Update&Delete", "Create&Delete"};
         //커밋 소제목
-        String commitTitle = "알람 기본 ui, 메모 소스 외부화";
+        String commitTitle = "템플릿 적용";
         //수정내역
-        String commitBody = "동적으로 알람목록을 생성할 수 있도록 해야한다.";
+        String commitBody = "각자 자기버튼 header에 다시 만드세요. 공용페이지는 이제 각자 조금씩 꾸밉시다.";
         //수정파일
-        String changedFiles = "(footer.jsp,topbar.jsp)";
+        String changedFiles = "(assets, vendors, index, tiles.xml, footer, header)";
         gitCommitMSGBuilder(committers[0],commitType[0],commitTitle,commitBody,changedFiles);
     }
 }
