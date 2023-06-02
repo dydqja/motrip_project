@@ -7,6 +7,7 @@ import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
 import com.bit.motrip.domain.*;
 import com.bit.motrip.service.tripplan.TripPlanService;
+import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,9 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Autowired
     @Qualifier("evaluateListDao")
     private EvaluateListDao evaluateListDao;
+    @Autowired
+    @Qualifier("userServiceImpl")
+    private UserService userService;
 
     //화면에 보여줄 리스트의 수
     @Value("${tripPlanPageSize}")
@@ -37,19 +41,31 @@ public class TripPlanServiceImpl implements TripPlanService {
 
     HttpSession httpSession;
 
-    @Override // 공유된 여행플랜 목록
-    public Map<String, Object> selectTripPlanList(Search search) throws Exception {
+    @Override // 여행플랜 목록(전체, 내목록 모두)
+    public Map<String, Object> selectTripPlanList(Map<String, Object> paramaters) throws Exception {
 
+        Search search = (Search) paramaters.get("search");
         int offset = (search.getCurrentPage() - 1) * tripPlanPageSize;
         search.setTotalCount(tripPlanDao.selectTripPlanCount()); // 여행플랜 총 카운트
         search.setCurrentPage(search.getCurrentPage()); // 클라이언트에서 요청한 페이지 번호
         search.setLimit(tripPlanPageSize); // LIMIT 값은 페이지당 항목 수와 동일합니다.
         search.setOffset(offset); //
 
-        Map<String, Object> paramaters = new HashMap<>();
-        paramaters.put("tripPlanAuthor", "user1");
-        paramaters.put("search", search);
-        paramaters.put("tripPlanList", tripPlanDao.selectTripPlanList(paramaters));
+        User dbUser = (User) paramaters.get("user");
+        if(dbUser != null) { // 나의 여행플랜
+            paramaters.put("tripPlanAuthor", dbUser.getUserId());
+            paramaters.put("search", search);
+            paramaters.put("tripPlanList", tripPlanDao.selectTripPlanList(paramaters));
+        } else { // 전체 여행플랜
+            List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(paramaters); // nickname 필드를 별도 만들지 않았지만 플랜 작성자 정보를 통해 가져와서 넣어준다.
+            List<TripPlan> updatedTripPlanList = new ArrayList<>();
+            for (TripPlan tripPlan : tripPlanList) {
+                User user = userService.getUser(tripPlan.getTripPlanAuthor());
+                tripPlan.setTripPlanAuthor(user.getNickname());
+                updatedTripPlanList.add(tripPlan);
+            }
+            paramaters.put("tripPlanList", updatedTripPlanList);
+        }
 
         return paramaters;
     }
@@ -57,8 +73,7 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Override // 여행플랜 저장
     public void addTripPlan(TripPlan tripPlan) throws Exception {
 
-        tripPlan.setTripPlanAuthor("user1");
-        tripPlan.setTripPlanRegDate(new Date());
+        tripPlan.setTripPlanRegDate(new Date()); // 날짜변경해야함
 
         tripPlanDao.addTripPlan(tripPlan);
         int tripPlanNo = tripPlanDao.getTripPlan();
@@ -161,12 +176,13 @@ public class TripPlanServiceImpl implements TripPlanService {
         EvaluateList evaluateList = new EvaluateList();
         tripPlanLikes.put("searchCondition", "tripPlan"); // 여행플랜을 기준으로 찾기 위해
 
-        evaluateList.setEvaluaterId((String) tripPlanLikes.get("tripPlanAuthor"));
+        User dbUser = (User) tripPlanLikes.get("user");
+        evaluateList.setEvaluaterId(dbUser.getUserId());
         evaluateList.setEvaluatedTripPlanNo((Integer) tripPlanLikes.get("tripPlanNo"));
 
         List<EvaluateList> tripPlanEvaluateList = evaluateListDao.getEvaluation(tripPlanLikes);
         for (int i=0; i<tripPlanEvaluateList.size(); i++){
-            if(tripPlanEvaluateList.get(i).getEvaluaterId().equals(tripPlanLikes.get("tripPlanAuthor"))){
+            if(tripPlanEvaluateList.get(i).getEvaluaterId().equals(dbUser.getUserId())){
                 System.out.println("이미 추천을 누른 여행플랜입니다.");
                 return -1;
             }

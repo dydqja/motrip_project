@@ -35,19 +35,19 @@
 </div>
 
 <div class="map_wrap" style="display: flex;">
-  <textarea id="dailyPlanContents" style="width: 500px; height: 400px; resize: vertical; overflow: auto;"></textarea>
-  <div id="menu_wrap">
+  <textarea id="dailyPlanContents0" style="width: 500px; height: 400px; resize: vertical; overflow: auto;"></textarea>
+  <div id="menu_wrap0">
     <div class="option">
-      <input type="text" id="placeName" size="15">
-      <button class="placeSearch" id="placeSearch">검색하기</button>
+      <input type="text" id="placeName0" size="15">
+      <button class="placeSearch" id="placeSearch0">검색하기</button>
       <hr>
-      <ul id="placesList"></ul>
+      <ul id="placesList0"></ul>
       <div id="pagination"></div>
     </div>
   </div>
   <div id="map" style="width: 400px; height: 400px;"></div>
 </div>
-<div id="placeTagsList" style="margin-top: 40px; padding-left: 40px; text-align: left;"><div id='totalTripTime' class='totalTripTime'></div></div>
+<div id="placeTagsList0" style="margin-top: 40px; padding-left: 40px; text-align: left;"><div id='totalTripTime' class='totalTripTime'></div></div>
 </body>
 
 <script type="text/javascript">
@@ -60,10 +60,11 @@
     let isPlanPublic = false; // 공유여부
     let isPlanDownloadable = false; // 가져가기 여부
     let placeTripTimes = []; // 이동시간 구하기 위한 명소배열
-    let totalTripTimes = [] ;
+    let totalTripTimes = [];
 
     // 초기 지도를 생성합니다
     var startMapContainer = document.getElementById('map'); // 초기 지도를 표시할 div
+    startMapContainer.setAttribute('id', 'map' + 0); // id값 설정
     var startMapOption = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
       level: 3 // 지도의 확대 레벨
@@ -144,8 +145,6 @@
     $("#btnAddTripPlan").click(function () {
       var tripPlanTitle = $('#tripPlanTitle').val(); // 여행플랜 제목
       var dailyPlanContents = []; // 일차별 여행플랜 본문과 명소들을 모두 저장하는곳
-      //var placesInfo;
-      //var tripTimes;
 
       for(var i=0; i<mapCounter; i++) {
         var dailyPlanContent; // 일차별 여행플랜 본문
@@ -153,38 +152,28 @@
         var placeInfo = [] // 명소를 저장하는 배열
         var hiddenCount = 0; // 명소의 갯수 파악
 
-        console.log("test " + $("#totalTripTime").text());
-
-        if (i == 0) {
-          dailyPlanContent = $('#dailyPlanContents').val();
-          totalTripTime = $("#totalTripTime").text();
-          console.log(totalTripTime);
-          hiddenCount = $("#placeTagsList").find("div[hidden]").length;
-          for(var j=0; j<hiddenCount; j++){
-            var placeText = $("#placeTagsList").find("#place"+(j + 1)).text();
-            var tripTimeText = $("#placeTagsList").find("#tripTime" + (j + 1)).text();
-            var place = JSON.parse(placeText); // JSON 문자열을 객체로 파싱
-            place.tripTime = tripTimeText; // 시간 값을 할당
-            placeInfo.push(JSON.stringify(place));
-          }
-        } else {
-          dailyPlanContent = $('#dailyPlanContents' + i).val();
-          totalTripTime = $("#totalTripTime" + i).text();
-          hiddenCount = $("#placeTagsList"+i).find("div[hidden]").length;
-          for(var j=0; j<hiddenCount; j++){
+        dailyPlanContent = $('#dailyPlanContents' + i).val();
+        console.log(dailyPlanContent)
+        totalTripTime = $("#totalTripTime" + i).text();
+        console.log(totalTripTime)
+        hiddenCount = $("#placeTagsList"+i).find("div[hidden]").length;
+        console.log(hiddenCount)
+        for(var j=0; j<hiddenCount; j++){
             var placeText = $("#placeTagsList" + i).find("#place"+(j + 1)).text();
             var tripTimeText = $("#placeTagsList" + i).find("#tripTime" + (j + 1)).text();
             var place = JSON.parse(placeText); // JSON 문자열을 객체로 파싱
             place.tripTime = tripTimeText; // 시간 값을 할당
             placeInfo.push(JSON.stringify(place));
-          }
         }
+
         dailyPlanContents.push({
           dailyPlanContents: dailyPlanContent,
           totalTripTime: totalTripTime,
           placesInfo: placeInfo
         });
       }
+
+      console.log(dailyPlanContents);
 
       if(tripPlanTitle == null || tripPlanTitle.length<1){
         alert("여행플랜 제목을 입력하여야 저장가능합니다.");
@@ -229,6 +218,15 @@
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $("#btnAddTripDay").click(function (){ // 추가 지도 생성 최대 10개까지
+
+      // 버튼 비활성화
+      $(this).prop('disabled', true);
+
+      // 일정 시간후에 버튼 활성화
+      setTimeout(function () {
+        $("#btnAddTripDay").prop('disabled', false);
+      }, 1500); // 1.5초 후에 버튼 활성화
+
       // 새로운 요소를 생성
       if(mapCounter < 10){
         console.log(mapCounter);
@@ -323,15 +321,26 @@
     });
 
     $("#btnRemoveTripDay").click(function () {
+
+        // 버튼 비활성화
+        $(this).prop('disabled', true);
+
+        // 일정 시간후에 버튼 활성화
+        setTimeout(function () {
+            $("#btnRemoveTripDay").prop('disabled', false);
+        }, 1500); // 1.5초 후에 버튼 활성화
+
       if (mapCounter > 1) {
         var lastMapIndex = mapCounter - 1; // 마지막으로 추가된 지도의 인덱스
         var mapWrap = document.querySelector('.map_wrap' + lastMapIndex);
         var placeTaglistDiv = document.querySelector('#placeTagsList' + lastMapIndex);
         mapWrap.parentNode.removeChild(mapWrap);
         placeTaglistDiv.parentNode.removeChild(placeTaglistDiv);
-        maps.splice(lastMapIndex - 1, 1); // maps 배열에서 해당 요소 제거
-        mapOptions.splice(lastMapIndex - 1, 1); // mapOptions 배열에서 해당 요소 제거
+        maps.splice(lastMapIndex, 1); // maps 배열에서 해당 요소 제거
+        mapOptions.splice(lastMapIndex, 1); // mapOptions 배열에서 해당 요소 제거
         mapCounter--; // mapCounter 감소
+      } else {
+        alert("하나의 여행플랜의 반드시 필요합니다.");
       }
     });
 
@@ -340,20 +349,14 @@
     $(document).on("click", ".placeSearch", function () {
       if(this.id == this.id){  // 내가 누르는 버튼이 일차별여행플랜 몇번의 해당하는 지 알기위한 if문
 
-        var idCount = this.id.split('placeSearch')[1];
-        var mapIndex = idCount;
-
-        if(idCount == 0){ // startMap의 경우는 id 마지막에 숫자가 없기때문에 설정
-          idCount = '';
-          mapIndex = 0;
-        }
+        var mapIndex = this.id.split('placeSearch')[1];;
 
         var ps = new kakao.maps.services.Places(); // 장소 검색 객체를 생성합니다
         var infowindow = new kakao.maps.InfoWindow({zIndex:1}); // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
         searchPlaces(); // 키워드로 장소를 검색합니다
 
         function searchPlaces() {  // 키워드 검색을 요청하는 함수입니다
-          var keyword = document.getElementById('placeName'+idCount).value;
+          var keyword = document.getElementById('placeName'+mapIndex).value;
           if (!keyword.replace(/^\s+|\s+$/g, '')) {
             alert('키워드를 입력해주세요!');
             return false;
@@ -375,8 +378,8 @@
         }
 
         function displayPlaces(places) {  // 검색 결과 목록과 마커를 표출하는 함수입니다
-          var listEl = document.getElementById('placesList'+idCount),
-                  menuEl = document.getElementById('menu_wrap'+idCount),
+          var listEl = document.getElementById('placesList'+mapIndex),
+                  menuEl = document.getElementById('menu_wrap'+mapIndex),
                   fragment = document.createDocumentFragment(),
                   bounds = new kakao.maps.LatLngBounds(),
                   listStr = '';
@@ -397,7 +400,7 @@
             (function (marker, title) {
 
               kakao.maps.event.addListener(marker, 'mouseover', function () {
-                displayInfowindow(marker, title, idCount);
+                displayInfowindow(marker, title, mapIndex);
               });
               kakao.maps.event.addListener(marker, 'mouseout', function () {
                 infowindow.close();
@@ -418,14 +421,14 @@
                 removeAllChildNods(listEl); // 검색목록 초기화
                 displayPagination(pagination); //
                 infowindow.close(); // 지도위 정보창 닫기
-                $("#placeName" + idCount).val(""); // 검색창 초기화
+                $("#placeName" + mapIndex).val(""); // 검색창 초기화
 
                 // 선택한 명소정보들에 대해서 파싱
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(this.innerHTML, "text/html");
                 var placePositionId = this.innerHTML.split('marker_')[1].split('"')[0]; // 몇번째 id인지 파싱
 
-                var placeCount = $("#placeTagsList" + idCount + " div[hidden]").length; // 기존 hidden place 개수
+                var placeCount = $("#placeTagsList" + mapIndex + " div[hidden]").length; // 기존 hidden place 개수
 
                 if (!placeTripTimes[mapIndex]) { // 배열이 존재하지 않는 경우에만 초기화
                   placeTripTimes[mapIndex] = [];
@@ -446,8 +449,8 @@
                   tripTime: null
                 };
 
-                $("#placeTagsList" + idCount)
-                        .append("<div id='placeTags" + idCount + "'>#" + title + "</div>")
+                $("#placeTagsList" + mapIndex)
+                        .append("<div id='placeTags" + mapIndex + "'>#" + title + "</div>")
                         .append("<div hidden id='place" + (placeCount + 1) + "'>" + JSON.stringify(place) + "</div>")
                         .append("<div id='tripTime" + (placeCount + 1) + "'></div>");
 
@@ -479,18 +482,18 @@
               var minute = parseInt(data.minute);
 
               if(hour == 0) {
-                $("#placeTagsList" + idCount).find("#tripTime" + placeCount).text(minute + "분");
-                totalTripTimes[idCount] = (totalTripTimes[idCount] || 0) + minute;
+                $("#placeTagsList" + mapIndex).find("#tripTime" + placeCount).text(minute + "분");
+                totalTripTimes[mapIndex] = (totalTripTimes[mapIndex] || 0) + minute;
               } else {
-                $("#placeTagsList" + idCount).find("#tripTime" + placeCount).text(hour + "시간 " + minute + "분");
-                totalTripTimes[idCount] = (totalTripTimes[idCount] || 0) + (hour * 60) + minute;
+                $("#placeTagsList" + mapIndex).find("#tripTime" + placeCount).text(hour + "시간 " + minute + "분");
+                totalTripTimes[mapIndex] = (totalTripTimes[mapIndex] || 0) + (hour * 60) + minute;
               }
-              var totalHours = Math.floor(totalTripTimes[idCount] / 60);
-              var totalMinutes = totalTripTimes[idCount] % 60;
+              var totalHours = Math.floor(totalTripTimes[mapIndex] / 60);
+              var totalMinutes = totalTripTimes[mapIndex] % 60;
               if(totalHours == 0){
-                $("#totalTripTime" + idCount).text("총 이동시간: " + totalMinutes + "분");
+                $("#totalTripTime" + mapIndex).text("총 이동시간: " + totalMinutes + "분");
               } else {
-                $("#totalTripTime" + idCount).text("총 이동시간: " + totalHours + "시간 " + totalMinutes + "분");
+                $("#totalTripTime" + mapIndex).text("총 이동시간: " + totalHours + "시간 " + totalMinutes + "분");
               }
             },
             error: function (xhr, status, error) {
@@ -555,10 +558,10 @@
           paginationEl.appendChild(fragment);
         }
 
-        function displayInfowindow(marker, title, idCount) {  // 명소리스트 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+        function displayInfowindow(marker, title, mapIndex) {  // 명소리스트 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
           var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
           infowindow.setContent(content); // 설명창 내부에 표시될 글
-          infowindow.open(maps[idCount], marker); // 설명창 띄움
+          infowindow.open(maps[mapIndex], marker); // 설명창 띄움
         }
 
         function removeAllChildNods(el) {  // 검색결과 목록의 자식 Element를 제거하는 함수입니다

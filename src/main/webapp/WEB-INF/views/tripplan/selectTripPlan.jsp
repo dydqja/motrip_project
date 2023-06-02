@@ -63,7 +63,7 @@
             <th align="center" width="200">조회수</th>
         </tr>
         <tr>
-            <td align="center" width="200">${tripPlan.tripPlanAuthor}</td>
+            <td align="center" width="200">${nickName}</td>
             <td align="center" width="200">${tripPlan.tripPlanTitle}</td>
             <td align="center" width="200">${tripPlan.tripDays}</td>
             <td align="center" width="200">${tripPlan.tripPlanRegDate}</td>
@@ -142,7 +142,9 @@
         <button id="reset${i-1}">원위치</button>
         <td colspan="5"><hr></td>
     </c:forEach>
-    <button type="button" id="updateTripPlan">여행플랜 수정</button>
+    <c:if test="${user.userId == tripPlan.tripPlanAuthor}">
+        <button type="button" id="updateTripPlan">여행플랜 수정</button>
+    </c:if>
     <button type="button" id="history">이전</button>
 </body>
 
@@ -253,28 +255,26 @@
     $(function() {
          $("button[id='tripPlanLikes']").on("click", function() {
          var tripPlanNo = "${tripPlan.tripPlanNo}";
-         var tripPlanAuthor = "${tripPlan.tripPlanAuthor}";
-             if(tripPlanAuthor != null || tripPlanAuthor.length>1){
-                $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
-                      url: "/tripPlan/tripPlanLikes",
-                      type: "GET",
-                      data: { "tripPlanNo" :  tripPlanNo,
-                              "tripPlanAuthor" : tripPlanAuthor },
-                      contentType: "application/json; charset=utf-8",
-                      success: function (data) {
-                        console.log(data);
-                        if(data == -1){
-                            alert("이미 추천한 여행플랜입니다.");
-                        } else {
-                            alert("추천 완료");
-                            $("#likes").text(data);
-                        }
-                      },
-                      error: function (xhr, status, error) {
-                        console.log(error);
-                      }
-                });
-             }
+
+            $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
+                  url: "/tripPlan/tripPlanLikes",
+                  type: "GET",
+                  data: { "tripPlanNo" :  tripPlanNo},
+                  success: function (data) {
+                    console.log(data);
+                    if(data == -1){
+                        alert("이미 추천한 여행플랜입니다.");
+                    } else if(data == 0) {
+                        alert("비회원은 추천을 할수없습니다.");
+                    } else {
+                        alert("추천 완료");
+                        $("#likes").text(data);
+                    }
+                  },
+                  error: function (xhr, status, error) {
+                    console.log(error);
+                  }
+            });
 
          });
     });

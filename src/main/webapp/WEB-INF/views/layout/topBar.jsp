@@ -34,8 +34,10 @@
         <button id="login" onclick="location.href='/user/login'">로그인/회원가입</button>
         <button id="listUser" onclick="location.href='/user/listUser'">회원목록보기</button>
         <button type="button" id="tripPlanList" onclick="location.href='/tripPlan/tripPlanList'">여행플랜 목록이동</button>
-        <button type="button" id="tripPlanList" onclick="location.href='/tripPlan/myTripPlanList'">나의 여행플랜</button>
-        <button type="button" id="tripPlanList" onclick="location.href='/tripPlan/addTripPlanView'">여행플랜작성</button>
+        <c:if test="${user.userId != null}">
+            <button type="button" id="tripPlanList" onclick="location.href='/tripPlan/myTripPlanList'">나의 여행플랜</button>
+            <button type="button" id="tripPlanList" onclick="location.href='/tripPlan/addTripPlanView'">여행플랜작성</button>
+        </c:if>
         <button id="addReview" onclick="location.href='/review/addReviewView'">후기작성</button>
         <button id="noticeList" onclick="location.href='/notice/noticeList'">공지사항</button>
         <button id="qnaList" onclick="location.href='/qna/qnaList'">질의응답</button>

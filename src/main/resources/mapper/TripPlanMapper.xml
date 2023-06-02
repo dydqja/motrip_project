@@ -56,7 +56,7 @@
         LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
         WHERE
             <choose>
-                <when test="'' != tripPlanAuthor">
+                <when test="tripPlanAuthor != null">
                     tp.trip_plan_author = #{tripPlanAuthor}
                 </when>
                 <otherwise>
@@ -73,7 +73,7 @@
                     tp.trip_plan_likes DESC, tp.trip_plan_no DESC
                 </when>
                 <otherwise>
-                    tp.trip_plan_no DESC
+                    tp.trip_plan_reg_date DESC, tp.trip_plan_no DESC
                 </otherwise>
             </choose>
         LIMIT #{search.offset}, #{search.limit};

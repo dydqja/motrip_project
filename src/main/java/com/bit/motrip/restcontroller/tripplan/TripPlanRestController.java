@@ -1,7 +1,9 @@
 package com.bit.motrip.restcontroller.tripplan;
 
 import com.bit.motrip.domain.TripPlan;
+import com.bit.motrip.domain.User;
 import com.bit.motrip.service.tripplan.TripPlanService;
+import com.bit.motrip.service.user.UserService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +27,9 @@ public class TripPlanRestController {
     @Autowired
     @Qualifier("tripPlanServiceImpl")
     private TripPlanService tripPlanService;
+    @Autowired
+    @Qualifier("userServiceImpl")
+    private UserService userService;
 
     public TripPlanRestController() {
         System.out.println(this.getClass());
@@ -32,9 +39,13 @@ public class TripPlanRestController {
     private String kakaoApiKey;
 
     @PostMapping("addTripPlan") // 여행플랜 저장 (JSON 형태로 받기위해 ajax로 보냄)
-    public void addTripPlan(@RequestBody TripPlan tripPlan) throws Exception {
+    public void addTripPlan(@RequestBody TripPlan tripPlan, HttpSession session) throws Exception {
         System.out.println("POST : addTripPlan()");
         System.out.println(tripPlan.toString());
+
+        User dbUser = (User) session.getAttribute("user");
+        tripPlan.setTripPlanAuthor(dbUser.getUserId());
+
         tripPlanService.addTripPlan(tripPlan);
     }
 
@@ -46,16 +57,19 @@ public class TripPlanRestController {
     }
 
     @GetMapping("tripPlanLikes") /// 여행플랜 추천하기
-    public int tripPlanLikes(@RequestParam("tripPlanNo") int tripPlanNo,
-                             @RequestParam("tripPlanAuthor") String tripPlanAuthor) throws Exception {
+    public int tripPlanLikes(@RequestParam("tripPlanNo") int tripPlanNo, HttpSession session) throws Exception {
         System.out.println("GET : tripPlanLikes()");
-        System.out.println(tripPlanNo + "," + tripPlanAuthor);
 
-        Map<String, Object> tripPlanLikes = new HashMap<>();
-        tripPlanLikes.put("tripPlanNo", tripPlanNo);
-        tripPlanLikes.put("tripPlanAuthor", tripPlanAuthor);
+        User dbUser = (User) session.getAttribute("user");
 
-        return tripPlanService.tripPlanLikes(tripPlanLikes);
+        if(dbUser == null){ // 로그인 되어있지 않다면 비회원으로 간주
+            return 0;
+        } else { // 로그인 되어있다면 중복체크를 하기위해 확인 후 추천수를 올린다.
+            Map<String, Object> tripPlanLikes = new HashMap<>();
+            tripPlanLikes.put("tripPlanNo", tripPlanNo);
+            tripPlanLikes.put("user", dbUser);
+            return tripPlanService.tripPlanLikes(tripPlanLikes);
+        }
     }
 
     @GetMapping("tripTime")
