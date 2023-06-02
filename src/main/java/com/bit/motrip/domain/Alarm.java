@@ -2,10 +2,21 @@ package com.bit.motrip.domain;
 
 public class Alarm {
     private int alarmNo;
-    //썸네일에 표시될 작은 요약 내용.
-    private String alarmTitle;
-    //자세히보기할 때 보여질 진짜 내용.
-    private String alarmContents;
+    private String alarmCategory;
+    // 1 수락,취소 알람 : 수락, 거절, 보류 / 채팅방 초대받음
+    // 2 네비게이션 통지 알람 : 가보기, 확인 / 채팅방
+    // 3 단순 통지 알람 : 확인 /경고받음, 제제, 채팅방 강퇴, 채팅방 초대거절됨,
+
+    //종류에 따라서 생기는 버튼과, 갖고있는 정보가 다르다.
+    private String alarmImportant;
+    //1 긴급알람
+    //2 일반알람
+    //3 보류알람
+
+    // 중요도에 따라 알람 색이 다르다.
+    private String alarmTitle; //
+
+    private String alarmContents; // 자세한 내용
 
     private String alarmSender;
     private String alarmReceiver;
@@ -122,6 +133,22 @@ public class Alarm {
 
     public void setAlarmBtnThree(String alarmBtnThree) {
         this.alarmBtnThree = alarmBtnThree;
+    }
+
+    public String getAlarmCategory() {
+        return alarmCategory;
+    }
+
+    public void setAlarmCategory(String alarmCategory) {
+        this.alarmCategory = alarmCategory;
+    }
+
+    public String getAlarmImportant() {
+        return alarmImportant;
+    }
+
+    public void setAlarmImportant(String alarmImportant) {
+        this.alarmImportant = alarmImportant;
     }
 
     //toString

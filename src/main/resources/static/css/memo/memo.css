@@ -1,0 +1,20 @@
+
+.memoAttachedNoneBtn {
+    background-color: black;
+    color: white;
+}
+
+.memoAttachedTripPlanBtn {
+    background-color: lime;
+    color: black;
+}
+
+.memoAttachedReviewBtn {
+    background-color: skyblue;
+    color: black;
+}
+
+.memoAttachedChatRoomBtn {
+    background-color: red;
+    color: white;
+}
