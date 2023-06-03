@@ -27,6 +27,8 @@
             <button type="button" id="tripPlanList3" onclick="location.href='/tripPlan/addTripPlanView'">여행플랜작성</button>
         </c:if>
         <button id="addReview" onclick="location.href='/review/addReviewView'">후기작성</button>
+        <button id="getReviewList" onclick="location.href='/review/getReviewList'">모든 후기</button>
+        <button id="getMyReviewList" onclick="location.href='/review/getMyReviewList'">나의 후기</button>
         <button id="noticeList" onclick="location.href='/notice/noticeList'">공지사항</button>
         <button id="qnaList" onclick="location.href='/qna/qnaList'">질의응답</button>
         <button id="chatRoomList" onclick="location.href='/chatRoom/chatRoomList'">채팅리스트</button>
