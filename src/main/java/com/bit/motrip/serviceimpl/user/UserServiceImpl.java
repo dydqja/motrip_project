@@ -126,10 +126,16 @@ public class UserServiceImpl implements UserService{
         }
     }
     
-    //회원정보가져오기
-    public User getUser(String userId) throws Exception {
+    //회원정보가져오기(아이디로)
+    public User getUserById(String userId) throws Exception {
 
-        return userDao.getUser(userId);
+        return userDao.getUserById(userId);
+    }
+
+    //회원정보가져오기(닉네임으로)
+    public User getUserByNickname(String userNickname) throws Exception {
+
+        return userDao.getUserByNickname(userNickname);
     }
 
     //리스트 구성하기
@@ -461,16 +467,13 @@ public class UserServiceImpl implements UserService{
         return response.getBody();
     }
 
-//    public Map<String , Object > getList(Search search) throws Exception {
-//        List<User> list= userDao.getList(search);
-//        int totalCount = userDao.getTotalCount(search);
-//
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        map.put("list", list );
-//        map.put("totalCount", new Integer(totalCount));
-//
-//        return map;
-//    }
+    public List<String> getNickname(List<String> blcaklist) throws Exception {
+
+        return userDao.getNickname(blcaklist);
+
+    }
+
+
 
 
 }

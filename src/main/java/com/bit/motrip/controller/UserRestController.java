@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -153,7 +155,7 @@ public class UserRestController {
         System.out.println(user);
 
         //Business Logic
-        User dbUser = userService.getUser(user.getUserId());
+        User dbUser = userService.getUserById(user.getUserId());
 
         if (dbUser == null) {
             //DB에 없는 회원이면 추가정보 입력 후 회원추가
@@ -249,33 +251,52 @@ public class UserRestController {
 
 
         String blacklistState = evaluateListService.blacklistState(sessionUserId, getUserId);
-        System.out.println("return 된 evaluateState 값은 ? => : " + blacklistState);
+        System.out.println("return 된 blacklistState 값은 ? => : " + blacklistState);
 
         return blacklistState;
     }
 
     @RequestMapping(value = "updateUser", method = RequestMethod.POST)
     public @ResponseBody User updateUser(@ModelAttribute User user) throws Exception {
-
         System.out.println("/user/updateUser : POST");
         System.out.println(user);
 
         if (user.getPhone() == null || user.getPhone() == "" || user.getPhone().equals("") || user.getPhone().equals(null)) {
-            System.out.println("user.getPhone() 값은? " + user.getPhone());
 
-            User getUser = userService.getUser(user.getUserId());
+            User getUser = userService.getUserById(user.getUserId());
             user.setPhone(getUser.getPhone());
 
         }else if (user.getPwd() == null || user.getPwd() == "" || user.getPwd().equals("") || user.getPwd().equals(null)) {
-            System.out.println("user.getPwd() 값은? " +user.getPwd());
 
-            User getUser = userService.getUser(user.getUserId());
+            User getUser = userService.getUserById(user.getUserId());
             user.setPwd(getUser.getPwd());
         }else {
             userService.updateUser(user);
         }
 
         return user;
+    }
+
+    @RequestMapping(value = "getBlacklist", method = RequestMethod.POST)
+    public List<String> getBlacklist(@RequestBody Map<String, Object> evaluaterId) throws Exception {
+        System.out.println("/user/getBlacklist : POST");
+
+        List<EvaluateList> getBlacklist = evaluateListService.getEvaluation(evaluaterId);
+
+        List<String> blacklist = new ArrayList<>();
+        for (EvaluateList evaluateList1 : getBlacklist) {
+            if (evaluateList1.getBlacklistedUserId() != null) {
+                blacklist.add(evaluateList1.getBlacklistedUserId());
+            }
+        }
+        System.out.println(getBlacklist);
+        System.out.println(blacklist);
+
+        List<String> getNickname = userService.getNickname(blacklist);
+
+        System.out.println(getNickname);
+
+        return getNickname;
     }
 }
 

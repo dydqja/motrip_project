@@ -78,7 +78,9 @@
 						<td align="center" width="200">여행플랜 조회수</td>
 						<td></td>
 						<td align="center" width="200">여행플랜 번호</td>
-                        <td></td>
+						<c:if test="${publicPlanList}">
+                            <td></td>
+                        </c:if>
                         <td></td>
                         <td align="center" width="200">공유 여부</td>
                         <td align="center" width="200">가져가기 가능여부</td>
@@ -98,7 +100,7 @@
 						        <input type="hidden" value="${tripPlan.tripPlanNo}" id="tripPlanNo" class="tripPlanNo"/>
 						    </c:if>
 						    <c:if test="${tripPlan.isPlanDeleted}">
-						        <input type="hidden" value=0 id="tripPlanNo" />
+						        <input type="hidden" value=0 id="tripPlanNo" id="tripPlanNo" class="tripPlanNo"/>
                             </c:if>
 						</td>
 						<td></td>
@@ -114,14 +116,16 @@
                         <td></td>
                         <td align="center" width="200">${tripPlan.tripPlanNo}</td>
                         <td></td>
-                        <td align="center" width="200">
-                            <c:if test="${tripPlan.isPlanDeleted}">
-                                <button id="btnDelete" class="btnDelete" value="${tripPlan.tripPlanNo}">여행플랜 복구</button>
-                            </c:if>
-                            <c:if test="${!tripPlan.isPlanDeleted}">
-                                <button id="btnDelete" class="btnDelete" value="${tripPlan.tripPlanNo}">여행플랜 삭제</button>
-                            </c:if>
-                        </td>
+                        <c:if test="${publicPlanList}">
+                            <td align="center" width="200">
+                                <c:if test="${tripPlan.isPlanDeleted}">
+                                    <button id="btnDelete" class="btnDelete" value="${tripPlan.tripPlanNo}">여행플랜 복구</button>
+                                </c:if>
+                                <c:if test="${!tripPlan.isPlanDeleted}">
+                                    <button id="btnDelete" class="btnDelete" value="${tripPlan.tripPlanNo}">여행플랜 삭제</button>
+                                </c:if>
+                            </td>
+                        </c:if>
                         <td align="center" width="200">${tripPlan.isPlanPublic}</td>
                         <td align="center" width="200">${tripPlan.isPlanDownloadable}</td>
 				    </tr>

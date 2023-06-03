@@ -56,7 +56,7 @@
         LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
         WHERE
             <choose>
-                <when test="'' != tripPlanAuthor">
+                <when test="tripPlanAuthor != null">
                     tp.trip_plan_author = #{tripPlanAuthor}
                 </when>
                 <otherwise>
@@ -73,7 +73,7 @@
                     tp.trip_plan_likes DESC, tp.trip_plan_no DESC
                 </when>
                 <otherwise>
-                    tp.trip_plan_no DESC
+                    tp.trip_plan_reg_date DESC, tp.trip_plan_no DESC
                 </otherwise>
             </choose>
         LIMIT #{search.offset}, #{search.limit};
@@ -167,7 +167,7 @@
     </update>
 
     <!-- 여행플랜 추천 -->
-    <update id="tripPlanLikes" parameterType="com.bit.motrip.domain.TripPlan">
+    <update id="tripPlanLikes" parameterType="com.bit.motrip.domain.TripPlan" >
         UPDATE trip_plan
         SET trip_plan_likes = #{tripPlanLikes}
         WHERE trip_plan_no = #{tripPlanNo}

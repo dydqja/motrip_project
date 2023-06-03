@@ -7,7 +7,7 @@
 
     <!-- tiles 적용 -->
     <definition name="baseLayout" template="/WEB-INF/views/baseLayout.jsp">
-        <put-attribute name="header" value="/WEB-INF/views/layout/topBar.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
         <put-attribute name="contents" value="" />
         <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
     </definition>

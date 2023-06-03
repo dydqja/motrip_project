@@ -1,0 +1,25 @@
+
+.three-sections {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-section,
+.middle-section,
+.right-section {
+    flex-basis: 33.33%;
+}
+
+
+/* 각 섹션의 스타일을 추가로 수정할 수 있습니다. */
+.left-section {
+    /* 왼쪽 섹션의 스타일 */
+}
+
+.middle-section {
+    /* 중간 섹션의 스타일 */
+}
+
+.right-section {
+    /* 오른쪽 섹션의 스타일 */
+}

@@ -28,12 +28,11 @@ public class CommitMaker {
         //                        0         1          2            3                4                5
         String[] commitType = {"Create", "Update", "Delete", "Create&Update", "Update&Delete", "Create&Delete"};
         //커밋 소제목
-        String commitTitle = "메모 공유기능 추가. 못한부분 바디에 적음";
+        String commitTitle = "블랙리스트 추가 및 블랙리스트목록 구현 및 테스트 완료";
         //수정내역
-        String commitBody = "공유자목록보기, 공유해제(메모주인) 구현." +
-                "공유해제(메모공유자), 메모 공유할 때 ajax로 유저검색 구현 필요";
+        String commitBody = "타 회원 상세보기 페이지에서 블랙추가 및 취소 가능, 본인 회원 상세보기 페이지에서 블랙리스트목록 볼 수 있고, 목록에서 닉네임 클릭 시 해당 닉네임 회원 상세보기 페이지로 이동";
         //수정파일
-        String changedFiles = "(memoRestController, footer.jsp)";
-        gitCommitMSGBuilder(committers[0],commitType[1],commitTitle,commitBody,changedFiles);
+        String changedFiles = "(listBlackModal.jsp/UserRestController.java/UserMapper.xml)";
+        gitCommitMSGBuilder(committers[4],commitType[0],commitTitle,commitBody,changedFiles);
     }
 }
