@@ -64,7 +64,7 @@
         </tr>
         <tr>
             <td align="center" width="200">${nickName}</td>
-            <td align="center" width="200">${tripPlan.tripPlanTitle}</td>
+            <input type="text" name="tripPlanTitle" value="${tripPlan.tripPlanTitle}" />
             <td align="center" width="200">${tripPlan.tripDays}</td>
             <td align="center" width="200">${tripPlan.tripPlanRegDate}</td>
             <td id="likes" align="center" width="200">${tripPlan.tripPlanLikes}</td>
@@ -79,11 +79,9 @@
         <table>
             <tr>
                 <th align="left" width="400">여행플랜 본문</th>
-                <%-- <th align="center" width="400">일차별 여행플랜 번호</th> --%>
             </tr>
             <tr>
                 <td class="plan-contents" width="400">${dailyPlan.dailyPlanContents}</td>
-                <%-- <td align="center" width="400">${dailyPlan.dailyPlanNo}</td> --%>
             </tr>
         </table>
         <div style="display: flex; justify-content: space-between;">
@@ -98,13 +96,6 @@
             <div>
                 <table>
                     <td class="place-info" width="200">${dailyPlan.totalTripTime}</td>
-
-                    <%-- 나중에 지울게요 일단 보기좋기용 --%>
-                    <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    <%-- 나중에 지울게요 일단 보기좋기용 --%>
 
                     <c:forEach var="place" items="${dailyPlan.placeResultMap}">
                         <tr>
@@ -279,17 +270,16 @@
          });
     });
 
+
     $(function() {
          $("button[id='updateTripPlan']").on("click", function() {
-            var tripPlanNo = "${tripPlan.tripPlanNo}";
-            window.location.href = "/tripPlan/updateTripPlanView?tripPlanNo=" + tripPlanNo;
+            window.location.href = "/tripPlan/updateTripPlan";
          });
     });
 
-
     $(function() {
          $("button[id='history']").on("click", function() {
-              window.history.back();
+              console.log("취소");
          });
     });
 

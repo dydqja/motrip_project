@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 
-<html>
 <head>
+<html>
   <meta charset="UTF-8">
   <title>motrip</title>
   <!-- 지도용 스크립트 -->
