@@ -41,11 +41,11 @@ class ReviewDaoTest {
         review.setReviewContents("블랙리스트 잘되어가고 있나요? 플랜하나에는 후기를 여러개 쓸수 있삼요");
         review.setReviewThumbnail("https://example.com/thumbnail.jpg");
         review.setInstaPostLink("https://www.instagram.com/p/Casdw89/");
-        review.setReviewPublic(false);
+        review.setisReviewPublic(false);
         review.setReviewLikes(4);
         review.setViewCount(2);
         review.setReviewRegDate(new Date());
-        review.setReviewDeleted(false);
+        review.setisReviewDeleted(false);
         review.setReviewDelDate(null);
         reviewDao.addReview(review);
 
@@ -105,7 +105,7 @@ class ReviewDaoTest {
         review.setReviewContents("한국인의 가슴을 뜨겁게 하는 바로 그것은 조식포함");
         review.setReviewThumbnail("썸네일 썸넫일");
         review.setInstaPostLink("인스타 게시물 11");
-        review.setReviewPublic(false);
+        review.setisReviewPublic(false);
 
         // 수정된 후기를 저장
         reviewDao.updateReview(review);

@@ -84,7 +84,7 @@ public class TripPlanController {
         System.out.println("GET : selectTripPlan()");
 
         TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo); // 해당 여행플랜에 대한 정보를 가져옴
-        User dbUser = userService.getUser(tripPlan.getTripPlanAuthor()); // 해당 여행플랜에 작성자 닉네임을 위해 정보를 가져옴
+        User dbUser = userService.getUserById(tripPlan.getTripPlanAuthor()); // 해당 여행플랜에 작성자 닉네임을 위해 정보를 가져옴
 
         model.addAttribute("tripPlan", tripPlan);
         model.addAttribute("nickName", dbUser.getNickname()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
@@ -92,11 +92,24 @@ public class TripPlanController {
         return "tripplan/selectTripPlan.tiles";
     }
 
-    @GetMapping("updateTripPlan")
-    public String updateTripPlan() throws Exception {
-        System.out.println("GET : updateTripPlan()");
+    @GetMapping("updateTripPlanView")
+    public String updateTripPlanView(@RequestParam("tripPlanNo") int tripPlanNo, Model model, HttpSession session) throws Exception {
+        System.out.println("GET : updateTripPlanView()");
 
-        return "null";
+        TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo); // 해당 여행플랜에 대한 정보를 가져옴
+        User dbUser = userService.getUser(tripPlan.getTripPlanAuthor()); // 해당 여행플랜에 작성자 닉네임을 위해 정보를 가져옴
+
+        model.addAttribute("tripPlan", tripPlan);
+        model.addAttribute("nickName", dbUser.getNickname()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
+
+        return "tripplan/updateTripPlan.tiles";
+    }
+
+    @PostMapping("updateTripPlan")
+    public String updateTripPlan() throws Exception {
+        System.out.println("POST : updateTripPlan()");
+
+        return "tripplan/selectTripPlan.tiles";
     }
 
 }

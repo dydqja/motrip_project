@@ -60,7 +60,7 @@ public class TripPlanServiceImpl implements TripPlanService {
             List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(paramaters); // nickname 필드를 별도 만들지 않았지만 플랜 작성자 정보를 통해 가져와서 넣어준다.
             List<TripPlan> updatedTripPlanList = new ArrayList<>();
             for (TripPlan tripPlan : tripPlanList) {
-                User user = userService.getUser(tripPlan.getTripPlanAuthor());
+                User user = userService.getUserById(tripPlan.getTripPlanAuthor());
                 tripPlan.setTripPlanAuthor(user.getNickname());
                 updatedTripPlanList.add(tripPlan);
             }

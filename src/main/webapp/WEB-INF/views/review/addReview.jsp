@@ -21,6 +21,9 @@
         $("a[href='#' ]").on("click" , function() {
             self.location = "../review/addReviewView.jsp"; //추가등록
         });
+        $("a[href='#' ]").on("click" , function() {
+            self.location = "../review/reviewList"; //모든 리뷰목록
+        });
     });
 </script>
 
@@ -66,20 +69,8 @@
 
     <div class="row">
         <div class="col-xs-4 col-md-2"><strong>Review Author:</strong></div>
-        <div class="col-xs-8 col-md-4" id="reviewAuthor"></div>
+        <div class="col-xs-8 col-md-4">${review.reviewAuthor}</div>
     </div>
-
-    <script>
-        // 현재 로그인된 회원의 userId 가져오기
-        var loggedInUserId = getUserIdFromSession(); // 세션에서 userId를 가져오는 함수를 구현해야 합니다.
-
-        // userId를 사용하여 회원 정보 가져오기
-        var user = getUserById(loggedInUserId); // userId를 사용하여 회원 정보를 가져오는 함수를 구현해야 합니다.
-
-        // reviewAuthor 출력
-        document.getElementById("reviewAuthor").textContent = user.reviewAuthor;
-    </script>
-
 
 
     <hr/>
@@ -205,8 +196,10 @@
         <div class="col-sm-offset-4  col-sm-4 text-center">
             <button type="button" class="btn btn-primary">확&nbsp;인</button>
             <a class="btn btn-primary btn" href="#" role="button">추가등록</a>
+            <a class="btn btn-primary btn2" href="#" role="button">다른 후기들 보러가기</a>
         </div>
     </div>
+
 
     <br/>
 

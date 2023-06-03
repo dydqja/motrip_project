@@ -84,11 +84,9 @@ public class Review {
         this.instaPostLink = instaPostLink;
     }
 
-    public boolean isReviewPublic() {
-        return isReviewPublic;
-    }
+    public boolean getisReviewPublic()  {return isReviewPublic;}
 
-    public void setReviewPublic(boolean reviewPublic) {
+    public void setisReviewPublic(boolean reviewPublic) {
         isReviewPublic = reviewPublic;
     }
 
@@ -116,11 +114,11 @@ public class Review {
         return reviewRegDate;
     }
 
-    public boolean isReviewDeleted() {
+    public boolean getisReviewDeleted() {
         return isReviewDeleted;
     }
 
-    public void setReviewDeleted(boolean reviewDeleted) {
+    public void setisReviewDeleted(boolean reviewDeleted) {
         isReviewDeleted = reviewDeleted;
     }
 

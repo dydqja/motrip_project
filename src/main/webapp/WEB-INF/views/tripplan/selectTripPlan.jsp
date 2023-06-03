@@ -279,16 +279,17 @@
          });
     });
 
-
     $(function() {
          $("button[id='updateTripPlan']").on("click", function() {
-            window.location.href = "/tripPlan/updateTripPlan";
+            var tripPlanNo = "${tripPlan.tripPlanNo}";
+            window.location.href = "/tripPlan/updateTripPlanView?tripPlanNo=" + tripPlanNo;
          });
     });
 
+
     $(function() {
          $("button[id='history']").on("click", function() {
-              console.log("이전");
+              window.history.back();
          });
     });
 

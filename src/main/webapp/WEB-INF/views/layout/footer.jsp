@@ -1,65 +1,62 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: alexa
+  Date: 2023-06-03
+  Time: 오전 7:49
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<hr/>
-<footer class="three-sections">
+<%--부트스트랩 css--%>
 
-    <div class = left-section>
-        <c:if test="${empty sessionScope.user}">
-            로그인되지 않은 사람은 메모를 사용할 수 없습니다.
-        </c:if>
-        <c:if test="${not empty sessionScope.user}">
-            <form id="memoListForm">
-                <input type="text" id="memoUserId" value="${sessionScope.user.userId}" readonly><br/>
-                <input type="text" id="memoSearchCondition" value="${empty sessionScope.memoPage.searchCondition ? 'myMemo' : sessionScope.memoPage.searchCondition}" readonly><br/>
-                <input type="text" id="memoCurrentPage" value="${empty sessionScope.memoPage.currentPage ? '1' : sessionScope.memoPage.currentPage}" readonly><br/>
-                <input type="text" id="memoDialogCount" value="${empty sessionScope.memoPage.dialogCount ? '0' : sessionScope.memoPage.dialogCount}" readonly><br/>
-                <button type="button" id="memoListToggleBtn" class="btn btn-primary" onclick="toggleMemo()">메모 토글</button>
-                <br/>
-                <br/>
-                <div id="memoListSection">
-                    <div id="memoListArea">
-
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7 col-md-3">
+                <h3>Mold Discover</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quia, architecto? A, reiciendis eveniet! Esse est eaque adipisci natus rerum laudantium accusamus magni.</p>
+            </div>
+            <div class="col-sm-5 col-md-2">
+                <h3>Quick Link</h3>
+                <ul>
+                    <li>Holiday Package</li>
+                    <li>Summer Adventure</li>
+                    <li>Bus and Trasnportation</li>
+                    <li>Ticket and Hotel Booking</li>
+                    <li>Trek and Hikings</li>
+                </ul>
+            </div>
+            <div class="col-sm-7 col-md-4">
+                <h3>Newsletter Signup</h3>
+                <p>Subscribe to our weekly newsletter to get news and update</p>
+                <br>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Your Email">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary">Subscribe</button>
                     </div>
-                    <br/>
-                    <br/>
-                    <div id="memoSearchArea">
-                        <button type="button" class="memoSearchBtn" id="myMemo">내 메모 보기</button>
-                        <button type="button" class="memoSearchBtn" id="sharedMemo">공유받은 메모 보기</button>
-                        <button type="button" class="memoSearchBtn" id="deletedMemo">삭제된 메모 보기</button>
-                        <button type="button" class="addMemoBtn" id="addMemo">새 메모</button>
+                </div>
+            </div>
+            <div class="col-sm-5 col-md-2">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li>Mold Discover</li>
+                    <li>info@moldthemes.com</li>
+                </ul>
+                <div class="clearfix">
+                    <div class="social-icon-list">
+                        <ul>
+                            <li>
+                                <a href="https://twitter.com/moldthemes" class="icon-twitter"></a>
+                            </li>
+                            <li>
+                                <a href="mailto:info@moldthemes.com" class="icon-mail"></a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </form>
-        </c:if>
-    </div>
-    <div class = "middle-section">
-        <div id="memoModalArea">
-            <div id="memoShareListModal"></div>
-        </div>
-        <div id="memoDialogsArea">
-            <form class="memoDialog" name="memoDialogCount">
-                <div id="memoDetailArea">
-
-                </div>
-                <div id="memoControlArea">
-
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-    <div class = "right-section">
-        <div id="root"></div>
-        <script src="/js/bot/bot.js"></script>
-        <link href="/css/bot/bot.css" rel="stylesheet">
-    </div>
+    <div class="copy"><span>&copy;</span> Copyright Mold Discover, 2017</div>
 </footer>
-<hr/>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet" href="/css/memo/memo.css"/>
-<script src="/js/memo/memo.js"></script>

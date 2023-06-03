@@ -168,65 +168,6 @@
         LIMIT #{search.offset}, #{search.limit};
     </select>
 
-    <select id="getPublicReviewList" parameterType="Map" resultMap="reviewResultMap">
-        SELECT r.review_no, r.trip_plan_no, r.review_author, r.review_title, r.review_contents, r.review_thumbnail, r.insta_post_link,
-        r.is_review_public, r.review_likes, r.view_count, r.review_reg_date, r.is_review_deleted,
-        r.review_del_date
-        FROM review r
-        WHERE
-        <choose>
-            <when test="'' != reviewAuthor">
-                r.review_author = #{reviewAuthor}
-            </when>
-            <otherwise>
-                r.is_review_public = TRUE AND r.is_review_deleted = FALSE
-            </otherwise>
-        </choose>
-        GROUP BY r.review_no
-        ORDER BY
-        <choose>
-            <when test="'view_count' == search.searchCondition">
-                r.view_count DESC, r.review_no DESC
-            </when>
-            <when test="'review_likes' == search.searchCondition">
-                r.review_likes DESC, r.review_no DESC
-            </when>
-            <otherwise>
-                r.review_no DESC
-            </otherwise>
-        </choose>
-        LIMIT #{search.offset},\\ #{search.limit})
-    </select>
-
-    <select id="getMyReviewList" parameterType="Map" resultMap="reviewResultMap">
-        SELECT r.review_no, r.trip_plan_no, r.review_author, r.review_title, r.review_contents, r.review_thumbnail, r.insta_post_link,
-        r.is_review_public, r.review_likes, r.view_count, r.review_reg_date, r.is_review_deleted,
-        r.review_del_date
-        FROM review r
-        WHERE
-        <choose>
-            <when test="'' != reviewAuthor">
-                r.review_author = #{reviewAuthor}
-            </when>
-            <otherwise>
-                r.is_review_public = TRUE AND r.is_review_deleted = FALSE
-            </otherwise>
-        </choose>
-        GROUP BY r.review_no
-        ORDER BY
-        <choose>
-            <when test="'view_count' == search.searchCondition">
-                r.view_count DESC, r.review_no DESC
-            </when>
-            <when test="'review_likes' == search.searchCondition">
-                r.review_likes DESC, r.review_no DESC
-            </when>
-            <otherwise>
-                r.review_no DESC
-            </otherwise>
-        </choose>
-        LIMIT #{search.offset}, #{search.limit}
-    </select>
 
 
     <select id="selectReviewCount" resultType="int">
