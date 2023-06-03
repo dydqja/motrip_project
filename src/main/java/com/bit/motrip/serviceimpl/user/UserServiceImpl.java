@@ -36,6 +36,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -173,9 +175,23 @@ public class UserServiceImpl implements UserService{
 //    }
 
     //회원 탈퇴유무 변경
-    public void deleteUser(User user) throws Exception {
+    public void secessionAndRestoreUser(User user) throws Exception {
 
-        userDao.deleteUser(user);
+        if(user.isSecession() == false) {
+
+            Timestamp timestamp = Timestamp.from(Instant.now());
+            user.setSecession(true);
+            user.setSecessionDate(timestamp);
+
+            userDao.secessionAndRestoreUser(user);
+
+        }else if(user.isSecession() == true) {
+
+            user.setSecessionDate(null);
+            user.setSecession(false);
+
+            userDao.secessionAndRestoreUser(user);
+        }
     }
 
     //주민등록번호 7자리에서 성별과 나이대 추출하는 메소드

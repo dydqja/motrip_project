@@ -127,6 +127,6 @@ class UserServiceImplTest {
         getUser.setSuspension(TRUE);
         getUser.setSuspensionDate(suspensionDate);
 
-        userService.deleteUser(getUser);
+        userService.secessionAndRestoreUser(getUser);
     }
 }

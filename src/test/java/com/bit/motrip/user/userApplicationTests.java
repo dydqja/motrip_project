@@ -117,6 +117,6 @@ public class userApplicationTests {
         getUser.setSuspension(TRUE);
         getUser.setSuspensionDate(suspensionDate);
 
-        userDao.deleteUser(getUser);
+        userDao.secessionAndRestoreUser(getUser);
     }
 }
