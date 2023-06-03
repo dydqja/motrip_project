@@ -4,7 +4,8 @@
 <script src="/assets/js/home.js"></script>
 <script>
     $(document).ready(function(){
-        $('.equal-height > div').deasil_equalHeight();
+        const windowHeight = $(window).height(); // 브라우저 창의 높이를 가져옵니다.
+        $('.carousel').height(windowHeight);
         $('#carousel').carousel({
             interval: 10000
         })
