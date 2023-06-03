@@ -9,9 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Mold Discover . HTML Template</title>
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
+    <title>Motrip. Everyone's traveling Platform</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/less" ></script>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
     <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
@@ -32,6 +34,8 @@
 
     <script src="/assets/js/min/countnumbers.min.js"></script>
     <script src="/assets/js/main.js"></script>
+
+
 </head>
 <body>
 <tiles:insertAttribute name="header" />

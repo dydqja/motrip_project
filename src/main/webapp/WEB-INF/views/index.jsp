@@ -1,5 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- Add Class carousel-fade just to fade transition -->
+
+<script src="/assets/js/home.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.equal-height > div').deasil_equalHeight();
+        $('#carousel').carousel({
+            interval: 10000
+        })
+    });
+    $(window).resize(function(){
+        $('.equal-height > div').deasil_equalHeight();
+    });
+</script>
 <div class="carousel slide carousel-fade full-height stick-top" id="carousel">
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
@@ -291,15 +304,3 @@
     </div>
 </div>
 <!-- Current Page JS -->
-<script src="/assets/js/min/home.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('.equal-height > div').deasil_equalHeight();
-        $('#carousel').carousel({
-            interval: 10000
-        })
-    });
-    $(window).resize(function(){
-        $('.equal-height > div').deasil_equalHeight();
-    });
-</script>
