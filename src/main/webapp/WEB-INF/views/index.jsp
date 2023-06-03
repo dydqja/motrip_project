@@ -14,17 +14,17 @@
         $('.equal-height > div').deasil_equalHeight();
     });
 </script>
-<div class="carousel slide carousel-fade full-height stick-top" id="carousel">
+<div class="carousel slide carousel-fade full-height stick-top" id="carousel" style="min-height: 969px;">
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
+        <div class="item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
+        <div class="item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
+        <div class="item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
         <div class="item zooming with-overlay active" style="background-image: url('http://placehold.it/1680x1050');"></div>
         <div class="item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
         <div class="item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
         <div class="item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
-        <div class="item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
-        <div class="item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
-        <div class="item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
-        <div class="carousel-caption full-width center-txt">
+        <div class="carousel-caption full-width center-txt" style="top: 283.5px;">
             <div class="container">
                 <h1 class="main-header">Enjoy Adventure <br> Experience</h1>
                 <hr>
@@ -34,11 +34,11 @@
                     <div class="col-sm-10 row">
                         <div class="col-sm-4 form-group">
                             <label>From</label>
-                            <input type="text" class="form-control datepicker" readonly>
+                            <input type="text" class="form-control datepicker hasDatepicker" readonly="" id="dp1685780924860">
                         </div>
                         <div class="col-sm-4 form-group">
                             <label>To</label>
-                            <input type="text" class="form-control datepicker" readonly>
+                            <input type="text" class="form-control datepicker hasDatepicker" readonly="" id="dp1685780924861">
                         </div>
                         <div class="col-sm-4 form-group">
                             <label>Price</label>
@@ -70,10 +70,10 @@
     <!-- Indicators -->
     <!-- Available Variation Class for carousel-indicators => dashed, circle" -->
     <ol class="carousel-indicators dashed">
-        <li data-target="#carousel" data-slide-to="0" class="active"></li>
-        <li data-target="#carousel" data-slide-to="1"></li>
-        <li data-target="#carousel" data-slide-to="2"></li>
-        <li data-target="#carousel" data-slide-to="3"></li>
+        <li data-target="#carousel" data-slide-to="0" class=""></li>
+        <li data-target="#carousel" data-slide-to="1" class=""></li>
+        <li data-target="#carousel" data-slide-to="2" class=""></li>
+        <li data-target="#carousel" data-slide-to="3" class="active"></li>
         <li data-target="#carousel" data-slide-to="4"></li>
         <li data-target="#carousel" data-slide-to="5"></li>
         <li data-target="#carousel" data-slide-to="6"></li>

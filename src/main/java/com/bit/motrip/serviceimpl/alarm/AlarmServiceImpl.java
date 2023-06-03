@@ -26,6 +26,7 @@ public class AlarmServiceImpl implements AlarmService {
     public int addConfirmAlarm(User sender, User receiver, String alarmTitle, String alarmContents) {
         Alarm alarm = new Alarm();
         alarm.setAlarmCategory("1");
+        alarm.setAlarmLevel("1");
         alarm.setAlarmTitle(alarmTitle);
         alarm.setAlarmContents(alarmContents);
         alarm.setAlarmReceiver(receiver.getUserId());
@@ -106,6 +107,8 @@ public class AlarmServiceImpl implements AlarmService {
         }
 
     }
+
+
 
     @Override
     public int readAlarm(int alarmNo) {

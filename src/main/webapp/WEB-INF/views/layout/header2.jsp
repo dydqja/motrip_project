@@ -1,13 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="pre-loader" style="display: flex; justify-content: center; align-items: center;">
-    <div class="loading-img">
-            <img src="/images/motrip-logo.png" width="100" height="50" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); !important;">
-    </div>
-</div>
-
-
 <header class="nav-menu fixed">
     <nav class="navbar normal transparent">
         <div class="container-fluid">
@@ -22,6 +14,7 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
+
             <div class="navbar-collapse collapse" id="main-navbar">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
@@ -214,25 +207,10 @@
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <c:if test="${empty sessionScope.user}">
-                        <a href="login_page.html"><span class="icon-user"></span>로그인</a>
-                        <button id="loginAsUser1" onclick="location.href='/test/login/user1'">user1</button>
-                        <button id="loginAsUser2" onclick="location.href='/test/login/user2'">user2</button>
-                        <button id="loginAsAdmin" onclick="location.href='/test/login/admin'">admin</button>
-                        </c:if>
-                        <c:if test="${not empty sessionScope.user}">
-                        <a href="/test/logout"><span class="icon-user"></span>마이 페이지</a>
-                        <button id="logout" onclick="location.href='/test/logout'">로그아웃</button>
-                        </c:if>
+                    <li> <a href="login_page.html"><span class="icon-user"></span>Sign In</a>
                     </li>
-                    <c:if test="${not empty sessionScope.user}">
                     <li class="dropdown">
-                        <a href="cart_page.html" style="position: relative;">
-                            <span class="icon-bell" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                                <span class="badge badge-danger" style="position: absolute; bottom: -15px; right: -15px;">3</span>
-                            </span>
-                        </a>
+                        <a href="cart_page.html"><span class="icon-minicart"></span><span class="badge badge-danger">3</span></a>
                         <ul class="dropdown-menu  dropdown-menu-right cart-menu">
                             <li>
                                 <img src="http://placehold.it/40x40" alt="" class="item-img">
@@ -260,7 +238,6 @@
                             </li>
                         </ul>
                     </li>
-                    </c:if>
                 </ul>
             </div>
         </div>
