@@ -1,155 +1,129 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<!DOCTYPE HTML>
-<html lang="ko">
+<head>
 
-    <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>공지사항 목록</title>
 
-        <title>공지사항 목록</title>
+</head>
 
-        <%-- CSS START --%>
-        <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-              integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<body>
 
-        <style>
+    <h1>공지사항 목록</h1>
 
-            .centered-table {
-                text-align: center;
-            }
+    <br>
+    <br>
+    <br>
 
-            .centered-table th,
-            .centered-table td {
-                text-align: center;
-            }
+    <table class="centered-table">
 
-        </style>
-        <%-- CSS END --%>
+        <thead>
 
-    </head>
+            <tr>
+                <th>작성자</th>
+                <th>제목</th>
+                <th>중요</th>
+                <th>작성날짜</th>
+                <th>조회수</th>
+            </tr>
 
-    <body>
+        </thead>
 
-        <h1>공지사항 목록</h1>
+        <tbody>
 
-        <br>
-        <br>
-        <br>
+            <c:forEach var="notice" items="${noticeListData.list}">
 
-        <table class="centered-table">
-
-            <thead>
+                <fmt:formatDate value="${notice.noticeRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
 
                 <tr>
-                    <th>작성자</th>
-                    <th>제목</th>
-                    <th>중요</th>
-                    <th>작성날짜</th>
-                    <th>조회수</th>
+
+                    <td>${notice.noticeAuthor}</td>
+                    <td><a href="#" onclick="viewDetail(${notice.noticeNo})">${notice.noticeTitle}</a></td>
+                    <td>${notice.isNoticeImportant == 1 ? '중요' : ''}</td>
+                    <td>${formattedDate}</td>
+                    <td>${notice.noticeViews}</td>
+
                 </tr>
 
-            </thead>
+            </c:forEach>
 
-            <tbody>
+        </tbody>
 
-                <c:forEach var="notice" items="${noticeListData.list}">
+    </table>
 
-                    <fmt:formatDate value="${notice.noticeRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
+    <nav aria-label="Page navigation example">
 
-                    <tr>
+        <ul class="pagination">
 
-                        <td>${notice.noticeAuthor}</td>
-                        <td><a href="#" onclick="viewDetail(${notice.noticeNo})">${notice.noticeTitle}</a></td>
-                        <td>${notice.isNoticeImportant == 1 ? '중요' : ''}</td>
-                        <td>${formattedDate}</td>
-                        <td>${notice.noticeViews}</td>
+            <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
 
-                    </tr>
+                <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage - 1}" aria-label="Previous">
+                    «
+                </a>
 
-                </c:forEach>
+            </li>
 
-            </tbody>
+            <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
 
-        </table>
+                <li class="page-item ${i == page.currentPage ? 'active' : ''}">
 
-        <nav aria-label="Page navigation example">
-
-            <ul class="pagination">
-
-                <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
-
-                    <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage - 1}" aria-label="Previous">
-                        «
-                    </a>
+                    <a class="page-link" href="/notice/noticeList?currentPage=${i}">${i}</a>
 
                 </li>
 
-                <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
+            </c:forEach>
 
-                    <li class="page-item ${i == page.currentPage ? 'active' : ''}">
+            <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-                        <a class="page-link" href="/notice/noticeList?currentPage=${i}">${i}</a>
+                <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage + 1}" aria-label="Next">
+                    »
+                </a>
 
-                    </li>
+            </li>
 
-                </c:forEach>
+        </ul>
 
-                <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
+    </nav>
 
-                    <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage + 1}" aria-label="Next">
-                        »
-                    </a>
+    <c:if test="${sessionScope.user.userId eq 'admin'}">
 
-                </li>
+        <div>
+            <button id="addNoticeView">공지 등록</button>
+        </div>
 
-            </ul>
+    </c:if>
 
-        </nav>
+    <%-- Bootstrap --%>
+    <script src="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-        <c:if test="${sessionScope.user.userId eq 'admin'}">
+    <%--
+    Jquery --%>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript">
 
-            <div>
-                <button id="addNoticeView">공지 등록</button>
-            </div>
+        function viewDetail(noticeNo) {
 
-        </c:if>
+            // 클릭한 공지 제목의 번호 파라미터를 컨트롤러로 전송하고 상세 조회 서비스 실행
+            window.location.href = "/notice/getNotice?noticeNo=" + noticeNo;
+        }
 
-        <%-- Bootstrap --%>
-        <script src="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        function goToPage(page) {
 
-        <%--
-        Jquery --%>
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-        <script type="text/javascript">
+            // 페이지 번호를 컨트롤러로 전송하여 해당 페이지로 이동
+            window.location.href = "/notice/noticeList?currentPage=" + page;
+        }
 
-            function viewDetail(noticeNo) {
+        $(function() {
 
-                // 클릭한 공지 제목의 번호 파라미터를 컨트롤러로 전송하고 상세 조회 서비스 실행
-                window.location.href = "/notice/getNotice?noticeNo=" + noticeNo;
-            }
+            // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+            $("#addNoticeView").on("click" , function() {
 
-            function goToPage(page) {
-
-                // 페이지 번호를 컨트롤러로 전송하여 해당 페이지로 이동
-                window.location.href = "/notice/noticeList?currentPage=" + page;
-            }
-
-            $(function() {
-
-                // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-                $("#addNoticeView").on("click" , function() {
-
-                    window.location.href = "/notice/addNoticeView";
-                });
+                window.location.href = "/notice/addNoticeView";
             });
+        });
 
-        </script>
+    </script>
 
-    </body>
-
-</html>
+</body>

@@ -1,275 +1,195 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: alexa
-  Date: 2023-06-03
-  Time: 오전 5:16
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="pre-loader" style="display: flex; justify-content: center; align-items: center;">
-    <div class="loading-img">
-            <img src="/images/motrip-logo.png" width="100" height="50" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); !important;">
-    </div>
-</div>
 
+<header class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 
-<header class="nav-menu fixed">
-    <nav class="navbar normal">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">
-                    <img src="/images/motrip-logo.png" alt="">
-                </a>
-                <br>
-                <div class="login-test">
-                    <c:if test="${empty sessionScope.user}">
-                        <button id="loginAsUser1" onclick="location.href='/test/login/user1'">user1</button>
-                        <button id="loginAsUser2" onclick="location.href='/test/login/user2'">user2</button>
-                        <button id="loginAsAdmin" onclick="location.href='/test/login/admin'">admin</button>
-                    </c:if>
-                    <c:if test="${not empty sessionScope.user}">
-                        ${user.userId}님 환영합니다.
-                        <button id="logout" onclick="location.href='/test/logout'">로그아웃</button>
-                    </c:if>
-                </div
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
+    <div class="container">
 
-            <div class="navbar-collapse collapse" id="main-navbar">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#">Home Pages <i class="fa fa-chevron-down nav-arrow"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="home_default.html">Default Home Page</a>
-                            </li>
-                            <li><a href="home_slider.html">Image Slider Default</a>
-                            </li>
-                            <li><a href="home_slider_with_searhbar.html">Slider / Search Bar</a>
-                            </li>
-                            <li><a href="home_boxed.html">Boxed/Background Image</a>
-                            </li>
-                            <li><a href="home_video.html">Home with Video</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#">Tour Pages</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="trip_grid_withsidebar.html">Tour List</a>
-                            </li>
-                            <li><a href="trip_detail.html">Tour Detail</a>
-                            </li>
-                            <li><a href="location.html">Tour Location</a>
-                            </li>
-                            <li><a href="location_archive.html">Location Archive</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">Features</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="colorscheme.html">Color Scheme</a>
-                            </li>
-                            <li><a href="iconfont.html">Icon Font</a>
-                            </li>
-                            <li><a href="text_page.html">Typography</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">Blog</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="blog_list.html">Blog List</a>
-                            </li>
-                            <li><a href="blog_list2.html">Blog List Full Image</a>
-                            </li>
-                            <li><a href="blog_single.html">Blog Single</a>
-                            </li>
-                            <li><a href="blog_single_center.html">Blog Single Center</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown  megamenu">
-                        <a class="dropdown-toggle">Mega Menu</a>
-                        <div class="dropdown-menu">
-                            <div class="col-sm-3">
-                                <h5 class="head">Home Variation</h5>
-                                <ul>
-                                    <li><a href="home_default.html">Default Home Page</a>
-                                    </li>
-                                    <li><a href="home_slider.html">Image Slider Default</a>
-                                    </li>
-                                    <li><a href="home_slider_with_searhbar.html">Slider / Search Bar</a>
-                                    </li>
-                                    <li><a href="home_boxed.html">Boxed/Background Image</a>
-                                    </li>
-                                    <li><a href="home_video.html">Home with Video</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5 class="head">Trip / Listing</h5>
-                                <ul>
-                                    <li><a href="trip_detail.html">Trip Detail</a>
-                                    </li>
-                                    <li class="hor-line"></li>
-                                    <li><a href="trip_grid.html">Trip Grid</a>
-                                    </li>
-                                    <li><a href="trip_grid_withsidebar.html">Trip Grid with Sidebar</a>
-                                    </li>
-                                    <li><a href="trip_list.html">Trip List</a>
-                                    </li>
-                                    <li><a href="trip_list_full_img.html">Trip List - Full Image</a>
-                                    </li>
-                                    <li><a href="trip_list_2col.html">Trip List Two Column</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5 class="head">Pages</h5>
-                                <ul>
-                                    <li><a href="cart_page.html">Cart Page</a>
-                                    </li>
-                                    <li><a href="checkout_page.html">Checkout Page</a>
-                                    </li>
-                                    <li><a href="about_page.html">About Us Page</a>
-                                    </li>
-                                    <li><a href="team_page.html">Team Page</a>
-                                    </li>
-                                    <li><a href="contact_page.html">Contact Page</a>
-                                    </li>
-                                    <li><a href="contact_page2.html">Contact Page 2</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5 class="head last">Misc Pages</h5>
-                                <ul>
-                                    <li><a href="404_page.html">404 Page</a>
-                                    </li>
-                                    <li><a href="comming_soon.html">Comming Soon Page</a>
-                                    </li>
-                                    <li class="hor-line"></li>
-                                    <li><a href="login_page.html">Login Page</a>
-                                    </li>
-                                    <li><a href="signup_page.html">Sign Up Page</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="dropdown megamenu">
-                        <a href="#" class="dropdown-toggle">Elements</a>
-                        <div class="dropdown-menu">
-                            <div class="col-sm-3">
-                                <h5 class="head">Misc 1</h5>
-                                <ul>
-                                    <li><a href="element_feature_list.html">Feature List</a>
-                                    </li>
-                                    <li><a href="element_heading.html">Heading / Titles</a>
-                                    </li>
-                                    <li><a href="element_banner.html">Banner</a>
-                                    </li>
-                                    <li><a href="element_blockquote.html">Blockquote</a>
-                                    </li>
-                                    <li><a href="element_breadcrumb.html">Breadcrumb</a>
-                                    </li>
-                                    <li><a href="element_pagination.html">Pagination</a>
-                                    </li>
+        <a class="navbar-brand" href="/">
 
-                                </ul>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5 class="head">Misc 2</h5>
-                                <ul>
-                                    <li><a href="element_carousel.html">Carousel</a>
-                                    </li>
-                                    <li><a href="element_gallery.html">Gallery &amp; Lightbox</a>
-                                    </li>
-                                    <li><a href="element_step-timeline.html">Steps / Timeline</a>
-                                    </li>
-                                    <li><a href="element_testimonials.html">Testimonials</a>
-                                    </li>
-                                    <li><a href="element_jquery_ui.html">Jquery UI</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5 class="head">Animation / Form</h5>
-                                <ul>
-                                    <li><a href="element_animation.html">Animation</a>
-                                    </li>
-                                    <li><a href="element_button.html">Button</a>
-                                    </li>
-                                    <li><a href="element_button_effect.html">Button Effect</a>
-                                    </li>
-                                    <li><a href="element_form.html">Form</a>
-                                    </li>
-                                    <li><a href="element_counter.html">Counter</a>
-                                    </li>
+            <img src="/images/motrip-logo.png" alt="">
+        </a>
 
-                                </ul>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5 class="head">Tab / Table</h5>
-                                <ul>
-                                    <li><a href="element_table.html">Table</a>
-                                    </li>
-                                    <li><a href="element_tooltip.html">Tooltip / Popover / Modal</a>
-                                    </li>
-                                    <li><a href="element_tabs.html">Tabs</a>
-                                    </li>
-                                    <li><a href="element_accordion.html">Accordion</a>
-                                    </li>
-                                    <li><a href="element_alert.html">Alert / Label</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li> <a href="login_page.html"><span class="icon-user"></span>로그인</a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="cart_page.html" style="position: relative;">
-                            <span class="icon-minicart" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                                <span class="badge badge-danger" style="position: absolute; bottom: -15px; right: -15px;">3</span>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu  dropdown-menu-right cart-menu">
-                            <li>
-                                <img src="http://placehold.it/40x40" alt="" class="item-img">
-                                <span class="delete icon-trash"></span>
-                                <div class="text">
-                                    Lorem ipsum dolor sit amet, consectetur.
-                                    <p>USD 473 X 2</p>
-                                </div>
-                            </li>
-                            <li>
-                                <img src="http://placehold.it/40x40" alt="" class="item-img">
-                                <span class="delete icon-trash"></span>
-                                <div class="text">
-                                    Lorem ipsum dolor sit amet, consectetur.
-                                    <p>USD 473 X 2</p>
-                                </div>
-                            </li>
-                            <li>
-                                <img src="http://placehold.it/40x40" alt="" class="item-img">
-                                <span class="delete icon-trash"></span>
-                                <div class="text">
-                                    Lorem ipsum dolor sit amet, consectetur.
-                                    <p>USD 473 X 2</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+        <div class="login-test">
+
+            <c:if test="${empty sessionScope.user}">
+
+                <button id="loginAsAdmin" onclick="location.href='/test/login/admin'">admin</button>
+                <button id="loginAsUser1" onclick="location.href='/test/login/user1'">user1</button>
+                <button id="loginAsUser2" onclick="location.href='/test/login/user2'">user2</button>
+
+            </c:if>
+
+            <c:if test="${not empty sessionScope.user}">
+
+                ${user.userId}님 환영합니다.
+
+                <button id="logout" onclick="location.href='/test/logout'">로그아웃</button>
+
+            </c:if>
+
         </div>
-    </nav>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link dropdown-toggle" href="#" id="moyohaengDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+
+                        모여행
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="moyohaengDropdown">
+
+                        <li>
+                            <a class="dropdown-item" href="home_default.html">모여행이란</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="home_slider.html">설계 포트폴리오</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="home_slider_with_searhbar.html">제작팀 소개</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link dropdown-toggle" href="#" id="tripPlanDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+
+                        여행플랜
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="tripPlanDropdown">
+
+                        <li>
+                            <a class="dropdown-item" href="/tripPlan/tripPlanList">여행플랜 목록</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/tripPlan/myTripPlanList">나의 여행플랜</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/tripPlan/addTripPlanView">여행플랜 작성</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link dropdown-toggle" href="#" id="reviewDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+
+                        후기
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="reviewDropdown">
+
+                        <li>
+                            <a class="dropdown-item" href="/review/addReviewView">후기 작성</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/review/getReviewList">모든 후기</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/review/getMyReviewList">나의 후기</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link dropdown-toggle" href="#" id="boardDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+
+                        게시판
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="boardDropdown">
+
+                        <li>
+                            <a class="dropdown-item" href="/notice/noticeList">공지사항</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/qna/qnaList">질의응답</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="chatDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+
+                        채팅
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="chatDropdown">
+
+                        <li>
+                            <a class="dropdown-item" href="/chatRoom/chatRoomList">채팅 리스트</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+
+                        <span class="icon-user"></span> 회원
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+
+                        <li>
+                            <a class="dropdown-item" href="/user/login">로그인</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/user/listUser">회원목록</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link position-relative" href="cart_page.html">
+                        <span class="icon-minicart">
+                            <span class="badge bg-danger position-absolute bottom-0 end-0">3</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </header>
+

@@ -1,138 +1,112 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+<head>
 
-<!DOCTYPE HTML>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<html lang="ko">
+    <title>공지사항 등록</title>
 
-    <head>
+</head>
 
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<body>
 
-        <title>공지사항 등록</title>
+    <h1>공지사항 등록</h1>
 
-        <%-- CSS START --%>
-        <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-              integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <br>
+    <br>
+    <br>
 
-        <style>
+    <c:set var="formAction" value="${(noticeTitle == null && noticeContents == null) ? '/notice/addNotice' : '/notice/updateNotice'}" />
 
-            .selector-for-some-widget {
-                box-sizing: content-box;
-            }
+    <form action="${formAction}" method="post">
 
-        </style>
-        <%-- CSS END --%>
+        <input type="hidden" name="noticeAuthor" value="${sessionScope.user.userId}" />
 
-    </head>
+        <c:if test="${noticeNo != null}">
 
-    <body>
+            <input type="hidden" name="noticeNo" value="${noticeNo}" />
 
-        <h1>공지사항 등록</h1>
+        </c:if>
+
+        <div>
+
+            <input type="text" name="noticeTitle" id="noticeTitle" value="${noticeTitle}">
+
+            <select name="isNoticeImportant">
+
+                <option value="0" ${isNoticeImportant == 0 ? 'selected' : ''}>비중요</option>
+                <option value="1" ${isNoticeImportant == 1 ? 'selected' : ''}>중요</option>
+
+            </select>
+
+        </div>
 
         <br>
+
+        <div>
+            <textarea name="noticeContents" id="noticeContents">${noticeContents}</textarea>
+        </div>
+
         <br>
+
+        <div>
+            <button id="addNotice" type="submit">등록하기</button>
+        </div>
+
         <br>
 
-        <c:set var="formAction" value="${(noticeTitle == null && noticeContents == null) ? '/notice/addNotice' : '/notice/updateNotice'}" />
+        <div>
+            <button type="reset">초기화</button>
+        </div>
 
-        <form action="${formAction}" method="post">
+        <br>
 
-            <input type="hidden" name="noticeAuthor" value="${sessionScope.user.userId}" />
+        <div>
+            <button id="getNoticeList" type="button">목록보기</button>
+        </div>
 
-            <c:if test="${noticeNo != null}">
+    </form>
 
-                <input type="hidden" name="noticeNo" value="${noticeNo}" />
+    <script type="text/javascript">
 
-            </c:if>
+        $(function() {
 
-            <div>
+            $("#addNotice").on("click", function() {
 
-                <input type="text" name="noticeTitle" id="noticeTitle" value="${noticeTitle}">
+                var noticeTitle = $("#noticeTitle").val();
+                var noticeContents = $("#noticeContents").val();
 
-                <select name="isNoticeImportant">
+                if (!noticeTitle && !noticeContents) {
 
-                    <option value="0" ${isNoticeImportant == 0 ? 'selected' : ''}>비중요</option>
-                    <option value="1" ${isNoticeImportant == 1 ? 'selected' : ''}>중요</option>
+                    alert("제목과 내용을 입력해주세요.");
+                    return false;
 
-                </select>
+                } else if (!noticeTitle) {
 
-            </div>
+                    alert("제목을 입력해주세요.");
+                    return false;
 
-            <br>
+                } else if (!noticeContents) {
 
-            <div>
-                <textarea name="noticeContents" id="noticeContents">${noticeContents}</textarea>
-            </div>
+                    alert("내용을 입력해주세요.");
+                    return false;
 
-            <br>
+                } else {
 
-            <div>
-                <button id="addNotice" type="submit">등록하기</button>
-            </div>
-
-            <br>
-
-            <div>
-                <button type="reset">초기화</button>
-            </div>
-
-            <br>
-
-            <div>
-                <button id="getNoticeList" type="button">목록보기</button>
-            </div>
-
-        </form>
-
-        <%-- Bootstrap --%>
-        <script src="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-
-        <%-- Jquery --%>
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-        <script type="text/javascript">
-
-            $(function() {
-
-                $("#addNotice").on("click", function() {
-
-                    var noticeTitle = $("#noticeTitle").val();
-                    var noticeContents = $("#noticeContents").val();
-
-                    if (!noticeTitle && !noticeContents) {
-
-                        alert("제목과 내용을 입력해주세요.");
-                        return false;
-
-                    } else if (!noticeTitle) {
-
-                        alert("제목을 입력해주세요.");
-                        return false;
-
-                    } else if (!noticeContents) {
-
-                        alert("내용을 입력해주세요.");
-                        return false;
-
-                    } else {
-
-                        $('form').submit();
-                    }
-                });
+                    $('form').submit();
+                }
             });
+        });
 
-            $(function() {
+        $(function() {
 
-                // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-                $("#getNoticeList").on("click" , function() {
+            // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+            $("#getNoticeList").on("click" , function() {
 
-                    window.location.href = "/notice/noticeList";
-                });
+                window.location.href = "/notice/noticeList";
             });
+        });
 
-        </script>
-    </body>
-</html>
+    </script>
+</body>
