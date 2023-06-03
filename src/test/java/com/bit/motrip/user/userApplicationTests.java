@@ -54,7 +54,7 @@ public class userApplicationTests {
 
         user.setUserId("testUser6");
 
-        User getUser = userDao.getUser(user.getUserId());
+        User getUser = userDao.getUserById(user.getUserId());
 
         System.out.println(getUser.toString());
     }
@@ -86,7 +86,7 @@ public class userApplicationTests {
 
         user.setUserId("testUser6");
 
-        User getUser = userDao.getUser(user.getUserId());
+        User getUser = userDao.getUserById(user.getUserId());
 
         System.out.println(getUser.toString());
 
@@ -110,7 +110,7 @@ public class userApplicationTests {
 
         user.setUserId("testUser6");
 
-        User getUser = userDao.getUser(user.getUserId());
+        User getUser = userDao.getUserById(user.getUserId());
 
         System.out.println(getUser.toString());
 

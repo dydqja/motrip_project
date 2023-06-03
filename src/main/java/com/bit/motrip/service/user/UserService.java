@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 @Service
 public interface UserService {
@@ -17,7 +18,10 @@ public interface UserService {
     public void addUser(User user) throws Exception;
 
     // 내정보확인 / 로그인
-    public User getUser(String userId) throws Exception;
+    public User getUserById(String userId) throws Exception;
+
+    // 블랙리스트 닉네임과 회원상세보기 연결
+    public User getUserByNickname(String userNickname) throws Exception;
 
     // 회원정보리스트
     public Map<String , Object> getList(Search search) throws Exception;
@@ -48,6 +52,9 @@ public interface UserService {
 
     // Token을 이용하여 사용자 프로필 정보 가져오기
     String getUserProfile(HttpSession session, OAuth2AccessToken oauthToken) throws Exception;
+
+    //여러 아이디값으로 각각의 닉네임 가져오기
+    public List<String> getNickname(List<String> blacklist) throws Exception;
 
 
 

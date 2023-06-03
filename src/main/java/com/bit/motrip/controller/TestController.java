@@ -21,7 +21,7 @@ public class TestController {
     @GetMapping("login/{id}")
     public String login(@PathVariable("id") String id, HttpSession session) throws Exception{
         System.out.println(id+"로 대충 로그인합니다.");
-        User dbUser = userService.getUser(id);
+        User dbUser = userService.getUserById(id);
         session.setAttribute("user", dbUser);
         return "index.tiles";
     }
@@ -36,4 +36,7 @@ public class TestController {
 
         return "alarm/alarmTest.tiles";
     }
+
+
+
 }

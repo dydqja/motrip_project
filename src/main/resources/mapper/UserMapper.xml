@@ -49,12 +49,21 @@
                  );
     </insert>
 
-    <select 	id="getUser"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
+    <select 	id="getUserById"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
         SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.phone, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
                u.is_self_intro_public, u.is_user_photo_public, u.role, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
         FROM users u
         LEFT JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
         WHERE u.user_id = #{userId}
+        GROUP BY u.user_id;
+    </select>
+
+    <select 	id="getUserByNickname"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
+        SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.phone, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
+               u.is_self_intro_public, u.is_user_photo_public, u.role, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
+        FROM users u
+                 LEFT JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
+        WHERE u.nickname = #{nickname}
         GROUP BY u.user_id;
     </select>
 
@@ -135,6 +144,15 @@
         SELECT count(*)
         FROM users
         WHERE nickname = #{nickname}
+    </select>
+
+    <select id="getNickname" parameterType="list" resultType="String">
+        SELECT nickname
+        FROM users
+        WHERE user_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
 

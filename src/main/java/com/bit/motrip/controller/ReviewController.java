@@ -57,9 +57,9 @@ public class ReviewController {
             search.setCurrentPage(search.getCurrentPage());
         }
         // selectTripPlanList를 호출하여 tripPlanList를 가져옴
-        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(search);
+/*        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(search);
         model.addAttribute("tripPlanList", tripPlanList);
-        System.out.println("제발 모달창 나와주겠니"+tripPlanList);
+        System.out.println("제발 모달창 나와주겠니"+tripPlanList);*/
 
         return "review/addReviewView.jsp";
     }

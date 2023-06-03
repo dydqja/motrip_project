@@ -7,64 +7,63 @@
 <mapper namespace="com.bit.motrip.dao.alarm.AlarmDao">
 
     <resultMap id="alarmResultMap" type="com.bit.motrip.domain.Alarm">
-        <id column="alarm_no" property="alarmNo" jdbcType="INTEGER"/>
-        <result column="alarm_title" property="alarmTitle" jdbcType="VARCHAR"/>
-        <result column="alarm_contents" property="alarmContents" jdbcType="VARCHAR"/>
-        <result column="alarm_sender" property="alarmSender" jdbcType="VARCHAR"/>
-        <result column="alarm_receiver" property="alarmReceiver" jdbcType="VARCHAR"/>
-        <result column="alarm_reg_date" property="alarmRegDate" jdbcType="DATE"/>
-        <result column="alarm_read_date" property="alarmReadDate" jdbcType="DATE"/>
-        <result column="alarm_uri_one" property="alarmUriOne" jdbcType="VARCHAR"/>
-        <result column="alarm_btn_one" property="alarmBtnOne" jdbcType="VARCHAR"/>
-        <result column="alarm_uri_two" property="alarmUriTwo" jdbcType="VARCHAR"/>
-        <result column="alarm_btn_two" property="alarmBtnTwo" jdbcType="VARCHAR"/>
-        <result column="alarm_uri_three" property="alarmUriThree" jdbcType="VARCHAR"/>
-        <result column="alarm_btn_three" property="alarmBtnThree" jdbcType="VARCHAR"/>
+        <id property="alarmNo" column="alarm_no" />
+        <result property="alarmCategory" column="alarm_category" />
+        <result property="alarmLevel" column="alarm_level" />
+        <result property="alarmTitle" column="alarm_title" />
+        <result property="alarmContents" column="alarm_contents" />
+        <result property="alarmSender" column="alarm_sender" />
+        <result property="alarmSenderNick" column="alarm_sender_nick" />
+        <result property="alarmReceiver" column="alarm_receiver" />
+        <result property="alarmReceiverNick" column="alarm_receiver_nick" />
+        <result property="alarmRegDate" column="alarm_reg_date" />
+        <result property="alarmReadDate" column="alarm_read_date" />
+        <result property="alarmAcceptUrl" column="alarm_accept_url" />
+        <result property="alarmRejectUrl" column="alarm_reject_url" />
+        <result property="alarmNaviUrl" column="alarm_navi_url" />
+        <result property="alarmHoldUrl" column="alarm_hold_url" />
     </resultMap>
-    <insert id="addAlarm" parameterType="com.bit.motrip.domain.Alarm" useGeneratedKeys="true" keyProperty="alarmNo" keyColumn="alarm_no">
-        INSERT INTO alarm
-        (alarm_title, alarm_contents, alarm_sender, alarm_receiver, alarm_reg_date, alarm_read_date
-        , alarm_uri_one, alarm_btn_one, alarm_uri_two, alarm_btn_two, alarm_uri_three, alarm_btn_three)
-        VALUES
-        (#{alarmTitle}, #{alarmContents}, #{alarmSender}, #{alarmReceiver}, NOW(), #{alarmReadDate}
-        , #{alarmUriOne}, #{alarmBtnOne}, #{alarmUriTwo}, #{alarmBtnTwo}, #{alarmUriThree}, #{alarmBtnThree})
+    <insert id="insertAlarm" parameterType="com.bit.motrip.domain.Alarm">
+        INSERT INTO alarms (alarm_category, alarm_level, alarm_title,
+                            alarm_contents, alarm_sender, alarm_sender_nick, alarm_receiver,
+                            alarm_receiver_nick, alarm_reg_date, alarm_read_date, alarm_accept_url,
+                            alarm_reject_url, alarm_navi_url, alarm_hold_url)
+        VALUES (#{alarmCategory}, #{alarmLevel}, #{alarmTitle},
+                #{alarmContents}, #{alarmSender}, #{alarmSenderNick}, #{alarmReceiver},
+                #{alarmReceiverNick}, #{alarmRegDate}, #{alarmReadDate}, #{alarmAcceptUrl},
+                #{alarmRejectUrl}, #{alarmNaviUrl}, #{alarmHoldUrl})
     </insert>
 
     <update id="deleteAlarm" parameterType="int">
-        UPDATE alarm
+        UPDATE alarms
         SET
         alarm_read_date = NOW()
         WHERE alarm_no = #{alarmNo}
     </update>
 
     <delete id="removeAlarm" parameterType="int">
-        DELETE FROM alarm
+        DELETE FROM alarms
         WHERE alarm_no = #{alarmNo}
     </delete>
 
-    <select id="getAlarm" parameterType="int" resultMap="alarmResultMap">
-        SELECT
-        alarm_no, alarm_title, alarm_contents, alarm_sender, alarm_receiver, alarm_reg_date, alarm_read_date
-        , alarm_uri_one, alarm_btn_one, alarm_uri_two, alarm_btn_two, alarm_uri_three, alarm_btn_three
-        FROM alarm
-        WHERE alarm_no = #{alarmNo}
-    </select>
 
     <select id="getAlarmList" parameterType="com.bit.motrip.common.Search" resultMap="alarmResultMap">
-        SELECT
-        alarm_no, alarm_title, alarm_contents, alarm_sender, alarm_receiver, alarm_reg_date, alarm_read_date
-        , alarm_uri_one, alarm_btn_one, alarm_uri_two, alarm_btn_two, alarm_uri_three, alarm_btn_three
-        FROM alarm
+        SELECT alarm_no, alarm_category, alarm_level, alarm_title,
+               alarm_contents, alarm_sender, alarm_sender_nick, alarm_receiver,
+               alarm_receiver_nick, alarm_reg_date, alarm_read_date, alarm_accept_url,
+               alarm_reject_url, alarm_navi_url, alarm_hold_url
+        FROM alarms
         WHERE alarm_receiver = #{searchKeyword}
-        ORDER BY alarm_reg_date DESC
+        ORDER BY alarm_level ASC, alarm_reg_date ASC
         LIMIT #{mysqlStartRowNum}, #{pageSize}
     </select>
 
     <select id="getAlarmCount" parameterType="com.bit.motrip.common.Search" resultType="int">
         SELECT
         COUNT(alarm_no)
-        FROM alarm
+        FROM alarms
         WHERE alarm_receiver = #{searchKeyword}
+        AND alarm_level IN (1, 2)
     </select>
 
 
