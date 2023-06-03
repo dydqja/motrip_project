@@ -173,6 +173,7 @@ public class ReviewController {
             return "error";
         }//컨트롤러에 유저 세션 저장해야만해- 했어
     }
+
     @PostMapping(value = "updateReview")
     public String updateReview(@ModelAttribute("review") Review review, Model model) throws Exception {
         reviewService.updateReview(review);
