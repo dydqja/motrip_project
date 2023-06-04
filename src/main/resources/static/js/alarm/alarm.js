@@ -24,7 +24,7 @@
         console.log('서버로부터 알람 폴링 시간을 받지 못했으므로, 기본값 3초로 세팅한다.')
     }
     //서버에 연락할 유저의 Id는
-    let userId = $("#userId").val();
+    let userId = $("#alarmUserId").val();
     console.log('현재 로그인한 유저의 아이디는'+userId+'이다.');
     //유저 아이디가 없다면 폴링을 하지 않는다.
     if(!userId){
@@ -80,7 +80,7 @@
     $("#alarmCurrentPage").val(1);
     //서버와 통싱해서 알람의 정보를 가져온다.
     //서버에 보낼 변수를 확보한다.
-    let userId = $("#userId").val();
+    let userId = $("#alarmUserId").val();
     let currentPage = $("#alarmCurrentPage").val();
 
     $.ajax({
@@ -106,7 +106,7 @@
     $("#alarmCurrentPage").val(1);
     //서버와 통싱해서 알람의 정보를 가져온다.
     //서버에 보낼 변수를 확보한다.
-    let userId = $("#userId").val();
+    let userId = $("#alarmUserId").val();
     let currentPage = $("#alarmCurrentPage").val();
     $.ajax({
         url: "/alarm/getHoldAlarmList",
