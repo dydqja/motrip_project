@@ -34,30 +34,6 @@
 
             </div>
 
-            <div class="carousel-item zooming with-overlay">
-
-                <video class="w-100" autoplay loop muted>
-
-                    <source src="video2.mp4" type="video/mp4">
-
-                </video>
-
-                <div class="carousel-caption full-width center-txt">
-
-                    <div class="container">
-
-                        <h1 class="main-header">모여행</h1>
-
-                        <br>
-
-                        <h2 class="main-header">여행과 사랑, 그리고 인연</h2>
-
-                    </div>
-
-                </div>
-
-            </div>
-
         </div>
         <!--
         <button class="carousel-control-prev bottom-right" type="button" data-bs-target="#carousel" data-bs-slide="prev">
