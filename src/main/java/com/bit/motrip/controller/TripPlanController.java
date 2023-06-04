@@ -47,7 +47,7 @@ public class TripPlanController {
 
         model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
 
-        return "tripplan/tripPlanList.tiles";
+        return "tripplan/tripPlanList.jsp";
     }
 
     @GetMapping("myTripPlanList") // 나의 여행플랜 리스트
@@ -70,13 +70,13 @@ public class TripPlanController {
         model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
         model.addAttribute("publicPlanList", true); // 전체 공유에서는 삭제버튼이 안보이게 하기위함
 
-        return "tripplan/tripPlanList.tiles";
+        return "tripplan/tripPlanList.jsp";
     }
 
     @GetMapping("addTripPlanView") // addTripPlanView 일반 네비게이션
     public String addTripPlanView() {
         System.out.println("GET : addTripPlanView()");
-        return "tripplan/addTripPlan.tiles";
+        return "tripplan/addTripPlan.jsp";
     }
 
     @GetMapping("selectTripPlan")
@@ -89,7 +89,7 @@ public class TripPlanController {
         model.addAttribute("tripPlan", tripPlan);
         model.addAttribute("nickName", dbUser.getNickname()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
 
-        return "tripplan/selectTripPlan.tiles";
+        return "tripplan/selectTripPlan.jsp";
     }
 
     @GetMapping("updateTripPlanView")
@@ -102,14 +102,7 @@ public class TripPlanController {
         model.addAttribute("tripPlan", tripPlan);
         model.addAttribute("nickName", dbUser.getNickname()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
 
-        return "tripplan/updateTripPlan.tiles";
-    }
-
-    @PostMapping("updateTripPlan")
-    public String updateTripPlan() throws Exception {
-        System.out.println("POST : updateTripPlan()");
-
-        return "tripplan/selectTripPlan.tiles";
+        return "tripplan/updateTripPlan.jsp";
     }
 
 }
