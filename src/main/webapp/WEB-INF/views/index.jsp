@@ -6,38 +6,60 @@
 
         <div class="carousel-inner" role="listbox">
 
-            <div class="carousel-item zooming with-overlay active" style="background-image: url('http://placehold.it/1680x1050');"></div>
-            <div class="carousel-item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
-            <div class="carousel-item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
-            <div class="carousel-item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
-            <div class="carousel-item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
-            <div class="carousel-item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
-            <div class="carousel-item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
-            <div class="carousel-item zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');"></div>
+            <div class="carousel-item zooming with-overlay active">
 
+                <div class="video-wrapper">
 
-            <div class="carousel-caption full-width center-txt">
+                    <video class="w-100" autoplay loop muted>
 
-                <div class="container">
+                        <source src="/media/motrip1.mp4" type="video/mp4">
 
-                    <h1 class="main-header">모여행</h1>
+                    </video>
 
-                    <br>
+                    <div class="carousel-caption full-width center-txt">
 
-                    <h2 class="main-header">여행과 사랑, 그리고 인연</h2>
+                        <div class="container">
 
-                    <hr>
+                            <h1 class="main-header">모여행</h1>
 
-                    <p class="sub-header"></p>
+                            <br>
 
-                    <br>
+                            <h2 class="main-header">여행과 사랑, 그리고 인연</h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="carousel-item zooming with-overlay">
+
+                <video class="w-100" autoplay loop muted>
+
+                    <source src="video2.mp4" type="video/mp4">
+
+                </video>
+
+                <div class="carousel-caption full-width center-txt">
+
+                    <div class="container">
+
+                        <h1 class="main-header">모여행</h1>
+
+                        <br>
+
+                        <h2 class="main-header">여행과 사랑, 그리고 인연</h2>
+
+                    </div>
 
                 </div>
 
             </div>
 
         </div>
-
+        <!--
         <button class="carousel-control-prev bottom-right" type="button" data-bs-target="#carousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
@@ -50,15 +72,9 @@
         <ol class="carousel-indicators dashed">
             <li data-bs-target="#carousel" data-bs-slide-to="0" class="active"></li>
             <li data-bs-target="#carousel" data-bs-slide-to="1"></li>
-            <li data-bs-target="#carousel" data-bs-slide-to="2"></li>
-            <li data-bs-target="#carousel" data-bs-slide-to="3"></li>
-            <li data-bs-target="#carousel" data-bs-slide-to="4"></li>
-            <li data-bs-target="#carousel" data-bs-slide-to="5"></li>
-            <li data-bs-target="#carousel" data-bs-slide-to="6"></li>
-            <li data-bs-target="#carousel" data-bs-slide-to="7"></li>
-        </ol>
+             Add more carousel indicators here
+        </ol>-->
     </div>
-
 
     <div class="section bg-white">
         <div class="container">
