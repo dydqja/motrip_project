@@ -1,6 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<head>
+
+    <title>모여행 헤더 페이지</title>
+
+    <style>
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+    </style>
+
+</head>
+
 <header class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 
     <div class="container">
@@ -144,7 +157,7 @@
                         게시판
                     </a>
 
-                    <ul class="dropdown-menu" aria-labelledby="boardDropdown">
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="boardDropdown">
 
                         <li>
                             <a class="dropdown-item" href="/notice/noticeList">공지사항</a>

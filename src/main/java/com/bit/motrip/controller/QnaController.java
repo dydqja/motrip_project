@@ -32,7 +32,7 @@ public class QnaController {
     }
 
     ///Method
-    @GetMapping("qnaList")
+    @RequestMapping("qnaList")
     public String getQnaList(@RequestParam(defaultValue = "1") int currentPage, Model model) throws Exception {
 
         System.out.println("::");
