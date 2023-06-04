@@ -294,6 +294,7 @@ public class User {
                 ", age='" + age + '\'' +
                 ", isSecession=" + isSecession +
                 ", isSuspension=" + isSuspension +
+                ", role=" + role +
                 ", evaluateCount=" + evaluateCount +
                 '}';
     }

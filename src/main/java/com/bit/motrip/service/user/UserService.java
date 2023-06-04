@@ -33,7 +33,7 @@ public interface UserService {
 //    public boolean checkDuplication(String userId) throws Exception;
 
     // 회원 탈퇴처리
-    public void deleteUser(User user) throws Exception;
+    public void secessionAndRestoreUser(User user) throws Exception;
 
     public int checkId(String userId) throws  Exception;
 
