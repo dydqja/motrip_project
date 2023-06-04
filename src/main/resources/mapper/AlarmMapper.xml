@@ -21,20 +21,20 @@
         <result property="alarmAcceptUrl" column="alarm_accept_url" />
         <result property="alarmRejectUrl" column="alarm_reject_url" />
         <result property="alarmNaviUrl" column="alarm_navi_url" />
-        <result property="alarmHoldUrl" column="alarm_hold_url" />
+        <result property="alarmHold" column="alarm_hold" />
     </resultMap>
-    <insert id="insertAlarm" parameterType="com.bit.motrip.domain.Alarm">
+    <insert id="addAlarm" parameterType="com.bit.motrip.domain.Alarm">
         INSERT INTO alarms (alarm_category, alarm_level, alarm_title,
                             alarm_contents, alarm_sender, alarm_sender_nick, alarm_receiver,
-                            alarm_receiver_nick, alarm_reg_date, alarm_read_date, alarm_accept_url,
-                            alarm_reject_url, alarm_navi_url, alarm_hold_url)
+                            alarm_receiver_nick, alarm_read_date, alarm_accept_url,
+                            alarm_reject_url, alarm_navi_url)
         VALUES (#{alarmCategory}, #{alarmLevel}, #{alarmTitle},
                 #{alarmContents}, #{alarmSender}, #{alarmSenderNick}, #{alarmReceiver},
-                #{alarmReceiverNick}, #{alarmRegDate}, #{alarmReadDate}, #{alarmAcceptUrl},
-                #{alarmRejectUrl}, #{alarmNaviUrl}, #{alarmHoldUrl})
+                #{alarmReceiverNick}, #{alarmReadDate}, #{alarmAcceptUrl},
+                #{alarmRejectUrl}, #{alarmNaviUrl})
     </insert>
 
-    <update id="deleteAlarm" parameterType="int">
+    <update id="readAlarm" parameterType="int">
         UPDATE alarms
         SET
         alarm_read_date = NOW()
@@ -44,26 +44,47 @@
     <delete id="removeAlarm" parameterType="int">
         DELETE FROM alarms
         WHERE alarm_no = #{alarmNo}
+        AND (alarm_hold != 1 OR alarm_hold IS NULL)
     </delete>
 
+    <update id="holdAlarm" parameterType="int">
+        UPDATE alarms
+        SET
+        alarm_hold = 1
+        WHERE alarm_no = #{alarmNo}
+    </update>
+
+    <select id="getUnreadAlarmCount" parameterType="String" resultType="int">
+        SELECT
+            COUNT(alarm_no)
+        FROM alarms
+        WHERE alarm_receiver = #{userId}
+          AND alarm_level IN (1, 2)
+          AND alarm_read_date IS NULL
+    </select>
 
     <select id="getAlarmList" parameterType="com.bit.motrip.common.Search" resultMap="alarmResultMap">
         SELECT alarm_no, alarm_category, alarm_level, alarm_title,
                alarm_contents, alarm_sender, alarm_sender_nick, alarm_receiver,
                alarm_receiver_nick, alarm_reg_date, alarm_read_date, alarm_accept_url,
-               alarm_reject_url, alarm_navi_url, alarm_hold_url
+               alarm_reject_url, alarm_navi_url, alarm_hold
         FROM alarms
         WHERE alarm_receiver = #{searchKeyword}
+        AND (alarm_hold != 1 OR alarm_hold IS NULL)
         ORDER BY alarm_level ASC, alarm_reg_date ASC
         LIMIT #{mysqlStartRowNum}, #{pageSize}
     </select>
 
-    <select id="getAlarmCount" parameterType="com.bit.motrip.common.Search" resultType="int">
-        SELECT
-        COUNT(alarm_no)
+    <select id="getHoldAlarmList" parameterType="com.bit.motrip.common.Search" resultMap="alarmResultMap">
+        SELECT alarm_no, alarm_category, alarm_level, alarm_title,
+               alarm_contents, alarm_sender, alarm_sender_nick, alarm_receiver,
+               alarm_receiver_nick, alarm_reg_date, alarm_read_date, alarm_accept_url,
+               alarm_reject_url, alarm_navi_url, alarm_hold
         FROM alarms
         WHERE alarm_receiver = #{searchKeyword}
-        AND alarm_level IN (1, 2)
+        AND alarm_hold = 1
+        ORDER BY alarm_level ASC, alarm_reg_date ASC
+            LIMIT #{mysqlStartRowNum}, #{pageSize}
     </select>
 
 

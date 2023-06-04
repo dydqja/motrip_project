@@ -283,6 +283,8 @@ public class UserRestController {
 
         List<EvaluateList> getBlacklist = evaluateListService.getEvaluation(evaluaterId);
 
+        System.out.println("getBlacklist 값은? : " +getBlacklist);
+
         List<String> blacklist = new ArrayList<>();
         for (EvaluateList evaluateList1 : getBlacklist) {
             if (evaluateList1.getBlacklistedUserId() != null) {
@@ -292,12 +294,16 @@ public class UserRestController {
         System.out.println(getBlacklist);
         System.out.println(blacklist);
 
-        List<String> getNickname = userService.getNickname(blacklist);
-
+        List<String> getNickname = new ArrayList<>();
+        if (!blacklist.isEmpty()) {
+            getNickname = userService.getNickname(blacklist);
+        }
         System.out.println(getNickname);
 
         return getNickname;
     }
+
+
 }
 
 

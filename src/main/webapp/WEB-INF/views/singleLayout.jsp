@@ -1,18 +1,25 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE-edge">
+<!DOCTYPE HTML>
+
+<html lang="ko">
+
+  <head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Motrip Home</title>
 
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
 
-</head>
-<body>
-<%--https://goldswan.tistory.com/41--%>
-<tiles:insertAttribute name="contents" />
+  </head>
 
-</body>
+  <body>
+
+    <tiles:insertAttribute name="contents" />
+
+  </body>
+
 </html>

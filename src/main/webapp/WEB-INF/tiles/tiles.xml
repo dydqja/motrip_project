@@ -20,11 +20,6 @@
         <put-attribute name="contents" value="/WEB-INF/views/{1}/{2}.jsp" />
     </definition>
 
-    <definition name="memo/*.tiles" extends="baseLayout">
-        <put-attribute name="footer" value="/WEB-INF/views/memo/{1}.jsp" />
-    </definition>
-
-
 
     <!-- 타일즈 미 적용 -->
     <definition name="singleLayout" template="/WEB-INF/views/singleLayout.jsp">

@@ -27,7 +27,7 @@ public interface UserDao {
     public void updateUser(User user) throws Exception;
 
     //delete
-    public void deleteUser(User user) throws Exception;
+    public void secessionAndRestoreUser(User user) throws Exception;
 
     public int checkId(String userId) throws Exception;
 

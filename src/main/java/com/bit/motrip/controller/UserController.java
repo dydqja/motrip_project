@@ -63,6 +63,7 @@ public class UserController {
     public String login(@ModelAttribute("user") User user , HttpSession session, HttpServletRequest request) throws Exception{
         System.out.println("/user/login : POST");
 
+
         //사용자가 입력한 아이디값이 DB에 저장된(회원가입된) 아이디인지 확인
         User dbUser=userService.getUserById(user.getUserId());
         System.out.println(dbUser);
@@ -84,7 +85,11 @@ public class UserController {
             return "user/login.jsp"; // 로그인 페이지로 이동
         }
 
-        return "/index.tiles";
+        if(dbUser.isSecession() == true) {
+            return "user/restoreUser.jsp";
+        }else {
+            return "/index.tiles";
+        }
     }
 
     @RequestMapping( value="addUser", method=RequestMethod.POST )
@@ -167,6 +172,33 @@ public class UserController {
         }
 
         return "/user/getUser.jsp";
+    }
+
+    @RequestMapping( value="secessionUser", method=RequestMethod.GET)
+    public String secessionUser() throws Exception{
+        System.out.println("/user/secessionUser : GET");
+
+        return "/user/secessionUser.jsp";
+    }
+
+    @RequestMapping(value = "deleteUser", method = RequestMethod.POST)
+    public String deleteUser(HttpSession session) throws Exception {
+        System.out.println("/user/deleteUser : POST");
+
+        User user = (User) session.getAttribute("user");
+        userService.secessionAndRestoreUser(user);
+
+        return "/user/login.jsp";
+    }
+
+    @RequestMapping(value = "restoreUser", method = RequestMethod.POST)
+    public String restoreUser(HttpSession session) throws Exception {
+        System.out.println("/user/restoreUser : POST");
+
+        User user = (User) session.getAttribute("user");
+        userService.secessionAndRestoreUser(user);
+
+        return "/user/login.jsp";
     }
 
 }

@@ -2,13 +2,13 @@ package com.bit.motrip.controller;
 
 
 import com.bit.motrip.common.Search;
-import com.bit.motrip.domain.Comment;
-import com.bit.motrip.domain.Review;
-import com.bit.motrip.domain.TripPlan;
-import com.bit.motrip.domain.User;
+import com.bit.motrip.domain.*;
+import com.bit.motrip.service.chatroom.ChatMemberService;
+import com.bit.motrip.service.chatroom.ChatRoomService;
 import com.bit.motrip.service.review.CommentService;
 import com.bit.motrip.service.review.ReviewService;
 import com.bit.motrip.service.tripplan.TripPlanService;
+import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +36,14 @@ public class ReviewController {
     @Qualifier("tripPlanServiceImpl")
     private  TripPlanService tripPlanService;
 
+    @Autowired
+    @Qualifier("chatMemberServiceImpl")
+    private ChatMemberService chatMemberService;
+
+    @Autowired
+    @Qualifier("userServiceImpl")
+    private UserService userService;
+
     ///Contructor
     public ReviewController(){
         System.out.println("ReviewController 생성자");
@@ -54,23 +62,39 @@ public class ReviewController {
         this.tripPlanService = tripPlanService;
     }
 
-    @GetMapping(value = "addReviewView")
-    public String addReviewView(Search search,Model model) throws Exception {
+    @GetMapping(value = "addReviewView")//후기 작성
+    public String addReviewView(Search search,int chatRoomNo,Model model,HttpSession session) throws Exception {
         System.out.println("/review/addReviewView: GET");
+        // 로그인된 유저 정보 가져오기
+        User loggedInUser = (User) session.getAttribute("user");
+
+        // 로그인되지 않은 경우 로그인 페이지로 이동
+        if (loggedInUser == null) {
+            return "redirect:/login"; // 로그인 페이지 경로로 수정해야 함
+        }
+
+        // 로그인된 유저가 속한 chatRoom 목록 가져오기
+        List<ChatMember> chatMemberList= chatMemberService.chatMemberList(chatRoomNo);
+
+        // 선택 가능한 TripPlan들 가져오기
+        List<TripPlan> tripPlanList = new ArrayList<>();
+        for (ChatMember chatMember : chatMemberList) {
+            TripPlan tripPlan = tripPlanService.selectTripPlan(chatMember.getTripPlanNo());
+            tripPlanList.add(tripPlan);
+        }
+
+        model.addAttribute("tripPlanList", tripPlanList);
+        model.addAttribute("loggedInUser", loggedInUser);
+
         if(search.getPageSize() == 0){
             search.setCurrentPage(1);
         } else {
             search.setCurrentPage(search.getCurrentPage());
         }
-        // selectTripPlanList를 호출하여 tripPlanList를 가져옴
-/*        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(search);
-        model.addAttribute("tripPlanList", tripPlanList);
-        System.out.println("제발 모달창 나와주겠니"+tripPlanList);*/
-
         return "review/addReviewView.jsp";
     }
 
-    @PostMapping(value = "addReview")
+    @PostMapping(value = "addReview")//등록된 후기
     public String addReview(@ModelAttribute("review") Review review,
                             @RequestParam("tripPlanNo") int tripPlanNo,  Model model) throws Exception {
         System.out.println("/review/addReview : POST");
@@ -90,7 +114,6 @@ public class ReviewController {
         model.addAttribute("review", review);
         System.out.println("review :" +review);
 
-
         // tripPlan 객체를 모델에 추가
         model.addAttribute("tripPlan", tripPlan);
 
@@ -100,9 +123,9 @@ public class ReviewController {
         return "review/addReview.jsp";
     }
 
-    @GetMapping("getReviewList")
+    @GetMapping("getReviewList")// 공개된 모든 후기 목록 조회
     public String getReviewList(@ModelAttribute("search")Search search, Model model, HttpSession session) throws Exception {
-        System.out.println("GET : reviewList()");
+        System.out.println("/review/getReviewList : GET");
 
         if(search.getPageSize() == 0){
             search.setCurrentPage(1);
@@ -118,9 +141,9 @@ public class ReviewController {
         return "review/getReviewList.jsp";
     }
 
-    @GetMapping("getMyReviewList")
+    @GetMapping("getMyReviewList")// 내가 작성한 모든 후기 목록 조회
     public String getMyReviewList(@ModelAttribute("search")Search search, Model model, HttpSession session) throws Exception {
-        System.out.println("GET : getMyReviewList()");
+        System.out.println("/review/getMyReviewList : GET");
 
         if(search.getPageSize() == 0){
             search.setCurrentPage(1);
@@ -143,8 +166,9 @@ public class ReviewController {
         return "review/getMyReviewList.jsp";
     }
 
-    @GetMapping("getReview")
+    @GetMapping("getReview")// 후기 단 1개 상세조회
     public String getReview(@RequestParam("reviewNo") int reviewNo, Model model, HttpSession session) {
+        System.out.println("/review/getReview : GET");
         try {
             // 후기 상세 조회
             Review getReview = reviewService.getReview(reviewNo);
@@ -174,21 +198,25 @@ public class ReviewController {
         }//컨트롤러에 유저 세션 저장해야만해- 했어
     }
 
-    @PostMapping(value = "updateReview")
+    @PostMapping(value = "updateReview")//후기 수정
     public String updateReview(@ModelAttribute("review") Review review, Model model) throws Exception {
+        System.out.println("/review/updateReview : POST");
         reviewService.updateReview(review);
         model.addAttribute("review", review);
+        System.out.println();
 
         return "review/updateReview.jsp";
     }
-    @PostMapping(value = "deleteReview")
+    @PostMapping(value = "deleteReview")//후기완전삭제
     public String deleteReview(@RequestParam("reviewNo") int reviewNo) {
+        System.out.println("/review/deleteReview : POST");
         reviewService.deleteReview(reviewNo);
 
         return "redirect:/review/getMyReviewList.jsp";
     }
-    @PostMapping(value = "recoverReview")
+    @PostMapping(value = "recoverReview")//후기 복구
     public String recoverReview(@RequestParam("reviewNo") int reviewNo) {
+        System.out.println("/review/recoverReview : POST");
         reviewService.recoverReview(reviewNo);
 
         return "redirect:/review/getMyReviewList.jsp";
