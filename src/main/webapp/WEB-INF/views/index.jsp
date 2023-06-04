@@ -32,46 +32,6 @@
 
                     <br>
 
-                    <div class="search-bar padding-20">
-
-                        <div class="row">
-
-                            <div class="col-md-4 form-group">
-
-                                <label for="from">From</label>
-                                <input type="text" class="form-control datepicker" id="from" readonly>
-
-                            </div>
-
-                            <div class="col-md-4 form-group">
-
-                                <label for="to">To</label>
-                                <input type="text" class="form-control datepicker" id="to" readonly>
-
-                            </div>
-
-                            <div class="col-md-4 form-group">
-
-                                <label for="price">Price</label>
-
-                                <select class="form-control" id="price">
-
-                                    <option value="">1000 - 2000</option>
-
-                                </select>
-
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-2">
-
-                            <button class="btn btn-primary btn-search hvr-sweep-to-right">Search</button>
-
-                        </div>
-
-                    </div>
-
                 </div>
 
             </div>

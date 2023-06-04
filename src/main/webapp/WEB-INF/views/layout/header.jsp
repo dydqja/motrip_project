@@ -94,6 +94,23 @@
                 </li>
 
                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="chatDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+
+                        채팅
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="chatDropdown">
+
+                        <li>
+                            <a class="dropdown-item" href="/chatRoom/chatRoomList">채팅 리스트</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li class="nav-item dropdown">
 
                     <a class="nav-link dropdown-toggle" href="#" id="reviewDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
@@ -140,24 +157,6 @@
                     </ul>
 
                 </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="chatDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-
-                        채팅
-                    </a>
-
-                    <ul class="dropdown-menu" aria-labelledby="chatDropdown">
-
-                        <li>
-                            <a class="dropdown-item" href="/chatRoom/chatRoomList">채팅 리스트</a>
-                        </li>
-
-                    </ul>
-
-                </li>
-
 
                 <li class="nav-item dropdown">
 
