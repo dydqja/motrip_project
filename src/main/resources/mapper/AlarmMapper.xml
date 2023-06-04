@@ -44,6 +44,7 @@
     <delete id="removeAlarm" parameterType="int">
         DELETE FROM alarms
         WHERE alarm_no = #{alarmNo}
+        AND (alarm_hold != 1 OR alarm_hold IS NULL)
     </delete>
 
     <update id="holdAlarm" parameterType="int">
@@ -59,6 +60,7 @@
         FROM alarms
         WHERE alarm_receiver = #{userId}
           AND alarm_level IN (1, 2)
+          AND alarm_read_date IS NULL
     </select>
 
     <select id="getAlarmList" parameterType="com.bit.motrip.common.Search" resultMap="alarmResultMap">
@@ -68,8 +70,21 @@
                alarm_reject_url, alarm_navi_url, alarm_hold
         FROM alarms
         WHERE alarm_receiver = #{searchKeyword}
+        AND (alarm_hold != 1 OR alarm_hold IS NULL)
         ORDER BY alarm_level ASC, alarm_reg_date ASC
         LIMIT #{mysqlStartRowNum}, #{pageSize}
+    </select>
+
+    <select id="getHoldAlarmList" parameterType="com.bit.motrip.common.Search" resultMap="alarmResultMap">
+        SELECT alarm_no, alarm_category, alarm_level, alarm_title,
+               alarm_contents, alarm_sender, alarm_sender_nick, alarm_receiver,
+               alarm_receiver_nick, alarm_reg_date, alarm_read_date, alarm_accept_url,
+               alarm_reject_url, alarm_navi_url, alarm_hold
+        FROM alarms
+        WHERE alarm_receiver = #{searchKeyword}
+        AND alarm_hold = 1
+        ORDER BY alarm_level ASC, alarm_reg_date ASC
+            LIMIT #{mysqlStartRowNum}, #{pageSize}
     </select>
 
 

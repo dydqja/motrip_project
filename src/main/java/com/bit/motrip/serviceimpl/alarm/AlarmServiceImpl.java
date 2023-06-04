@@ -178,6 +178,14 @@ public class AlarmServiceImpl implements AlarmService {
         search.setSearchKeyword(userId);
         return alarmDao.getAlarmList(search);
     }
+    @Override
+    public List<Alarm> getHoldAlarmList(String userId, int currentPage){
+        Search search = new Search();
+        search.setCurrentPage(currentPage);
+        search.setPageSize(pageSize);
+        search.setSearchKeyword(userId);
+        return alarmDao.getHoldAlarmList(search);
+    }
 
     @Override
     public Alarm getEmergencyAlarm(String userId) {

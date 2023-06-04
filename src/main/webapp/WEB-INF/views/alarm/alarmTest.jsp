@@ -7,7 +7,84 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <div class="alarm-set-area">
+<style>
+    .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<script src="/js/alarm/alarm.js"></script>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<li class="dropdown" id="alarm-set-area">
+    <div id="alarm-modal-area">
+    </div>
+    <div class="alarm-info-area">
+        <%--어플리케이션 스코프로부터 값을 받거나, 3이다.--%>
+        <input type="text" id="pollingTime" value="${applicationScope.alarmPollingTime}">
+        <input type="text" id="userId" value="${sessionScope.user.userId}">
+        <input type="text" id="alarmCurrentPage" value="1">
+    </div>
+    <span class="icon-bell" style="position: relative;">
+    </span>
+    <span class="badge bg-danger" id="unreadAlarmCount">0</span>
+    <ul id="alarm-thumbnail-area" class="dropdown-menu  dropdown-menu-right cart-menu">
+        <li class="dropdown-header">
+            <a href="" id="getAlarmListBtn" class="btn btn-line btn-primary hvr-underline-from-center">최근 알람 보기</a>
+            <a href="" id="getHoldAlarmListBtn" class="btn btn-line btn-primary hvr-underline-from-center">보류 알람 보기</a>
+        </li>
+        <li class="alarm-thumbnail">
+            <img src="http://placehold.it/40x40" alt="" class="item-img">
+            <span class="delete icon-trash"></span>
+            <div class="text">
+                Lorem ipsum dolor sit amet, consectetur.
+                <p>USD 473 X 2</p>
+            </div>
+        </li>
+        <li class="alarm-thumbnail">
+            <img src="http://placehold.it/40x40" alt="" class="item-img">
+            <span class="delete icon-trash"></span>
+            <div class="text">
+                Lorem ipsum dolor sit amet, consectetur.
+                <p>USD 473 X 2</p>
+            </div>
+        </li>
+        <li class="alarm-thumbnail">
+            <img src="http://placehold.it/40x40" alt="" class="item-img">
+            <span class="delete icon-trash"></span>
+            <div class="text">
+                Lorem ipsum dolor sit amet, consectetur.
+                <p>USD 473 X 2</p>
+            </div>
+        </li>
+    </ul>
+    <br><br><br><br><br><br><br>
+    <div class="hidden" id="newAlarmDialog"></div>
+</li>
+
+
+
+
+
+<%--
+
+<div class="alarm-set-area">
         bell
         <div>
             <button id="alarmUnreadCount">5</button><br>
@@ -43,4 +120,4 @@
             </div>
         </div>
         </div>
-</div>
+</div>--%>

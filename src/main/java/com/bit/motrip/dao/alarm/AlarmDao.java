@@ -20,6 +20,8 @@ public interface AlarmDao {
     //count 에는 Integer 로 된 알람의 총 개수를 넣는다.
     //unread 에는 Integer 로 된 '안 읽은 알람'의 총 개수를 넣는다.
     //alarmList에는 List<Alarm> 으로 이번 페이지의 알람을 실어 넣을 것이다.
+    public List<Alarm> getHoldAlarmList(Search search);
+
 
     //search 에는 검색 조건으로 사용될 유저의 Id와 커런트 페이지, 페이지 유닛과 페이지 사이즈 정보가 들어있다.
     public int getUnreadAlarmCount(String UserId);

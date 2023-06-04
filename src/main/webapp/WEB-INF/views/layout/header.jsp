@@ -194,7 +194,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link position-relative" href="cart_page.html">
+                    <a class="nav-link position-relative" href="/test/alarmTest">
                         <span class="icon-minicart">
                             <span class="badge bg-danger position-absolute bottom-0 end-0">3</span>
                         </span>
