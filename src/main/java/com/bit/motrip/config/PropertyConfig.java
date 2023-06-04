@@ -8,7 +8,7 @@ import org.springframework.core.io.ClassPathResource;
 @Configuration
 public class PropertyConfig {
     @Bean(name = "memo")
-    public PropertiesFactoryBean propertiesFactoryBean() throws Exception {
+    public PropertiesFactoryBean memoPropertiesFactoryBean() throws Exception {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
         ClassPathResource classPathResource = new ClassPathResource("properties/memo.properties");
 
@@ -32,6 +32,15 @@ public class PropertyConfig {
     public PropertiesFactoryBean userPropertiesFactoryBean() throws Exception {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
         ClassPathResource classPathResource = new ClassPathResource("properties/user.properties");
+
+        propertiesFactoryBean.setLocation(classPathResource);
+
+        return propertiesFactoryBean;
+    }
+    @Bean(name = "alarm")
+    public PropertiesFactoryBean alarmPropertiesFactoryBean() throws Exception {
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        ClassPathResource classPathResource = new ClassPathResource("properties/alarm.properties");
 
         propertiesFactoryBean.setLocation(classPathResource);
 

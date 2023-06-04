@@ -5,7 +5,6 @@ import com.bit.motrip.domain.Alarm;
 import com.bit.motrip.domain.User;
 
 import java.util.List;
-import java.util.Map;
 
 public interface AlarmService {
     public int addConfirmAlarm(User sender, User receiver, String alarmTitle, String alarmContents); //알람을 추가하고 success 여부만 반환한다.
@@ -17,10 +16,10 @@ public interface AlarmService {
     public int holdAlarm(int alarmNo); //알람을 보류 상태로 한다.
 
     public int removeAlarm(int alarmNo); //알람을 진짜 지우는 작업이다.
-    public List<Alarm> getAlarmList(Search search); //알람의 목록을 만들어 화면에 던져주는 작업이다.
+    public List<Alarm> getAlarmList(String userId, int currentPage); //알람의 목록을 만들어 화면에 던져주는 작업이다.
     public Alarm getEmergencyAlarm(String userId); //긴급 알람을 조회하는 작업이다.
 
-    public int getUnreadAlarms(String userId);
+    public int getUnreadAlarmCount(String userId);
 
     //sse
 }

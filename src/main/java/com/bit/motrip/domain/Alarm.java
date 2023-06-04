@@ -26,8 +26,7 @@ public class Alarm {
     private String alarmAcceptUrl;
     private String alarmRejectUrl;
     private String alarmNaviUrl;
-    private String alarmHoldUrl;
-
+    private int alarmHold;
 
     public int getAlarmNo() {
         return alarmNo;
@@ -141,12 +140,32 @@ public class Alarm {
         this.alarmNaviUrl = alarmNaviUrl;
     }
 
-    public String getAlarmHoldUrl() {
-        return alarmHoldUrl;
+    public int getAlarmHold() {
+        return alarmHold;
     }
 
-    public void setAlarmHoldUrl(String alarmHoldUrl) {
-        this.alarmHoldUrl = alarmHoldUrl;
+    public void setAlarmHold(int alarmHold) {
+        this.alarmHold = alarmHold;
     }
 
+    @Override
+    public String toString() {
+        return "Alarm{" +
+                "alarmNo=" + alarmNo +
+                ", alarmCategory='" + alarmCategory + '\'' +
+                ", alarmLevel='" + alarmLevel + '\'' +
+                ", alarmTitle='" + alarmTitle + '\'' +
+                ", alarmContents='" + alarmContents + '\'' +
+                ", alarmSender='" + alarmSender + '\'' +
+                ", alarmSenderNick='" + alarmSenderNick + '\'' +
+                ", alarmReceiver='" + alarmReceiver + '\'' +
+                ", alarmReceiverNick='" + alarmReceiverNick + '\'' +
+                ", alarmRegDate='" + alarmRegDate + '\'' +
+                ", alarmReadDate='" + alarmReadDate + '\'' +
+                ", alarmAcceptUrl='" + alarmAcceptUrl + '\'' +
+                ", alarmRejectUrl='" + alarmRejectUrl + '\'' +
+                ", alarmNaviUrl='" + alarmNaviUrl + '\'' +
+                ", alarmHold=" + alarmHold +
+                '}';
+    }
 }

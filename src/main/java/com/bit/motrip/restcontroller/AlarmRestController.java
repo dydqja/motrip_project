@@ -2,7 +2,8 @@ package com.bit.motrip.restcontroller;
 
 import com.bit.motrip.domain.User;
 import com.bit.motrip.service.alarm.AlarmService;
-import com.bit.motrip.service.memo.MemoService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,14 +61,22 @@ public class AlarmRestController {
         return "{ result: \"success\" }";
     }
 
-    @PostMapping("giveMeAlarms")
-    public String giveMeAlarms(HttpSession session){
-        System.out.println("레스트컨트롤러 giveMeAlarms 동작");
+    @PostMapping("getUnreadAlarmCount")
+    public String getUnreadAlarmCount(HttpSession session){
+        System.out.println("레스트컨트롤러 getUnreadAlarmCount 동작");
         User user = (User) session.getAttribute("user");
         System.out.println("받은 유저아이디는"+user.getUserId());
 
-        alarmService.getUnreadAlarms(user.getUserId());
+        int unreadCount = alarmService.getUnreadAlarmCount(user.getUserId());
 
-        return null;
+        //JSON 변환부
+        ObjectMapper objectMapper = new ObjectMapper();
+        String unreadCountJson = "";
+        try {
+            unreadCountJson = objectMapper.writeValueAsString(unreadCount);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return unreadCountJson;
     }
 }

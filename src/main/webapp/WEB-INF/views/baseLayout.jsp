@@ -11,7 +11,6 @@
     <meta name="author" content="">
     <title>Motrip. Everyone's traveling Platform</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/less" ></script>
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
     <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
