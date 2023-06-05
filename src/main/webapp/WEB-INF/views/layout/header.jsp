@@ -10,6 +10,11 @@
 
 <link rel="stylesheet" href="/css/alarm/alarm.css" media="all">
 <script src="/js/alarm/alarm.js"></script>
+
+<div class="pre-loader" style="display: none;">
+    <div class="loading-img"></div>
+</div>
+
 <header class="nav-menu fixed">
     <nav class="navbar normal transparent">
         <div class="container-fluid">
@@ -92,7 +97,7 @@
                     </li>
                     <li class="dropdown">
                         <a id="alarm-set-area" href="#">
-                            <span id="alarm-bell"  class="icon-bell" data-toggle="popover" data-content="popoverContents" data-placement="bottom" data-trigger="focus" title="알람"></span>
+                            <span id="alarm-bell"  class="icon-bell" data-toggle="popover" data-content="popoverContents" data-placement="top" data-trigger="focus" title=""></span>
                             <span id="unreadAlarmCount" class="badge badge-danger">0</span></a>
                         <ul id="alarm-thumbnail-area" class="dropdown-menu  dropdown-menu-right cart-menu">
 
