@@ -50,7 +50,7 @@
         function fncSecessionUser() {
 
 
-            if ($("#sendSms").text() == "인증번호전송") {
+            if ($("#sendSms").text() == "인증번호전송" || isPhoneNumberVerified == false) {
 
                 $('#phone').focus().addClass('shake');
                 setTimeout(function () {
