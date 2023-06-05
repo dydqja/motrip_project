@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -16,7 +16,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>Mold Discover . HTML Template</title>
+
+  <title>Motrip</title>
+
   <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
 
   <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
@@ -25,7 +27,6 @@
   <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
   <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
   <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-
 
   <script src="/vendor/jquery/dist/jquery.min.js"></script>
   <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
@@ -46,9 +47,13 @@
   <script src="/assets/js/min/home.min.js"></script>
 
 </head>
+
+<!--
 <div class="pre-loader" style="display: none;">
   <div class="loading-img"></div>
 </div>
+-->
+
 <body>
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
@@ -59,15 +64,13 @@
     <hr>
   </div>
   <video autoplay="" muted="" loop="">
-    <source src="/media/motrip1.mp4" type="video/mp4">
-    Your browser does not support the video tag.
+    <source src="/media/motrip.mp4" type="video/mp4">
   </video>
-
 </div>
 <section>
   <div class="main-title">
-    <h2>모여행에서 당신의 여행을 설계하세요.</h2>
-    <p>모여행과 함께 하면 좋은 점</p>
+    <h2>모두의 여행에서 당신의 여행을 설계하세요.</h2>
+    <p>모두의 여행과 함께 하면 좋은 점</p>
   </div>
 
   <div class="container">
@@ -130,7 +133,6 @@
     </div>
   </div>
 </div>--%>
-
 
 <section class="showcase" style="background: url('/assets/img/worldmap.png') no-repeat center; background-size: cover">
   <div class="main-title">

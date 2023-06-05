@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <footer id="footer">
     <div class="container">
         <div class="row">
@@ -54,4 +55,8 @@
         </div>
     </div>
     <div class="copy"><span>©</span> Copyright Mold Discover, 2017</div>
+
+    <div id="root"></div>
+    <script src="/js/bot/bot.js"></script>
+    <link href="/css/bot/bot.css" rel="stylesheet">
 </footer>

@@ -1,5 +1,13 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: bitcamp
+  Date: 2023-06-05
+  Time: 오전 10:54
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <link rel="stylesheet" href="/css/alarm/alarm.css" media="all">
 <script src="/js/alarm/alarm.js"></script>
 <header class="nav-menu fixed">
@@ -20,9 +28,9 @@
             <div class="navbar-collapse collapse" id="main-navbar">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a href="#">Motrip <i class="fa fa-chevron-down nav-arrow"></i></a>
+                        <a href="#">모두의 여행 <i class="fa fa-chevron-down nav-arrow"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="home_default.html">모여행이란</a></li>
+                            <li><a href="home_default.html">모두의 여행이란</a></li>
                             <li><a href="home_slider.html">설계 포트폴리오</a></li>
                             <li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
                             <c:if test="${empty sessionScope.user}">

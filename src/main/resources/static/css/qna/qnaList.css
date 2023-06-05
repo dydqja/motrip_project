@@ -1,0 +1,22 @@
+.centered-table {
+    margin: 0 auto;
+}
+
+/* Add padding to the table cells */
+.table td,
+.table th {
+    padding: 0.5rem;
+}
+
+/* Add margin to the top and bottom of the page navigation */
+.pagination {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Center align the "질문 등록" button */
+#addQnaView {
+    display: block;
+    margin: 0 auto;
+    margin-top: 1rem;
+}

@@ -74,7 +74,7 @@ public class QnaController {
         model.addAttribute("beginUnitPage", beginUnitPage);
         model.addAttribute("endUnitPage", endUnitPage);
 
-        return "qna/qnaList.tiles";
+        return "qna/qnaList.jsp";
     }
 
     @RequestMapping("getQna")
@@ -102,7 +102,7 @@ public class QnaController {
 
         model.addAttribute("qnaGetData", qnaGetData);
 
-        return "qna/getQna.tiles";
+        return "qna/getQna.jsp";
     }
 
     @RequestMapping("addQnaView")
@@ -111,7 +111,7 @@ public class QnaController {
         System.out.println("::");
         System.out.println("[QnaController] 질의응답 등록 화면 출력 서비스를 실행합니다.");
 
-        return "qna/addQna.tiles";
+        return "qna/addQna.jsp";
     }
 
     @RequestMapping("addQna")
@@ -150,7 +150,7 @@ public class QnaController {
         model.addAttribute("qnaCategory", qnaCategory);
         model.addAttribute("qnaContents", qnaContents);
 
-        return "qna/addQna.tiles";
+        return "qna/addQna.jsp";
     }
 
     @RequestMapping("updateQna")

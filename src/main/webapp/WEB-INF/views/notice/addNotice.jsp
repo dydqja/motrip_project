@@ -1,113 +1,142 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<head>
+<!DOCTYPE html>
+<html lang="ko">
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <title>공지사항 등록</title>
+        <title>공지사항 등록</title>
 
-</head>
+        <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+        <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
+        <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
+        <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
+        <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
+        <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
+        <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 
-<body>
+        <link rel="stylesheet" href="/css/notice/addNotice.css">
+    </head>
 
-    <h1>공지사항 등록</h1>
+    <body>
 
-    <br>
-    <br>
-    <br>
+        <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-    <c:set var="formAction" value="${(noticeTitle == null && noticeContents == null) ? '/notice/addNotice' : '/notice/updateNotice'}" />
-
-    <form action="${formAction}" method="post">
-
-        <input type="hidden" name="noticeAuthor" value="${sessionScope.user.userId}" />
-
-        <c:if test="${noticeNo != null}">
-
-            <input type="hidden" name="noticeNo" value="${noticeNo}" />
-
-        </c:if>
-
-        <div>
-
-            <input type="text" name="noticeTitle" id="noticeTitle" value="${noticeTitle}">
-
-            <select name="isNoticeImportant">
-
-                <option value="0" ${isNoticeImportant == 0 ? 'selected' : ''}>비중요</option>
-                <option value="1" ${isNoticeImportant == 1 ? 'selected' : ''}>중요</option>
-
-            </select>
-
-        </div>
+        <h1>공지사항 등록</h1>
 
         <br>
-
-        <div>
-            <textarea name="noticeContents" id="noticeContents">${noticeContents}</textarea>
-        </div>
-
+        <br>
         <br>
 
-        <div>
-            <button id="addNotice" type="submit">등록하기</button>
-        </div>
+        <c:set var="formAction" value="${(noticeTitle == null && noticeContents == null) ? '/notice/addNotice' : '/notice/updateNotice'}" />
 
-        <br>
+        <form action="${formAction}" method="post">
 
-        <div>
-            <button type="reset">초기화</button>
-        </div>
+            <input type="hidden" name="noticeAuthor" value="${sessionScope.user.userId}" />
 
-        <br>
+            <c:if test="${noticeNo != null}">
 
-        <div>
-            <button id="getNoticeList" type="button">목록보기</button>
-        </div>
+                <input type="hidden" name="noticeNo" value="${noticeNo}" />
 
-    </form>
+            </c:if>
 
-    <script type="text/javascript">
+            <div>
 
-        $(function() {
+                <input type="text" name="noticeTitle" id="noticeTitle" value="${noticeTitle}">
 
-            $("#addNotice").on("click", function() {
+            </div>
 
-                var noticeTitle = $("#noticeTitle").val();
-                var noticeContents = $("#noticeContents").val();
+            <br>
 
-                if (!noticeTitle && !noticeContents) {
+            <div>
+                <textarea name="noticeContents" id="noticeContents">${noticeContents}</textarea>
+            </div>
 
-                    alert("제목과 내용을 입력해주세요.");
-                    return false;
+            <br>
 
-                } else if (!noticeTitle) {
+            <div>
+                <button id="addNotice" type="submit">등록하기</button>
+            </div>
 
-                    alert("제목을 입력해주세요.");
-                    return false;
+            <br>
 
-                } else if (!noticeContents) {
+            <div>
+                <button type="reset">초기화</button>
+            </div>
 
-                    alert("내용을 입력해주세요.");
-                    return false;
+            <br>
 
-                } else {
+            <div>
+                <button id="getNoticeList" type="button">목록보기</button>
+            </div>
 
-                    $('form').submit();
-                }
+        </form>
+
+        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
+
+        <script src="/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+        <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+        <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+        <script src="/vendor/retina.min.js"></script>
+        <script src="/vendor/jquery.imageScroll.min.js"></script>
+        <script src="/assets/js/min/responsivetable.min.js"></script>
+        <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+        <script src="/assets/js/min/countnumbers.min.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/min/home.min.js"></script>
+
+        <script type="text/javascript">
+
+            $(function() {
+
+                $("#addNotice").on("click", function() {
+
+                    var noticeTitle = $("#noticeTitle").val();
+                    var noticeContents = $("#noticeContents").val();
+
+                    if (!noticeTitle && !noticeContents) {
+
+                        alert("제목과 내용을 입력해주세요.");
+                        return false;
+
+                    } else if (!noticeTitle) {
+
+                        alert("제목을 입력해주세요.");
+                        return false;
+
+                    } else if (!noticeContents) {
+
+                        alert("내용을 입력해주세요.");
+                        return false;
+
+                    } else {
+
+                        $('form').submit();
+                    }
+                });
             });
-        });
 
-        $(function() {
+            $(function() {
 
-            // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-            $("#getNoticeList").on("click" , function() {
+                // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+                $("#getNoticeList").on("click" , function() {
 
-                window.location.href = "/notice/noticeList";
+                    window.location.href = "/notice/noticeList";
+                });
             });
-        });
 
-    </script>
-</body>
+        </script>
+
+    </body>
+
+</html>
