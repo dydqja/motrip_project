@@ -14,6 +14,7 @@
     //!!폴링을 시도하는 부분
     //문서가 준비된 직후부터 폴링을 계속 하는 펑션이다.
     $(document).ready(function(){
+
     let pollingCount = 0;
     //몇 초에 한번씩 폴링을 시도할지 결정한다.
     let pollingTime = $("#pollingTime").val();
@@ -62,7 +63,10 @@
                 //클라이언트의 알람 카운터가 서버의 알람 카운터보다 작다면, 알람 카운터를 업데이트한다.
                 $("#unreadAlarmCount").text(serverAlarmCount);
                 let alarmCount = serverAlarmCount-clientAlarmCount;
-                //TODO : 팝오버로 신규 알람 숫자를 띄우고 싶다.
+                let popover = $('#alarm-bell');
+                let userNickname = $("#alarmUserNickname").val();
+                popover.attr('data-content', userNickname+'님, 읽지 않은 알람이 '+alarmCount+'개 있습니다.')
+                popover.popover('show');
             }
         }
     });
@@ -80,6 +84,9 @@
     //서버와 통싱해서 알람의 정보를 가져온다.
     //서버에 보낼 변수를 확보한다.
     let userId = $("#alarmUserId").val();
+    if(!userId){
+        return;
+    }
     let currentPage = $("#alarmCurrentPage").val();
 
     $.ajax({

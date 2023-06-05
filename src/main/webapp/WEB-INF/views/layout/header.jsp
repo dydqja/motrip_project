@@ -1,8 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="pre-loader" style="display: none;">
-    <div class="loading-img"></div>
-</div>
+<script src="/js/alarm/alarm.js"></script>
+<style>
+    .nav-menu .popover {
+        background-color:black;
+    }
+    .nav-menu .popover-title {
+        background-color:black;
+    }
+    .nav-menu .popover-content {
+        background-color:black;
+    }
+</style>
 <header class="nav-menu fixed">
     <nav class="navbar normal transparent">
         <div class="container-fluid">
@@ -84,7 +93,9 @@
                     <li> <a href="login_page.html"><span class="icon-user"></span>로그인</a>
                     </li>
                     <li class="dropdown" id="alarm-set-area">
-                        <a href="#"><span class="icon-bell"></span><span class="badge badge-danger">3</span></a>
+                        <a href="#">
+                            <span id="alarm-bell"  class="icon-bell" data-toggle="popover" data-content="This is an information popover! Use it easily with the content you want!" data-placement="bottom" data-trigger="manual" title="Title"></span>
+                            <span id="unreadAlarmCount" class="badge badge-danger">0</span></a>
                         <ul id="alarm-thumbnail-area" class="dropdown-menu  dropdown-menu-right cart-menu">
 
                         </ul>
@@ -98,6 +109,7 @@
             <%--어플리케이션 스코프로부터 값을 받거나, 3이다.--%>
             <input type="hidden" id="pollingTime" value="${applicationScope.alarmPollingTime}">
             <input type="hidden" id="alarmUserId" value="${sessionScope.user.userId}">
+            <input type="hidden" id="alarmUserNickname" value="${sessionScope.user.nickname}">
             <input type="hidden" id="alarmCurrentPage" value="1">
         </div>
     </nav>
