@@ -1,17 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link rel="stylesheet" href="/css/alarm/alarm.css" media="all">
 <script src="/js/alarm/alarm.js"></script>
-<style>
-    .nav-menu .popover {
-        background-color:black;
-    }
-    .nav-menu .popover-title {
-        background-color:black;
-    }
-    .nav-menu .popover-content {
-        background-color:black;
-    }
-</style>
 <header class="nav-menu fixed">
     <nav class="navbar normal transparent">
         <div class="container-fluid">
@@ -94,7 +84,7 @@
                     </li>
                     <li class="dropdown" id="alarm-set-area">
                         <a href="#">
-                            <span id="alarm-bell"  class="icon-bell" data-toggle="popover" data-content="This is an information popover! Use it easily with the content you want!" data-placement="bottom" data-trigger="manual" title="Title"></span>
+                            <span id="alarm-bell"  class="icon-bell" data-toggle="popover" data-content="This is an information popover! Use it easily with the content you want!" data-placement="bottom" data-trigger="manual" title="알람"></span>
                             <span id="unreadAlarmCount" class="badge badge-danger">0</span></a>
                         <ul id="alarm-thumbnail-area" class="dropdown-menu  dropdown-menu-right cart-menu">
 
@@ -103,14 +93,33 @@
                 </ul>
             </div>
         </div>
-        <div id="alarm-modal-area">
-        </div>
         <div class="alarm-info-area">
             <%--어플리케이션 스코프로부터 값을 받거나, 3이다.--%>
             <input type="hidden" id="pollingTime" value="${applicationScope.alarmPollingTime}">
             <input type="hidden" id="alarmUserId" value="${sessionScope.user.userId}">
             <input type="hidden" id="alarmUserNickname" value="${sessionScope.user.nickname}">
             <input type="hidden" id="alarmCurrentPage" value="1">
+        </div>
+        <div id="alarm-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="alarm-modal-title" class="modal-title">Modal Title</h3>
+                    </div>
+                    <div id="alarm-modal-contents" class="modal-body">
+                        Modal Content..
+                    </div>
+                    <div id="alarm-modal-footer" class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">닫기</button>
+                        <button type="button" id="alarm-confirm-btn" class="btn btn-sm btn-primary">읽음</button>
+                        <button type="button" id="alarm-navigate-btn" class="btn btn-sm btn-info">이동</button>
+                        <button type="button" id="alarm-accept-btn" class="btn btn-sm btn-primary">승인</button>
+                        <button type="button" id="alarm-hold-btn" class="btn btn-sm btn-warning">보류</button>
+                        <button type="button" id="alarm-reject-btn" class="btn btn-sm btn-danger">거절</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
 </header>

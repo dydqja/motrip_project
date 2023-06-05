@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <title>Mold Discover . HTML Template</title>
-  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
 
   <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
   <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
