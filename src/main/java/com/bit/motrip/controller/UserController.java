@@ -140,7 +140,7 @@ public class UserController {
         model.addAttribute("resultPage", resultPage);
         model.addAttribute("search", search);
 
-        return "user/listUser.tiles";
+        return "user/listUser.jsp";
     }
 
     @RequestMapping( value="getUser", method=RequestMethod.GET )

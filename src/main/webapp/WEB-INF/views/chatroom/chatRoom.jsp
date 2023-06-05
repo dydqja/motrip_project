@@ -42,27 +42,106 @@
               fncPhotoChatroom();
           });
       });
-            //kick
-        function fncKickChatroom(){
-            $("#chat-room").attr("method","get").attr("action","/photos/roomPhotos").submit();
-        }
 
-        $(function() {
-            $(".kick").on("click", function() {
-                fncKickChatroom();
+            //kick
+        $(document).ready(function() {
+            $(document).on("click", ".kick",function() {
+                alert($(this).data("userid"));
+                alert("kick!!!");
+                $.ajax({
+                    url: "/chatMember/json/kickMember",
+                    method: "post",
+                    dataType: "json",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify({
+                        "chatRoomNo": $('input[name=chatRoomNo]').val(),
+                        "userId": $(this).data("userid"),
+                    }),
+                    success: function(JSONData, status) {
+
+                    }
+                });
             });
         });
 
+        //
+
+
+        $(document).ready(function() {
+            // AJAX 요청을 보내고 채팅 멤버 리스트를 받아와 처리하는 함수
+            function fetchChatMembers() {
+                $.ajax({
+                    url: '/chatMember/json/fetchChatMembers/'+chatRoomNo, // 서버의 채팅 멤버 리스트를 가져오는 경로로 수정해야 합니다.
+                    type: 'GET',
+                    dataType: 'json',
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    success: function(members) {
+                        console.log(chatRoomNo);
+                        console.log(members);
+                        let memberArray = [];
+                        // 채팅 멤버 리스트를 출력할 요소
+                        var chatUsers = $('#chatUsers');
+
+                        // 기존 리스트 초기화
+                        chatUsers.empty();
+
+                        // 멤버 리스트를 순회하며 <li> 요소 생성 및 추가
+                        $.each(members, function(index, member) {
+                            memberArray.push(member.userId);
+                            var li = $('<li>').attr("id", member.userId).text(member.userId);
+                            chatUsers.append(li);
+
+                            if (author === member.userId) {
+                                li.append('<img src="/imagePath/masetHat.png"/>'); // 방장
+                            }
+                            if (author === username && author !== member.userId) {
+                                var kickButton = $("<button>")
+                                    .addClass("kick")
+                                    .attr("data-userid", member.userId)
+                                    .text("강제 퇴장");
+
+                                li.append(kickButton);
+                            }
+                            chatUsers.append(li);
+                        });
+                        if(memberArray.includes(username)){
+                            console.log("you are member!!!")
+                        }else{
+                            window.location.href = "/chatRoom/chatRoomList";
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('AJAX Error:', error);
+                    }
+                });
+            }
+            // 페이지가 열리면 채팅 멤버 리스트를 받아와 출력
+            fetchChatMembers();
+
+            // 일정 간격으로 채팅 멤버 리스트 업데이트
+            setInterval(function() {fetchChatMembers();}, 3000); // 5초마다 업데이트, 필요에 따라 적절한 간격으로 수정 가능
+        });
+        // function redirectToChatRoomList() {
+        //     // Replace 'chatRoomListPage.html' with the actual URL or path of your chat room list page
+        //     $("#chat-room").attr("method","get").attr("action","/chatRoom/chatRoomList").submit();
+        // }
         //out
-        function fncKickChatroom(){
+        function fncOutChatroom(){
             $("#chat-room").attr("method","get").attr("action","/chatMember/outMember").submit();
         }
 
         $(function() {
             $("#out").on("click", function() {
-                fncKickChatroom();
+                fncOutChatroom();
             });
         });
+
         //delete
         function fncDeleteChatroom(){
             $("form").attr("method","get").attr("action","/chatRoom/deleteChatRoom").submit();
@@ -72,6 +151,8 @@
       <script>
           const username = "${username}";
           const room = "${chatRoom.chatRoomNo}";
+          const author = "${author.userId}"
+          const chatRoomNo = "${chatRoom.chatRoomNo}"
       </script>
     <title>ChatCord App</title>
 
@@ -99,9 +180,9 @@
 <%--          </script>--%>
 
       </header>
-      <form id="chat-room">
+      <form id="chat-room" onsubmit="return false;">
           <input type="hidden" name="chatRoomNo" value="${chatRoom.chatRoomNo}">
-
+          <input type="hidden" name="userId" value="${username}">
           <main class="chat-main">
         <div class="chat-sidebar">
           <h3><i class="fas fa-comments"></i>채팅방 번호</h3>
@@ -111,20 +192,28 @@
           <h3><i class="fas fa-users"></i>현재 참여 목록</h3>
           <ul id="users"></ul><td/>
           <h3 >참여 유저</h3>
-            <ul id="members"></ul>
-            <c:set var="i" value="0" />
-            <c:forEach var="chatMember" items="${chatMembers}">
-                <c:set var="i" value="${ i+1 }" />
-                    <li id="${chatMember.userId}">${chatMember.userId}
-                    <button class="kick" name="userId" value="${chatMember.userId}">강제 퇴장</button>
-                    </li>
-            </c:forEach>
+            <ul id="chatUsers">
+<%--            <c:set var="i" value="0" />--%>
+<%--            <c:forEach var="chatMember" items="${chatMembers}">--%>
+<%--                <c:set var="i" value="${ i+1 }" />--%>
+<%--                    <li id="${chatMember.userId}">${chatMember.userId}--%>
+<%--                        <c:if test="${author.userId eq chatMember.userId}">--%>
+<%--                            <img src="/imagePath/masetHat.png"/> <!--방장-->--%>
+<%--                        </c:if>--%>
+<%--                        <c:if test="${author.userId eq username}">--%>
+<%--                            <c:if test="${author.userId ne chatMember.userId}">--%>
+<%--                                <button class="kick" data-userid="${chatMember.userId}">강제 퇴장</button>--%>
+<%--                            </c:if>--%>
+<%--                        </c:if>--%>
+<%--                    </li>--%>
+<%--            </c:forEach>--%>
+            </ul>
         </div>
         <div class="chat-messages">
-
         </div>
       </main>
       </form>
+
       <div id="image-preview"></div> <!-- Container for image preview -->
       <div class="chat-form-container">
         <form id="chat-form" enctype="multipart/form-data">

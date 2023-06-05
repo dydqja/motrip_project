@@ -81,8 +81,15 @@ public class ChatMemberServiceImpl implements ChatMemberService {
     }
     //채팅 강제퇴장 (나가기)
     @Override
-    public void kickChatMember(int chatRoomNo, String userId, boolean isChatRoomAuthor) throws Exception {
+    public List<ChatMember> kickChatMember(int chatRoomNo, String userId, boolean isChatRoomAuthor) throws Exception {
         chatMemberDao.kickChatMember(chatRoomNo,userId,isChatRoomAuthor);
+        ChatRoom newChatRoom = chatRoomDao.getChatRoom(chatRoomNo);
+        newChatRoom.setCurrentPersons(newChatRoom.getCurrentPersons()-1);
+        chatRoomDao.updateChatRoom(newChatRoom);
+        for (ChatMember ch:chatMemberDao.listChatMember(chatRoomNo)) {
+            System.out.println(ch);
+        }
+        return chatMemberDao.listChatMember(chatRoomNo);
     }
     //채팅 멤버리스트 출력
     @Override

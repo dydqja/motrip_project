@@ -48,6 +48,7 @@
             <button id="loginAsUser1" onclick="location.href='/test/login/user1'">user1</button>
             <button id="loginAsUser2" onclick="location.href='/test/login/user2'">user2</button>
             <button id="loginAsAdmin" onclick="location.href='/test/login/admin'">admin</button>
+            <button id="testindex" onclick="location.href='/test/index'">템플릿index</button>
         </c:if>
         <c:if test="${not empty sessionScope.user}">
             ${user.userId}님 환영합니다.

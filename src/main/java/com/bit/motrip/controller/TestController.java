@@ -30,7 +30,11 @@ public class TestController {
         session.invalidate();
         return "index.tiles";
     }
-
+    @GetMapping("index")
+    public String test(HttpSession session) throws Exception{
+        session.invalidate();
+        return "index2.jsp";
+    }
     @GetMapping("alarmTest")
     public String alarmTest() throws Exception{
 
