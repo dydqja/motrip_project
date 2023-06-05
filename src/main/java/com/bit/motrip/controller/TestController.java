@@ -23,22 +23,22 @@ public class TestController {
         System.out.println(id+"로 대충 로그인합니다.");
         User dbUser = userService.getUserById(id);
         session.setAttribute("user", dbUser);
-        return "index.tiles";
+        return "index.jsp";
     }
     @GetMapping("logout")
     public String login(HttpSession session) throws Exception{
         session.invalidate();
-        return "index.tiles";
+        return "index.jsp";
     }
     @GetMapping("index")
     public String test(HttpSession session) throws Exception{
         session.invalidate();
-        return "index2.jsp";
+        return "index.jsp";
     }
     @GetMapping("alarmTest")
     public String alarmTest() throws Exception{
 
-        return "alarm/alarmTest.tiles";
+        return "alarm/alarmTest.jsp";
     }
 
 

@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <title>Mold Discover . HTML Template</title>
-  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
 
   <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
   <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
@@ -25,7 +25,30 @@
   <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
   <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
   <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+
+
+  <script src="/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+  <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+  <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+  <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+  <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+  <script src="/vendor/retina.min.js"></script>
+  <script src="/vendor/jquery.imageScroll.min.js"></script>
+  <script src="/assets/js/min/responsivetable.min.js"></script>
+  <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+
+  <script src="/assets/js/min/countnumbers.min.js"></script>
+  <script src="/assets/js/main.js"></script>
+
+  <!-- Current Page JS -->
+  <script src="/assets/js/min/home.min.js"></script>
+
 </head>
+<div class="pre-loader" style="display: none;">
+  <div class="loading-img"></div>
+</div>
 <body>
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
@@ -41,24 +64,19 @@
   </video>
 
 </div>
-
-
-
-
 <section>
   <div class="main-title">
-    <h2>Exprore World</h2>
-    <p>Plan Your holiday with Mold discover</p>
+    <h2>모여행에서 당신의 여행을 설계하세요.</h2>
+    <p>모여행과 함께 하면 좋은 점</p>
   </div>
 
   <div class="container">
     <div class="row  feature-list center">
-
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-hand-scissor"></span></span>
         <div class="desc">
-          <h5>Plan Adventure Guarenteed</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit fugit at facere, voluptatem accusamus similique autem.</p>
+          <h5>믿을만한 여행동료들</h5>
+          <p>휴대폰 실명인증을 거친 신원이 확실한 회원들과 함께</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
@@ -102,7 +120,7 @@
   </div>
 </section>
 
-
+<%--
 <div class="banner base">
   <div class="container">
     <div class="line-box">
@@ -111,13 +129,13 @@
       <a href="" class="btn btn-primary btn-lg hvr-sweep-to-right">Enter</a>
     </div>
   </div>
-</div>
+</div>--%>
 
 
-<section class="showcase" style="background: url('assets/img/worldmap.png') no-repeat center; background-size: cover">
+<section class="showcase" style="background: url('/assets/img/worldmap.png') no-repeat center; background-size: cover">
   <div class="main-title">
-    <h2>Our Top Destination</h2>
-    <p>Consectetur adipisicing elit. Quisquam fugit ducimus, qui molestias.</p>
+    <h2>최다 추천 여행계획</h2>
+    <p>남들이 많이 알아보는 곳에는 그럴 만한 이유가 있습니다.</p>
   </div>
   <div class="container">
 
@@ -322,17 +340,17 @@
     <div class="col-sm-6 col-md-3 light">
       <span class="icon-font icon-tent"></span>
       <span class="counter">32</span>
-      <p>Number of People Camped</p>
+      <p>등록된 여행계획의 숫자</p>
     </div>
     <div class="col-sm-6 col-md-3 dark">
       <span class="icon-font icon-camera"></span>
       <span class="counter">12437</span>
-      <p>Pictures Taken this Year</p>
+      <p>나눈 대화의 수</p>
     </div>
     <div class="col-sm-6 col-md-3 light">
       <span class="icon-font icon-sun"></span>
       <span class="counter">35</span>
-      <p>Average Temprature</p>
+      <p>작성된 후기의 숫자</p>
     </div>
     <div class="col-sm-6 col-md-3 dark">
       <span class="icon-font icon-umbrella"></span>
@@ -341,90 +359,40 @@
     </div>
   </div>
 </div>
-<div class="testimonial-wrap" style="background-image: url('assets/img/home_img/mountain.jpg');">
-  <div class="container">
-    <div class="testimonial">
-      <div>
-        <img src="assets/img/team/1-sm.jpg" alt="" class="avatar">
-        <div class="name">Kim L. Burney</div>
-        <div>U.S.A</div>
-        <div class="rating">
-          <span class="icon-star"></span>
-          <span class="icon-star"></span>
-          <span class="icon-star"></span>
-          <span class="icon-star"></span>
-          <span class="icon-star-empty"></span>
-        </div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque minus maxime atque ea accusamus, delectus consequatur libero non mollitia fugiat!</p>
-      </div>
-      <div>
-        <img src="/assets/img/team/2-sm.jpg" alt="" class="avatar">
-        <div class="name">Shing Ch'in</div>
-        <div>China</div>
-        <div class="rating">
-          <span class="icon-star"></span>
-          <span class="icon-star"></span>
-          <span class="icon-star"></span>
-          <span class="icon-star"></span>
-          <span class="icon-star-empty"></span>
-        </div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque minus maxime atque ea accusamus, delectus consequatur libero non mollitia fugiat!</p>
-      </div>
-    </div>
-  </div>
-</div>
 <div class="banner supported-by">
   <ul class="supported-list">
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_2.png" alt="" data-rjs="2">
+        <img src="/assets/img/supported_by/logo_2.png">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_1.png" alt="" data-rjs="2">
+        <img src="/assets/img/supported_by/logo_1.png">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_3.png" alt="" data-rjs="2">
+        <img src="/assets/img/supported_by/logo_3.png">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_4.png" alt="" data-rjs="2">
+        <img src="/assets/img/supported_by/logo_4.png">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_5.png" alt="" data-rjs="2">
+        <img src="/assets/img/supported_by/logo_5.png">
       </a>
     </li>
   </ul>
 </div>
-
+<%--
 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d37319.30096857599!2d-111.50394094053527!3d44.81298564157587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5351e55555555555%3A0xaca8f930348fe1bb!2sYellowstone+National+Park!5e0!3m2!1sen!2snp!4v1493435077252"
-        style="width: 100%; border:0" height="450" allowfullscreen></iframe>
+        style="width: 100%; border:0" height="450" allowfullscreen></iframe>--%>
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
-
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-
-<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-<script src="/vendor/retina.min.js"></script>
-<script src="/vendor/jquery.imageScroll.min.js"></script>
-<script src="/assets/js/min/responsivetable.min.js"></script>
-<script src="/assets/js/bootstrap-tabcollapse.js"></script>
-
-<script src="/assets/js/min/countnumbers.min.js"></script>
-<script src="/assets/js/main.js"></script>
-
-<!-- Current Page JS -->
-<script src="/assets/js/min/home.min.js"></script>
 
 </body>
 

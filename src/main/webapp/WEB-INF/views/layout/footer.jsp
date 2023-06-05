@@ -46,9 +46,7 @@
                             <li>
                                 <a href="https://twitter.com/moldthemes" class="icon-twitter"></a>
                             </li>
-                            <li>
-                                <a href="mailto:info@moldthemes.com" class="icon-mail"></a>
-                            </li>
+                            <li><a href="mailto:info@moldthemes.com" class="icon-mail"></a></li>
                         </ul>
                     </div>
                 </div>
