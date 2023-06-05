@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="pre-loader" style="display: none;">
     <div class="loading-img"></div>
 </div>
@@ -16,29 +17,23 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-            <%--<div class="navbar-login-test">
-                <c:if test="${empty sessionScope.user}">
-                    <button id="loginAsAdmin" onclick="location.href='/test/login/admin'">admin</button>
-                    <button id="loginAsUser1" onclick="location.href='/test/login/user1'">user1</button>
-                    <button id="loginAsUser2" onclick="location.href='/test/login/user2'">user2</button>
-                </c:if>
-                <c:if test="${not empty sessionScope.user}">
-                    <button id="logout" onclick="location.href='/test/logout'">로그아웃</button>
-                    ${user.userId}님 환영합니다.
-                </c:if>
-            </div>--%>
 
             <div class="navbar-collapse collapse" id="main-navbar">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a href="#">Home Pages <i class="fa fa-chevron-down nav-arrow"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="home_default.html">모여행이란</a>
-                            </li>
-                            <li><a href="home_slider.html">설계 포트폴리오</a>
-                            </li>
-                            <li><a href="home_slider_with_searhbar.html">제작팀 소개</a>
-                            </li>
+                            <li><a href="home_default.html">모여행이란</a></li>
+                            <li><a href="home_slider.html">설계 포트폴리오</a></li>
+                            <li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
+                            <c:if test="${empty sessionScope.user}">
+                            <li><a href="/test/login/user1">유저1로 로그인</a></li>
+                            <li><a href="/test/login/user2">유저2로 로그인</a></li>
+                            <li><a href="/test/login/admin">admin 로그인</a></li>
+                            </c:if>
+                            <c:if test="${not empty sessionScope.user}">
+                            <li><a href="/test/logout">${user.userId}님,로그아웃</a></li>
+                            </c:if>
                         </ul>
                     </li>
                     <li class="dropdown">
