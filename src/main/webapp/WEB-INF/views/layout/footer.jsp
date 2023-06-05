@@ -54,9 +54,10 @@
             </div>
         </div>
     </div>
-    <div class="copy"><span>©</span> Copyright Mold Discover, 2017</div>
+    <div class="copy"><span>©</span> Copyright Motrip Bitcamp, 2023</div>
 
-    <div id="root"></div>
-    <script src="/js/bot/bot.js"></script>
-    <link href="/css/bot/bot.css" rel="stylesheet">
 </footer>
+
+<div id="root"></div>
+<script src="/js/bot/bot.js"></script>
+<link href="/css/bot/bot.css" rel="stylesheet">

@@ -58,18 +58,18 @@
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-<div class="main-video with-overlay stick-top" style="background-image: url('http://placehold.it/1680x1050');">
+<div class="main-video with-overlay stick-top">
   <div class="main-image-txt center-txt">
-    <h1 class="main-header">모두의 여행</h1>
-    <hr>
+    <h1 class="main-header zooming">모두의 여행</h1>
   </div>
-  <video autoplay="" muted="" loop="">
+  <video autoplay muted loop>
     <source src="/media/motrip.mp4" type="video/mp4">
   </video>
 </div>
+
 <section>
   <div class="main-title">
-    <h2>모두의 여행에서 당신의 여행을 설계하세요.</h2>
+    <h2>모두의 여행에서 <br>당신의 여행을 설계하세요.</h2>
     <p>모두의 여행과 함께 하면 좋은 점</p>
   </div>
 
