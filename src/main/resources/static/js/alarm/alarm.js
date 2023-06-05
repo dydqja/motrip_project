@@ -78,7 +78,6 @@
 }
 
 
-
     //!!사용자의 클릭에 따라 알람의 목록을 가져오는 부분
     //알람목록보기 호버 리스너
     $(document).on('mouseenter', '#alarm-set-area', function() {
@@ -331,7 +330,7 @@
     }
         //!!알람 썸네일 버튼들에 대한 클릭 리스너
         //수락 버튼
-        $(document).on('click', '.alarm-accept-btn', function() {
+        $(document).on('click', '#alarm-accept-btn', function() {
             event.preventDefault();
             //이 버튼의 값은 알람의 수락 url이다.
             let alarmAcceptUrl = $(this).val();
@@ -340,7 +339,7 @@
     });
         //거절 버튼
 
-        $(document).on('click', '.alarm-reject-btn', function() {
+        $(document).on('click', '#alarm-reject-btn', function() {
             event.preventDefault();
             //이 버튼의 값은 알람의 거절 url이다.
             let alarmRejectUrl = $(this).val();
@@ -349,7 +348,7 @@
 
     });
         //보류 버튼
-        $(document).on('click', '.alarm-hold-btn', function() {
+        $(document).on('click', '#alarm-hold-btn', function() {
             event.preventDefault();
             //이 버튼의 값은 알람의 번호이다.
             let alarmNo = $(this).val();
@@ -358,7 +357,7 @@
             holdAlarm(alarmNo);
     });
         //확인 버튼
-        $(document).on('click', '.alarm-confirm-btn', function() {
+        $(document).on('click', '#alarm-confirm-btn', function() {
             event.preventDefault();
             //이 버튼의 값은 알람의 번호이다.
             let alarmNo = $(this).val();
@@ -407,3 +406,16 @@
         }
     });
 }
+
+    $(document).on('click', function(e) {
+        // 클릭한 요소가 popover 내부에 있는지 확인
+        var isInsidePopover = $(e.target).closest('.popover').length > 0;
+
+        // 클릭한 요소가 popover 토글 버튼인지 확인
+        var isPopoverToggle = $(e.target).data('toggle') === 'popover';
+
+        // 클릭한 요소가 popover 내부에 있거나 토글 버튼이면 아무 작업도 하지 않음
+        if (isInsidePopover || isPopoverToggle) {
+            $('[data-toggle="popover"]').popover('hide');
+        }
+    });

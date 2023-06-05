@@ -82,9 +82,9 @@
                     </li>
                     <li> <a href="login_page.html"><span class="icon-user"></span>로그인</a>
                     </li>
-                    <li class="dropdown" id="alarm-set-area">
-                        <a href="#">
-                            <span id="alarm-bell"  class="icon-bell" data-toggle="popover" data-content="This is an information popover! Use it easily with the content you want!" data-placement="bottom" data-trigger="manual" title="알람"></span>
+                    <li class="dropdown">
+                        <a id="alarm-set-area" href="#">
+                            <span id="alarm-bell"  class="icon-bell" data-toggle="popover" data-content="popoverContents" data-placement="bottom" data-trigger="focus" title="알람"></span>
                             <span id="unreadAlarmCount" class="badge badge-danger">0</span></a>
                         <ul id="alarm-thumbnail-area" class="dropdown-menu  dropdown-menu-right cart-menu">
 
@@ -100,26 +100,30 @@
             <input type="hidden" id="alarmUserNickname" value="${sessionScope.user.nickname}">
             <input type="hidden" id="alarmCurrentPage" value="1">
         </div>
-        <div id="alarm-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 id="alarm-modal-title" class="modal-title">Modal Title</h3>
-                    </div>
-                    <div id="alarm-modal-contents" class="modal-body">
-                        Modal Content..
-                    </div>
-                    <div id="alarm-modal-footer" class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">닫기</button>
-                        <button type="button" id="alarm-confirm-btn" class="btn btn-sm btn-primary">읽음</button>
-                        <button type="button" id="alarm-navigate-btn" class="btn btn-sm btn-info">이동</button>
-                        <button type="button" id="alarm-accept-btn" class="btn btn-sm btn-primary">승인</button>
-                        <button type="button" id="alarm-hold-btn" class="btn btn-sm btn-warning">보류</button>
-                        <button type="button" id="alarm-reject-btn" class="btn btn-sm btn-danger">거절</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </nav>
 </header>
+<%--button trigger modal--%>
+<input type="hidden" data-toggle="modal" href="#alarm-modal"></input>
+<%--Modal--%>
+<div id="alarm-modal" class="modal" aria-labelledby="myModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="alarm-modal-title" class="modal-title">Modal Title</h3>
+            </div>
+            <div id="alarm-modal-contents" class="modal-body">
+                Modal Content..
+            </div>
+            <div id="alarm-modal-footer" class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">닫기</button>
+                <button type="button" id="alarm-confirm-btn" class="btn btn-sm btn-primary">읽음</button>
+                <button type="button" id="alarm-navigate-btn" class="btn btn-sm btn-info">이동</button>
+                <button type="button" id="alarm-accept-btn" class="btn btn-sm btn-primary">승인</button>
+                <button type="button" id="alarm-hold-btn" class="btn btn-sm btn-warning">보류</button>
+                <button type="button" id="alarm-reject-btn" class="btn btn-sm btn-danger">거절</button>
+            </div>
+        </div>
+    </div>
+</div>
