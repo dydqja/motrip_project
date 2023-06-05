@@ -81,7 +81,6 @@ public class ChatRoomController {
                               Model model) throws Exception{
         System.out.println("/chatRoom/addChatRoom/POST");
         System.out.println(travelStartDateHtml);
-
         //Date에 값 파싱해서 넣어주는 코드
         chatRoom.setTravelStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(travelStartDateHtml));
         ChatRoom NewchatRoom = chatRoomService.getChatRoom(chatRoomService.addChatRoom(chatRoom,userId,tripPlanNo));

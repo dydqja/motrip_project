@@ -99,8 +99,14 @@ public class TripPlanServiceImpl implements TripPlanService {
     public TripPlan selectTripPlan(int tripPlanNo) throws Exception {
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
         tripPlan.setTripPlanViews(tripPlan.getTripPlanViews() + 1);
+
+//        for(int i=0; i<tripPlan.getDailyplanResultMap().size(); i++){ // 총 이동시간을 스트링으로 바꿔출력하기 위해
+//            int total = Integer.parseInt(tripPlan.getDailyplanResultMap().get(i).getTotalTripTime());
+//            tripPlan.getDailyplanResultMap().get(i).setTotalTripTime(totaltime(total));
+//        }
+
         tripPlanDao.tripPlanViews(tripPlan);
-        return tripPlanDao.selectTripPlan(tripPlanNo);
+        return tripPlan;
     }
 
     @Override // 여행플랜 수정
@@ -195,5 +201,17 @@ public class TripPlanServiceImpl implements TripPlanService {
         tripPlanDao.tripPlanLikes(tripPlan);
         return tripPlan.getTripPlanLikes();
     }
+
+//    public static String totaltime(int totalTripTimes) {
+//        int totalHours = (int) Math.floor(totalTripTimes / 60);
+//        int totalMinutes = totalTripTimes % 60;
+//        String totalTripTime = "";
+//        if(totalHours == 0){
+//            totalTripTime = totalMinutes + "분";
+//        } else {
+//            totalTripTime = totalHours + "시간 " + totalMinutes + "분";
+//        }
+//        return totalTripTime;
+//    }
 
 }

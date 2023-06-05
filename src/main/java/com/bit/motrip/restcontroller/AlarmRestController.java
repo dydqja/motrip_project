@@ -1,14 +1,14 @@
 package com.bit.motrip.restcontroller;
 
+import com.bit.motrip.domain.Alarm;
 import com.bit.motrip.domain.User;
 import com.bit.motrip.service.alarm.AlarmService;
-import com.bit.motrip.service.memo.MemoService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -60,14 +60,71 @@ public class AlarmRestController {
         return "{ result: \"success\" }";
     }
 
-    @PostMapping("giveMeAlarms")
-    public String giveMeAlarms(HttpSession session){
-        System.out.println("레스트컨트롤러 giveMeAlarms 동작");
+    @PostMapping("getUnreadAlarmCount")
+    public String getUnreadAlarmCount(HttpSession session){
+        System.out.println("레스트컨트롤러 getUnreadAlarmCount 동작");
         User user = (User) session.getAttribute("user");
         System.out.println("받은 유저아이디는"+user.getUserId());
 
-        alarmService.getUnreadAlarms(user.getUserId());
+        int unreadCount = alarmService.getUnreadAlarmCount(user.getUserId());
 
-        return null;
+        //JSON 변환부
+        ObjectMapper objectMapper = new ObjectMapper();
+        String unreadCountJson = "";
+        try {
+            unreadCountJson = objectMapper.writeValueAsString(unreadCount);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return unreadCountJson;
+    }
+
+    @PostMapping("getAlarmList")
+    public String getAlarmList(HttpSession session,
+                               @RequestParam(value = "currentPage", defaultValue = "1") int currentPage){
+        System.out.println("레스트컨트롤러 getAlarmList 동작");
+        User user = (User) session.getAttribute("user");
+        System.out.println("받은 유저아이디는"+user.getUserId());
+        System.out.println("받은 currentPage는"+currentPage);
+
+        List<Alarm> alarmList = alarmService.getAlarmList(user.getUserId(), currentPage);
+        //for 문으로 내부 데이터를 출력한다.
+        for (Alarm alarm : alarmList){
+            System.out.println(alarm.getAlarmTitle());
+        }
+
+        //JSON 변환부
+        ObjectMapper objectMapper = new ObjectMapper();
+        String alarmListJson = "";
+        try {
+            alarmListJson = objectMapper.writeValueAsString(alarmList);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return alarmListJson;
+    }
+    @PostMapping("getHoldAlarmList")
+    public String getHoldAlarmList(HttpSession session,
+                               @RequestParam(value = "currentPage", defaultValue = "1") int currentPage){
+        System.out.println("레스트컨트롤러 getHoldAlarmList 동작");
+        User user = (User) session.getAttribute("user");
+        System.out.println("받은 유저아이디는"+user.getUserId());
+        System.out.println("받은 currentPage는"+currentPage);
+
+        List<Alarm> alarmList = alarmService.getHoldAlarmList(user.getUserId(), currentPage);
+        //for 문으로 내부 데이터를 출력한다.
+        for (Alarm alarm : alarmList){
+            System.out.println(alarm.getAlarmTitle());
+        }
+
+        //JSON 변환부
+        ObjectMapper objectMapper = new ObjectMapper();
+        String alarmListJson = "";
+        try {
+            alarmListJson = objectMapper.writeValueAsString(alarmList);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return alarmListJson;
     }
 }

@@ -20,7 +20,7 @@ public interface ChatMemberService {
     // 채팅 멤버 삭제(채팅방 나가기)
     public void deleteChatMember(int chatRoomNo, String userId) throws Exception;
     // 채팅 멤버 강퇴
-    public void kickChatMember(int chatRoomNo, String userId, boolean isChatRoomAuthor) throws Exception;
+    public List<ChatMember> kickChatMember(int chatRoomNo, String userId, boolean isChatRoomAuthor) throws Exception;
     // 채팅 멤버 리스트 출력
     public ArrayList<ChatMember> chatMemberList(int chatRoomNo) throws Exception; // 멤버리스트
 

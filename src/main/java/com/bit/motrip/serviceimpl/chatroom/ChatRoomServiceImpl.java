@@ -35,7 +35,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public int addChatRoom(ChatRoom chatRoom,String userId,int tripPlanNo) throws Exception {
         System.out.println("addChatRoom");
-        chatRoom.setMaxPersons(1); // 채팅방 인원 1로 설정
+        chatRoom.setCurrentPersons(1);
         int newChatRoomNo = chatRoomDao.addChatRoom(chatRoom);
         if(newChatRoomNo == 1) {
             ChatMember chatMember = new ChatMember();

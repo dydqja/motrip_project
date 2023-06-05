@@ -10,7 +10,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Motrip. Everyone's traveling Platform</title>
+        <title>모여행</title>
 
         <link rel="icon" type="image/png" href="/assets/img/favicon.png"/>
 
@@ -29,11 +29,12 @@
         <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 
         <!-- 중요 JS -->
-        <script src="/vendor/jquery.min.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
         <script src="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
         <script src="/js/memo/memo.js"></script>
+        <script src="/js/alarm/alarm.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
         <!-- 비중요 JS -->

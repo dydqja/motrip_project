@@ -11,6 +11,7 @@
 		<result column="user_id" property="userId" jdbcType="VARCHAR" />
 		<result column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
 		<result column="is_chat_room_author" property="isChatRoomAuthor" jdbcType="TINYINT"/>
+		<result column="status" property="status" jdbcType="INTEGER" />
 	</resultMap>
 
 	<insert id="addChatMember" parameterType="com.bit.motrip.domain.ChatMember">
@@ -50,7 +51,7 @@
 	</update>
 
 	<select id="listChatMember" parameterType="int" resultMap="chatMemberResultMap">
-		select * from chat_room_members where chat_room_no = #{chatRoomNo}
+		select * from chat_room_members where chat_room_no = #{chatRoomNo} and status = 0
 	</select>
 
 	<select id="getChatMemberAuthor" parameterType="int" resultMap="chatMemberResultMap">
