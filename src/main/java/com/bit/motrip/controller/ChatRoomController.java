@@ -30,8 +30,8 @@ public class ChatRoomController {
     @GetMapping("chatRoomList")
     public String index(Model model) throws Exception{
 
-        model.addAttribute("list",chatRoomService.chatRoomList());
-        return "chatroom/chatRoomList.jsp";
+        model.addAttribute("list",chatRoomService.chatRoomListPage());
+        return "chatroom/chatRoomList2.jsp";
     }
     @PostMapping("chat")
     public String chat(@ModelAttribute("chatRoom") ChatRoom chatRoom,

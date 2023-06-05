@@ -93,7 +93,18 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
         return chatRoomList;
     }
+    @Override
+    public List<ChatRoom> chatRoomListPage() throws Exception {
+        List<ChatRoom> chatRoomList = chatRoomDao.chatRoomListPage();
 
+        for (ChatRoom cr:chatRoomList) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+            String strDate = simpleDateFormat.format(cr.getTravelStartDate());
+            cr.setStrDate(strDate);
+        }
+
+        return chatRoomList;
+    }
     //채팅 상태 변환
     @Override
     public int changeRoomStatus(int chatRoomStatus, int chatRoomNo) throws Exception {

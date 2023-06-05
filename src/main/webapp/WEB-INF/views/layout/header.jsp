@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
-                    <img src="/images/motrip-logo.png" alt="">
+                    <img src="/images/motrip-logo.png" alt="" width="200" height="100">
                 </a>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -31,7 +31,7 @@
             <div class="navbar-collapse collapse" id="main-navbar">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a href="#">Home Pages <i class="fa fa-chevron-down nav-arrow"></i></a>
+                        <a href="#" style="color: forestgreen">Home Pages <i class="fa fa-chevron-down nav-arrow" style="color: forestgreen"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="home_default.html">모여행이란</a>
                             </li>
@@ -42,7 +42,7 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#">여행플랜</a>
+                        <a href="#" style="color: forestgreen">여행플랜</a>
                         <ul class="dropdown-menu">
                             <li><a href="/tripPlan/tripPlanList">여행플랜 목록</a>
                             </li>
@@ -54,15 +54,15 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">채팅</a>
+                    <li class="dropdown" >
+                        <a href="#" class="dropdown-toggle" style="color: forestgreen">채팅</a>
                         <ul class="dropdown-menu">
                             <li><a href="/chatRoom/chatRoomList">채팅 리스트</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">후기</a>
+                    <li class="dropdown" >
+                        <a href="#" class="dropdown-toggle" style="color: forestgreen">후기</a>
                         <ul class="dropdown-menu">
                             <li><a href="/review/addReviewView">후기 작성</a>
                             </li>
@@ -74,7 +74,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="boardDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
+                           data-bs-toggle="dropdown" aria-expanded="false" style="color: forestgreen">
                             게시판
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="boardDropdown">
@@ -86,10 +86,10 @@
                             </li>
                         </ul>
                     </li>
-                    <li> <a href="login_page.html"><span class="icon-user"></span>로그인</a>
+                    <li> <a href="login_page.html" style="color: forestgreen"><span class="icon-user" style="color: forestgreen"></span>로그인</a>
                     </li>
                     <li class="dropdown">
-                        <a href="cart_page.html"><span class="icon-minicart"></span><span class="badge badge-danger">3</span></a>
+                        <a href="cart_page.html"><span class="icon-list" style="color: forestgreen"></span><span class="badge badge-danger">3</span></a>
                         <ul class="dropdown-menu  dropdown-menu-right cart-menu">
                             <li>
                                 <img src="http://placehold.it/40x40" alt="" class="item-img">

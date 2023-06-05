@@ -108,7 +108,7 @@
     <div class="line-box">
       <div class="line-title">Lorem ipsum dolor sit</div>
       <h2>Great Places, Great Holiday</h2>
-      <a href="" class="btn btn-primary btn-lg hvr-sweep-to-right">Book Now</a>
+      <a href="" class="btn btn-primary btn-lg hvr-sweep-to-right">Enter</a>
     </div>
   </div>
 </div>
@@ -148,7 +148,7 @@
               </div>
               <div class="right">
                 <div class="price">USD 1029</div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">Book Now</a>
+                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">asd</a>
               </div>
             </div>
           </div>

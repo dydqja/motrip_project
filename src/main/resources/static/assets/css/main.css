@@ -966,7 +966,7 @@ hr.dark {
   transition: all 0.2s linear;
 }
 .nav-menu.shrink .navbar .navbar-brand > img {
-  height: 40px;
+  height: 70px;
 }
 .nav-menu.shrink .nav > li > a {
   height: 70px;
