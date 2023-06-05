@@ -35,7 +35,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler(connectPath)
                 .addResourceLocations(resourcePath);
     }
-    @Bean
+/*    @Bean
     public TilesConfigurer tilesConfigurer() {
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
         tilesConfigurer.setDefinitions(
@@ -49,7 +49,7 @@ public class WebConfig implements WebMvcConfigurer {
         TilesViewResolver tilesViewResolver = new TilesViewResolver();
         tilesViewResolver.setOrder(1);
         return tilesViewResolver;
-    }
+    }*/
     @Bean
     public ImageSaveService imageSaveService() {
         return new ImageSaveService(resourcePath);

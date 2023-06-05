@@ -1,77 +1,81 @@
 <%--
   Created by IntelliJ IDEA.
-  User: sean
-  Date: 2023/06/02
-  Time: 8:49 PM
+  User: bitcamp
+  Date: 2023-06-05
+  Time: 오전 10:57
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>Mold Discover . HTML Template</title>
-  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-
-  <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
-  <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
-  <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
-  <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
-  <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
-  <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-</head>
-<body>
-
-<%@ include file="/WEB-INF/views/layout/header.jsp" %>
-
-<div class="main-video with-overlay stick-top" style="background-image: url('http://placehold.it/1680x1050');">
-  <div class="main-image-txt center-txt">
-    <h1 class="main-header">모두의 여행</h1>
-    <hr>
+<div class="main-img full-height stick-top">
+  <div class="zooming with-overlay" style="background-image: url('http://placehold.it/1680x1050');">
+    <div class="main-image-txt center-txt">
+      <h1 class="main-header">Wander Exotic places</h1>
+      <hr>
+      <p class="sub-header">Wander Exotic places without getting lost.</p>
+      <a href="" class="btn btn-lg btn-primary hvr-sweep-to-right">Explore Now</a>
+    </div>
   </div>
-  <video autoplay="" muted="" loop="">
-    <source src="/media/motrip1.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+</div>
 
+<div class="container">
+  <div class="search-bar bottom">
+    <div class="col-sm-2 text-wrap">
+      <h2 class="main-head">Find</h2>
+      <h5 class="sub-head">Tours</h5>
+    </div>
+    <div class="col-sm-8 row">
+      <div class="col-sm-4 form-group">
+        <label>From</label>
+        <input type="text" class="form-control datepicker" readonly>
+      </div>
+      <div class="col-sm-4 form-group">
+        <label>To</label>
+        <input type="text" class="form-control datepicker" readonly>
+      </div>
+      <div class="col-sm-4 form-group">
+        <label>Price</label>
+        <select class="form-control selectpicker">
+          <option value="">1000 - 2000</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <button class="btn btn-search btn-primary hvr-sweep-to-right">Search</button>
+    </div>
+  </div>
 </div>
 
 
-
-
-<section>
+<section class="white">
   <div class="main-title">
-    <h2>Exprore World</h2>
+    <h2>Explore World</h2>
     <p>Plan Your holiday with Mold discover</p>
   </div>
+  <br>
+  <br>
 
   <div class="container">
-    <div class="row  feature-list center">
+    <div class="row  feature-list">
 
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-hand-scissor"></span></span>
         <div class="desc">
-          <h5>Plan Adventure Guarenteed</h5>
+          <h4>Plan Adventure Guaranteed</h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit fugit at facere, voluptatem accusamus similique autem.</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-road-sign"></span></span>
         <div class="desc">
-          <h5>Take Rare Path</h5>
+          <h4>Take Rare Path</h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae laborum soluta quos praesentium, magni repellendus.</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-map"></span></span>
         <div class="desc">
-          <h5>Organize with Profestional</h5>
+          <h4>Organise with Professional</h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia blanditiis, deleniti necessitatibus doloribus vel.</p>
         </div>
       </div>
@@ -79,29 +83,51 @@
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-deer"></span></span>
         <div class="desc">
-          <h5>Closer To Wildlife</h5>
+          <h4>Closer To Wildlife</h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam illo sit accusamus vel similique id quisquam, dolor maiores.</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-flower"></span></span>
         <div class="desc">
-          <h5>Near to Nature</h5>
+          <h4>Near to Nature</h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil harum sapiente ipsa hic voluptas? Ut architecto eveniet possimus.</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-binocular"></span></span>
         <div class="desc">
-          <h5>Behold Awesome Scenary</h5>
+          <h4>Behold Awesome Scenary</h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate quisquam esse quia, necessitatibus quos. Modi cum?</p>
         </div>
       </div>
 
+      <div class="col-sm-6 col-md-4">
+        <span class="square-icon"><span class="icon-rock-climbing"></span></span>
+        <div class="desc">
+          <h4>Awesome &amp; Adventure</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam illo sit accusamus vel similique id quisquam, dolor maiores.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <span class="square-icon"><span class="icon-backpack"></span></span>
+        <div class="desc">
+          <h4>Grab Your Bag Pack</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil harum sapiente ipsa hic voluptas? Ut architecto eveniet possimus.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <span class="square-icon"><span class="icon-tent"></span></span>
+        <div class="desc">
+          <h4>Nightout &amp; Camping</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate quisquam esse quia, necessitatibus quos. Modi cum perspic-diamondiatis, labore?</p>
+        </div>
+      </div>
+
+
     </div>
   </div>
 </section>
-
 
 <div class="banner base">
   <div class="container">
@@ -341,7 +367,8 @@
     </div>
   </div>
 </div>
-<div class="testimonial-wrap" style="background-image: url('assets/img/home_img/mountain.jpg');">
+
+<div class="testimonial-wrap" style="background-image: url('http://placehold.it/1680x1050');">
   <div class="container">
     <div class="testimonial">
       <div>
@@ -358,7 +385,7 @@
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque minus maxime atque ea accusamus, delectus consequatur libero non mollitia fugiat!</p>
       </div>
       <div>
-        <img src="/assets/img/team/2-sm.jpg" alt="" class="avatar">
+        <img src="assets/img/team/2-sm.jpg" alt="" class="avatar">
         <div class="name">Shing Ch'in</div>
         <div>China</div>
         <div class="rating">
@@ -373,59 +400,33 @@
     </div>
   </div>
 </div>
+
 <div class="banner supported-by">
   <ul class="supported-list">
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_2.png" alt="" data-rjs="2">
+        <img src="assets/img/supported_by/logo_2.png" alt="" data-rjs="2">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_1.png" alt="" data-rjs="2">
+        <img src="assets/img/supported_by/logo_1.png" alt="" data-rjs="2">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_3.png" alt="" data-rjs="2">
+        <img src="assets/img/supported_by/logo_3.png" alt="" data-rjs="2">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_4.png" alt="" data-rjs="2">
+        <img src="assets/img/supported_by/logo_4.png" alt="" data-rjs="2">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_5.png" alt="" data-rjs="2">
+        <img src="assets/img/supported_by/logo_5.png" alt="" data-rjs="2">
       </a>
     </li>
   </ul>
 </div>
-
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d37319.30096857599!2d-111.50394094053527!3d44.81298564157587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5351e55555555555%3A0xaca8f930348fe1bb!2sYellowstone+National+Park!5e0!3m2!1sen!2snp!4v1493435077252"
-        style="width: 100%; border:0" height="450" allowfullscreen></iframe>
-
-<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
-
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-
-<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-<script src="/vendor/retina.min.js"></script>
-<script src="/vendor/jquery.imageScroll.min.js"></script>
-<script src="/assets/js/min/responsivetable.min.js"></script>
-<script src="/assets/js/bootstrap-tabcollapse.js"></script>
-
-<script src="/assets/js/min/countnumbers.min.js"></script>
-<script src="/assets/js/main.js"></script>
-
-<!-- Current Page JS -->
-<script src="/assets/js/min/home.min.js"></script>
-
-</body>
-
-</html>

@@ -30,7 +30,7 @@
                             alarm_reject_url, alarm_navi_url)
         VALUES (#{alarmCategory}, #{alarmLevel}, #{alarmTitle},
                 #{alarmContents}, #{alarmSender}, #{alarmSenderNick}, #{alarmReceiver},
-                #{alarmReceiverNick}, #{alarmReadDate}, #{alarmAcceptUrl},
+                #{alarmReceiverNick}, #{alarmReadDate}, #{ala   rmAcceptUrl},
                 #{alarmRejectUrl}, #{alarmNaviUrl})
     </insert>
 
@@ -71,6 +71,7 @@
         FROM alarms
         WHERE alarm_receiver = #{searchKeyword}
         AND (alarm_hold != 1 OR alarm_hold IS NULL)
+        AND alarm_read_date IS NULL
         ORDER BY alarm_level ASC, alarm_reg_date ASC
         LIMIT #{mysqlStartRowNum}, #{pageSize}
     </select>

@@ -364,7 +364,7 @@
     }
         //!!알람 썸네일 버튼들에 대한 클릭 리스너
         //수락 버튼
-        $(".alarm-accept-btn").click(function(){
+        $(document).on('click', '.alarm-accept-btn', function() {
             event.preventDefault();
             //이 버튼의 값은 알람의 수락 url이다.
             let alarmAcceptUrl = $(this).val();
@@ -373,7 +373,8 @@
 
     });
         //거절 버튼
-        $(".alarm-reject-btn").click(function(){
+
+        $(document).on('click', '.alarm-reject-btn', function() {
             event.preventDefault();
             //이 버튼의 값은 알람의 거절 url이다.
             let alarmRejectUrl = $(this).val();
@@ -382,7 +383,7 @@
 
     });
         //보류 버튼
-        $(".alarm-hold-btn").click(function(){
+        $(document).on('click', '.alarm-hold-btn', function() {
             event.preventDefault();
             //이 버튼의 값은 알람의 번호이다.
             let alarmNo = $(this).val();
@@ -391,13 +392,14 @@
             holdAlarm(alarmNo);
     });
         //확인 버튼
-        $(".alarm-confirm-btn").click(function(){
+        $(document).on('click', '.alarm-confirm-btn', function() {
             event.preventDefault();
             //이 버튼의 값은 알람의 번호이다.
             let alarmNo = $(this).val();
             //읽음 처리한다.
             console.log(alarmNo+"번 알람 읽음처리");
             readAlarm(alarmNo);
+
 });
 
 
