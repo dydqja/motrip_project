@@ -127,4 +127,31 @@ public class AlarmRestController {
         }
         return alarmListJson;
     }
+    @PostMapping("readAlarm")
+    public String readAlarm(HttpSession session,
+                            @RequestParam(value = "alarmNo") int alarmId){
+        System.out.println("레스트컨트롤러 readAlarm 동작");
+        User user = (User) session.getAttribute("user");
+        System.out.println("받은 유저아이디는"+user.getUserId());
+        System.out.println("받은 alarmId는"+alarmId);
+
+        alarmService.readAlarm(alarmId);
+
+        return "{ result: \"success\" }";
+    }
+    @PostMapping("holdAlarm")
+    public String holdAlarm(HttpSession session,
+                            @RequestParam(value = "alarmNo") int alarmId){
+        System.out.println("레스트컨트롤러 holdAlarm 동작");
+        User user = (User) session.getAttribute("user");
+        System.out.println("받은 유저아이디는"+user.getUserId());
+        System.out.println("받은 alarmId는"+alarmId);
+
+        alarmService.holdAlarm(alarmId);
+
+        return "{ result: \"success\" }";
+    }
+
+//    @PostMapping("Alarm")
+
 }
