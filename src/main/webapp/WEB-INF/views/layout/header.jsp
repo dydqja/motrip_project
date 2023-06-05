@@ -21,7 +21,7 @@
             <div class="navbar-collapse collapse" id="main-navbar">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a href="#">Home Pages <i class="fa fa-chevron-down nav-arrow"></i></a>
+                        <a href="#">Motrip <i class="fa fa-chevron-down nav-arrow"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="home_default.html">모여행이란</a></li>
                             <li><a href="home_slider.html">설계 포트폴리오</a></li>
@@ -83,37 +83,22 @@
                     </li>
                     <li> <a href="login_page.html"><span class="icon-user"></span>로그인</a>
                     </li>
-                    <li class="dropdown">
-                        <a href="cart_page.html"><span class="icon-minicart"></span><span class="badge badge-danger">3</span></a>
-                        <ul class="dropdown-menu  dropdown-menu-right cart-menu">
-                            <li>
-                                <img src="http://placehold.it/40x40" alt="" class="item-img">
-                                <span class="delete icon-trash"></span>
-                                <div class="text">
-                                    Lorem ipsum dolor sit amet, consectetur.
-                                    <p>USD 473 X 2</p>
-                                </div>
-                            </li>
-                            <li>
-                                <img src="http://placehold.it/40x40" alt="" class="item-img">
-                                <span class="delete icon-trash"></span>
-                                <div class="text">
-                                    Lorem ipsum dolor sit amet, consectetur.
-                                    <p>USD 473 X 2</p>
-                                </div>
-                            </li>
-                            <li>
-                                <img src="http://placehold.it/40x40" alt="" class="item-img">
-                                <span class="delete icon-trash"></span>
-                                <div class="text">
-                                    Lorem ipsum dolor sit amet, consectetur.
-                                    <p>USD 473 X 2</p>
-                                </div>
-                            </li>
+                    <li class="dropdown" id="alarm-set-area">
+                        <a href="#"><span class="icon-bell"></span><span class="badge badge-danger">3</span></a>
+                        <ul id="alarm-thumbnail-area" class="dropdown-menu  dropdown-menu-right cart-menu">
+
                         </ul>
                     </li>
                 </ul>
             </div>
+        </div>
+        <div id="alarm-modal-area">
+        </div>
+        <div class="alarm-info-area">
+            <%--어플리케이션 스코프로부터 값을 받거나, 3이다.--%>
+            <input type="hidden" id="pollingTime" value="${applicationScope.alarmPollingTime}">
+            <input type="hidden" id="alarmUserId" value="${sessionScope.user.userId}">
+            <input type="hidden" id="alarmCurrentPage" value="1">
         </div>
     </nav>
 </header>

@@ -111,7 +111,7 @@
 
 <section class="showcase" style="background: url('/assets/img/worldmap.png') no-repeat center; background-size: cover">
   <div class="main-title">
-    <h2>최대 추천 여행계획</h2>
+    <h2>최다 추천 여행계획</h2>
     <p>남들이 많이 알아보는 곳에는 그럴 만한 이유가 있습니다.</p>
   </div>
   <div class="container">
@@ -340,27 +340,27 @@
   <ul class="supported-list">
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_2.png" alt="" data-rjs="2">
+        <img src="/assets/img/supported_by/logo_2.png">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_1.png" alt="" data-rjs="2">
+        <img src="/assets/img/supported_by/logo_1.png">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_3.png" alt="" data-rjs="2">
+        <img src="/assets/img/supported_by/logo_3.png">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_4.png" alt="" data-rjs="2">
+        <img src="/assets/img/supported_by/logo_4.png">
       </a>
     </li>
     <li>
       <a href="#">
-        <img src="/assets/img/supported_by/logo_5.png" alt="" data-rjs="2">
+        <img src="/assets/img/supported_by/logo_5.png">
       </a>
     </li>
   </ul>

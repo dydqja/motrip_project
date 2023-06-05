@@ -20,8 +20,8 @@
     console.log('서버로부터 받은 알람 폴링 시간은'+pollingTime+'초이다.');
     //폴링 타임이 falsy일 경우 기본값 3초로 세팅한다.
     if(!pollingTime){
-        pollingTime = 50;
-        console.log('서버로부터 알람 폴링 시간을 받지 못했으므로, 기본값 3초로 세팅한다.')
+        pollingTime = 25;
+        console.log('서버로부터 알람 폴링 시간을 받지 못했으므로, 기본값 25초로 세팅한다.')
     }
     //서버에 연락할 유저의 Id는
     let userId = $("#alarmUserId").val();
@@ -62,8 +62,7 @@
                 //클라이언트의 알람 카운터가 서버의 알람 카운터보다 작다면, 알람 카운터를 업데이트한다.
                 $("#unreadAlarmCount").text(serverAlarmCount);
                 let alarmCount = serverAlarmCount-clientAlarmCount;
-                //새로운 알람 다이얼로그를 띄운다.
-                //buildNewAlarmDialog(alarmCount);
+                //TODO : 팝오버로 신규 알람 숫자를 띄우고 싶다.
             }
         }
     });
@@ -73,7 +72,7 @@
 
     //!!사용자의 클릭에 따라 알람의 목록을 가져오는 부분
     //알람목록보기 호버 리스너
-    $(document).on('mouseenter', '#getAlarmListBtn', function() {
+    $(document).on('mouseenter', '#alarm-set-area', function() {
     //콘솔에 로그를 찍는다.
     console.log('getAlarmListBtn on.');
     //현재 페이지를 1로 세팅한다.
