@@ -37,6 +37,6 @@ public class ChatMemberController {
 
         chatMemberService.deleteChatMember(chatMember.getChatRoomNo(),chatMember.getUserId());
         return "redirect:/chatRoom/chatRoomList";
-
     }
+
 }

@@ -67,10 +67,22 @@
         naverLogin.init();
         };
 
+        //아이디&비밀번호 찾기
+        $( function() {
+
+            //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+            $("#findIdPwd").on("click", function () {
+
+                $('#findIdPwdModal').modal('show');
+            });
+        });
+
 
 
     </script>
 </head>
+
+
 <body>
 
     <div> 로그인/회원가입 화면이다.</div>
@@ -94,6 +106,7 @@
         <div class="col-sm-offset-4 col-sm-6 text-center">
             <button id="login" type="submit" class="btn btn-primary"  >로 &nbsp;그 &nbsp;인</button>
             <button id="addUser" type="button" class="btn btn-primary btn" >회 원 가 입 </button>
+            <button id="findIdPwd" type="button" class="btn btn-primary btn" >아이디&비밀번호 찾기 </button>
         </div>
         <div id="naverIdLogin"></div>
 
@@ -104,6 +117,9 @@
 
     <!-- 회원가입 모달 인클루드 -->
     <jsp:include page="addUserModal.jsp"/>
+
+    <!-- 아이디&비밀번호찾기 모달 인클루드 -->
+    <jsp:include page="findIdPwdModal.jsp"/>
 
 
 
