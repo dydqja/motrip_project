@@ -36,6 +36,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -126,10 +128,16 @@ public class UserServiceImpl implements UserService{
         }
     }
     
-    //회원정보가져오기
-    public User getUser(String userId) throws Exception {
+    //회원정보가져오기(아이디로)
+    public User getUserById(String userId) throws Exception {
 
-        return userDao.getUser(userId);
+        return userDao.getUserById(userId);
+    }
+
+    //회원정보가져오기(닉네임으로)
+    public User getUserByNickname(String userNickname) throws Exception {
+
+        return userDao.getUserByNickname(userNickname);
     }
 
     //리스트 구성하기
@@ -167,9 +175,23 @@ public class UserServiceImpl implements UserService{
 //    }
 
     //회원 탈퇴유무 변경
-    public void deleteUser(User user) throws Exception {
+    public void secessionAndRestoreUser(User user) throws Exception {
 
-        userDao.deleteUser(user);
+        if(user.isSecession() == false) {
+
+            Timestamp timestamp = Timestamp.from(Instant.now());
+            user.setSecession(true);
+            user.setSecessionDate(timestamp);
+
+            userDao.secessionAndRestoreUser(user);
+
+        }else if(user.isSecession() == true) {
+
+            user.setSecessionDate(null);
+            user.setSecession(false);
+
+            userDao.secessionAndRestoreUser(user);
+        }
     }
 
     //주민등록번호 7자리에서 성별과 나이대 추출하는 메소드
@@ -461,16 +483,13 @@ public class UserServiceImpl implements UserService{
         return response.getBody();
     }
 
-//    public Map<String , Object > getList(Search search) throws Exception {
-//        List<User> list= userDao.getList(search);
-//        int totalCount = userDao.getTotalCount(search);
-//
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        map.put("list", list );
-//        map.put("totalCount", new Integer(totalCount));
-//
-//        return map;
-//    }
+    public List<String> getNickname(List<String> blcaklist) throws Exception {
+
+        return userDao.getNickname(blcaklist);
+
+    }
+
+
 
 
 }

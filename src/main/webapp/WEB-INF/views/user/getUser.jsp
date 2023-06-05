@@ -37,7 +37,7 @@
 
             evaluateButtonState();
 
-            if("${sessionScope.user.userId}" != "${user.userId}") {
+            if("${sessionScope.user.userId}" != "${modelUser.userId}") {
                 blacklistState();
             }
         });
@@ -45,7 +45,7 @@
         function evaluateButtonState() {
 
             console.log("${sessionScope.user.userId}");
-            console.log("${user.userId}");
+            console.log("${modelUser.userId}");
 
             $.ajax({
                 url: "/user/evaluateState",
@@ -53,7 +53,7 @@
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     sessionUserId: "${sessionScope.user.userId}",
-                    getUserId: "${user.userId}"
+                    getUserId: "${modelUser.userId}"
                 }),
                 dataType: "text",
                 success: function (response) {
@@ -88,8 +88,10 @@
 
         function blacklistState() {
 
+            if("${sessionScope.user.userId}" != "${modelUser.userId}") {
+
             console.log("${sessionScope.user.userId}");
-            console.log("${user.userId}");
+            console.log("${modelUser.userId}");
 
             $.ajax({
                 url: "/user/blacklistState",
@@ -97,24 +99,25 @@
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     sessionUserId: "${sessionScope.user.userId}",
-                    getUserId: "${user.userId}"
+                    getUserId: "${modelUser.userId}"
                 }),
                 dataType: "text",
                 success: function (response) {
 
-                    if (response == "${user.userId}") {
-                        console.log("response 값이  null,'',undefined 일 때 실행됨");
-                        $("#blacklist").text() === "블랙취소"
+                    if (response == "${modelUser.userId}") {
+                        console.log("blacklist 값이 있을 때 실행됨  " +response);
+                        $("#blacklist").text("블랙취소");
 
                     } else {
-                        console.log("response 값이 null이 아닐 때 실행됨");
-                        $("#blacklist").text() === "블랙하기"
+                        console.log("blacklist  값이 없을 때 실행됨  " +response);
+                        $("#blacklist").text("블랙하기");
                     }
                 },
                 error: function (error) {
                     alert("실패");
                 }
             });
+            }
         }
 
         $(document).ready(function(){
@@ -128,7 +131,7 @@
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     sessionUserId: "${sessionScope.user.userId}",
-                    getUserId: "${user.userId}"
+                    getUserId: "${modelUser.userId}"
                 }),
                 dataType: "text",
                 success: function (response) {
@@ -161,7 +164,7 @@
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify({
                         evaluaterId: "${sessionScope.user.userId}",
-                        evaluatedUserId: "${user.userId}",
+                        evaluatedUserId: "${modelUser.userId}",
                         isScorePlus: 1
                     }),
                     dataType: "text",
@@ -191,7 +194,7 @@
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify({
                         evaluaterId: "${sessionScope.user.userId}",
-                        evaluatedUserId: "${user.userId}",
+                        evaluatedUserId: "${modelUser.userId}",
                         isScorePlus: -1
                     }),
                     dataType: "text",
@@ -221,7 +224,7 @@
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify({
                         sessionUserId: "${sessionScope.user.userId}",
-                        getUserId: "${user.userId}"
+                        getUserId: "${modelUser.userId}"
                     }),
                     dataType: "text",
                     success: function (response) {
@@ -254,7 +257,7 @@
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify({
                             evaluaterId: "${sessionScope.user.userId}",
-                            blacklistedUserId: "${user.userId}"
+                            blacklistedUserId: "${modelUser.userId}"
                         }),
                         dataType: "text",
                         success: function (response) {
@@ -275,7 +278,7 @@
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify({
                             evaluaterId: "${sessionScope.user.userId}",
-                            blacklistedUserId: "${user.userId}"
+                            blacklistedUserId: "${modelUser.userId}"
                         }),
                         dataType: "text",
                         success: function (response) {
@@ -291,13 +294,32 @@
             });
         });
 
+        //블랙리스트보기
+        $( function() {
+
+            $("#listBlack").on("click" , function() {
+                console.log("블랙리스트목록보기 클릭");
+
+                $('#listBlackModal').modal('show');
+                console.log("'#listBlackModal' 모달이 표시되었어야 합니다.");
+            });
+        });
+
         //회원정보수정
         $( function() {
 
             $("#updateUser").on("click" , function() {
 
                 $('#updateUserModal').modal('show');
+            });
+        });
 
+        //회원탈퇴확인
+        $( function() {
+
+            $("#secessionUser").on("click" , function() {
+
+                $('#secessionUserModal').modal('show');
             });
         });
 
@@ -317,21 +339,21 @@
 
 
     <div class="row">
-        <c:if test="${sessionScope.user.userId eq user.userId}" >
-            <div class="col-xs-4 col-md-2"><strong id="nickname1">${user.nickname}</strong>님, 환영합니다!</div>
+        <c:if test="${sessionScope.user.userId eq modelUser.userId}" >
+            <div class="col-xs-4 col-md-2"><strong id="nickname1">${modelUser.nickname}</strong>님, 환영합니다!</div>
         </c:if>
-        <c:if test="${sessionScope.user.userId ne user.userId}" >
-            <div class="col-xs-4 col-md-2"><strong id="nickname2">${user.nickname}</strong>님의 회원정보입니다.</div>
+        <c:if test="${sessionScope.user.userId ne modelUser.userId}" >
+            <div class="col-xs-4 col-md-2"><strong id="nickname2">${modelUser.nickname}</strong>님의 회원정보입니다.</div>
         </c:if>
     </div>
 
     <%-- gender => M == 남자, F == 여자   --%>
     <div class="row">
         <div class="col-xs-4 col-md-2 "><strong>성별표시부분</strong></div>
-        <c:if test="${user.gender.equals('M')}">
+        <c:if test="${modelUser.gender.equals('M')}">
             <div class="col-xs-8 col-md-4">대충 성별 남자라는 아이콘</div>
         </c:if>
-        <c:if test="${user.gender.equals('F')}">
+        <c:if test="${modelUser.gender.equals('F')}">
             <div class="col-xs-8 col-md-4">대충 성별 여자라는 아이콘</div>
         </c:if>
     </div>
@@ -340,10 +362,10 @@
         <div class="col-xs-4 col-md-2 "><strong>자기소개 표시부분</strong></div>
 
             <div class="col-xs-8 col-md-4" ><span id="selfIntro">
-                 <c:if test="${user.selfIntroPublic == true}">
+                 <c:if test="${modelUser.selfIntroPublic == true}">
                     ${user.selfIntro}
                  </c:if>
-                 <c:if test="${user.selfIntroPublic == false}">
+                 <c:if test="${modelUser.selfIntroPublic == false}">
                     비공개정보입니다.
                  </c:if>
                 </span></div>
@@ -353,10 +375,10 @@
         <div class="col-xs-4 col-md-2 "><strong>프로필사진 표시부분</strong></div>
 
         <div class="col-xs-8 col-md-4"><span id="userPhoto">
-            <c:if test="${user.userPhotoPublic == true}">
-                ${user.userPhoto}
+            <c:if test="${modelUser.userPhotoPublic == true}">
+                ${modelUser.userPhoto}
             </c:if>
-            <c:if test="${user.userPhotoPublic == false}">
+            <c:if test="${modelUser.userPhotoPublic == false}">
                 비공개정보입니다.
             </c:if>
             </span></div>
@@ -364,18 +386,19 @@
 
     <div class="row">
         <div class="col-xs-4 col-md-2 "><strong>회원평가점수 표시부분</strong></div>
-        <div class="col-xs-8 col-md-4" id="evaluateCount">${user.evaluateCount}</div>
+        <div class="col-xs-8 col-md-4" id="evaluateCount">${modelUser.evaluateCount}</div>
     </div>
 
     <div class="row">
         <div class="col-xs-4 col-md-2 "><strong>본인회원정보라면 '회원수정버튼', 타회원정보라면 '블랙추가버튼'</strong></div>
-        <c:if test="${sessionScope.user.userId eq user.userId}">
+        <c:if test="${sessionScope.user.userId eq modelUser.userId}">
             <div>
                 <button type="button" class="btn btn-default" name="updateUser" id="updateUser">회원정보수정</button>
                 <button type="button" class="btn btn-default" name="listBlack" id="listBlack">블랙리스트목록보기</button>
+                <button type="button" class="btn btn-default" name="secessionUser" id="secessionUser">회원탈퇴</button>
             </div>
         </c:if>
-        <c:if test="${sessionScope.user.userId ne user.userId}">
+        <c:if test="${sessionScope.user.userId ne modelUser.userId}">
             <div>
                 <button type="button" class="btn btn-default" name="blacklist" id="blacklist">블랙하기</button>
             </div>
@@ -383,14 +406,14 @@
     </div>
 
     <div class="row">
-        <c:if test="${sessionScope.user.userId ne user.userId}">
+        <c:if test="${sessionScope.user.userId ne modelUser.userId}">
             <button type="button" class="btn btn-default" name="likeUser" id="likeUser">좋아요</button>
             <button type="button" class="btn btn-primary" name="likeUserCancle" id="likeUserCancle">좋아요취소</button>
         </c:if>
     </div>
 
     <div class="row">
-        <c:if test="${sessionScope.user.userId ne user.userId}">
+        <c:if test="${sessionScope.user.userId ne modelUser.userId}">
             <button type="button" class="btn btn-default" name="disLikeUser" id="disLikeUser">싫어요</button>
             <button type="button" class="btn btn-primary" name="disLikeUserCancle" id="disLikeUserCancle">싫어요취소</button>
         </c:if>
@@ -398,10 +421,18 @@
 
 
 
+
+
 </div>
 
 <!-- 회원정보수정 모달 인클루드 -->
 <jsp:include page="updateUserModal.jsp"/>
+
+<!-- 블랙리스트 모달 인클루드 -->
+<jsp:include page="listBlackModal.jsp"/>
+
+<!-- 회원탈퇴확인 모달 인클루드 -->
+<jsp:include page="secessionUserModal.jsp"/>
 
 
 </body>

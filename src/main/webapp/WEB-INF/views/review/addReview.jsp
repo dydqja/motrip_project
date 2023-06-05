@@ -21,6 +21,9 @@
         $("a[href='#' ]").on("click" , function() {
             self.location = "../review/addReviewView.jsp"; //추가등록
         });
+        $("a[href='#' ]").on("click" , function() {
+            self.location = "../review/reviewList"; //모든 리뷰목록
+        });
     });
 </script>
 
@@ -193,8 +196,10 @@
         <div class="col-sm-offset-4  col-sm-4 text-center">
             <button type="button" class="btn btn-primary">확&nbsp;인</button>
             <a class="btn btn-primary btn" href="#" role="button">추가등록</a>
+            <a class="btn btn-primary btn2" href="#" role="button">다른 후기들 보러가기</a>
         </div>
     </div>
+
 
     <br/>
 

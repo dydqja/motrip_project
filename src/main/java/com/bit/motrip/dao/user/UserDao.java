@@ -13,7 +13,10 @@ public interface UserDao {
     public void addUser(User user) throws Exception;
 
     //select one
-    public User getUser(String userId) throws Exception;
+    public User getUserById(String userId) throws Exception;
+
+    //select one
+    public User getUserByNickname(String userNickname) throws Exception;
 
     //select list
     public List<User> getList(Search search) throws Exception;
@@ -24,11 +27,13 @@ public interface UserDao {
     public void updateUser(User user) throws Exception;
 
     //delete
-    public void deleteUser(User user) throws Exception;
+    public void secessionAndRestoreUser(User user) throws Exception;
 
     public int checkId(String userId) throws Exception;
 
     public int checkNickname(String nickname) throws Exception;
+
+    public List<String> getNickname(List<String> blacklist) throws Exception;
 
 
 

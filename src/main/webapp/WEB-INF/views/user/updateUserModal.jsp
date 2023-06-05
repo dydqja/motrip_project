@@ -698,7 +698,7 @@
 
 <body>
 
-  <!-- 회원가입 모달 -->
+  <!-- 회원수정화면 모달 -->
   <div id="updateUserModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
@@ -715,8 +715,8 @@
             <div class="form-group">
               <label for="modalUpdateUserId" class="col-sm-4 control-label">아 이 디</label>
               <div class="col-sm-6">
-                <div id="modalUpdateUserId">${user.userId}</div>
-                <input type="hidden" name="userId" id="userId" value="${user.userId}"  />
+                <div id="modalUpdateUserId">${modelUser.userId}</div>
+                <input type="hidden" name="userId" id="userId" value="${modelUser.userId}"  />
               </div>
             </div>
 
@@ -743,7 +743,7 @@
             <div class="form-group">
               <label for="modalNickname" class="col-sm-4 control-label">닉 네 임</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="nickname" id="modalNickname" placeholder="닉네임" value="${user.nickname}">
+                <input type="text" class="form-control" name="nickname" id="modalNickname" placeholder="닉네임" value="${modelUser.nickname}">
                 <span id="checkNickname"></span>
               </div>
             </div>
@@ -751,14 +751,14 @@
             <div class="form-group">
               <label for="modalUpdateUserName" class="col-sm-4 control-label">이   름</label>
               <div class="col-sm-6">
-                <div id="modalUpdateUserName">${user.userName}</div>
+                <div id="modalUpdateUserName">${modelUser.userName}</div>
               </div>
             </div>
 
             <div class="form-group">
               <label for="phone" class="col-sm-4 control-label">전화번호</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="phone" id="phone" placeholder="01012345678" value="${user.phone}" required maxlength="11">
+                <input type="text" class="form-control" name="phone" id="phone" placeholder="01012345678" value="${modelUser.phone}" required maxlength="11">
                 <span id="checkPhone"></span>
                 <button type="button" class="btn btn-primary" id="sendSms">인증번호전송</button>
               </div>
@@ -779,7 +779,7 @@
               <label  class="col-sm-4 control-label">주   소<span style="color:red"> *</span></label>
               <div class="col-sm-6">
                 <input type="button" onclick="sample3_execDaumPostcode()" value="주소 찾기">
-                <input type="text" id="sample3_address" name="addr" placeholder="주소" value="${user.addr}">
+                <input type="text" id="sample3_address" name="addr" placeholder="주소" value="${modelUser.addr}">
               </div>
             </div>
 
@@ -790,21 +790,21 @@
             <div class="form-group">
               <label for="sample3_detailAddress" class="col-sm-4 control-label">상세주소</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="addrDetail" id="sample3_detailAddress" placeholder="상세주소" value="${user.addrDetail}">
+                <input type="text" class="form-control" name="addrDetail" id="sample3_detailAddress" placeholder="상세주소" value="${modelUser.addrDetail}">
               </div>
             </div>
 
             <div class="form-group">
               <label for="email" class="col-sm-4 control-label">이메일</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="email" id="email" placeholder="bitcmap@motrip.com" value="${user.email}">
+                <input type="text" class="form-control" name="email" id="email" placeholder="bitcmap@motrip.com" value="${modelUser.email}">
               </div>
             </div>
 
             <div class="form-group">
               <label for="selfIntro" class="col-sm-4 control-label">자기소개</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control selfIntroText input-text" name="selfIntro" id="selfIntro" placeholder="300자 이내 자기소개" maxlength="300" value="${user.selfIntro}">
+                <input type="text" class="form-control selfIntroText input-text" name="selfIntro" id="selfIntro" placeholder="300자 이내 자기소개" maxlength="300" value="${modelUser.selfIntro}">
               </div>
             </div>
 

@@ -61,7 +61,7 @@ class UserServiceImplTest {
 
         user.setUserId("testUser41");
 
-        User getUser = userService.getUser(user.getUserId());
+        User getUser = userService.getUserById(user.getUserId());
 
         System.out.println(getUser.toString());
 
@@ -93,7 +93,7 @@ class UserServiceImplTest {
 
         user.setUserId("testUser6");
 
-        User getUser = userService.getUser(user.getUserId());
+        User getUser = userService.getUserById(user.getUserId());
 
         System.out.println(getUser.toString());
 
@@ -120,13 +120,13 @@ class UserServiceImplTest {
 
         user.setUserId("testUser6");
 
-        User getUser = userService.getUser(user.getUserId());
+        User getUser = userService.getUserById(user.getUserId());
 
         System.out.println(getUser.toString());
 
         getUser.setSuspension(TRUE);
         getUser.setSuspensionDate(suspensionDate);
 
-        userService.deleteUser(getUser);
+        userService.secessionAndRestoreUser(getUser);
     }
 }

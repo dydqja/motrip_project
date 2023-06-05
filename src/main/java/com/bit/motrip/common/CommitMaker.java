@@ -28,12 +28,11 @@ public class CommitMaker {
         //                        0         1          2            3                4                5
         String[] commitType = {"Create", "Update", "Delete", "Create&Update", "Update&Delete", "Create&Delete"};
         //커밋 소제목
-        String commitTitle = "메모 공유기능 추가. 못한부분 바디에 적음";
+        String commitTitle = "알람 프레젠테이션레이어 모달 빼고 전부 완료";
         //수정내역
-        String commitBody = "공유자목록보기, 공유해제(메모주인) 구현." +
-                "공유해제(메모공유자), 메모 공유할 때 ajax로 유저검색 구현 필요";
+        String commitBody = "이젠 다른 사람들 서비스 돌아다니면서 알람 삽입 문구를 넣으면 끝";
         //수정파일
-        String changedFiles = "(memoRestController, footer.jsp)";
-        gitCommitMSGBuilder(committers[0],commitType[1],commitTitle,commitBody,changedFiles);
+        String changedFiles = "(alarmMapper, alarmService, alarmServiceImpl, alarmRestController, alarmTest)";
+        gitCommitMSGBuilder(committers[0],commitType[0],commitTitle,commitBody,changedFiles);
     }
 }

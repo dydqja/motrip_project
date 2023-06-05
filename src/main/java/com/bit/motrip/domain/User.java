@@ -43,6 +43,11 @@ public class User {
 
     }
 
+    public User(String userId, String nickname) {
+        this.userId = userId;
+        this.nickname = nickname;
+    }
+
     public User(String phone) {
         this.phone = newphone(phone);
     }
@@ -289,6 +294,7 @@ public class User {
                 ", age='" + age + '\'' +
                 ", isSecession=" + isSecession +
                 ", isSuspension=" + isSuspension +
+                ", role=" + role +
                 ", evaluateCount=" + evaluateCount +
                 '}';
     }

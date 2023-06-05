@@ -24,7 +24,7 @@
         <result property="role"                     column="role"                       jdbcType="TINYINT"/>
         <result property="userRegDate"              column="user_reg_date"              jdbcType="DATE"/>
         <result property="isSecession"              column="is_secession"               jdbcType="TINYINT"/>
-        <result property="secessionDate"            column="secession_date"             jdbcType="DATE"/>
+        <result property="secessionDate"            column="secession_date"             jdbcType="TIMESTAMP"/>
         <result property="isSuspension"             column="is_suspension"              jdbcType="TINYINT"/>
         <result property="suspensionDate"           column="suspension_date"            jdbcType="TIMESTAMP"/>
         <result property="warningCount"             column="warning_Count"              jdbcType="TINYINT"/>
@@ -49,12 +49,23 @@
                  );
     </insert>
 
-    <select 	id="getUser"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
+    <select 	id="getUserById"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
         SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.phone, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
-               u.is_self_intro_public, u.is_user_photo_public, u.role, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
+               u.is_self_intro_public, u.is_user_photo_public, u.is_secession, u.is_suspension, u.role,
+               u.secession_Date, u.suspension_date, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
         FROM users u
         LEFT JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
         WHERE u.user_id = #{userId}
+        GROUP BY u.user_id;
+    </select>
+
+    <select 	id="getUserByNickname"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
+        SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.phone, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
+               u.is_self_intro_public, u.is_user_photo_public, u.is_secession, u.is_suspension, u.role,
+               u.secession_Date, u.suspension_date, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
+        FROM users u
+                 LEFT JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
+        WHERE u.nickname = #{nickname}
         GROUP BY u.user_id;
     </select>
 
@@ -116,14 +127,14 @@
         WHERE user_id = #{userId}
     </update>
 
-    <delete	id="deleteUser"	parameterType="com.bit.motrip.domain.User" >
+    <update	id="secessionAndRestoreUser"	parameterType="com.bit.motrip.domain.User" >
         UPDATE users
         <set>
-            suspension_Date  = #{suspensionDate},
-            is_suspension    = #{isSuspension}
+            secession_Date  = #{secessionDate},
+            is_secession    = #{isSecession}
         </set>
         WHERE user_id = #{userId}
-    </delete>
+    </update>
 
     <select id="checkId" parameterType="String" resultType="int">
         SELECT count(*)
@@ -135,6 +146,15 @@
         SELECT count(*)
         FROM users
         WHERE nickname = #{nickname}
+    </select>
+
+    <select id="getNickname" parameterType="list" resultType="String">
+        SELECT nickname
+        FROM users
+        WHERE user_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
 

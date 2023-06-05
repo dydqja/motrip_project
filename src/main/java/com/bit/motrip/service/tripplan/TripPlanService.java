@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface TripPlanService {
 
-    public Map<String, Object> selectTripPlanList(Search search) throws Exception;
+    public Map<String, Object> selectTripPlanList(Map<String, Object> paramaters) throws Exception;
     public void addTripPlan(TripPlan tripPlan) throws Exception;
     public int getTripPlan() throws Exception;
     public TripPlan selectTripPlan(int tripPlanNo) throws Exception;
@@ -21,6 +21,6 @@ public interface TripPlanService {
     public void tripPlanDownloadable(int tripPlanNo) throws Exception;
     public void tripPlanDeleted(int tripPlanNo) throws Exception;
     public void tripPlanCompleted(int tripPlanNo) throws Exception;
-    public void tripPlanLikes(TripPlan tripPlan) throws Exception;
+    public int tripPlanLikes(Map<String, Object> tripPlanLikes) throws Exception;
 
 }
