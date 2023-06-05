@@ -35,6 +35,8 @@ public interface UserDao {
 
     public List<String> getNickname(List<String> blacklist) throws Exception;
 
+    public String findId(String phone) throws Exception;
 
+    public void updatePwd(User user) throws Exception;
 
 }

@@ -56,6 +56,12 @@ public interface UserService {
     //여러 아이디값으로 각각의 닉네임 가져오기
     public List<String> getNickname(List<String> blacklist) throws Exception;
 
+    //전화번호로 해당하는 아이디 가져오기
+    public String findId(String phone) throws Exception;
+
+    //비밀번호 찾기에서 변경한 비밀번호 등록
+    public void updatePwd(User user) throws Exception;
+
 
 
 }

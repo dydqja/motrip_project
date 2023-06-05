@@ -489,6 +489,16 @@ public class UserServiceImpl implements UserService{
 
     }
 
+    public String findId(String phone) throws Exception {
+
+        return userDao.findId(addDash(phone));
+    }
+
+    public void updatePwd(User user) throws Exception {
+
+        userDao.updatePwd(user);
+    }
+
 
 
 

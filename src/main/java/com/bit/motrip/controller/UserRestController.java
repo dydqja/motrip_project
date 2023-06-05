@@ -303,6 +303,31 @@ public class UserRestController {
         return getNickname;
     }
 
+    @RequestMapping(value = "findId", method = RequestMethod.POST)
+    public String findId(@RequestBody Map<String,String> phone) throws Exception {
+        System.out.println("/user/findId : POST");
+        System.out.println(phone.get("phone"));
+
+        String userId = userService.findId(phone.get("phone"));
+        System.out.println("FindId 결과는 ? :: " +userId);
+
+        return userId;
+    }
+
+    @RequestMapping(value = "updatePwd", method = RequestMethod.POST)
+    public @ResponseBody String updatePwd(@RequestBody User user) throws Exception {
+        System.out.println("/user/updatePwd : POST");
+        System.out.println("패스워드업데이트 ajax request 값은? ::" +user);
+//        User user = new User();
+//        user.setPhone(request.get("userId"));
+//        user.setPhone(request.get("pwd"));
+//        System.out.println("패스워드 업데이트 user는? :: " +user);
+
+        userService.updatePwd(user);
+
+        return "";
+    }
+
 
 }
 
