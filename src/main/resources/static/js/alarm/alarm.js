@@ -66,7 +66,7 @@
                 let alarmCount = serverAlarmCount-clientAlarmCount;
                 let popover = $('#alarm-bell');
                 let userNickname = $("#alarmUserNickname").val();
-                popover.attr('data-content', userNickname+'님, 읽지 않은 알람이 '+alarmCount+'개 있습니다.')
+                popover.attr('data-content', alarmCount+' new')
                 popover.popover('show');
             }
             if(clientAlarmCount>serverAlarmCount){
@@ -233,7 +233,7 @@
         let alarmNavigateUrl = $("<span></span>");
         alarmNavigateUrl.addClass("alarm-thumbnail-navigateUrl");
         alarmNavigateUrl.css("display", "none");
-        alarmNavigateUrl.text(alarm.alarmNavigateUrl);
+        alarmNavigateUrl.text(alarm.alarmNaviUrl);
         alarmThumbnail.append(alarmNavigateUrl);
     }
 }
@@ -287,14 +287,22 @@
         $("#alarm-modal-contents").text(alarmContents);
 
         //값이 들어있는지 여부에 따라 버튼들을 만든다.
+        //기본척으로 읽음버튼을 만든다.
+        let alarmConfirmBtn = $("#alarm-confirm-btn");
+        alarmConfirmBtn.val(alarmNo);
+
+        //승낙URL이 있다면 승낙 버튼을 만든다.
         let alarmAcceptBtn = $("#alarm-accept-btn");
         if (!alarmAcceptUrl) {
             alarmAcceptBtn.hide();
         } else {
+            //그리고 승낙과 거절버튼이 있으니 읽음이 필요가 없다.
+            alarmConfirmBtn.hide();
             alarmAcceptBtn.show();
             alarmAcceptBtn.text("승낙");
             alarmAcceptBtn.val(alarmAcceptUrl);
         }
+        //거절 URL이 있다면 거절 버튼을 만든다.
         let alarmRejectBtn = $("#alarm-reject-btn");
         if(!alarmRejectUrl){
             alarmRejectBtn.hide();
@@ -305,25 +313,25 @@
         }
         //만약 거절url이 있다면 보류버튼을 만든다.
         let alarmHoldBtn = $("#alarm-hold-btn");
-        if(!alarmRejectUrl){
+        /*if(!alarmRejectUrl){*/
             alarmHoldBtn.hide();
+/*
         }else{
             alarmHoldBtn.show();
             alarmHoldBtn.text("보류");
             alarmHoldBtn.val(alarmNo);
         }
-        //만약 네비게이트url이 있다면 이동버튼을 만든다.
+*/
+        // 네비게이트url이 있다면 이동버튼을 만든다.
         let alarmNavigateBtn = $("#alarm-navigate-btn");
         if(!alarmNavigateUrl){
             alarmNavigateBtn.hide();
         }else{
+            alarmConfirmBtn.hide();
             alarmNavigateBtn.show();
             alarmNavigateBtn.text("이동");
             alarmNavigateBtn.val(alarmNavigateUrl);
         }
-        //기본척으로 읽음버튼을 만든다.
-        let alarmConfirmBtn = $("#alarm-confirm-btn");
-        alarmConfirmBtn.val(alarmNo);
 
         //다 만들었다면 모달을 띄운다.
         $("#alarm-modal").modal('show');
@@ -334,6 +342,12 @@
             event.preventDefault();
             //이 버튼의 값은 알람의 수락 url이다.
             let alarmAcceptUrl = $(this).val();
+            ///행동하기 전에 이 알람을 읽음처리해야한다.
+            //알람의 번호의 값은 이 버튼의 형제인 alarm-confirm-btn 의 값이다.
+            let alarmNo = $(this).siblings("#alarm-confirm-btn").val();
+            //읽음처리한다.
+            console.log(alarmNo+"번 알람 읽음처리");
+            readAlarm(alarmNo);
             //수락 url로 이동한다.
             window.location.href = alarmAcceptUrl;
     });
@@ -343,6 +357,13 @@
             event.preventDefault();
             //이 버튼의 값은 알람의 거절 url이다.
             let alarmRejectUrl = $(this).val();
+            ///행동하기 전에 이 알람을 읽음처리해야한다.
+            //알람의 번호의 값은 이 버튼의 형제인 alarm-confirm-btn 의 값이다.
+            let alarmNo = $(this).siblings("#alarm-confirm-btn").val();
+            //읽음처리한다.
+            console.log(alarmNo+"번 알람 읽음처리");
+            readAlarm(alarmNo);
+            
             //거절 url로 이동한다.
             window.location.href = alarmRejectUrl;
 
@@ -356,7 +377,7 @@
             console.log(alarmNo+"번 알람 보류처리");
             holdAlarm(alarmNo);
     });
-        //확인 버튼
+        //읽음 버튼
         $(document).on('click', '#alarm-confirm-btn', function() {
             event.preventDefault();
             //이 버튼의 값은 알람의 번호이다.
@@ -364,9 +385,23 @@
             //읽음 처리한다.
             console.log(alarmNo+"번 알람 읽음처리");
             readAlarm(alarmNo);
-
-
-});
+            //이후 이 모달을 닫는다.
+            $("#alarm-modal").modal('hide');
+    });
+        //이동 버튼
+        $(document).on('click', '#alarm-navigate-btn', function() {
+            event.preventDefault();
+            //이 버튼의 값은 알람의 이동 url이다.
+            let alarmNavigateUrl = $(this).val();
+            ///행동하기 전에 이 알람을 읽음처리해야한다.
+            //알람의 번호의 값은 이 버튼의 형제인 alarm-confirm-btn 의 값이다.
+            let alarmNo = $(this).siblings("#alarm-confirm-btn").val();
+            //읽음처리한다.
+            console.log(alarmNo+"번 알람 읽음처리");
+            readAlarm(alarmNo);
+            //이동 url로 이동한다.
+            window.location.href = alarmNavigateUrl;
+        });
 
 
     //!!서버와 통신하여 정보를 가져오는 부분
@@ -414,7 +449,7 @@
         // 클릭한 요소가 popover 토글 버튼인지 확인
         var isPopoverToggle = $(e.target).data('toggle') === 'popover';
 
-        // 클릭한 요소가 popover 내부에 있거나 토글 버튼이면 아무 작업도 하지 않음
+        // 클릭한 요소가 popover 면 팝오버를 닫음.
         if (isInsidePopover || isPopoverToggle) {
             $('[data-toggle="popover"]').popover('hide');
         }

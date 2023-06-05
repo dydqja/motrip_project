@@ -46,9 +46,7 @@
   <script src="/assets/js/min/home.min.js"></script>
 
 </head>
-<div class="pre-loader" style="display: none;">
-  <div class="loading-img"></div>
-</div>
+
 <body>
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
