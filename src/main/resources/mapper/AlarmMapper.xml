@@ -30,7 +30,7 @@
                             alarm_reject_url, alarm_navi_url)
         VALUES (#{alarmCategory}, #{alarmLevel}, #{alarmTitle},
                 #{alarmContents}, #{alarmSender}, #{alarmSenderNick}, #{alarmReceiver},
-                #{alarmReceiverNick}, #{alarmReadDate}, #{ala   rmAcceptUrl},
+                #{alarmReceiverNick}, #{alarmReadDate}, #{alarmAcceptUrl},
                 #{alarmRejectUrl}, #{alarmNaviUrl})
     </insert>
 

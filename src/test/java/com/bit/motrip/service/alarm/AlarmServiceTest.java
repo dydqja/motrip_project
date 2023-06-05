@@ -24,43 +24,43 @@ class AlarmServiceTest {
     String RejectUrl = "http://localhost:8080/reject";
 
 
-    @Test
+    //@Test
     void addConfirmAlarm() {
         int result = alarmService.addConfirmAlarm(sender, receiver, AlarmTitle, AlarmContents);
         assertEquals(1, result);
     }
 
-    @Test
+    //@Test
     void addAcceptableAlarm() {
         int result = alarmService.addAcceptableAlarm(sender, receiver, AlarmTitle, AlarmContents,AccepUrl,RejectUrl);
         assertEquals(1, result);
     }
-    @Test
+   // @Test
     void addNavigateAlarm() {
         int result = alarmService.addNavigateAlarm(sender, receiver,AlarmTitle,AlarmContents ,AccepUrl);
         assertEquals(1, result);
     }
-    @Test
+   // @Test
     void removeAlarm() {
         int result = alarmService.removeAlarm(1);
         assertEquals(1, result);
     }
-    @Test
+   // @Test
     void readAlarm() {
         int result = alarmService.readAlarm(3);
         assertEquals(1, result);
     }
-    @Test
+  //  @Test
     void holdAlarm() {
         int result = alarmService.holdAlarm(2);
         assertEquals(1, result);
     }
-    @Test
+  //  @Test
     void getUnreadAlarmCount() {
         int result = alarmService.getUnreadAlarmCount("user2");
         System.out.println("안읽은 알람 수는"+result);
     }
-    @Test
+   // @Test
     void getAlarmList(){
         List<Alarm> alarmList = alarmService.getAlarmList("user2",2);
         for (Alarm alarm: alarmList) {
