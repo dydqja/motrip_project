@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -32,11 +30,22 @@
 
         <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-        <h1 class="text-center">공지사항</h1>
+        <div class="page-img" style="background-image: url('/images/chatRoomImage.jpg');">
+            <div class="container">
+                <div class="col-sm-8">
+                    <h1 class="main-head">Notice</h1>
+                </div>
+                <div class="col-sm-4">
+                    <ul class="breadcrumb">
+                        <li><a href=""><span class="icon-home"></span></a>
+                        </li>
+                        <li><a href="">List</a>
+                        </li>
+                    </ul>
+                </div>
 
-        <br>
-        <br>
-        <br>
+            </div>
+        </div>
 
         <div class="container">
 
