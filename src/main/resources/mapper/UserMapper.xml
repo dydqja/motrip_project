@@ -157,6 +157,20 @@
         </foreach>
     </select>
 
+    <select id="findId" parameterType="String" resultType="String">
+        SELECT user_id
+        FROM users
+        WHERE phone = #{phone}
+    </select>
+
+    <update	id="updatePwd"	parameterType="com.bit.motrip.domain.User" >
+        UPDATE users
+        <set>
+            pwd = #{pwd}
+        </set>
+        WHERE user_id = #{userId}
+    </update>
+
 
 
 </mapper>

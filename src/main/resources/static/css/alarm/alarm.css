@@ -1,0 +1,15 @@
+.nav-menu .popover {
+    background-color:black;,
+width: 300px;
+}
+.nav-menu .popover-title {
+    background-color:black;,
+width: 300px;
+}
+.nav-menu .popover-content {
+    background-color: black;,
+width: 300 px;
+}
+.modal-backdrop .fade .in .alarm{
+    z-index: 0;
+}

@@ -12,8 +12,8 @@ const fileInput = document.getElementById('uploadFile');
 console.log(username,room);
 
 //cors 에러 해결
-const socket = io.connect("http://localhost:3000", {
-  cors:{origin:"http//localhost:3000"}//"http://192.168.0.28:3000"}
+const socket = io.connect("http://127.0.0.1:3000", {
+  cors:{origin:"http://127.0.0.1:3000"}//"http://192.168.0.28:3000" "http://localhost:3000"}
 });
 //join chatroom
 socket.emit('joinRoom',{username,room});
@@ -23,10 +23,9 @@ socket.on('roomUsers', ({ room, users }) => {
   outputRoomName(room);
   outputUsers(users);
 });
-socket.on('roomUsersRemove', ({ room, users }) => {
-  outputRoomName(room);
-  removeUsers(users);
-});
+// socket.on('roomUsersRemove', ({ room, users }) => {
+//   removeUsers(users);
+// });
 //client side
 //Message from server
 socket.on('message',message => {
@@ -132,26 +131,7 @@ function outputPhoto(message){
   document.querySelector('.chat-messages').appendChild(div);
 };
 
-// function outputPhoto(message) {
-//   const div = document.createElement('div');
-//   console.log(message.photo);
-//   div.classList.add('message');
-//   const img = document.createElement('img');
-//   img.src = `/images/${message.photo}`;
-//   img.addEventListener('load', () => {
-//     console.log("fail");
-//     div.innerHTML = `<p class="meta">${message.username}<span>   ${message.time}</span></p>
-//       <img src="${img.src}"/>
-//       <p class="text">
-//         ${message.text}
-//       </p>`;
-//     document.querySelector('.chat-messages').appendChild(div);
-//   });
-//   img.addEventListener('error', () => {
-//     console.error('Failed to load image:', img.src);
-//     // Handle error case if the image fails to load
-//   });
-// }
+
 //방이름 더하기
 function outputRoomName(room) {
   roomName.innerText = room;
@@ -167,7 +147,8 @@ function removeUsers(users) {
     if (userElement) {
       userElement.innerHTML = "";
     };
-}
+};
+
 //현재 참여 유저 리스트
 
 const leaveBtn = document.getElementById('leave-btn');

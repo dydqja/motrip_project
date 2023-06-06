@@ -41,6 +41,23 @@
 			$(function() {$(".delete").on("click", function() {fncDeleteChatroom();});});
 			//채팅방 생성
 			$(function() {$("#addChatRoom").on("click", function() {fncAddChatroom();});});
+
+			window.onload = function(){
+				$.ajax({
+					url:"/chatRoom/json/getList",
+					method:post,
+					dataType:"json",
+					headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+					},
+					data:JSON.stringify({
+					}),
+					success:function (data){
+						console.log(data);
+					}
+				})
+			}
 		</script>
 	</head>
 	<body>

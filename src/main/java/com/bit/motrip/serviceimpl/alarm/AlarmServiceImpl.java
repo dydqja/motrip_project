@@ -28,7 +28,7 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public int addConfirmAlarm(User sender, User receiver, String alarmTitle, String alarmContents) {
         Alarm alarm = new Alarm();
-        alarm.setAlarmLevel("1");
+        alarm.setAlarmLevel("2");
         alarm.setAlarmCategory("1");
         alarm.setAlarmTitle(alarmTitle);
         alarm.setAlarmContents(alarmContents);
@@ -98,7 +98,7 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public int addAcceptableAlarm(User sender, User receiver, String alarmTitle, String alarmContents, String acceptUrl, String rejectUrl) {
         Alarm alarm = new Alarm();
-        alarm.setAlarmLevel("1");
+        alarm.setAlarmLevel("2");
         alarm.setAlarmCategory("3");
         alarm.setAlarmTitle(alarmTitle);
         alarm.setAlarmContents(alarmContents);
