@@ -47,9 +47,55 @@
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-<p>
-    알람 거절 테스트용
-</p>
+<section>
+    <div class="main-title">
+        <h1>Banner</h1>
+        <p>Available variation of promotional banner.</p>
+    </div>
+    <div class="banner base">
+        <div class="container">
+            <div class="line-box">
+                <div class="line-title">Lorem ipsum dolor sit.</div>
+                <h1>Great Places, Great Holiday</h1>
+                <a href="" class="btn btn-primary btn-lg hvr-sweep-to-right">Book Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="main-title">
+        <h1>Boxed</h1>
+        <p>Enhaced bootstrap component that will adapt according to your color scheme and typography.</p>
+    </div>
+    <div class="container">
+        <div class="banner primary">
+            <div class="line-box">
+                <div class="line-title">We provide best support to our customers</div>
+                <br>
+                <h2>For Support email us at</h2>
+                <h3>info@moldthemes.com</h3>
+                <a href="" class="btn btn-base btn-lg hvr-sweep-to-right">Book Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="main-title">
+        <h1>Gray</h1>
+        <p>Enhaced bootstrap component that will adapt according to your color scheme and typography.</p>
+    </div>
+    <div class="container">
+        <div class="banner gray">
+            <div class="line-box">
+                <div class="line-title">쓸데없이 멋있는 테스트 페이지</div>
+                <h1>알람 거절 테스트용</h1>
+                <a href="" class="btn btn-primary btn-lg hvr-sweep-to-right">돌아가세요</a>
+            </div>
+        </div>
+    </div>
+</section>
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 

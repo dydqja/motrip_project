@@ -47,9 +47,22 @@
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-<p>
-    알람 승낙 테스트용
-</p>
+<section class="grey">
+    <div class="main-title">
+        <h1>승낙 테스트용</h1>
+        <p>Effects from animate.css to load</p>
+    </div>
+
+
+    <div class="container">
+        <br>
+        <br>
+        <div class="row effect-list" style="padding: 30px 15px;">
+        </div>
+    </div>
+
+</section>
+
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 

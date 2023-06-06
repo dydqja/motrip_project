@@ -45,7 +45,7 @@ public class TestController {
 
         return "alarm/accept.jsp";
     }
-    @GetMapping("rejectUrl")
+    @GetMapping("reject")
     public String rejectUrl() throws Exception{
 
         return "alarm/reject.jsp";
