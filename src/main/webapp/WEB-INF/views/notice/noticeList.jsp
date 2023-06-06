@@ -69,7 +69,7 @@
                 <c:forEach var="notice" items="${noticeListData.list}">
                     <fmt:formatDate value="${notice.noticeRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
                     <c:choose>
-                        <c:when test="${notice.isNoticeImportant == 1 && importantCount < 3}">
+                        <c:when test="${notice.isNoticeImportant == 1 && importantCount < 3 && page.currentPage == 1}">
                             <tr>
                                 <td class="text-center important-row">${notice.noticeNo}</td>
                                 <td class="text-center important-row">최신</td>
