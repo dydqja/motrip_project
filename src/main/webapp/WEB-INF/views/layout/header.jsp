@@ -141,6 +141,9 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="boardDropdown">
                             <li>
+                                <a class="dropdown-item" href="/user/listUser">회원목록</a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item" href="/notice/noticeList">공지사항</a>
                             </li>
                             <li>
@@ -148,7 +151,6 @@
                             </li>
                         </ul>
                     </li>
-
                     <li> <a href="login_page.html"><span class="icon-user"></span>로그인</a>
                     </li>
                     <li class="dropdown">
