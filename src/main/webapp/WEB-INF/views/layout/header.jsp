@@ -8,6 +8,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<style>
+    #new-memo-btn,
+    #list-my-memo-btn,
+    #list-del-memo-btn,
+    #list-shared-memo-btn{
+        background-color: transparent;
+        border-color: #558b2f;
+    }
+</style>
 <link rel="stylesheet" href="/css/alarm/alarm.css" media="all">
 <script src="/js/alarm/alarm.js"></script>
 
@@ -79,6 +88,52 @@
                             </li>
                         </ul>
                     </li>
+                    <li id="memo-section" class="dropdown">
+                        <a href="#" class="dropdown-toggle">메모</a>
+                        <ul id="memo-dropdown" class="dropdown-menu">
+                            <li>
+                                <div class="btn-group-vertical">
+                                    <a id="new-memo-btn" href="#" class=""><i class="icon-plus"></i>New</a>
+                                    <a id="list-my-memo-btn" href="javascript:void(0)" data-toggle="dropdown" class="dropdown-toggle">내 메모<span class="caret"></span></a>
+                                    <ul class="dropdown-menu text-left">
+                                        <li class="dropdown-header">Header</li>
+                                        <li><a href="javascript:void(0)">Action</a>
+                                        </li>
+                                        <li><a href="javascript:void(0)">Another Action</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="disabled"><a href="javascript:void(0)">Disabled</a>
+                                        </li>
+                                    </ul>
+                                    <a id="list-shared-memo-btn" href="javascript:void(0)" data-toggle="dropdown" class="dropdown-toggle">공유받은 메모<span class="caret"></span></a>
+                                    <ul class="dropdown-menu text-left">
+                                        <li class="dropdown-header">Header</li>
+                                        <li><a href="javascript:void(0)">Action</a>
+                                        </li>
+                                        <li><a href="javascript:void(0)">Another Action</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="disabled"><a href="javascript:void(0)">Disabled</a>
+                                        </li>
+                                    </ul>
+                                    <a id="list-del-memo-btn" href="javascript:void(0)" data-toggle="dropdown" class="dropdown-toggle">삭제된 메모<span class="caret"></span></a>
+                                    <ul class="dropdown-menu text-left">
+                                        <li class="dropdown-header">Header</li>
+                                        <li><a href="javascript:void(0)">Action</a>
+                                        </li>
+                                        <li><a href="javascript:void(0)">Another Action</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="disabled"><a href="javascript:void(0)">Disabled</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="boardDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
@@ -93,6 +148,7 @@
                             </li>
                         </ul>
                     </li>
+
                     <li> <a href="login_page.html"><span class="icon-user"></span>로그인</a>
                     </li>
                     <li class="dropdown">
