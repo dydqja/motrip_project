@@ -966,7 +966,7 @@ hr.dark {
   transition: all 0.2s linear;
 }
 .nav-menu.shrink .navbar .navbar-brand > img {
-  height: 40px;
+  height: 70px;
 }
 .nav-menu.shrink .nav > li > a {
   height: 70px;
@@ -1201,99 +1201,60 @@ hr.dark {
   -o-animation: panning 80s infinite ease-in 300ms 0 ease;
   animation: panning 80s infinite ease-in 300ms 0 ease;
 }
-@-webkit-keyframes zooming {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@-moz-keyframes zooming {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@-ms-keyframes zooming {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@-o-keyframes zooming {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
+
 @keyframes zooming {
-  0% {
+  0%, 100% {
     transform: scale(1);
   }
   50% {
     transform: scale(1.2);
   }
-  100% {
-    transform: scale(1);
-  }
 }
-@-webkit-keyframes zooming {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes zooming {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
+
 .zooming {
   position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  -webkit-animation: zooming 30s infinite ease-in;
-  -o-animation: zooming 30s infinite ease-in;
-  animation: zooming 30s infinite ease-in;
-  -webkit-animation: zooming 30s infinite ease-in 300ms 0 ease;
-  -moz-animation: zooming 30s infinite ease-in 300ms 0 ease;
-  -ms-animation: zooming 30s infinite ease-in 300ms 0 ease;
-  -o-animation: zooming 30s infinite ease-in 300ms 0 ease;
-  animation: zooming 30s infinite ease-in 300ms 0 ease;
+  animation: zooming 30s infinite ease-in 300ms;
 }
+
+@keyframes slide-in {
+  0% {
+    transform: translate3d(0, 1em, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+.main-image-txt {
+  animation: slide-in 1s 2.25s forwards;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  cursor: default;
+  display: inline-block;
+  opacity: 0;
+  position: relative;
+  text-align: center;
+  top: -1em;
+  vertical-align: middle;
+  width: 90%;
+}
+
+.main-image-txt h1 {
+  font-size: 4.35em;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1em;
+}
+
 .main-img {
   min-height: 800px;
   width: 100%;
@@ -1316,10 +1277,10 @@ hr.dark {
   top: 0px;
   left: 0px;
   background: rgba(0, 0, 0, 0.3);
-  z-index: 9;
+  z-index: -1;
 }
 .main-video {
-  max-height: 800px;
+  max-height: 750px;
   margin: 0px;
   padding-top: 0px;
   position: relative;
@@ -1340,8 +1301,8 @@ hr.dark {
   background-image: linear-gradient(to bottom, rgba(29, 48, 16, 0.8) 0%, #000 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc1d3010', endColorstr='#ff000000', GradientType=0);
-  opacity: 0.8;
-  z-index: 9;
+  opacity: 0.1;
+  z-index: -1;
 }
 .main-video video {
   width: 100%;

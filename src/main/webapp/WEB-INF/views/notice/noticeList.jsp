@@ -1,131 +1,184 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<head>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>공지사항 목록</title>
+<!DOCTYPE html>
+<html lang="ko">
 
-</head>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-<body>
+        <title>공지사항 목록</title>
 
-    <h1>공지사항 목록</h1>
+        <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+        <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
+        <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
+        <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
+        <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
+        <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
+        <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 
-    <br>
-    <br>
-    <br>
+        <link rel="stylesheet" href="/css/notice/noticeList.css">
+    </head>
 
-    <table class="centered-table">
+    <body>
 
-        <thead>
+        <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-            <tr>
-                <th>작성자</th>
-                <th>제목</th>
-                <th>중요</th>
-                <th>작성날짜</th>
-                <th>조회수</th>
-            </tr>
+        <h1 class="text-center">공지사항</h1>
 
-        </thead>
+        <br>
+        <br>
+        <br>
 
-        <tbody>
+        <div class="container">
 
-            <c:forEach var="notice" items="${noticeListData.list}">
+            <table class="table table-striped">
 
-                <fmt:formatDate value="${notice.noticeRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
+                <thead>
 
-                <tr>
+                    <tr>
+                        <th class="text-center">번호</th>
+                        <th class="text-center">말머리</th>
+                        <th class="text-center">제목</th>
+                        <th class="text-center">글쓴이</th>
+                        <th class="text-center">작성일</th>
+                        <th class="text-center">조회수</th>
+                    </tr>
 
-                    <td>${notice.noticeAuthor}</td>
-                    <td><a href="#" onclick="viewDetail(${notice.noticeNo})">${notice.noticeTitle}</a></td>
-                    <td>${notice.isNoticeImportant == 1 ? '중요' : ''}</td>
-                    <td>${formattedDate}</td>
-                    <td>${notice.noticeViews}</td>
+                </thead>
 
-                </tr>
+                <tbody>
+                <c:set var="importantCount" value="0" />
+                <c:forEach var="notice" items="${noticeListData.list}">
+                    <fmt:formatDate value="${notice.noticeRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
+                    <c:choose>
+                        <c:when test="${notice.isNoticeImportant == 1 && importantCount < 3}">
+                            <tr>
+                                <td class="text-center important-row">${notice.noticeNo}</td>
+                                <td class="text-center important-row">최신</td>
+                                <td class="important-row">
+                                    <a href="#" onclick="viewDetail(${notice.noticeNo})">
+                                        <img src="/images/board/notice.gif" style="max-width: 25px; max-height: 25px;">
+                                            ${notice.noticeTitle}
+                                    </a>
+                                </td>
+                                <td class="text-center important-row">${notice.noticeAuthor == 'admin' ? '운영자' : ''}</td>
+                                <td class="text-center important-row">${formattedDate}</td>
+                                <td class="text-center important-row">${notice.noticeViews}</td>
+                            </tr>
+                            <c:set var="importantCount" value="${importantCount + 1}" />
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td class="text-center">${notice.noticeNo}</td>
+                                <td class="text-center">일반</td>
+                                <td>
+                                    <a href="#" onclick="viewDetail(${notice.noticeNo})">${notice.noticeTitle}</a>
+                                </td>
+                                <td class="text-center">${notice.noticeAuthor == 'admin' ? '운영자' : ''}</td>
+                                <td class="text-center">${formattedDate}</td>
+                                <td class="text-center">${notice.noticeViews}</td>
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+                </tbody>
 
-            </c:forEach>
+            </table>
 
-        </tbody>
+            <nav aria-label="Page navigation example">
 
-    </table>
+                <ul class="pagination justify-content-center">
 
-    <nav aria-label="Page navigation example">
+                    <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
 
-        <ul class="pagination">
+                        <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage - 1}" aria-label="Previous">
+                            &laquo;
+                        </a>
 
-            <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
+                    </li>
 
-                <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage - 1}" aria-label="Previous">
-                    «
-                </a>
+                    <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
 
-            </li>
+                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">
 
-            <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
+                            <a class="page-link" href="/notice/noticeList?currentPage=${i}">${i}</a>
 
-                <li class="page-item ${i == page.currentPage ? 'active' : ''}">
+                        </li>
 
-                    <a class="page-link" href="/notice/noticeList?currentPage=${i}">${i}</a>
+                    </c:forEach>
 
-                </li>
+                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-            </c:forEach>
+                        <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage + 1}" aria-label="Next">
+                            &raquo;
+                        </a>
 
-            <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
+                    </li>
 
-                <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage + 1}" aria-label="Next">
-                    »
-                </a>
+                </ul>
 
-            </li>
+            </nav>
 
-        </ul>
+            <c:if test="${sessionScope.user.userId eq 'admin'}">
 
-    </nav>
+                <div>
+                    <button id="addNoticeView" class="btn btn-primary">공지 등록</button>
+                </div>
 
-    <c:if test="${sessionScope.user.userId eq 'admin'}">
+            </c:if>
 
-        <div>
-            <button id="addNoticeView">공지 등록</button>
         </div>
 
-    </c:if>
+        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
-    <%-- Bootstrap --%>
-    <script src="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <script src="/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+        <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+        <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+        <script src="/vendor/retina.min.js"></script>
+        <script src="/vendor/jquery.imageScroll.min.js"></script>
+        <script src="/assets/js/min/responsivetable.min.js"></script>
+        <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+        <script src="/assets/js/min/countnumbers.min.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/min/home.min.js"></script>
 
-    <%--
-    Jquery --%>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript">
+        <script type="text/javascript">
 
-        function viewDetail(noticeNo) {
+            function viewDetail(noticeNo) {
 
-            // 클릭한 공지 제목의 번호 파라미터를 컨트롤러로 전송하고 상세 조회 서비스 실행
-            window.location.href = "/notice/getNotice?noticeNo=" + noticeNo;
-        }
+                // 클릭한 공지 제목의 번호 파라미터를 컨트롤러로 전송하고 상세 조회 서비스 실행
+                window.location.href = "/notice/getNotice?noticeNo=" + noticeNo;
+            }
 
-        function goToPage(page) {
+            function goToPage(page) {
 
-            // 페이지 번호를 컨트롤러로 전송하여 해당 페이지로 이동
-            window.location.href = "/notice/noticeList?currentPage=" + page;
-        }
+                // 페이지 번호를 컨트롤러로 전송하여 해당 페이지로 이동
+                window.location.href = "/notice/noticeList?currentPage=" + page;
+            }
 
-        $(function() {
+            $(function() {
 
-            // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-            $("#addNoticeView").on("click" , function() {
+                // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+                $("#addNoticeView").on("click" , function() {
 
-                window.location.href = "/notice/addNoticeView";
+                    window.location.href = "/notice/addNoticeView";
+                });
             });
-        });
 
-    </script>
+        </script>
 
-</body>
+    </body>
+
+</html>

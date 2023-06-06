@@ -84,4 +84,14 @@
 			RIGHT JOIN (select chat_room_no,trip_plan_no from chat_room_members group by chat_room_no, trip_plan_no) crm
 			    on cr.chat_room_no = crm.chat_room_no order by cr.chat_room_no
 	</select>
+
+	<select id="chatRoomListPage" resultMap="chatRoomResultMap">
+		SELECT
+			*
+		FROM
+			chat_rooms cr
+				RIGHT JOIN (select chat_room_no,trip_plan_no from chat_room_members group by chat_room_no, trip_plan_no) crm
+						   on cr.chat_room_no = crm.chat_room_no order by cr.chat_room_no
+		LIMIT 4;
+	</select>
 </mapper>
