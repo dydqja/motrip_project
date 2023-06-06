@@ -70,7 +70,9 @@
                     <fmt:formatDate value="${notice.noticeRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
                     <c:choose>
                         <c:when test="${notice.isNoticeImportant == 1 && importantCount < 3 && page.currentPage == 1}">
+
                             <tr>
+
                                 <td class="text-center important-row">${notice.noticeNo}</td>
                                 <td class="text-center important-row">최신</td>
                                 <td class="important-row">
@@ -82,7 +84,9 @@
                                 <td class="text-center important-row">${notice.noticeAuthor == 'admin' ? '운영자' : ''}</td>
                                 <td class="text-center important-row">${formattedDate}</td>
                                 <td class="text-center important-row">${notice.noticeViews}</td>
+
                             </tr>
+
                             <c:set var="importantCount" value="${importantCount + 1}" />
                         </c:when>
                         <c:otherwise>
@@ -103,7 +107,7 @@
 
             </table>
 
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example" class="text-center">
 
                 <ul class="pagination justify-content-center">
 
@@ -140,7 +144,7 @@
             <c:if test="${sessionScope.user.userId eq 'admin'}">
 
                 <div>
-                    <button id="addNoticeView" class="btn btn-primary">공지 등록</button>
+                    <button id="addNoticeView" class="btn btn-primary text-right">공지 등록</button>
                 </div>
 
             </c:if>
