@@ -111,21 +111,41 @@ public class TripPlanServiceImpl implements TripPlanService {
 
     @Override // 여행플랜 수정
     public TripPlan updateTripPlan(TripPlan tripPlan) throws Exception{
-//        if(!tripPlan.isTripCompleted()){
-//            tripPlanDao.updateTripPlan(tripPlan);
-//            List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
-//            for(int i=0; i<dailyPlan.size(); i++){
-//                dailyPlanDao.updateDailyPlan(dailyPlan.get(i));
-//                List<Place> place = dailyPlan.get(i).getPlaceResultMap();
-//                for(int j=0; j<place.size(); j++){
-//                    placeDao.updatePlace(place.get(j));
-//                }
-//            }
-//            tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
-//        } else {
-//            System.out.println("여행이 완료된 플랜은 더이상 수정할수없습니다.");
-//        }
-        return tripPlan;
+        if(!tripPlan.getisTripCompleted()){
+            tripPlan.setTripPlanRegDate(new Date());
+            tripPlanDao.updateTripPlan(tripPlan);
+            List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
+            for(int i=0; i<dailyPlan.size(); i++){
+                dailyPlan.get(i).setDailyPlanNo(dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo()).get(i).getDailyPlanNo());
+                dailyPlanDao.updateDailyPlan(dailyPlan.get(i));
+                List<Place> place = dailyPlan.get(i).getPlaceResultMap();
+                List<Place> defaultPlaces = placeDao.selectPlace(dailyPlan.get(i).getDailyPlanNo()); // 업데이트전 place
+                System.out.println(place + "새로운값");
+                System.out.println(defaultPlaces + "기존값 확인");
+                for(int j=0; j<place.size(); j++){
+                    if(j < defaultPlaces.size()) {
+                        place.get(j).setPlaceNo(defaultPlaces.get(j).getPlaceNo());
+                        placeDao.updatePlace(place.get(j));
+                        if(j == (place.size()-1)) {
+                            int size = defaultPlaces.size() - place.size();
+                            if (defaultPlaces.size() > place.size()) {
+                                for (int p = 0; p <size; p++) {
+                                    placeDao.deletePlace(defaultPlaces.get(place.size() + p).getPlaceNo());
+                                }
+                            }
+                        }
+                    } else {
+                        place.get(j).setDailyPlanNo(dailyPlan.get(i).getDailyPlanNo());
+                        placeDao.addPlace(place.get(j));
+                    }
+                }
+            }
+            System.out.println(tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo()));
+            tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+        } else {
+            System.out.println("여행이 완료된 플랜은 더이상 수정할수없습니다.");
+        }
+        return null;
     }
 
     @Override // 여행플랜 완전삭제

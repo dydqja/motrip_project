@@ -49,6 +49,18 @@ public class TripPlanRestController {
         tripPlanService.addTripPlan(tripPlan);
     }
 
+    @PostMapping("updateTripPlan") // 여행플랜 저장 (JSON 형태로 받기위해 ajax로 보냄)
+    public void updateTripPlan(@RequestBody TripPlan tripPlan, HttpSession session) throws Exception {
+        System.out.println("POST : updateTripPlan()");
+
+        User dbUser = (User) session.getAttribute("user");
+        tripPlan.setTripPlanAuthor(dbUser.getUserId());
+
+        System.out.println(tripPlan.toString());
+
+        tripPlanService.updateTripPlan(tripPlan);
+    }
+
     @GetMapping("tripPlanDeleted") /// 여행플랜 삭제(임시대기)
     public TripPlan tripPlanDeleted(@RequestParam("tripPlanNo") int tripPlanNo) throws Exception {
         System.out.println("GET : deleteTripPlan()");
