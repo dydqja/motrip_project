@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -32,11 +30,22 @@
 
         <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-        <h1 class="text-center">공지사항</h1>
+        <div class="page-img" style="background-image: url('/images/chatRoomImage.jpg');">
+            <div class="container">
+                <div class="col-sm-8">
+                    <h1 class="main-head">Notice</h1>
+                </div>
+                <div class="col-sm-4">
+                    <ul class="breadcrumb">
+                        <li><a href=""><span class="icon-home"></span></a>
+                        </li>
+                        <li><a href="">List</a>
+                        </li>
+                    </ul>
+                </div>
 
-        <br>
-        <br>
-        <br>
+            </div>
+        </div>
 
         <div class="container">
 
@@ -60,8 +69,10 @@
                 <c:forEach var="notice" items="${noticeListData.list}">
                     <fmt:formatDate value="${notice.noticeRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
                     <c:choose>
-                        <c:when test="${notice.isNoticeImportant == 1 && importantCount < 3}">
+                        <c:when test="${notice.isNoticeImportant == 1 && importantCount < 3 && page.currentPage == 1}">
+
                             <tr>
+
                                 <td class="text-center important-row">${notice.noticeNo}</td>
                                 <td class="text-center important-row">최신</td>
                                 <td class="important-row">
@@ -73,7 +84,9 @@
                                 <td class="text-center important-row">${notice.noticeAuthor == 'admin' ? '운영자' : ''}</td>
                                 <td class="text-center important-row">${formattedDate}</td>
                                 <td class="text-center important-row">${notice.noticeViews}</td>
+
                             </tr>
+
                             <c:set var="importantCount" value="${importantCount + 1}" />
                         </c:when>
                         <c:otherwise>
@@ -94,7 +107,7 @@
 
             </table>
 
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example" class="text-center">
 
                 <ul class="pagination justify-content-center">
 
@@ -131,7 +144,7 @@
             <c:if test="${sessionScope.user.userId eq 'admin'}">
 
                 <div>
-                    <button id="addNoticeView" class="btn btn-primary">공지 등록</button>
+                    <button id="addNoticeView" class="btn btn-primary text-right">공지 등록</button>
                 </div>
 
             </c:if>
