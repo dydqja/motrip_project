@@ -36,6 +36,7 @@ public class EvaluateListServiceImpl implements EvaluateListService {
 
     public List<EvaluateList> getEvaluation(Map evaluaterId) throws Exception {
         return evaluateListDao.getEvaluation(evaluaterId);
+
     }
 
     public void deleteBlacklist(EvaluateList evaluateList) throws Exception {

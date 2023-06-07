@@ -88,6 +88,8 @@
 
         function blacklistState() {
 
+            if("${sessionScope.user.userId}" != "${modelUser.userId}") {
+
             console.log("${sessionScope.user.userId}");
             console.log("${modelUser.userId}");
 
@@ -115,6 +117,7 @@
                     alert("실패");
                 }
             });
+            }
         }
 
         $(document).ready(function(){
@@ -311,6 +314,15 @@
             });
         });
 
+        //회원탈퇴확인
+        $( function() {
+
+            $("#secessionUser").on("click" , function() {
+
+                $('#secessionUserModal').modal('show');
+            });
+        });
+
     </script>
 
 </head>
@@ -383,6 +395,7 @@
             <div>
                 <button type="button" class="btn btn-default" name="updateUser" id="updateUser">회원정보수정</button>
                 <button type="button" class="btn btn-default" name="listBlack" id="listBlack">블랙리스트목록보기</button>
+                <button type="button" class="btn btn-default" name="secessionUser" id="secessionUser">회원탈퇴</button>
             </div>
         </c:if>
         <c:if test="${sessionScope.user.userId ne modelUser.userId}">
@@ -408,6 +421,8 @@
 
 
 
+
+
 </div>
 
 <!-- 회원정보수정 모달 인클루드 -->
@@ -415,6 +430,9 @@
 
 <!-- 블랙리스트 모달 인클루드 -->
 <jsp:include page="listBlackModal.jsp"/>
+
+<!-- 회원탈퇴확인 모달 인클루드 -->
+<jsp:include page="secessionUserModal.jsp"/>
 
 
 </body>

@@ -31,7 +31,7 @@
                     var gender = naverLogin.user.getGender();
                     var phone = naverLogin.user.getMobile();
                     var userName = naverLogin.user.getName();
-                    var age = naverLogin.user.getAge();
+                    var age = naverLogin.user.getBirthyear();
                     var email = naverLogin.user.getEmail();
 
                     if( userId == undefined || userId == null) {
@@ -55,7 +55,7 @@
                         return;
                     }
                     if( age == undefined || age == null) {
-                        alert("연령대는 필수정보입니다. 정보제공을 동의해주세요.");
+                        alert("출생연도는 필수정보입니다. 정보제공을 동의해주세요.");
                         naverLogin.reprompt();
                         return;
                     }

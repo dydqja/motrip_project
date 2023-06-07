@@ -1,13 +1,11 @@
 <%--
   Created by IntelliJ IDEA.
-  User: alexa
-  Date: 2023-06-03
-  Time: 오전 7:49
+  User: bitcamp
+  Date: 2023-06-05
+  Time: 오전 10:54
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--부트스트랩 css--%>
 
 <footer id="footer">
     <div class="container">
@@ -49,14 +47,17 @@
                             <li>
                                 <a href="https://twitter.com/moldthemes" class="icon-twitter"></a>
                             </li>
-                            <li>
-                                <a href="mailto:info@moldthemes.com" class="icon-mail"></a>
-                            </li>
+                            <li><a href="mailto:info@moldthemes.com" class="icon-mail"></a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="copy"><span>&copy;</span> Copyright Mold Discover, 2017</div>
+    <div class="copy"><span>©</span> Copyright Motrip Bitcamp, 2023</div>
+
 </footer>
+
+<div id="root"></div>
+<script src="/js/bot/bot.js"></script>
+<link href="/css/bot/bot.css" rel="stylesheet">

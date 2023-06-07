@@ -35,7 +35,10 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public int addChatRoom(ChatRoom chatRoom,String userId,int tripPlanNo) throws Exception {
         System.out.println("addChatRoom");
-        chatRoom.setMaxPersons(1); // 채팅방 인원 1로 설정
+        System.out.println(chatRoom.getGender());
+        System.out.println(chatRoom.getMinAge());
+        System.out.println(chatRoom.getMaxAge());
+        chatRoom.setCurrentPersons(1);
         int newChatRoomNo = chatRoomDao.addChatRoom(chatRoom);
         if(newChatRoomNo == 1) {
             ChatMember chatMember = new ChatMember();
@@ -49,7 +52,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             System.out.println("채팅방 생성 실패하였습니다.");
         }
 
-        //chatMemberDao.addChatMember();
+//        chatMemberDao.addChatMember(); 삭제예정
         return chatRoom.getChatRoomNo();
     }
 
@@ -93,11 +96,28 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
         return chatRoomList;
     }
+    @Override
+    public List<ChatRoom> chatRoomListPage() throws Exception {
+        List<ChatRoom> chatRoomList = chatRoomDao.chatRoomListPage();
+
+        for (ChatRoom cr:chatRoomList) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+            String strDate = simpleDateFormat.format(cr.getTravelStartDate());
+            cr.setStrDate(strDate);
+        }
+
+        return chatRoomList;
+    }
 
     //채팅 상태 변환
     @Override
     public int changeRoomStatus(int chatRoomStatus, int chatRoomNo) throws Exception {
         chatRoomDao.changeRoomStatus(chatRoomStatus,chatRoomNo);
         return chatRoomStatus;
+    }
+
+    @Override
+    public int chatRoomCount() throws Exception {
+        return chatRoomDao.chatRoomCount();
     }
 }

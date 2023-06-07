@@ -1,38 +1,39 @@
 <%--
   Created by IntelliJ IDEA.
-  User: alexa
-  Date: 2023-06-03
-  Time: 오전 5:16
+  User: bitcamp
+  Date: 2023-06-05
+  Time: 오전 10:54
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="pre-loader" style="display: flex; justify-content: center; align-items: center;">
-    <div class="loading-img">
-            <img src="/images/motrip-logo.png" width="100" height="50" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); !important;">
-    </div>
+
+
+
+<link rel="stylesheet" href="/css/alarm/alarm.css" media="all">
+<link rel="stylesheet" href="/css/memo/memo.css" media="all">
+<link rel="stylesheet" href="/summernote/summernote.css" media="all">
+
+<script src="/summernote/summernote.js"></script>
+<script src="/js/alarm/alarm.js"></script>
+<script src="/js/memo/listMemo.js"></script>
+<script src="/js/memo/newMemo.js"></script>
+<%--
+<script src="/js/alarm/alarm.js"></script>
+--%>
+
+
+<div class="pre-loader" style="display: none;">
+    <div class="loading-img"></div>
 </div>
 
-
 <header class="nav-menu fixed">
-    <nav class="navbar normal">
+    <nav class="navbar normal transparent">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
                     <img src="/images/motrip-logo.png" alt="">
                 </a>
-                <br>
-                <div class="login-test">
-                    <c:if test="${empty sessionScope.user}">
-                        <button id="loginAsUser1" onclick="location.href='/test/login/user1'">user1</button>
-                        <button id="loginAsUser2" onclick="location.href='/test/login/user2'">user2</button>
-                        <button id="loginAsAdmin" onclick="location.href='/test/login/admin'">admin</button>
-                    </c:if>
-                    <c:if test="${not empty sessionScope.user}">
-                        ${user.userId}님 환영합니다.
-                        <button id="logout" onclick="location.href='/test/logout'">로그아웃</button>
-                    </c:if>
-                </div
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -44,232 +45,228 @@
             <div class="navbar-collapse collapse" id="main-navbar">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a href="#">Home Pages <i class="fa fa-chevron-down nav-arrow"></i></a>
+                        <a href="#">모두의 여행 <i class="fa fa-chevron-down nav-arrow"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="home_default.html">Default Home Page</a>
+                            <li><a href="home_default.html">모두의 여행이란</a></li>
+                            <li><a href="home_slider.html">설계 포트폴리오</a></li>
+                            <li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
+                            <c:if test="${empty sessionScope.user}">
+                            <li><a href="/test/login/user1">유저1로 로그인</a></li>
+                            <li><a href="/test/login/user2">유저2로 로그인</a></li>
+                            <li><a href="/test/login/admin">admin 로그인</a></li>
+                            </c:if>
+                            <c:if test="${not empty sessionScope.user}">
+                            <li><a href="/test/logout">${user.userId}님,로그아웃</a></li>
+                            </c:if>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#">여행플랜</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/tripPlan/tripPlanList">여행플랜 목록</a>
                             </li>
-                            <li><a href="home_slider.html">Image Slider Default</a>
+                            <li><a href="/tripPlan/myTripPlanList">나의 여행플랜</a>
                             </li>
-                            <li><a href="home_slider_with_searhbar.html">Slider / Search Bar</a>
+                            <li><a href="/tripPlan/myTripPlanList">나의 여행플랜</a>
                             </li>
-                            <li><a href="home_boxed.html">Boxed/Background Image</a>
-                            </li>
-                            <li><a href="home_video.html">Home with Video</a>
+                            <li><a href="/tripPlan/addTripPlanView">여행플랜 작성</a>
                             </li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#">Tour Pages</a>
+                        <a href="#" class="dropdown-toggle">채팅</a>
                         <ul class="dropdown-menu">
-                            <li><a href="trip_grid_withsidebar.html">Tour List</a>
-                            </li>
-                            <li><a href="trip_detail.html">Tour Detail</a>
-                            </li>
-                            <li><a href="location.html">Tour Location</a>
-                            </li>
-                            <li><a href="location_archive.html">Location Archive</a>
+                            <li><a href="/chatRoom/chatRoomList">채팅 리스트</a>
                             </li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">Features</a>
+                        <a href="#" class="dropdown-toggle">후기</a>
                         <ul class="dropdown-menu">
-                            <li><a href="colorscheme.html">Color Scheme</a>
+                            <li><a href="/review/addReviewView">후기 작성</a>
                             </li>
-                            <li><a href="iconfont.html">Icon Font</a>
+                            <li><a href="/review/getReviewList">모든 후기</a>
                             </li>
-                            <li><a href="text_page.html">Typography</a>
+                            <li><a  href="/review/getMyReviewList">나의 후기</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">Blog</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="blog_list.html">Blog List</a>
-                            </li>
-                            <li><a href="blog_list2.html">Blog List Full Image</a>
-                            </li>
-                            <li><a href="blog_single.html">Blog Single</a>
-                            </li>
-                            <li><a href="blog_single_center.html">Blog Single Center</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown  megamenu">
-                        <a class="dropdown-toggle">Mega Menu</a>
-                        <div class="dropdown-menu">
-                            <div class="col-sm-3">
-                                <h5 class="head">Home Variation</h5>
-                                <ul>
-                                    <li><a href="home_default.html">Default Home Page</a>
-                                    </li>
-                                    <li><a href="home_slider.html">Image Slider Default</a>
-                                    </li>
-                                    <li><a href="home_slider_with_searhbar.html">Slider / Search Bar</a>
-                                    </li>
-                                    <li><a href="home_boxed.html">Boxed/Background Image</a>
-                                    </li>
-                                    <li><a href="home_video.html">Home with Video</a>
-                                    </li>
-                                </ul>
+                    <li id="memo-section" class="dropdown">
+                        <a href="#" class="dropdown-toggle">메모</a>
+                        <ul id="memo-dropdown" class="dropdown-menu">
+                            <div class="my-memo-thumbnail btn-group-justified" role="group">
+                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">+ 새 메모</a>
                             </div>
-                            <div class="col-sm-3">
-                                <h5 class="head">Trip / Listing</h5>
-                                <ul>
-                                    <li><a href="trip_detail.html">Trip Detail</a>
-                                    </li>
-                                    <li class="hor-line"></li>
-                                    <li><a href="trip_grid.html">Trip Grid</a>
-                                    </li>
-                                    <li><a href="trip_grid_withsidebar.html">Trip Grid with Sidebar</a>
-                                    </li>
-                                    <li><a href="trip_list.html">Trip List</a>
-                                    </li>
-                                    <li><a href="trip_list_full_img.html">Trip List - Full Image</a>
-                                    </li>
-                                    <li><a href="trip_list_2col.html">Trip List Two Column</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5 class="head">Pages</h5>
-                                <ul>
-                                    <li><a href="cart_page.html">Cart Page</a>
-                                    </li>
-                                    <li><a href="checkout_page.html">Checkout Page</a>
-                                    </li>
-                                    <li><a href="about_page.html">About Us Page</a>
-                                    </li>
-                                    <li><a href="team_page.html">Team Page</a>
-                                    </li>
-                                    <li><a href="contact_page.html">Contact Page</a>
-                                    </li>
-                                    <li><a href="contact_page2.html">Contact Page 2</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5 class="head last">Misc Pages</h5>
-                                <ul>
-                                    <li><a href="404_page.html">404 Page</a>
-                                    </li>
-                                    <li><a href="comming_soon.html">Comming Soon Page</a>
-                                    </li>
-                                    <li class="hor-line"></li>
-                                    <li><a href="login_page.html">Login Page</a>
-                                    </li>
-                                    <li><a href="signup_page.html">Sign Up Page</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="dropdown megamenu">
-                        <a href="#" class="dropdown-toggle">Elements</a>
-                        <div class="dropdown-menu">
-                            <div class="col-sm-3">
-                                <h5 class="head">Misc 1</h5>
-                                <ul>
-                                    <li><a href="element_feature_list.html">Feature List</a>
-                                    </li>
-                                    <li><a href="element_heading.html">Heading / Titles</a>
-                                    </li>
-                                    <li><a href="element_banner.html">Banner</a>
-                                    </li>
-                                    <li><a href="element_blockquote.html">Blockquote</a>
-                                    </li>
-                                    <li><a href="element_breadcrumb.html">Breadcrumb</a>
-                                    </li>
-                                    <li><a href="element_pagination.html">Pagination</a>
-                                    </li>
+                            <div class="panel-group" id="memo-accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="my-memo-btn">
+                                        <p class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#my-memo-collapse" aria-expanded="true" aria-controls="collapseOne">
+                                                나의 메모 보기
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div id="my-memo-collapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="panel-body">
+                                            <div id="my-memo-control" class="btn-group btn-group-justified " role="group">
+                                                <a href="#" id="my-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('myMemo',-1)">◀</a>
+                                                <a href="#" id="my-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
+                                                <a href="#" id="my-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('myMemo',+1)">▶</a>
+                                            </div>
+                                            <div class="my-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
+                                            </div>
+                                            <div class="my-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="shared-memo-btn">
+                                        <p class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#shared-memo-collapse" aria-expanded="false" aria-controls="collapseTwo">
+                                                공유받은 메모 보기
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div id="shared-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                        <div class="panel-body">
+                                            <div id="shared-memo-control" class="btn-group btn-group-justified " role="group">
+                                                <a href="#" id="shared-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('sharedMemo',-1)">◀</a>
+                                                <a href="#" id="shared-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
+                                                <a href="#" id="shared-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('sharedMemo',+1)">▶</a>
+                                            </div>
+                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
+                                            </div>
+                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="del-memo-btn">
+                                        <p class="panel-title">
 
-                                </ul>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5 class="head">Misc 2</h5>
-                                <ul>
-                                    <li><a href="element_carousel.html">Carousel</a>
-                                    </li>
-                                    <li><a href="element_gallery.html">Gallery &amp; Lightbox</a>
-                                    </li>
-                                    <li><a href="element_step-timeline.html">Steps / Timeline</a>
-                                    </li>
-                                    <li><a href="element_testimonials.html">Testimonials</a>
-                                    </li>
-                                    <li><a href="element_jquery_ui.html">Jquery UI</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5 class="head">Animation / Form</h5>
-                                <ul>
-                                    <li><a href="element_animation.html">Animation</a>
-                                    </li>
-                                    <li><a href="element_button.html">Button</a>
-                                    </li>
-                                    <li><a href="element_button_effect.html">Button Effect</a>
-                                    </li>
-                                    <li><a href="element_form.html">Form</a>
-                                    </li>
-                                    <li><a href="element_counter.html">Counter</a>
-                                    </li>
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#del-memo-collapse" aria-expanded="false" aria-controls="collapseThree">
+                                                삭제된 메모 보기
+                                            </a>
 
-                                </ul>
+                                        </p>
+                                    </div>
+                                    <div id="del-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div class="panel-body">
+                                            <div id="del-memo-control" class="btn-group btn-group-justified " role="group">
+                                                <a href="#" id="del-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('deletedMemo',-1)">◀</a>
+                                                <a href="#" id="del-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
+                                                <a href="#" id="del-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('deletedMemo',+1)">▶</a>
+                                            </div>
+                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
+                                            </div>
+                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
+                                            </div>
+                                        </div>
+                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <h5 class="head">Tab / Table</h5>
-                                <ul>
-                                    <li><a href="element_table.html">Table</a>
-                                    </li>
-                                    <li><a href="element_tooltip.html">Tooltip / Popover / Modal</a>
-                                    </li>
-                                    <li><a href="element_tabs.html">Tabs</a>
-                                    </li>
-                                    <li><a href="element_accordion.html">Accordion</a>
-                                    </li>
-                                    <li><a href="element_alert.html">Alert / Label</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        </ul>
                     </li>
-                    <li> <a href="login_page.html"><span class="icon-user"></span>로그인</a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="cart_page.html" style="position: relative;">
-                            <span class="icon-minicart" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                                <span class="badge badge-danger" style="position: absolute; bottom: -15px; right: -15px;">3</span>
-                            </span>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="boardDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            게시판
                         </a>
-                        <ul class="dropdown-menu  dropdown-menu-right cart-menu">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="boardDropdown">
                             <li>
-                                <img src="http://placehold.it/40x40" alt="" class="item-img">
-                                <span class="delete icon-trash"></span>
-                                <div class="text">
-                                    Lorem ipsum dolor sit amet, consectetur.
-                                    <p>USD 473 X 2</p>
-                                </div>
+                                <a class="dropdown-item" href="/notice/noticeList">공지사항</a>
                             </li>
                             <li>
-                                <img src="http://placehold.it/40x40" alt="" class="item-img">
-                                <span class="delete icon-trash"></span>
-                                <div class="text">
-                                    Lorem ipsum dolor sit amet, consectetur.
-                                    <p>USD 473 X 2</p>
-                                </div>
+                                <a class="dropdown-item" href="/qna/qnaList">질의응답</a>
                             </li>
-                            <li>
-                                <img src="http://placehold.it/40x40" alt="" class="item-img">
-                                <span class="delete icon-trash"></span>
-                                <div class="text">
-                                    Lorem ipsum dolor sit amet, consectetur.
-                                    <p>USD 473 X 2</p>
-                                </div>
-                            </li>
+                        </ul>
+                    </li>
+                    <c:if test="${empty sessionScope.user}"> >
+                    <li> <a href="/user/login"><span class="icon-user"></span>로그인</a>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.user}"> >
+                        <li class="dropdown">
+                            <a class="icon-user" href="#">${sessionScope.user.nickname}</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">MyPage</a>
+                                </li>
+                                <c:if test="${sessionScope.user.role == 0}">
+                                    <li><a href="/user/listUser">회원목록</a>
+                                    </li>
+                                </c:if>
+                                <li><a href="#">로그아웃</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </c:if>
+                    </li>
+                    <li class="dropdown">
+                        <a id="alarm-set-area" href="#">
+                            <span id="alarm-bell"  class="icon-bell" data-toggle="popover" data-content="popoverContents" data-placement="top" data-trigger="focus" title=""></span>
+                            <span id="unreadAlarmCount" class="badge badge-danger">0</span></a>
+                        <ul id="alarm-thumbnail-area" class="dropdown-menu  dropdown-menu-right cart-menu">
+
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
+        <div class="alarm-info-area">
+            <%--어플리케이션 스코프로부터 값을 받거나, 3이다.--%>
+            <input type="hidden" id="pollingTime" value="${applicationScope.alarmPollingTime}">
+            <input type="hidden" id="alarmUserId" value="${sessionScope.user.userId}">
+            <input type="hidden" id="alarmUserNickname" value="${sessionScope.user.nickname}">
+            <input type="hidden" id="alarmCurrentPage" value="1">
+        </div>
+
     </nav>
 </header>
+<%--button trigger modal--%>
+<input type="hidden" data-toggle="modal" href="#alarm-modal"></input>
+<%--Modal--%>
+<div id="alarm-modal" class="modal" aria-labelledby="myModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="alarm-modal-title" class="modal-title">Modal Title</h3>
+            </div>
+            <div id="alarm-modal-contents" class="modal-body">
+                Modal Content..
+            </div>
+            <div id="alarm-modal-footer" class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default hvr-grow" data-dismiss="modal">닫기</button>
+                <button type="button" id="alarm-confirm-btn" class="btn btn-sm btn-primary hvr-grow">읽음</button>
+                <button type="button" id="alarm-navigate-btn" class="btn btn-sm btn-info hvr-grow">이동</button>
+                <button type="button" id="alarm-accept-btn" class="btn btn-sm btn-primary hvr-grow">승인</button>
+                <button type="button" id="alarm-hold-btn" class="btn btn-sm btn-warning hvr-grow">보류</button>
+                <button type="button" id="alarm-reject-btn" class="btn btn-sm btn-danger hvr-grow">거절</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="memo-dialogs">
+    <div class="memo-dialog" title="메모 제목">
+        <input class="memo-dialog-memono" type="hidden" value="1">
+        <input class="memo-dialog-info" type="hidden" value="JSON">
+        <div class="memo-dialog-view modal-body">
+            <div class="memo-contents-div">
+                히이얏호
+            </div>
+            <div id="summernote">ㅇㅇ</div>
+        </div>
+        <div class="memo-dialog-control modal-footer">
+            <button type="button" class="btn btn-sm btn-default hvr-grow" data-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-sm btn-primary hvr-grow">수정</button>
+            <button type="button" class="btn btn-sm btn-danger hvr-grow">삭제</button>
+        </div>
+    </div>
+</div>

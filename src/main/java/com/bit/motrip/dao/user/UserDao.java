@@ -27,7 +27,7 @@ public interface UserDao {
     public void updateUser(User user) throws Exception;
 
     //delete
-    public void deleteUser(User user) throws Exception;
+    public void secessionAndRestoreUser(User user) throws Exception;
 
     public int checkId(String userId) throws Exception;
 
@@ -35,6 +35,8 @@ public interface UserDao {
 
     public List<String> getNickname(List<String> blacklist) throws Exception;
 
+    public String findId(String phone) throws Exception;
 
+    public void updatePwd(User user) throws Exception;
 
 }

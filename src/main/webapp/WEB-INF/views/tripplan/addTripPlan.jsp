@@ -38,7 +38,7 @@
   <textarea id="dailyPlanContents0" style="width: 500px; height: 400px; resize: vertical; overflow: auto;"></textarea>
   <div id="menu_wrap0">
     <div class="option">
-      <input type="text" id="placeName0" size="15">
+      <input type="text" id="placeName0" size="15"">
       <button class="placeSearch" id="placeSearch0">검색하기</button>
       <hr>
       <ul id="placesList0"></ul>
@@ -47,7 +47,7 @@
   </div>
   <div id="map" style="width: 400px; height: 400px;"></div>
 </div>
-<div id="placeTagsList0" style="margin-top: 40px; padding-left: 40px; text-align: left;"><div id='totalTripTime' class='totalTripTime'></div></div>
+<div id="placeTagsList0" style="margin-top: 40px; padding-left: 40px; text-align: left;"><div id='totalTripTime0' class='totalTripTime'></div></div>
 </body>
 
 <script type="text/javascript">
@@ -59,8 +59,9 @@
     let markers = []; // 마커를 담을 배열입니다
     let isPlanPublic = false; // 공유여부
     let isPlanDownloadable = false; // 가져가기 여부
-    let placeTripTimes = []; // 이동시간 구하기 위한 명소배열
+    let placeTripPositions = []; // 이동시간 구하기 위한 명소배열
     let totalTripTimes = [];
+    let placeTripTimes = [];
 
     // 초기 지도를 생성합니다
     var startMapContainer = document.getElementById('map'); // 초기 지도를 표시할 div
@@ -154,13 +155,13 @@
 
         dailyPlanContent = $('#dailyPlanContents' + i).val();
         console.log(dailyPlanContent)
-        totalTripTime = $("#totalTripTime" + i).text();
+        totalTripTime = totalTripTimes[i];
         console.log(totalTripTime)
         hiddenCount = $("#placeTagsList"+i).find("div[hidden]").length;
         console.log(hiddenCount)
         for(var j=0; j<hiddenCount; j++){
             var placeText = $("#placeTagsList" + i).find("#place"+(j + 1)).text();
-            var tripTimeText = $("#placeTagsList" + i).find("#tripTime" + (j + 1)).text();
+            var tripTimeText = placeTripTimes[i][j];
             var place = JSON.parse(placeText); // JSON 문자열을 객체로 파싱
             place.tripTime = tripTimeText; // 시간 값을 할당
             placeInfo.push(JSON.stringify(place));
@@ -346,10 +347,9 @@
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    $(document).on("click", ".placeSearch", function () {
-      if(this.id == this.id){  // 내가 누르는 버튼이 일차별여행플랜 몇번의 해당하는 지 알기위한 if문
 
-        var mapIndex = this.id.split('placeSearch')[1];;
+    $(document).on("click", ".placeSearch", function () {
+        var mapIndex = this.id.split('placeSearch')[1]; // 내가 누른 서치버튼이 몇번째인지 클래스 정보는 모두 동일하나 id는 숫자가다르기때문
 
         var ps = new kakao.maps.services.Places(); // 장소 검색 객체를 생성합니다
         var infowindow = new kakao.maps.InfoWindow({zIndex:1}); // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
@@ -430,14 +430,14 @@
 
                 var placeCount = $("#placeTagsList" + mapIndex + " div[hidden]").length; // 기존 hidden place 개수
 
-                if (!placeTripTimes[mapIndex]) { // 배열이 존재하지 않는 경우에만 초기화
-                  placeTripTimes[mapIndex] = [];
+                if (!placeTripPositions[mapIndex]) { // 배열이 존재하지 않는 경우에만 초기화
+                  placeTripPositions[mapIndex] = [];
                 }
-                placeTripTimes[mapIndex].push(positions[placePositionId - 1].coordinates);
+                placeTripPositions[mapIndex].push(positions[placePositionId - 1].coordinates);
 
-                if(placeTripTimes[mapIndex].length > 1){
-                  console.log(placeTripTimes);
-                  tripTime(placeTripTimes[mapIndex], placeCount);
+                if(placeTripPositions[mapIndex].length > 1){
+                  console.log(placeTripPositions);
+                  tripTime(placeTripPositions[mapIndex], placeCount);
                 }
 
                 var place = {
@@ -465,9 +465,9 @@
           maps[mapIndex].setBounds(bounds); // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         }
 
-        function tripTime(placeTripTimes, placeCount) {
-          var start = placeTripTimes[placeTripTimes.length-2]; // 저장된 명소들의 시작지점 명소를 저장할때마다 추가되기에 배열크기의 -2
-          var end = placeTripTimes[placeTripTimes.length-1]; // 저장된 명소들의 종료지점 명소를 저장할때마다 추가되기에 배열크기의 -1
+        function tripTime(placeTripPositions, placeCount) {
+          var start = placeTripPositions[placeTripPositions.length-2]; // 저장된 명소들의 시작지점 명소를 저장할때마다 추가되기에 배열크기의 -2
+          var end = placeTripPositions[placeTripPositions.length-1]; // 저장된 명소들의 종료지점 명소를 저장할때마다 추가되기에 배열크기의 -1
 
           console.log(start);
           console.log(end);
@@ -481,15 +481,23 @@
               var hour = parseInt(data.hour);
               var minute = parseInt(data.minute);
 
+              if (!placeTripTimes.hasOwnProperty(mapIndex)) {
+                  placeTripTimes[mapIndex] = [];
+              }
+
               if(hour == 0) {
                 $("#placeTagsList" + mapIndex).find("#tripTime" + placeCount).text(minute + "분");
                 totalTripTimes[mapIndex] = (totalTripTimes[mapIndex] || 0) + minute;
+                placeTripTimes[mapIndex].push(minute);
               } else {
                 $("#placeTagsList" + mapIndex).find("#tripTime" + placeCount).text(hour + "시간 " + minute + "분");
                 totalTripTimes[mapIndex] = (totalTripTimes[mapIndex] || 0) + (hour * 60) + minute;
+                placeTripTimes[mapIndex].push((hour * 60) + minute);
               }
+
               var totalHours = Math.floor(totalTripTimes[mapIndex] / 60);
               var totalMinutes = totalTripTimes[mapIndex] % 60;
+
               if(totalHours == 0){
                 $("#totalTripTime" + mapIndex).text("총 이동시간: " + totalMinutes + "분");
               } else {
@@ -576,7 +584,7 @@
           }
           markers = [];
         }
-      }
+
     });
 
   });

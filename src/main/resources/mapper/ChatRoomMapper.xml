@@ -9,11 +9,15 @@
 		<id column="chat_room_no" property="chatRoomNo" jdbcType="INTEGER"/>
 		<result column="chat_room_title" property="chatRoomTitle" jdbcType="VARCHAR"/>
 		<result column="travel_start_date" property="travelStartDate" jdbcType="DATE" javaType="java.util.Date" />
-		<result column="age_range" property="ageRange" jdbcType="VARCHAR" />
+		<result column="min_age" property="minAge" jdbcType="INTEGER"/>
+		<result column="max_age" property="maxAge" jdbcType="INTEGER"/>
+		<result column="gender" property="gender" jdbcType="VARCHAR"/>
 		<result column="max_persons" property="maxPersons" jdbcType="INTEGER"/>
 		<result column="current_persons" property="currentPersons" jdbcType="INTEGER"/>
 		<result column="chat_room_status" property="chatRoomStatus" jdbcType="INTEGER"/>
 		<result column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
+		<result column="trip_days" property="tripDays" jdbcType="INTEGER"/>
+		<result column="trip_plan_title" property="tripPlanTitle" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<resultMap id="chatMemberResultMap" type="com.bit.motrip.domain.ChatMember">
@@ -31,8 +35,8 @@
 		<selectKey keyProperty="chatRoomNo" resultType="int" order="AFTER">
 			select last_insert_id()
 		</selectKey>
-		insert into chat_rooms (chat_room_title, travel_start_date, age_range, max_persons, current_persons)
-		values (#{chatRoomTitle}, #{travelStartDate}, #{ageRange}, #{maxPersons}, #{currentPersons})
+		insert into chat_rooms (chat_room_title, travel_start_date, min_age, max_age, gender, max_persons, current_persons)
+		values (#{chatRoomTitle}, #{travelStartDate}, #{minAge},#{maxAge},#{gender}, #{maxPersons}, #{currentPersons})
 	</insert>
 
 		<select id="getChatRoom" parameterType="int" resultMap="chatRoomResultMap">
@@ -40,7 +44,9 @@
 				cr.chat_room_no,
 				cr.chat_room_title,
 				cr.travel_start_date,
-				cr.age_range,
+				cr.min_age,
+				cr.max_age,
+				cr.gender,
 				cr.max_persons,
 				cr.current_persons,
 				cr.chat_room_status,
@@ -83,5 +89,34 @@
 			chat_rooms cr
 			RIGHT JOIN (select chat_room_no,trip_plan_no from chat_room_members group by chat_room_no, trip_plan_no) crm
 			    on cr.chat_room_no = crm.chat_room_no order by cr.chat_room_no
+	</select>
+
+<!--	<select id="chatRoomListPage" resultMap="chatRoomResultMap">-->
+<!--		SELECT-->
+<!--			*-->
+<!--		FROM-->
+<!--			chat_rooms cr-->
+<!--				RIGHT JOIN (select chat_room_no,trip_plan_no from chat_room_members group by chat_room_no, trip_plan_no) crm-->
+<!--						   on cr.chat_room_no = crm.chat_room_no order by cr.chat_room_no-->
+<!--		LIMIT 4;-->
+<!--	</select>-->
+		<select id="chatRoomListPage" resultMap="chatRoomResultMap">
+			SELECT cr.*, tp.trip_days, tp.trip_plan_title
+			FROM chat_rooms cr
+					 RIGHT JOIN (
+				SELECT crm.chat_room_no, crm.trip_plan_no
+				FROM chat_room_members crm
+				GROUP BY crm.chat_room_no, crm.trip_plan_no
+			) crm ON cr.chat_room_no = crm.chat_room_no
+					 LEFT JOIN trip_plan tp ON crm.trip_plan_no = tp.trip_plan_no
+			ORDER BY cr.chat_room_no
+			LIMIT 4;
+		</select>
+
+	<select id="chatRoomCount" resultType="int">
+		SELECT
+			count(chat_room_no)
+		FROM
+			chat_rooms
 	</select>
 </mapper>

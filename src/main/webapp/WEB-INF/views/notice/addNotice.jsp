@@ -1,35 +1,33 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
-<!DOCTYPE HTML>
-
+<!DOCTYPE html>
 <html lang="ko">
 
     <head>
-
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
         <title>공지사항 등록</title>
 
-        <%-- CSS START --%>
-        <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-              integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+        <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
+        <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
+        <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
+        <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
+        <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
+        <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 
-        <style>
-
-            .selector-for-some-widget {
-                box-sizing: content-box;
-            }
-
-        </style>
-        <%-- CSS END --%>
-
+        <link rel="stylesheet" href="/css/notice/addNotice.css">
     </head>
 
     <body>
+
+        <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
         <h1>공지사항 등록</h1>
 
@@ -52,13 +50,6 @@
             <div>
 
                 <input type="text" name="noticeTitle" id="noticeTitle" value="${noticeTitle}">
-
-                <select name="isNoticeImportant">
-
-                    <option value="0" ${isNoticeImportant == 0 ? 'selected' : ''}>비중요</option>
-                    <option value="1" ${isNoticeImportant == 1 ? 'selected' : ''}>중요</option>
-
-                </select>
 
             </div>
 
@@ -88,11 +79,22 @@
 
         </form>
 
-        <%-- Bootstrap --%>
-        <script src="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
-        <%-- Jquery --%>
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+        <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+        <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+        <script src="/vendor/retina.min.js"></script>
+        <script src="/vendor/jquery.imageScroll.min.js"></script>
+        <script src="/assets/js/min/responsivetable.min.js"></script>
+        <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+        <script src="/assets/js/min/countnumbers.min.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/min/home.min.js"></script>
+
         <script type="text/javascript">
 
             $(function() {
@@ -134,5 +136,7 @@
             });
 
         </script>
+
     </body>
+
 </html>

@@ -99,27 +99,53 @@ public class TripPlanServiceImpl implements TripPlanService {
     public TripPlan selectTripPlan(int tripPlanNo) throws Exception {
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
         tripPlan.setTripPlanViews(tripPlan.getTripPlanViews() + 1);
+
+//        for(int i=0; i<tripPlan.getDailyplanResultMap().size(); i++){ // 총 이동시간을 스트링으로 바꿔출력하기 위해
+//            int total = Integer.parseInt(tripPlan.getDailyplanResultMap().get(i).getTotalTripTime());
+//            tripPlan.getDailyplanResultMap().get(i).setTotalTripTime(totaltime(total));
+//        }
+
         tripPlanDao.tripPlanViews(tripPlan);
-        return tripPlanDao.selectTripPlan(tripPlanNo);
+        return tripPlan;
     }
 
     @Override // 여행플랜 수정
     public TripPlan updateTripPlan(TripPlan tripPlan) throws Exception{
-//        if(!tripPlan.isTripCompleted()){
-//            tripPlanDao.updateTripPlan(tripPlan);
-//            List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
-//            for(int i=0; i<dailyPlan.size(); i++){
-//                dailyPlanDao.updateDailyPlan(dailyPlan.get(i));
-//                List<Place> place = dailyPlan.get(i).getPlaceResultMap();
-//                for(int j=0; j<place.size(); j++){
-//                    placeDao.updatePlace(place.get(j));
-//                }
-//            }
-//            tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
-//        } else {
-//            System.out.println("여행이 완료된 플랜은 더이상 수정할수없습니다.");
-//        }
-        return tripPlan;
+        if(!tripPlan.getisTripCompleted()){
+            tripPlan.setTripPlanRegDate(new Date());
+            tripPlanDao.updateTripPlan(tripPlan);
+            List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
+            for(int i=0; i<dailyPlan.size(); i++){
+                dailyPlan.get(i).setDailyPlanNo(dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo()).get(i).getDailyPlanNo());
+                dailyPlanDao.updateDailyPlan(dailyPlan.get(i));
+                List<Place> place = dailyPlan.get(i).getPlaceResultMap();
+                List<Place> defaultPlaces = placeDao.selectPlace(dailyPlan.get(i).getDailyPlanNo()); // 업데이트전 place
+                System.out.println(place + "새로운값");
+                System.out.println(defaultPlaces + "기존값 확인");
+                for(int j=0; j<place.size(); j++){
+                    if(j < defaultPlaces.size()) {
+                        place.get(j).setPlaceNo(defaultPlaces.get(j).getPlaceNo());
+                        placeDao.updatePlace(place.get(j));
+                        if(j == (place.size()-1)) {
+                            int size = defaultPlaces.size() - place.size();
+                            if (defaultPlaces.size() > place.size()) {
+                                for (int p = 0; p <size; p++) {
+                                    placeDao.deletePlace(defaultPlaces.get(place.size() + p).getPlaceNo());
+                                }
+                            }
+                        }
+                    } else {
+                        place.get(j).setDailyPlanNo(dailyPlan.get(i).getDailyPlanNo());
+                        placeDao.addPlace(place.get(j));
+                    }
+                }
+            }
+            System.out.println(tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo()));
+            tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+        } else {
+            System.out.println("여행이 완료된 플랜은 더이상 수정할수없습니다.");
+        }
+        return null;
     }
 
     @Override // 여행플랜 완전삭제
@@ -195,5 +221,17 @@ public class TripPlanServiceImpl implements TripPlanService {
         tripPlanDao.tripPlanLikes(tripPlan);
         return tripPlan.getTripPlanLikes();
     }
+
+//    public static String totaltime(int totalTripTimes) {
+//        int totalHours = (int) Math.floor(totalTripTimes / 60);
+//        int totalMinutes = totalTripTimes % 60;
+//        String totalTripTime = "";
+//        if(totalHours == 0){
+//            totalTripTime = totalMinutes + "분";
+//        } else {
+//            totalTripTime = totalHours + "시간 " + totalMinutes + "분";
+//        }
+//        return totalTripTime;
+//    }
 
 }
