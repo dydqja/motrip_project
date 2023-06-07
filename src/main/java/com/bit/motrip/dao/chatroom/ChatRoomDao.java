@@ -15,4 +15,6 @@ public interface ChatRoomDao { //채팅방 DAO
     public List<ChatRoom> chatRoomListPage() throws Exception; // 채팅방 리스트 조회
 
     public void changeRoomStatus(int chatRoomStatus,int chatRoomNo) throws Exception;// 채팅방 상태 변경
+
+    public int chatRoomCount() throws Exception;
 } //end of interface
