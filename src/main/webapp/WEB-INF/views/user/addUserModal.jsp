@@ -217,7 +217,7 @@
             </div>
         </div>
         <div class="modal-footer" style="margin: 0 auto;">
-          <button type="button" class="btn btn-sm btn-default" id="addUserModalCancle" data-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-sm btn-default" id="addUserModalCancle" data-dismiss="modal">닫기</button>
           <button type="button" class="btn btn-sm btn-primary" id="addUserModalCommit">가입</button>
         </div>
       </div>
@@ -415,13 +415,13 @@
 
                           $("#PhCodeGroup").hide();
                           $("#sendSms").text("인증완료").css({
-                              "color": "red"
+                              "color": "white"
                           });  // 텍스트 색상과 폰트 크기 변경
                           $("#sendSms").prop("disabled", true);
 
                       } else if ($('#phCodeConfirm').val() == '') {
                           $("#checkPhCodeConfirm").text("인증번호를 입력해 주세요").css({
-                              'color': 'white',
+                              'color': 'red',
                               'font-size': '10px'
                           });
                       } else {
