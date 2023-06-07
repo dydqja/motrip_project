@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class NoticeController {
 
     ///Method
     @RequestMapping("noticeList")
-    public String getNoticeList(@RequestParam(defaultValue = "1") int currentPage, Model model) throws Exception {
+    public String getNoticeList(@RequestParam(defaultValue = "1") int currentPage, HttpServletRequest request, Model model) throws Exception {
 
         System.out.println("::");
         System.out.println("[NoticeController] 공지사항 목록 조회 서비스를 실행합니다.");
@@ -65,13 +66,18 @@ public class NoticeController {
         // 화면 하단에 표시할 페이지의 끝 번호
         int endUnitPage = page.getEndUnitPage();
 
+        java.util.Date currentDate = new java.util.Date();
+
+        System.out.println("testetestestestset" + currentDate);
+
+        request.setAttribute("currentDate", currentDate);
         model.addAttribute("noticeListData", noticeListData);
         model.addAttribute("page", page);
         model.addAttribute("maxPage", maxPage);
         model.addAttribute("beginUnitPage", beginUnitPage);
         model.addAttribute("endUnitPage", endUnitPage);
 
-        return "notice/noticeList.tiles";
+        return "notice/noticeList.jsp";
     }
 
     @RequestMapping("getNotice")
@@ -97,7 +103,7 @@ public class NoticeController {
 
         model.addAttribute("noticeGetData", noticeGetData);
 
-        return "notice/getNotice.tiles";
+        return "notice/getNotice.jsp";
     }
 
     @RequestMapping("addNoticeView")
@@ -106,7 +112,7 @@ public class NoticeController {
         System.out.println("::");
         System.out.println("[NoticeController] 공지사항 등록 화면 출력 서비스를 실행합니다.");
 
-        return "notice/addNotice.tiles";
+        return "notice/addNotice.jsp";
     }
 
     @RequestMapping("addNotice")
@@ -123,7 +129,6 @@ public class NoticeController {
     @RequestMapping("updateNoticeView")
     public String updateNoticeView(@RequestParam("noticeNo") int noticeNo,
                                    @RequestParam("noticeTitle") String noticeTitle,
-                                   @RequestParam("isNoticeImportant") int isNoticeImportant,
                                    @RequestParam("noticeContents") String noticeContents, Model model) throws Exception {
 
         System.out.println("::");
@@ -131,10 +136,9 @@ public class NoticeController {
 
         model.addAttribute("noticeNo", noticeNo);
         model.addAttribute("noticeTitle", noticeTitle);
-        model.addAttribute("isNoticeImportant", isNoticeImportant);
         model.addAttribute("noticeContents", noticeContents);
 
-        return "notice/addNotice.tiles";
+        return "notice/addNotice.jsp";
     }
 
     @RequestMapping("updateNotice")

@@ -107,18 +107,32 @@ public class UserServiceImpl implements UserService{
 
         String getSsn = user.getSsn();
         String phone = user.getPhone();
-
+        String age;
         //일반 회원가입 일 때 실행
         if(!phone.contains("-") || getSsn != null) {
-            addDash(phone);
+            //전화번호에 Dash 추가
+            phone = addDash(phone);
+            //주민번호에서 뒷 1자리 추출
+            char getGender = user.getSsn().charAt(7);
+            // 성별 계산
+            String gender = (getGender == '1' || getGender == '3') ? "M" : "F";
+            //주민번호 앞6+뒤1 에서 앞6만 추출
+            String ssn = user.getSsn().substring(0, 6);
+            //주민번호에서 년도만 추출
+            String prefix =user.getSsn().substring(0, 2);  // 년도 앞자리 추출 (예: "93")
+            // 2000년 이전과 이후를 구분하기 위해 7번째 숫자 확인
+            char seventhDigit = user.getSsn().charAt(7);
 
-            Map<String, String> extractSsn = extractSsn(getSsn);
-            String age = extractSsn.get("age");
-            String gender = extractSsn.get("gender");
+            if (seventhDigit == '1' || seventhDigit == '2') {
+                age =  "19" + prefix;
+            } else {
+                age =  "20" + prefix;
+            }
 
+            user.setPhone(phone);
             user.setAge(age);
             user.setGender(gender);
-            user.setPhone(phone);
+            user.setSsn(ssn);
 
             userDao.addUser(user);
 
@@ -164,16 +178,6 @@ public class UserServiceImpl implements UserService{
         userDao.updateUser(user);
     }
 
-
-//    public boolean checkDuplication(String userId) throws Exception {
-//        boolean result=true;
-//        User user=userDao.getUser(userId);
-//        if(user != null) {
-//            result=false;
-//        }
-//        return result;
-//    }
-
     //회원 탈퇴유무 변경
     public void secessionAndRestoreUser(User user) throws Exception {
 
@@ -192,43 +196,6 @@ public class UserServiceImpl implements UserService{
 
             userDao.secessionAndRestoreUser(user);
         }
-    }
-
-    //주민등록번호 7자리에서 성별과 나이대 추출하는 메소드
-    public static Map<String, String> extractSsn(String ssn) {
-
-        int year = Integer.parseInt(ssn.substring(0, 2));
-        int gender = Integer.parseInt(ssn.substring(7));
-
-        // 나이 계산
-        int age = year < 30 ? 2000 + year : 1900 + year;
-        age = LocalDate.now().getYear() - age;
-        String ageGroup;
-
-        // 나이대 계산
-        if(age >= 10 && age < 20) {
-            ageGroup = "10-19";
-        } else if(age >= 20 && age < 30) {
-            ageGroup = "20-29";
-        } else if(age >= 30 && age < 40) {
-            ageGroup = "30-39";
-        } else if(age >= 40 && age < 50) {
-            ageGroup = "40-49";
-        } else if(age >= 50 && age < 60) {
-            ageGroup = "50-59";
-        } else {
-            ageGroup = "60-";
-        }
-
-        // 성별 계산
-        String genderStr = (gender == 1 || gender == 3) ? "M" : "F";
-
-        // 결과 맵 생성 및 리턴
-        Map<String, String> result = new HashMap<>();
-        result.put("age", ageGroup);
-        result.put("gender", genderStr);
-
-        return result;
     }
 
     //회원가입시 비동기방식 아이디 중복체크
