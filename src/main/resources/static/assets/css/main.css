@@ -1107,50 +1107,6 @@ hr.dark {
   }
 }
 /*---------- 2.3  Main Image ----------*/
-@-webkit-keyframes panning {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
-@-moz-keyframes panning {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
-@-ms-keyframes panning {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
-@-o-keyframes panning {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
 @keyframes panning {
   0% {
     background-position: 0% 0%;
@@ -1162,28 +1118,7 @@ hr.dark {
     background-position: 0% 0%;
   }
 }
-@-webkit-keyframes panning {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
-@keyframes panning {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
+
 .panning {
   position: absolute;
   height: 100%;
@@ -1192,14 +1127,7 @@ hr.dark {
   background-position: center;
   background-size: cover;
   background-color: #ffffff;
-  -webkit-animation: panning 80s infinite ease-in;
-  -o-animation: panning 80s infinite ease-in;
   animation: panning 80s infinite ease-in;
-  -webkit-animation: panning 80s infinite ease-in 300ms 0 ease;
-  -moz-animation: panning 80s infinite ease-in 300ms 0 ease;
-  -ms-animation: panning 80s infinite ease-in 300ms 0 ease;
-  -o-animation: panning 80s infinite ease-in 300ms 0 ease;
-  animation: panning 80s infinite ease-in 300ms 0 ease;
 }
 
 @keyframes zooming {
@@ -1258,8 +1186,8 @@ hr.dark {
 .main-img {
   min-height: 800px;
   width: 100%;
-  margin: 0px;
-  padding-top: 0px;
+  margin: 0;
+  padding-top: 0;
   position: relative;
   background-repeat: no-repeat;
   background-position: center;
@@ -1267,22 +1195,22 @@ hr.dark {
   overflow: hidden;
 }
 .main-img.boxed .main-image-txt {
-  margin-top: 0px;
+  margin-top: 0;
 }
 .with-overlay:before {
   content: '';
   height: 100%;
   width: 100%;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   background: rgba(0, 0, 0, 0.3);
   z-index: -1;
 }
 .main-video {
-  max-height: 750px;
-  margin: 0px;
-  padding-top: 0px;
+  max-height: 100%;
+  margin: 0;
+  padding-top: 0;
   position: relative;
   overflow: hidden;
   background-size: cover;
@@ -1301,7 +1229,7 @@ hr.dark {
   background-image: linear-gradient(to bottom, rgba(29, 48, 16, 0.8) 0%, #000 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc1d3010', endColorstr='#ff000000', GradientType=0);
-  opacity: 0.1;
+  opacity: 0.3;
   z-index: -1;
 }
 .main-video video {

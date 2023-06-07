@@ -29,13 +29,24 @@
 
         <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
+        <div class="page-img">
+            <div class="container">
+                <div class="col-sm-8">
+                    <h1 class="main-head">질의응답</h1>
+                </div>
+                <div class="col-sm-4">
+                    <ul class="breadcrumb">
+                        <li><a href=""><span class="icon-home"></span></a>
+                        </li>
+                        <li><a href="">List</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
         <div class="container">
-
-            <h1>질의응답 상세</h1>
-
-            <br>
-            <br>
-            <br>
 
             <c:set var="formAction" value="${(sessionScope.user.userId eq 'admin') ? '/qna/addQnaAnswer' : '/qna/updateQnaView'}" />
             <form action="${formAction}" method="post">
