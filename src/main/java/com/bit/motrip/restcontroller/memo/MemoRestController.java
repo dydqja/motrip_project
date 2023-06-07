@@ -33,10 +33,16 @@ public class MemoRestController {
 
         //System.out.println("레스트컨트롤러 겟메모리스트 동작");
         //리퀘스트 파람 둘과 유저를 모아서 필요한 데이터를 모두 수집했다.
-        User user = (User) session.getAttribute("user");
-        //System.out.println("받은 유저아이디는"+user.getUserId());
-        //System.out.println("받은 서치컨디션은"+searchCondition);
-        //System.out.println("받은 현재페이지는"+currentPage);
+        User user = null;
+        try {
+            user = (User) session.getAttribute("user");
+            if (user == null) throw new RuntimeException("세션에 유저가 없습니다.");
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        System.out.println("받은 유저아이디는"+user.getUserId());
+        System.out.println("받은 서치컨디션은"+searchCondition);
+        System.out.println("받은 현재페이지는"+currentPage);
         if (currentPage == null || currentPage.equals("")){
             currentPage = "1";
         }
