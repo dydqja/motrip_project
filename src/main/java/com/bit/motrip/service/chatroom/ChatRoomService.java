@@ -15,4 +15,6 @@ public interface ChatRoomService { //service
     public List<ChatRoom> chatRoomListPage() throws Exception; // 채팅방 리스트 조회
     //chage room_status
     public int changeRoomStatus(int chatRoomStatus,int chatRoomNo) throws Exception;
+
+    public int chatRoomCount() throws Exception;
 } //end of interface
