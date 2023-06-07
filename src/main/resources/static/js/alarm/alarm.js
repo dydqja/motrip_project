@@ -290,6 +290,7 @@
         //기본척으로 읽음버튼을 만든다.
         let alarmConfirmBtn = $("#alarm-confirm-btn");
         alarmConfirmBtn.val(alarmNo);
+        alarmConfirmBtn.show();
 
         //승낙URL이 있다면 승낙 버튼을 만든다.
         let alarmAcceptBtn = $("#alarm-accept-btn");

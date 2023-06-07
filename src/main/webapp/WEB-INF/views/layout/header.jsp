@@ -9,12 +9,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <style>
-    #new-memo-btn,
-    #list-my-memo-btn,
-    #list-del-memo-btn,
-    #list-shared-memo-btn{
+    #memo-section .panel {
         background-color: transparent;
-        border-color: #558b2f;
+    }
+    #memo-section .panel .panel-heading{
+        background-color: transparent;
+    }
+    #memo-section .panel .panel-title{
+        background-color: transparent;
+    }
+    #memo-section .panel .panel-title > a{
+        color: white;
+    }
+    #memo-section .panel .panel-title > a::before{
+        background-color: transparent;
+    }
+    #memo-section .panel .panel-title > a::after{
+        background-color: transparent;
     }
 </style>
 <link rel="stylesheet" href="/css/alarm/alarm.css" media="all">
@@ -91,47 +102,69 @@
                     <li id="memo-section" class="dropdown">
                         <a href="#" class="dropdown-toggle">메모</a>
                         <ul id="memo-dropdown" class="dropdown-menu">
-                            <li>
-                                <div class="btn-group-vertical">
-                                    <a id="new-memo-btn" href="#" class=""><i class="icon-plus"></i>New</a>
-                                    <a id="list-my-memo-btn" href="javascript:void(0)" data-toggle="dropdown" class="dropdown-toggle">내 메모<span class="caret"></span></a>
-                                    <ul class="dropdown-menu text-left">
-                                        <li class="dropdown-header">Header</li>
-                                        <li><a href="javascript:void(0)">Action</a>
-                                        </li>
-                                        <li><a href="javascript:void(0)">Another Action</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li class="disabled"><a href="javascript:void(0)">Disabled</a>
-                                        </li>
-                                    </ul>
-                                    <a id="list-shared-memo-btn" href="javascript:void(0)" data-toggle="dropdown" class="dropdown-toggle">공유받은 메모<span class="caret"></span></a>
-                                    <ul class="dropdown-menu text-left">
-                                        <li class="dropdown-header">Header</li>
-                                        <li><a href="javascript:void(0)">Action</a>
-                                        </li>
-                                        <li><a href="javascript:void(0)">Another Action</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li class="disabled"><a href="javascript:void(0)">Disabled</a>
-                                        </li>
-                                    </ul>
-                                    <a id="list-del-memo-btn" href="javascript:void(0)" data-toggle="dropdown" class="dropdown-toggle">삭제된 메모<span class="caret"></span></a>
-                                    <ul class="dropdown-menu text-left">
-                                        <li class="dropdown-header">Header</li>
-                                        <li><a href="javascript:void(0)">Action</a>
-                                        </li>
-                                        <li><a href="javascript:void(0)">Another Action</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li class="disabled"><a href="javascript:void(0)">Disabled</a>
-                                        </li>
-                                    </ul>
+                            <div class="panel-group" id="memo-accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="new-memo-btn">
+                                        <p class="panel-title">
+                                            <a role="button" data-parent="#memo-accordion" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                                + 새 메모
+                                            </a>
+                                        </p>
+                                    </div>
                                 </div>
-                            </li>
-                            <li>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="heading1One">
+                                        <p class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#my-memo-collapse" aria-expanded="true" aria-controls="collapseOne">
+                                                나의 메모 보기
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div id="my-memo-collapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="panel-body">
+                                            <div class="btn-group-vertical" role="group" aria-label="...">
+                                                <div class="btn btn-line btn-sm btn-default" role="group" aria-label="...">ㅁaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+                                                <div class="btn btn-line btn-sm btn-default" role="group" aria-label="...">ㅁaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+                                                <div class="btn btn-line btn-sm btn-default" role="group" aria-label="...">ㅁaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="heading1Two">
+                                        <p class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#shared-memo-collapse" aria-expanded="false" aria-controls="collapseTwo">
+                                                공유받은 메모 보기
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div id="shared-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                        <div class="panel-body">
+                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
+                                            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table,
+                                            raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="heading1Three">
+                                        <p class="panel-title">
 
-                            </li>
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#del-memo-collapse" aria-expanded="false" aria-controls="collapseThree">
+                                                삭제된 메모 보기
+                                            </a>
+
+                                        </p>
+                                    </div>
+                                    <div id="del-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div class="panel-body">
+                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
+                                            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table,
+                                            raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
