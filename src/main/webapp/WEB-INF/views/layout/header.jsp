@@ -151,7 +151,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li> <a href="login_page.html"><span class="icon-user"></span>로그인</a>
+                    <li> <a href="/user/login"><span class="icon-user"></span>로그인</a>
                     </li>
                     <li class="dropdown">
                         <a id="alarm-set-area" href="#">
