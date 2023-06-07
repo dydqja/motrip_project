@@ -13,16 +13,27 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
     <title>아이디&비밀번호 찾기</title>
 
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+    <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
     <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+<%--    내가 추가한것--%>
+
+
+
+
+
+
+
 
 
 
@@ -55,27 +66,81 @@
                     </div>
 
                     <div class="block full">
-
-                            <ul class="nav nav-tabs" data-toggle="tabs">
-                                <li class="active"><a href="#example-tabs2-activity">Activity</a>
-                                </li>
-                                <li><a href="#example-tabs2-profile">Profile</a>
-                                </li>
-                                <li><a href="#example-tabs2-options" data-toggle="tooltip" title="" data-original-title="Settings"><i class="icon-setting"></i></a>
-                                </li>
-                            </ul>
-                        </div>
+                        <ul class="nav nav-tabs" data-toggle="tabs">
+                            <li class="active"><a href="#findId" data-toggle="tab" data-load="true" id="findIdTap">아이디 찾기</a></li>
+                            <li><a href="#findPwd" data-toggle="tab" data-load="false" id="findPwdTap">비밀번호 찾기</a></li>
+                        </ul>
+                    </div>
                         <!-- END Block Tabs Title -->
 
                         <!-- Tabs Content -->
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="example-tabs2-activity">Block tabs..</div>
-                            <div class="tab-pane" id="example-tabs2-profile">Profile..</div>
-                            <div class="tab-pane" id="example-tabs2-options">Settings..</div>
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="findId">
+                            <!-- 아이디찾기 부분 ################################################################################ -->
+                            <div class="form-group" id="idModal">
+                                <label for="phoneByFindId" class="label label-primary">전화번호</label>
+                                <input type="text" class="form-control" name="phone" id="phoneByFindId" placeholder="01012345678" required maxlength="11" aria-describedby="helpBlock2">
+                                <span id="checkPhoneByFindId"></span>
+                                <button type="button" class="btn btn-line btn-sm btn-primary" id="sendSmsByFindId">인증번호전송</button>
+                            </div>
+
+                            <!-- sms인증번호 입력폼 ==> 평상시 숨김 -->
+                            <div class="form-group" id="PhCodeGroupByFindId" style="display: none;">
+                                <label for="phCodeConfirmByFindId" class="label label-primary">전화번호 인증</label>
+                                <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirmByFindId" placeholder="발송된 인증번호 입력" aria-describedby="helpBlock2">
+                                <span id="checkPhCodeConfirmByFindId" style= "white-space: nowrap; display: block;"></span>
+                                <button type="button" class="btn btn-line btn-sm btn-primary" style="text-align: left;" id="confirmPhCodeByFindId">확인</button>
+                                <button type="button" class="btn btn-line btn-sm btn-primary" style="text-align: left;" id="resendPhCodeByFindId">재전송</button>
+                            </div>
                         </div>
-                        <!-- END Tabs Content -->
+
+                        <!-- 아이디찾기 결과 부분 -->
+                        <div id="getIdShow" style="display:none">
+                            <span id="getIdByPhone"></span>
+                        </div>
+                        <!-- 아이디찾기 결과 부분 끝 -->
+
+                        <!-- 비밀번호찾기 부분 ################################################################################ -->
+                        <div class="tab-pane" id="findPwd">
+                            <label for="UserIdByFindPwd" class="label label-primary">아 이 디</label>
+                            <input type="text" class="form-control" name="userId" id="userIdByFindPwd"  placeholder="아이디" required>
+                            <span id="checkIdByFindPwd"></span>
+
+                            <br/>
+
+                            <label for="phoneByFindId" class="label label-primary">전화번호</label>
+                            <input type="text" class="form-control" name="phone" id="phoneByFindPwd" placeholder="01012345678" required maxlength="11">
+                            <span id="checkPhoneByFindPwd"></span>
+                            <button type="button" class="btn btn-line btn-sm btn-primary" id="sendSmsByFindPwd">인증번호전송</button>
+
+                            <!-- sms인증번호 입력폼 ==> 평상시 숨김 -->
+                            <div class="form-group" id="PhCodeGroupByFindPwd" style="display: none;">
+                                <label for="phCodeConfirmByFindId" class="label label-primary">전화번호 인증</label>
+                                <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirmByFindPwd" placeholder="발송된 인증번호 입력">
+                                <span id="checkPhCodeConfirmByFindPwd"></span>
+                                <button type="button" class="btn btn-primary" id="confirmPhCodeByFindPwd">확인</button>
+                                <button type="button" class="btn btn-primary" id="resendPhCodeByFindPwd">재전송</button>
+                            </div>
+
+                            <!-- 비밀번호 변경 입력폼 #################################################### -->
+                            <div class="form-group" id="changePwd" style="display: none;">
+                                <label for="updatePwd" class="label label-primary">비밀번호 변경</label>
+                                <input type="password" class="form-control" name="updatePwd" id="updatePwd" placeholder="변경 비밀번호">
+                                <span id="updatePwdCheck"></span>
+                                <input type="password" class="form-control" name="pwd" id="updatePwdConfirm" placeholder="변경 비밀번호 확인">
+                                <span id="updatePwdConfirmCheck"></span>
+                                <button type="button" class="btn btn-primary" id="changePwdCommit">확인</button>
+
+                            </div>
+
+                        </div>
+
                     </div>
+
+                        <!-- END Tabs Content -->
                 </div>
+
 
 
 
@@ -99,32 +164,44 @@
     </div>
 </div>
 
+<%--내가추가한것--%>
+
+<%--탬플릿에서 추가한것--%>
 <script src="/vendor/jquery/dist/jquery.min.js"></script>
 <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
 <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-
+<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
 <script src="/vendor/retina.min.js"></script>
+<script src="/vendor/jquery.imageScroll.min.js"></script>
+<script src="/assets/js/min/responsivetable.min.js"></script>
+<script src="/assets/js/bootstrap-tabcollapse.js"></script>
+<script src="/assets/js/min/countnumbers.min.js"></script>
 <script src="/assets/js/main.js"></script>
 
 <!-- Current Page JS -->
 <script src="/assets/js/min/login.min.js"></script>
 
 <script type="text/javascript">
+
+
+
+
+
+
     $(document).ready(function() {
         // 모달 창이 숨겨질 때 실행될 이벤트를 설정합니다.
         $('#findIdPwdModal').on('hidden.bs.modal', function () {
             // 모달 내의 모든 입력 필드를 초기화합니다.
             $(this).find('input').val('');
-
-            // findId와 findPwd 버튼을 보이게 하고, idModal과 pwdModal을 숨깁니다.
-            $(this).find('#findId, #findPwd').show();
-            $(this).find('#idModal, #pwdModal').hide();
         });
     });
 
     $(document).ready(function() {
-        $("#findId").click(function() {
+        $("#findIdTap").click(function() {
+
+            console.log("아이디찾기 클릭됨 = 내용초기화");
 
             // '비밀번호 찾기' 부분 초기화
             $('#pwdModal').find('input').val('');
@@ -139,9 +216,13 @@
             $("#PhCodeGroupByFindId").hide();
             $("#getIdByPhone").text("");
             $("#getIdShow").hide();
+            //전화번호입력부분 초기화
+            $("#phoneByFindId").val('');
         });
 
-        $("#findPwd").click(function() {
+        $("#findPwdTap").click(function() {
+
+            console.log("비밀번호찾기 클릭됨 = 내용초기화");
 
             // '아이디 찾기' 부분 초기화
             $('#idModal').find('input').val('');
@@ -163,25 +244,27 @@
             $('#pwdModal').show();
         });
     });
+
+
     //아이디 찾기 쪽 script 구성 ############################################################################################
     let isPhoneNumberVerified = true;
     //인증번호 클릭시 인증번호 입력창 생성
     $(document).ready(function() {
         var smsConfirmNum = null;
 
-        $("#phoneByFindId").on("input", function() {
+        $("#phoneByFindId").on("input", function () {
             isPhoneNumberVerified = false;
         });
 
         //sms 인증번호 발송
-        $("#sendSmsByFindId").on("click", function() {
+        $("#sendSmsByFindId").on("click", function () {
 
 
             var phoneRegex = /^01[016789]\d{7,8}$/;
             var phoneNumber = $('#phoneByFindId').val();
             phoneNumber = phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(3, 7) + "-" + phoneNumber.substring(7, 11);
 
-            if( $('#phoneByFindId').val() == null || $('#phoneByFindId').val() == "" || !phoneRegex.test($('#phoneByFindId').val()) ) {
+            if ($('#phoneByFindId').val() == null || $('#phoneByFindId').val() == "" || !phoneRegex.test($('#phoneByFindId').val())) {
                 $("#checkPhoneByFindId").text("올바른 전화번호를 입력해 주세요").css({
                     'color': 'red',
                     'font-size': '10px'
@@ -214,7 +297,7 @@
 
 
         });
-        $("#confirmPhCodeByFindId").on("click", function() {
+        $("#confirmPhCodeByFindId").on("click", function () {
             if (smsConfirmNum !== null) {
 
                 var phCodeConfirm = $('#phCodeConfirmByFindId').val();
@@ -223,69 +306,74 @@
                 alert("응답을 아직 받지 못했습니다. 잠시 후 다시 시도해주세요.");
             }
         });
+
+
+        function useSmsResponse(smsConfirmNum, phCodeConfirm) {
+            // 이 함수에서 AJAX 응답을 사용할 수 있습니다.
+            $.ajax({
+                url: "/user/phCodeConfirm",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    smsConfirmNum: smsConfirmNum,
+                    phCodeConfirm: phCodeConfirm
+                }),
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.result) {
+
+                        $("#PhCodeGroupByFindId").hide();
+
+                        $("#sendSmsByFindId").text("인증완료").css({
+                            "color": "white"
+                        });  // 텍스트 색상과 폰트 크기 변경
+
+                        $("#sendSmsByFindId").prop("disabled", true);
+
+                        alert($('#phoneByFindId').val());
+                        var phone = $('#phoneByFindId').val();
+
+                        $.ajax({
+                            url: "/user/findId",
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify({
+                                phone: phone
+                            }),
+                            dataType: "text",
+                            success: function (response) {
+                                alert(response);
+
+                                $("#idModal").hide();
+                                $("#getIdShow").show();
+                                $("#getIdByPhone").text(response);
+                                // #############################
+                            },
+                            error: function (error) {
+                                alert("실패");
+                            }
+                        });
+
+                    } else if ($('#phCodeConfirmByFindId').val() == '') {
+                        $("#checkPhCodeConfirmByFindId").text("인증번호를 입력해 주세요").css({
+                            'color': 'red',
+                            'font-size': '10px'
+                        });
+                    } else {
+                        $("#checkPhCodeConfirmByFindId").text("인증번호가 일치하지 않습니다").css({
+                            'color': 'red',
+                            'font-size': '10px'
+                        });
+                    }
+                },
+                error: function (error) {
+                    alert("실패");
+                }
+            });
+        }
     });
 
-    function useSmsResponse(smsConfirmNum, phCodeConfirm) {
-        // 이 함수에서 AJAX 응답을 사용할 수 있습니다.
-        $.ajax({
-            url: "/user/phCodeConfirm",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({
-                smsConfirmNum: smsConfirmNum,
-                phCodeConfirm: phCodeConfirm
-            }),
-            dataType: "json",
-            success: function (response) {
-
-                if (response.result) {
-
-                    $("#PhCodeGroupByFindId").hide();
-                    $("#sendSmsByFindId").text("인증완료");
-                    $("#sendSmsByFindId").prop("disabled", true);
-
-                    alert($('#phoneByFindId').val());
-                    var phone = $('#phoneByFindId').val();
-
-                    $.ajax({
-                        url: "/user/findId",
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({
-                            phone: phone
-                        }),
-                        dataType: "text",
-                        success: function (response) {
-                            alert(response);
-
-
-                            $("#idModal").hide();
-                            $("#getIdShow").show();
-                            $("#getIdByPhone").text(response);
-                            // #############################
-                        },
-                        error: function (error) {
-                            alert("실패");
-                        }
-                    });
-
-                } else if ($('#phCodeConfirmByFindId').val() == '') {
-                    $("#checkPhCodeConfirmByFindId").text("인증번호를 입력해 주세요").css({
-                        'color': 'red',
-                        'font-size': '10px'
-                    });
-                } else {
-                    $("#checkPhCodeConfirmByFindId").text("인증번호가 일치하지 않습니다").css({
-                        'color': 'red',
-                        'font-size': '10px'
-                    });
-                }
-            },
-            error: function (error) {
-                alert("실패");
-            }
-        });
-    }
 
     $(document).ready(function() {
         //인증번호 재전송
