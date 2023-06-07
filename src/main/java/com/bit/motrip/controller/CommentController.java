@@ -13,9 +13,13 @@ public class CommentController {
     @Qualifier("commentServiceImpl")
     private CommentService commentService;
 
-    @Autowired
-    @Qualifier("reviewServiceImpl")
     private ReviewService reviewService;
+
+    // Setter 메서드 추가
+    public void setReviewService(ReviewService reviewService) {
+        this.reviewService = reviewService;
+    }
+
 
 
 }//end of CommentController
