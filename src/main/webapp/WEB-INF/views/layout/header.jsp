@@ -174,9 +174,6 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="boardDropdown">
                             <li>
-                                <a class="dropdown-item" href="/user/listUser">회원목록</a>
-                            </li>
-                            <li>
                                 <a class="dropdown-item" href="/notice/noticeList">공지사항</a>
                             </li>
                             <li>
@@ -184,7 +181,24 @@
                             </li>
                         </ul>
                     </li>
+                    <c:if test="${empty sessionScope.user}"> >
                     <li> <a href="/user/login"><span class="icon-user"></span>로그인</a>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.user}"> >
+                        <li class="dropdown">
+                            <a class="icon-user" href="#">${sessionScope.user.nickname}</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">MyPage</a>
+                                </li>
+                                <c:if test="${sessionScope.user.role == 0}">
+                                    <li><a href="/user/listUser">회원목록</a>
+                                    </li>
+                                </c:if>
+                                <li><a href="#">로그아웃</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </c:if>
                     </li>
                     <li class="dropdown">
                         <a id="alarm-set-area" href="#">
