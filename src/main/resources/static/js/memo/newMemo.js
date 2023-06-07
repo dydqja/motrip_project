@@ -15,14 +15,14 @@ class Memo{
 
 $(document).ready(function(){
     console.log("newMemo.js loaded");
-    /*$(".memo-dialog").dialog({
-        autoOpen: true,
-        width: 400,
+    $(".memo-dialog").dialog({
+        autoOpen: false,
+        width: 400
     });
 
     $(document).ready(function() {
         $('#summernote').summernote();
-    });*/
+    });
 });
 
 
