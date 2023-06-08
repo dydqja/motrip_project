@@ -35,7 +35,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
-                    <img src="/images/motrip-logo.png" alt="">
+                    <img src="/images/motrip-logo.gif" alt="">
                 </a>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -181,10 +181,10 @@
                             </li>
                         </ul>
                     </li>
-                    <c:if test="${empty sessionScope.user}"> >
+                    <c:if test="${empty sessionScope.user}">
                     <li> <a href="/user/login"><span class="icon-user"></span>로그인</a>
                     </c:if>
-                    <c:if test="${not empty sessionScope.user}"> >
+                    <c:if test="${not empty sessionScope.user}">
                         <li class="dropdown">
                             <a class="icon-user" href="#">${sessionScope.user.nickname}</a>
                             <ul class="dropdown-menu">

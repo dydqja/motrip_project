@@ -23,17 +23,19 @@
         <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 
         <link rel="stylesheet" href="/css/notice/addNotice.css">
+        <!-- 썸머노트 스타일시트 -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
     </head>
 
     <body>
 
         <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-        <h1>공지사항 등록</h1>
-
-        <br>
-        <br>
-        <br>
+        <div class="page-img">
+            <div class="container">
+                <h1 class="main-head text-center board-title">${noticeTitle}</h1>
+            </div>
+        </div>
 
         <c:set var="formAction" value="${(noticeTitle == null && noticeContents == null) ? '/notice/addNotice' : '/notice/updateNotice'}" />
 
@@ -56,7 +58,8 @@
             <br>
 
             <div>
-                <textarea name="noticeContents" id="noticeContents">${noticeContents}</textarea>
+                <!-- 썸머노트 입력란 -->
+                <textarea name="noticeContents" id="summernote">${noticeContents}</textarea>
             </div>
 
             <br>
@@ -95,9 +98,30 @@
         <script src="/assets/js/main.js"></script>
         <script src="/assets/js/min/home.min.js"></script>
 
+        <!-- 썸머노트 스크립트 -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+
         <script type="text/javascript">
 
             $(function() {
+
+                // 썸머노트 초기화
+                $('#summernote').summernote({
+                    height: 300, // 입력창 높이 설정
+                    minHeight: null, // 최소 높이 설정
+                    maxHeight: null, // 최대 높이 설정
+                    focus: true, // 포커스 설정
+                    lang: 'ko-KR', // 언어 설정 (한국어)
+                    toolbar: [
+                        // 원하는 썸머노트 기능 추가 가능
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['font', ['strikethrough']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']]
+                    ]
+                });
 
                 $("#addNotice").on("click", function() {
 

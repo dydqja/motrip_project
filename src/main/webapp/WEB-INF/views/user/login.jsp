@@ -51,8 +51,8 @@
                 <div style="display: flex; justify-content: space-between;">
                     <div id="naverIdLogin"></div>
                     <div style="display: flex;">
-                        <button id="login" type="submit" class="btn btn-primary hvr-fade">로그인</button>
-                        <button id="addUser" type="button" class="btn btn-default">회원가입</button>
+                        <button id="login" type="submit" class="btn btn-primary hvr-grow">로그인</button>
+                        <button id="addUser" type="button" class="btn btn-default hvr-grow">회원가입</button>
                     </div>
 
                 </div>

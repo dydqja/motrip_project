@@ -1,5 +1,7 @@
 package com.bit.motrip.controller.chatroom;
 
+import com.bit.motrip.common.Page;
+import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.ChatMember;
 import com.bit.motrip.domain.ChatRoom;
 import com.bit.motrip.service.chatroom.ChatMemberService;
@@ -7,6 +9,7 @@ import com.bit.motrip.service.chatroom.ChatRoomService;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @Controller
 @RequestMapping("/chatRoom/*")
 public class ChatRoomController {
+
     @Autowired
     @Qualifier("chatRoomServiceImpl")
     private ChatRoomService chatRoomService;
@@ -32,8 +37,38 @@ public class ChatRoomController {
         System.out.println("==> ChatRoomController default Constructor call....");
     }//chatroom 생성자
     @GetMapping("chatRoomList")
-    public String index(Model model) throws Exception{
-        model.addAttribute("list",chatRoomService.chatRoomListPage());
+    public String chatRoomList(@RequestParam(defaultValue = "1") int currentPage,Model model) throws Exception{
+        Search search = new Search();
+        search.setCurrentPage(currentPage);
+        int pageSize = 3;
+        search.setPageSize(pageSize);
+
+        Map<String, Object> chatRoomListData = chatRoomService.chatRoomListPage(search);
+
+        int totalCount = (int) chatRoomListData.get("totalCount");
+
+        // 화면 하단에 표시할 페이지 수
+        int pageUnit = 3;
+
+        // maxPage, beginUnitPage, endUnitPage 연산
+        Page page = new Page(currentPage, totalCount, pageUnit, pageSize);
+
+        // 총 페이지 수
+        int maxPage = page.getMaxPage();
+
+        // 화면 하단에 표시할 페이지의 시작 번호
+        int beginUnitPage = page.getBeginUnitPage();
+
+        // 화면 하단에 표시할 페이지의 끝 번호
+        int endUnitPage = page.getEndUnitPage();
+
+        model.addAttribute("list",chatRoomListData.get("list"));
+        model.addAttribute("page", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
+
+
         return "chatroom/chatRoomList2.jsp";
     }
     @PostMapping("chat")
@@ -71,7 +106,7 @@ public class ChatRoomController {
     //chatRoom/addChatRoom
     @GetMapping("addChatRoom")
     public String addChatRoom(@RequestParam("userId") String userId,
-                              @RequestParam("tripPlanNo") int tripPlanNo,Model model) throws Exception{
+                              @RequestParam("createTripPlanNo") int tripPlanNo,Model model) throws Exception{
         System.out.println("/chatRoom/addChatRoom/GET");
         System.out.println("userId : "+ userId);
         System.out.println("tripPlanNo : "+ tripPlanNo);

@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 :root {
-	--dark-color-a: #9966ff;
-	--dark-color-b: #7066ff;
+	--dark-color-a: #477427;
+	--dark-color-b: #477427;
 	--light-color: #e6e9ff;
-	--success-color: #5cb85c;
+	--success-color: #477427;
 	--error-color: #d9534f;
 }
 
@@ -12,13 +12,14 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
+	font-family: 'Open Sans', sans-serif;
 }
 
 body {
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
 	background: var(--light-color);
-	margin: 20px;
+
 }
 
 ul {
@@ -41,9 +42,10 @@ a {
 /* Chat Page */
 
 .chat-container {
-	max-width: 1100px;
-	background: #fff;
-	margin: 30px auto;
+	/*max-width: 100%;*/
+	/*max-height: 100%;*/
+	background: #ffffff;
+	/*margin: 30px auto;*/
 	overflow: hidden;
 }
 
@@ -59,13 +61,15 @@ a {
 }
 
 .chat-main {
+	height: 78vh;
 	display: grid;
-	grid-template-columns: 1fr 3fr;
+	grid-template-columns: 1fr 6fr;
 }
 
 .chat-sidebar {
+	height: 78vh;
 	background: var(--dark-color-b);
-	color: #fff;
+	color: #f5ff66;
 	padding: 20px 20px 60px;
 	overflow-y: scroll;
 }
@@ -87,13 +91,13 @@ a {
 
 .chat-messages {
 	padding: 30px;
-	max-height: 500px;
+	max-height: 100%;
 	overflow-y: scroll;
 }
 
 .chat-messages .message {
-	padding: 10px;
-	margin-bottom: 15px;
+	padding: 5px;
+	/*margin-bottom: 15px;*/
 	background-color: var(--light-color);
 	border-radius: 5px;
 	overflow-wrap: break-word;
@@ -112,7 +116,7 @@ a {
 }
 
 .chat-form-container {
-	padding: 20px 30px;
+	padding: 20px 20px;
 	background-color: var(--dark-color-a);
 }
 
@@ -127,57 +131,7 @@ a {
 	flex: 1;
 }
 
-/* Join Page */
-.join-container {
-	max-width: 500px;
-	margin: 80px auto;
-	color: #fff;
-}
 
-.join-header {
-	text-align: center;
-	padding: 20px;
-	background: var(--dark-color-a);
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-}
-
-.join-main {
-	padding: 30px 40px;
-	background: var(--dark-color-b);
-}
-
-.join-main p {
-	margin-bottom: 20px;
-}
-
-.join-main .form-control {
-	margin-bottom: 20px;
-}
-
-.join-main label {
-	display: block;
-	margin-bottom: 5px;
-}
-
-.join-main input[type='text'] {
-	font-size: 16px;
-	padding: 5px;
-	height: 40px;
-	width: 100%;
-}
-
-.join-main select {
-	font-size: 16px;
-	padding: 5px;
-	height: 40px;
-	width: 100%;
-}
-
-.join-main .btn {
-	margin-top: 20px;
-	width: 100%;
-}
 
 @media (max-width: 700px) {
 	.chat-main {

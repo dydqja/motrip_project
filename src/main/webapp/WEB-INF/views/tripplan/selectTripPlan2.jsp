@@ -1,295 +1,73 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <!DOCTYPE html>
 <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>motrip</title>
-  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <title>Mold Discover . HTML Template</title>
 
-  <link rel="stylesheet" href="assets/css/min/bootstrap.min.css" media="all">
-  <link rel="stylesheet" href="assets/css/jqueryui.css" media="all">
-  <link rel="stylesheet" href="vendor/animate-css/animate.css" media="all">
-  <link rel="stylesheet" href="assets/font/iconfont/iconstyle.css" media="all">
-  <link rel="stylesheet" href="assets/font/font-awesome/css/font-awesome.css" media="all">
-  <link rel="stylesheet" href="assets/css/main.css" media="all" id="maincss">
+  <!-- 구분선 -->
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
+  <link rel="stylesheet" href="/css/tripplan/tripplan.css">
+  <link rel="stylesheet" href="/css/tripplan/overlay.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- 구분선 -->
+
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+  <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
+  <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
+  <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
+  <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
+  <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
+  <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+
+  <script type="text/javascript">
+      let markers = []; // 마커 배열
+      let maps = []; // 지도 배열
+
+  </script>
 </head>
 
 <body>
 
-  <div class="pre-loader">
-    <div class="loading-img"></div>
-  </div>
-
   <header class="nav-menu fixed">
-    <nav class="navbar normal">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="index.html">
-            <img src="assets/img/logo.png" alt="">
-          </a>
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-
-        <div class="navbar-collapse collapse" id="main-navbar">
-          <ul class="nav navbar-nav">
-            <li class="dropdown">
-              <a href="#">Home Pages <i class="fa fa-chevron-down nav-arrow"></i></a>
-              <ul class="dropdown-menu">
-                <li><a href="home_default.html">Default Home Page</a>
-                </li>
-                <li><a href="home_slider.html">Image Slider Default</a>
-                </li>
-                <li><a href="home_slider_with_searhbar.html">Slider / Search Bar</a>
-                </li>
-                <li><a href="home_boxed.html">Boxed/Background Image</a>
-                </li>
-                <li><a href="home_video.html">Home with Video</a>
-                </li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#">Tour Pages</a>
-              <ul class="dropdown-menu">
-                <li><a href="trip_grid_withsidebar.html">Tour List</a>
-                </li>
-                <li><a href="trip_detail.html">Tour Detail</a>
-                </li>
-                <li><a href="location.html">Tour Location</a>
-                </li>
-                <li><a href="location_archive.html">Location Archive</a>
-                </li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle">Features</a>
-              <ul class="dropdown-menu">
-                <li><a href="colorscheme.html">Color Scheme</a>
-                </li>
-                <li><a href="iconfont.html">Icon Font</a>
-                </li>
-                <li><a href="text_page.html">Typography</a>
-                </li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle">Blog</a>
-              <ul class="dropdown-menu">
-                <li><a href="blog_list.html">Blog List</a>
-                </li>
-                <li><a href="blog_list2.html">Blog List Full Image</a>
-                </li>
-                <li><a href="blog_single.html">Blog Single</a>
-                </li>
-                <li><a href="blog_single_center.html">Blog Single Center</a>
-                </li>
-              </ul>
-            </li>
-            <li class="dropdown  megamenu">
-              <a class="dropdown-toggle">Mega Menu</a>
-              <div class="dropdown-menu">
-                <div class="col-sm-3">
-                  <h5 class="head">Home Variation</h5>
-                  <ul>
-                    <li><a href="home_default.html">Default Home Page</a>
-                    </li>
-                    <li><a href="home_slider.html">Image Slider Default</a>
-                    </li>
-                    <li><a href="home_slider_with_searhbar.html">Slider / Search Bar</a>
-                    </li>
-                    <li><a href="home_boxed.html">Boxed/Background Image</a>
-                    </li>
-                    <li><a href="home_video.html">Home with Video</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-sm-3">
-                  <h5 class="head">Trip / Listing</h5>
-                  <ul>
-                    <li><a href="trip_detail.html">Trip Detail</a>
-                    </li>
-                    <li class="hor-line"></li>
-                    <li><a href="trip_grid.html">Trip Grid</a>
-                    </li>
-                    <li><a href="trip_grid_withsidebar.html">Trip Grid with Sidebar</a>
-                    </li>
-                    <li><a href="trip_list.html">Trip List</a>
-                    </li>
-                    <li><a href="trip_list_full_img.html">Trip List - Full Image</a>
-                    </li>
-                    <li><a href="trip_list_2col.html">Trip List Two Column</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-sm-3">
-                  <h5 class="head">Pages</h5>
-                  <ul>
-                    <li><a href="cart_page.html">Cart Page</a>
-                    </li>
-                    <li><a href="checkout_page.html">Checkout Page</a>
-                    </li>
-                    <li><a href="about_page.html">About Us Page</a>
-                    </li>
-                    <li><a href="team_page.html">Team Page</a>
-                    </li>
-                    <li><a href="contact_page.html">Contact Page</a>
-                    </li>
-                    <li><a href="contact_page2.html">Contact Page 2</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-sm-3">
-                  <h5 class="head last">Misc Pages</h5>
-                  <ul>
-                    <li><a href="404_page.html">404 Page</a>
-                    </li>
-                    <li><a href="comming_soon.html">Comming Soon Page</a>
-                    </li>
-                    <li class="hor-line"></li>
-                    <li><a href="login_page.html">Login Page</a>
-                    </li>
-                    <li><a href="signup_page.html">Sign Up Page</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-            <li class="dropdown megamenu">
-              <a href="#" class="dropdown-toggle">Elements</a>
-              <div class="dropdown-menu">
-                <div class="col-sm-3">
-                  <h5 class="head">Misc 1</h5>
-                  <ul>
-                    <li><a href="element_feature_list.html">Feature List</a>
-                    </li>
-                    <li><a href="element_heading.html">Heading / Titles</a>
-                    </li>
-                    <li><a href="element_banner.html">Banner</a>
-                    </li>
-                    <li><a href="element_blockquote.html">Blockquote</a>
-                    </li>
-                    <li><a href="element_breadcrumb.html">Breadcrumb</a>
-                    </li>
-                    <li><a href="element_pagination.html">Pagination</a>
-                    </li>
-
-                  </ul>
-                </div>
-                <div class="col-sm-3">
-                  <h5 class="head">Misc 2</h5>
-                  <ul>
-                    <li><a href="element_carousel.html">Carousel</a>
-                    </li>
-                    <li><a href="element_gallery.html">Gallery &amp; Lightbox</a>
-                    </li>
-                    <li><a href="element_step-timeline.html">Steps / Timeline</a>
-                    </li>
-                    <li><a href="element_testimonials.html">Testimonials</a>
-                    </li>
-                    <li><a href="element_jquery_ui.html">Jquery UI</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-sm-3">
-                  <h5 class="head">Animation / Form</h5>
-                  <ul>
-                    <li><a href="element_animation.html">Animation</a>
-                    </li>
-                    <li><a href="element_button.html">Button</a>
-                    </li>
-                    <li><a href="element_button_effect.html">Button Effect</a>
-                    </li>
-                    <li><a href="element_form.html">Form</a>
-                    </li>
-                    <li><a href="element_counter.html">Counter</a>
-                    </li>
-
-                  </ul>
-                </div>
-                <div class="col-sm-3">
-                  <h5 class="head">Tab / Table</h5>
-                  <ul>
-                    <li><a href="element_table.html">Table</a>
-                    </li>
-                    <li><a href="element_tooltip.html">Tooltip / Popover / Modal</a>
-                    </li>
-                    <li><a href="element_tabs.html">Tabs</a>
-                    </li>
-                    <li><a href="element_accordion.html">Accordion</a>
-                    </li>
-                    <li><a href="element_alert.html">Alert / Label</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-            <li> <a href="login_page.html"><span class="icon-user"></span>Sign In</a>
-            </li>
-            <li class="dropdown">
-              <a href="cart_page.html"><span class="icon-minicart"></span><span class="badge badge-danger">3</span></a>
-              <ul class="dropdown-menu  dropdown-menu-right cart-menu">
-                <li>
-                  <img src="http://placehold.it/40x40" alt="" class="item-img">
-                  <span class="delete icon-trash"></span>
-                  <div class="text">
-                    Lorem ipsum dolor sit amet, consectetur.
-                    <p>USD 473 X 2</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="http://placehold.it/40x40" alt="" class="item-img">
-                  <span class="delete icon-trash"></span>
-                  <div class="text">
-                    Lorem ipsum dolor sit amet, consectetur.
-                    <p>USD 473 X 2</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="http://placehold.it/40x40" alt="" class="item-img">
-                  <span class="delete icon-trash"></span>
-                  <div class="text">
-                    Lorem ipsum dolor sit amet, consectetur.
-                    <p>USD 473 X 2</p>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
   </header>
 
   <div class="post-single left">
-    <div class="page-img" style="background-image: url('http://placehold.it/1200x400');">
+    <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
       <div class="page-img-txt container">
         <div class="row">
           <div class="col-sm-8">
-            <h1 class="main-head">Like Nothing I’ve Seen</h1>	
-            <p class="sub-head">Blog Post - with sidebar</p>
-
-            <div class="author-img">
-              <img src="http://placehold.it/70x70" alt="">
-            </div>
-            <div class="author">
-              <span>By</span><a href="#">Aaron D. Cullen</a>
-            </div>
+            <h2>
+                <div class="author-img">
+                  <img src="/images/tripImage.jpg" alt="">
+                </div>
+                <div class="author">
+                  <span>${tripPlan.tripPlanTitle}</span>
+                </div>
+            </h2>
             <p class="byline">
-              <span>August 24, 2015</span>
-              <span class="dot">·</span>
-              <span class="italic">in</span>
-              <a href="#">Adventure</a>, <a href="#">Asia</a>
-              <span class="dot">·</span>
-              <a href="#">4 Comments</a>
+                <h4>
+                  <span class="italic">${tripPlan.tripPlanAuthor}</span>
+                  <span class="dot">·</span>
+                  <span>${tripPlan.tripPlanRegDate}</span>
+                  <span class="dot">·</span>
+                  <span>${tripPlan.tripPlanLikes}</span>
+                  <span class="dot">·</span>
+                  <td id="likes" align="center" width="200">${tripPlan.tripPlanLikes}</td>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button class="btn btn-primary" id="tripPlanLikes" value="${tripPlan.tripPlanNo}" style="width: auto; height: auto; box-sizing: border-box; padding: 5px 10px;">추천</button>
+                  <c:if test="${tripPlan.isPlanDownloadable == true}">
+                      <span class="dot">·</span>
+                      <button class="btn btn-primary" id="tripPlanDown" value="${tripPlan.tripPlanNo}" style="width: auto; height: auto; box-sizing: border-box; padding: 5px 5px;">가져가기</button>
+                  </c:if>
+                </h4>
             </p>
           </div>
           <div class="colsm-4">
@@ -298,176 +76,107 @@
       </div>
     </div>
 
+<c:set var="i" value="0" />
+<c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
+    <c:set var="i" value="${ i+1 }" />
     <main class="white">
       <div class="container">
         <div class="row">
           <div class="col-sm-7">
             <div class="post">
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium rerum sed quaerat ex obcaecati eos quod expedita eligendi distinctio animi blanditiis excepturi qui tempore, perspiciatis quia alias laboriosam maxime beatae.</p>
-              <p>Ad ea et quibusdam assumenda eaque numquam expedita omnis recusandae, atque laborum. Obcaecati labore minus doloremque illo natus at praesentium consequuntur blanditiis sunt neque, tempore, quibusdam ipsa cum, corporis dolorum?</p>
-              <p>Consectetur adipisicing elit. Explicabo dicta veritatis fugit repellat quae dolores saepe consequatur iure dolore earum fugiat corporis, velit quidem qui, veniam in laudantium. Asperiores, tempora.</p>
-              <p>Eos dicta fuga voluptatum, error distinctio unde amet vero voluptate aspernatur architecto culpa ut, ullam nostrum incidunt commodi aliquam tenetur at illum molestiae excepturi necessitatibus voluptatibus. Sequi, necessitatibus quisquam
-                sunt quidem dolores iste mollitia repudiandae, accusamus ipsam ea ullam! Fugit recusandae quo commodi dolorum omnis at quasi, pariatur numquam, aspernatur laborum, quos! Facere nobis eveniet porro quae saepe esse aliquam animi quos.</p>
-              <blockquote class="with-icon">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, quam? Asperiores unde molestias iusto, quasi impedit ipsa necessitatibus, perferendis doloribus!</p>
-                <footer>Someone famous in <cite title="Source Title">Source Title</cite>
-                </footer>
-              </blockquote>
-              <p>Accusantium commodi? Quia officia eius, aperiam sit aspernatur perferendis quod recusandae! Nihil obcaecati, autem alias impedit totam perspiciatis tempore officia laudantium adipisci ipsum rerum natus accusantium, repellendus iusto nulla
-                ullam ea corrupti architecto excepturi optio. Obcaecati incidunt, at eius pariatur eveniet, laboriosam ad quam. Magnam ex voluptatibus, minima? Sed, nulla, nostrum.</p>
+              ${dailyPlan.dailyPlanContents}
             </div>
 
             <div class="tag-wrap">
-              <a href="#" rel="tag">blog</a>
-              <a href="#" rel="tag">more</a>
-              <a href="#" rel="tag">one</a>
-              <a href="#" rel="tag">read</a>	
-            </div>
-
-            <div class="share-box">
-              <h5 class="title">Share this entry</h5>
-              <div class="social-icon-wrap">
-                <a href="#" class="social-icon"><span class="fa fa-facebook"></span></a>
-                <a href="#" class="social-icon"><span class="fa fa-google"></span></a>
-                <a href="#" class="social-icon"><span class="fa fa-twitter"></span></a>
-                <a href="#" class="social-icon"><span class="fa fa-linkedin"></span></a>
-              </div>
-            </div>
-            <div class="review-comment">
-              <div class="section-title left">
-                <h4>Reviews &amp; Comments</h4>
-              </div>
-              <ul class="media-list review-comment">
-                <li>
-                  <div class="media">
-                    <div class="media-left">
-                      <a href="#">
-                        <img src="http://placehold.it/70x70" class="media-object" alt="">
-                      </a>
-                    </div>
-                    <div class="media-body">
-                      <h4 class="media-heading">Kim L. Burney</h4> 
-                      <div class="rating">
-                        <span class="icon-star"></span>
-                        <span class="icon-star"></span>
-                        <span class="icon-star"></span>
-                        <span class="icon-star"></span>
-                        <span class="icon-star-empty"></span>
-                      </div>
-                      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="media">
-                    <div class="media-left">
-                      <a href="#">
-                        <img src="http://placehold.it/70x70" class="media-object" alt="">
-                      </a>
-                    </div>
-                    <div class="media-body">
-                      <h4 class="media-heading">Shing Ch'in</h4> 
-                      <div class="rating">
-                        <span class="icon-star"></span>
-                        <span class="icon-star"></span>
-                        <span class="icon-star"></span>
-                        <span class="icon-star"></span>
-                        <span class="icon-star-empty"></span>
-                      </div>
-                      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.</div>
-                  </div>
-                </li>
-              </ul>
-              <div class="add-comment">
-                <div class="form-group">
-                  <label>Add Comment</label>
-                  <textarea class="form-control">Your comment</textarea>
-                  <button class="btn btn-primary">Add Comment</button>
-                </div>
-              </div>
+              <a href="#" rel="tag">여행</a>
+              <a href="#" rel="tag">3일</a>
+              <a href="#" rel="tag">2박3일</a>
+              <a href="#" rel="tag">관광지</a>
             </div>
 
           </div>
-          <div class="col-sm-4 col-sm-offset-1">
-            <div class="sidebar">
-              <div class="border-box">
-                <div class="box-title">Search Trips</div>
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search Site">
+
+          <div class="col-sm-5">
+
+              <div class="sidebar">
+                  <div class="input-group">
                   <div class="input-group-btn">
-                    <button class="btn btn-primary">Search</button>
-                  </div>
                 </div>
               </div>
 
-              <div class="border-box">
-                <div class="box-title">Recent Blog Post</div>
+              <div class="border-box"> <!-- 지도부분 -->
+                <h4>
+                    <span class="icon-map"><span>Day-${i}</span></span>
+                    <button class="icon-locate-map" id="reset${i-1}" ></button>
+                </h4>
                 <div class="recent-post-list">
-                  <div class="recent-post">
-                    <div class="author-img">
-                      <img src="http://placehold.it/50x50" class="media-object" alt="">
-                    </div>
-                    <div class="post-summary">
-                      <p>Lorem ipsum dolor sit amet, cons adipisicing elit.</p>
-                      <div class="byline">
-                        <span class="updated">Aug 24, 2015</span>
-                        <span class="dot">·</span>
-                        <span class="italic">By</span>&nbsp;
-                        <a href="#" rel="author" class="fn">Aaron D. Cullen</a>
-                      </div>
-                    </div>
+                    <div id="map${i-1}" style="width: 100%; height: 300px;"></div>
                   </div>
-                  <div class="recent-post">
-                    <div class="author-img">
-                      <img src="http://placehold.it/50x50" class="media-object" alt="">
-                    </div>
-                    <div class="post-summary">
-                      <p>Lorem ipsum dolor sit amet, cons adipisicing elit.</p>
-                      <div class="byline">
-                        <span class="updated">Jan 24, 2015</span>
-                        <span class="dot">·</span>
-                        <span class="italic">By</span>&nbsp;
-                        <a href="#" rel="author" class="fn">Keira Hopman</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-              <div class="border-box">
-                <div class="box-title">Categories</div>
-                <ul class="list">
-                  <li class="cat-item"><a href="#">Creative (2)</a>
-                  </li>
-                  <li class="cat-item"><a href="#">Design (9)</a>
-                  </li>
-                  <li class="cat-item"><a href="#">Image (2)</a>
-                  </li>
-                  <li class="cat-item"><a href="#">Photography (9)</a>
-                  </li>
-                  <li class="cat-item"><a href="#">Videos (4)</a>
-                  </li>
-                  <li class="cat-item"><a href="#">WordPress (4)</a>
-                  </li>
-                </ul>
               </div>
 
               <div class="border-box">
-                <div class="box-title">Tags</div>
-                <div class="tagcloud">
-                  <a href="#" class="tag-link" title="2 topics">artwork</a> 
-                  <a href="#" class="tag-link" title="2 topics">Photo</a> 
-                  <a href="#" class="tag-link" title="3 topics">Video</a> 
-                  <a href="#" class="tag-link" title="1 topic">Videos</a>
-                </div>
+                <div class="box-title">명소리스트 <div class="tag-link" style="text-align: right;">총 이동시간 : ${dailyPlan.totalTripTime}</div> </div>
+                <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                  <div class="col-12 column">
+                    <div class="card text-white mb-3" style="background-color: rgb(80, 250, 120); width: auto; height: auto;">
+                      <div class="card-body">
+                        <h4 class="card-title" name="placeTitle" >
+                          <div style="text-align: center;"><span class="icon-locate" value="${place.placeCategory}"></span>&nbsp;&nbsp;&nbsp;#${place.placeTags}</div>
+                        </h4>
+                      </div>
+                    </div>
+                    <div class="card text-white mb-3" name="tripTime" style="background-color: rgb(132, 200, 224); width: auto; height: auto;">
+                      <c:if test="${place.tripTime != null}">
+                        <div style="text-align: center;">이동시간: ${place.tripTime}</div>
+                      </c:if>
+                    </div>
+                  </div>
+
+                  <!-- place 반복문이 내부에있어서 해당 장소에 선언하였으며 마커와 오버레이를 보여주기 위한 스크립트 -->
+                  <script type="text/javascript">
+                      var placeTags = "${place.placeTags}";
+                      var placePhoneNumber = "${place.placePhoneNumber}";
+                      var placeAddress = "${place.placeAddress}";
+                      var placeCategory = "${place.placeCategory}";
+                      var placeImage = "${place.placeImage}";
+                      var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
+                      var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
+                      var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
+                      var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
+
+                      // markers 배열에 좌표 및 맵 ID 정보 추가
+                      markers.push({
+                          position: markerPosition,
+                          mapId: mapId,
+                          placeTags: placeTags,
+                          placePhoneNumber: placePhoneNumber,
+                          placeAddress: placeAddress,
+                          placeCategory: placeCategory,
+                          placeImage: placeImage
+                      });
+                  </script>
+
+                </c:forEach> <!-- place for end -->
               </div>
             </div>
           </div>
         </div>
-      </div>
+        </c:forEach> <!-- dailyPlan for end -->
+
+         <div class="review-comment">
+          <div class="add-comment">
+             <div class="form-group">
+               <button class="btn btn-primary" id="history">확인</button>
+                 <c:if test="${user.userId == tripPlan.tripPlanAuthor}">
+                   <button class="btn btn-primary" id="updateTripPlan">수정하기</button>
+                 </c:if>
+             </div>
+           </div>
+         </div>
+
+    </div>
     </main>
-  </div>
+</div>
 
   <footer id="footer">
     <div class="container">
@@ -521,21 +230,169 @@
     <div class="copy"><span>&copy;</span> Copyright Mold Discover, 2017</div>
   </footer>
 
-  <script src="vendor/jquery/dist/jquery.min.js"></script>
-  <script src="vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-  <script src="vendor/jquery.ui.touch-punch.min.js"></script>
-  <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- 아래는 설정용 스크립트입니다. -->
 
-  <script src="vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-  <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
-  <script src="vendor/retina.min.js"></script>
-  <script src="vendor/jquery.imageScroll.min.js"></script>
-  <script src="assets/js/min/responsivetable.min.js"></script>
-  <script src="assets/js/bootstrap-tabcollapse.js"></script>
+  <script type="text/javascript">
 
-  <script src="assets/js/min/countnumbers.min.js"></script>
-  <script src="assets/js/main.js"></script>
+    let tripDays = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
+
+    $(function() { // 저장되었던 맵의 갯수 만큼 출력하고 세팅
+        for (var i = 0; i < tripDays; i++) { // map의 아이디를 동적으로 할당하여 생성
+            var mapContainer = document.getElementById('map' + i);
+            var mapOptions = {
+                center: new kakao.maps.LatLng(37.566826, 126.9786567),
+                level: 3
+            };
+            var map = new kakao.maps.Map(mapContainer, mapOptions);
+            maps.push(map);
+        }
+        $(maps).each(function(index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
+            var bounds = new kakao.maps.LatLngBounds();
+            var mapId = 'map' + index;
+            var mapMarkers = markers.filter(function(marker) {
+                return marker.mapId === mapId;
+            });
+            $(mapMarkers).each(function(index, marker) {
+                var markerOptions = {
+                    position: marker.position,
+                    map: map
+                };
+                var marker = new kakao.maps.Marker(markerOptions);
+                marker.setMap(map);
+                bounds.extend(markerOptions.position);
+            });
+            map.setBounds(bounds);
+        });
+    });
+
+    $(function() { // 오버레이 표시
+        var overlays = [];
+        for (var i = 0; i < markers.length; i++) { // 각 지도에 맞춰서 마커들을 표시
+            var mapId = markers[i].mapId;
+            var mapIndex = parseInt(mapId.replace("map", ""));
+            var markerOptions = {
+                position: markers[i].position,
+                map: maps[mapIndex]
+            };
+            var marker = new kakao.maps.Marker(markerOptions);
+            marker.setMap(markerOptions.map);
+
+            // 오버레이 정보창
+            var content = '<div class="wrap">' +
+                        '    <div class="info">' +
+                        '        <div class="title">' +
+                        '            ' + markers[i].placeTags +
+                        '            <div class="close" data-index="' + i + '" title="닫기"></div>' +
+                        '        </div>' +
+                        '        <div class="body">' +
+                        '            <div class="img">' +
+                        '                <img src="' + markers[i].placeImage + '" width="73" height="70">' +
+                        '           </div>' +
+                        '            <div class="desc">' +
+                        '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
+                        '                <div class="category">(카테고리) ' + markers[i].placeCategory + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
+                        '    </div></div></div></div>';
+
+            var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
+                content: content,
+                map: maps[mapIndex],
+                position: marker.getPosition(),
+                yAnchor: 1
+            });
+
+            overlay.setMap(null); // 오버레이 초기 상태는 숨김으로 설정
+            overlays.push(overlay);
+
+            (function (marker, overlay, mapIndex) {
+
+                // 마커를 클릭했을 때 오버레이 표시
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    maps[mapIndex].setLevel(3); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
+                    maps[mapIndex].panTo(marker.getPosition()); // 해당 마커 위치로 지도 이동
+                    overlay.setMap(maps[mapIndex]);
+                });
+
+                // 지도상 어디든 클릭했을 때 오버레이 숨김
+                kakao.maps.event.addListener(maps[mapIndex], 'click', function() {
+                    overlay.setMap(null);
+                });
+
+                // 화면 초기화
+                $('#reset' + mapIndex).click(function() {
+                    overlay.setMap(null);
+                    var mapIndex = parseInt(this.id.replace("reset", ""));
+                    var bounds = new kakao.maps.LatLngBounds();
+
+                    for (var j = 0; j < markers.length; j++) {
+                        if (markers[j].mapId === "map" + mapIndex) {
+                            bounds.extend(markers[j].position);
+                        }
+                    }
+                    maps[mapIndex].setBounds(bounds);
+                });
+
+            })(marker, overlay, mapIndex);
+        }
+    });
+
+    <!-- 아래는 버튼클릭시 동작되는 부분입니다 -->
+
+    $(function() {
+       $("button[id='tripPlanLikes']").on("click", function() {
+         var tripPlanNo = "${tripPlan.tripPlanNo}";
+            $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
+              url: "/tripPlan/tripPlanLikes",
+              type: "GET",
+              data: { "tripPlanNo" :  tripPlanNo},
+              success: function (data) {
+                console.log(data);
+                if(data == -1){
+                    alert("이미 추천한 여행플랜입니다.");
+                } else if(data == 0) {
+                    alert("비회원은 추천을 할수없습니다.");
+                } else {
+                    alert("추천 완료");
+                    $("#likes").text(data);
+                }
+              },
+              error: function (xhr, status, error) {
+                console.log(error);
+              }
+            });
+       });
+    });
+
+    $(function() { // 업데이트 하러가기
+         $("button[id='updateTripPlan']").on("click", function() {
+            var tripPlanNo = "${tripPlan.tripPlanNo}";
+            window.location.href = "/tripPlan/updateTripPlanView?tripPlanNo=" + tripPlanNo;
+         });
+    });
+
+    $(function() { // 이전으로 돌아가기
+         $("button[id='history']").on("click", function() {
+              window.history.back();
+         });
+    });
+
+  </script>
+
+    <!-- 아래는 템플릿용 스크립트입니다. -->
+
+  <script src="/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+  <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+  <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+  <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+  <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+  <script src="/vendor/retina.min.js"></script>
+  <script src="/vendor/jquery.imageScroll.min.js"></script>
+  <script src="/assets/js/min/responsivetable.min.js"></script>
+  <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+
+  <script src="/assets/js/min/countnumbers.min.js"></script>
+  <script src="/assets/js/main.js"></script>
 
 </body>
-
 </html>

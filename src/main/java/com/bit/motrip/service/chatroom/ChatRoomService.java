@@ -12,7 +12,7 @@ public interface ChatRoomService { //service
     public ChatRoom updateChatRoom(ChatRoom chatRoom) throws Exception; // 채팅방 업데이트
     public int deleteChatRoom(int chatRoomNo,String userId) throws Exception; // 채팅방 삭제
     public List<ChatRoom> chatRoomList() throws Exception; // 채팅방 리스트 조회
-    public List<ChatRoom> chatRoomListPage() throws Exception; // 채팅방 리스트 조회
+    public Map<String , Object > chatRoomListPage(Search search) throws Exception; // 채팅방 리스트 조회
     //chage room_status
     public int changeRoomStatus(int chatRoomStatus,int chatRoomNo) throws Exception;
 

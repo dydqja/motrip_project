@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("chatRoomServiceImpl")
 public class ChatRoomServiceImpl implements ChatRoomService {
@@ -97,16 +94,21 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         return chatRoomList;
     }
     @Override
-    public List<ChatRoom> chatRoomListPage() throws Exception {
-        List<ChatRoom> chatRoomList = chatRoomDao.chatRoomListPage();
+    public Map<String , Object >  chatRoomListPage(Search search) throws Exception {
 
+        List<ChatRoom> chatRoomList = chatRoomDao.chatRoomListPage(search);
         for (ChatRoom cr:chatRoomList) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
             String strDate = simpleDateFormat.format(cr.getTravelStartDate());
             cr.setStrDate(strDate);
         }
+        int totalCount = chatRoomDao.getChatRoomTotalCount(search);
 
-        return chatRoomList;
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        map.put("list", chatRoomList );
+        map.put("totalCount", new Integer(totalCount));
+        return map;
     }
 
     //채팅 상태 변환
