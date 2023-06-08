@@ -116,11 +116,8 @@
                                                 <a href="#" id="my-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
                                                 <a href="#" id="my-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('myMemo',+1)">▶</a>
                                             </div>
-                                            <div class="my-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
-                                            </div>
-                                            <div class="my-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
+                                            <div id="my-memo-list-container">
+
                                             </div>
                                         </div>
                                     </div>
@@ -140,24 +137,18 @@
                                                 <a href="#" id="shared-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
                                                 <a href="#" id="shared-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('sharedMemo',+1)">▶</a>
                                             </div>
-                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
+                                            <div id="shared-memo-list-container">
+
                                             </div>
-                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
-                                            </div>
-                                        </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="del-memo-btn">
                                         <p class="panel-title">
-
                                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#del-memo-collapse" aria-expanded="false" aria-controls="collapseThree">
                                                 삭제된 메모 보기
                                             </a>
-
                                         </p>
                                     </div>
                                     <div id="del-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
@@ -167,14 +158,12 @@
                                                 <a href="#" id="del-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
                                                 <a href="#" id="del-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('deletedMemo',+1)">▶</a>
                                             </div>
-                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
-                                            </div>
-                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
+                                            <div id="del-memo-list-container">
+
                                             </div>
                                         </div>
-                                 </div>
+                                    </div>
+                                </div>
                             </div>
                         </ul>
                     </li>

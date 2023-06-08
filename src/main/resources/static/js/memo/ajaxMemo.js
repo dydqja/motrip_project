@@ -1,4 +1,6 @@
 function addMemoRequest(userId, memoTitle, memoContents,memoColor,memoDialog){
+    //console.log("addMemoRequest on");
+
     $.ajax({
         type: 'post',
         url: '/memo/addMemo',
