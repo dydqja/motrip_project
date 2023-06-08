@@ -40,11 +40,4 @@
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 
-.circle {
-   width: 20px;
-   height: 20px;
-   border-radius: 50%;
-   background-color: blue;
-}
-
 </style>

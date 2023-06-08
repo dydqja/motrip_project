@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,9 +75,11 @@ public class TripPlanController {
     }
 
     @GetMapping("addTripPlanView") // addTripPlanView 일반 네비게이션
-    public String addTripPlanView() {
+    public String addTripPlanView(Model model) {
         System.out.println("GET : addTripPlanView()");
-        return "tripplan/addTripPlan.jsp";
+
+        model.addAttribute("date", new Date());
+        return "tripplan/addTripPlan2.jsp";
     }
 
     @GetMapping("selectTripPlan")
@@ -89,7 +92,7 @@ public class TripPlanController {
         model.addAttribute("tripPlan", tripPlan);
         model.addAttribute("nickName", dbUser.getNickname()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
 
-        return "tripplan/selectTripPlan.jsp";
+        return "tripplan/selectTripPlan2.jsp";
     }
 
     @GetMapping("updateTripPlanView")
@@ -103,6 +106,14 @@ public class TripPlanController {
         model.addAttribute("nickName", dbUser.getNickname()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
 
         return "tripplan/updateTripPlan.jsp";
+    }
+
+
+    @GetMapping("testPlan")
+    public String testPlan() throws Exception {
+        System.out.println("GET : selectTripPlan()");
+
+        return "tripplan/selectTripPlan2.jsp";
     }
 
 }

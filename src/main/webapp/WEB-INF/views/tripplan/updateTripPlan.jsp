@@ -50,7 +50,7 @@
          console.log("varStatus : " + varStatusIndex[id]);
 
          if(index == 0 || varStatusIndex[id] == 0) {
-            alert("첫번째값은 다른 명소가 있는 경우에는 삭제시킬수없습니다. 나중에 앞서 다른 명소들 삭제후 삭제시킬수있게 만들것이며 이동순서를 바꿔서 삭제");
+            alert("첫번째값은 다른 명소가 있는 경우에는 삭제시킬수없습니다. 나중에 앞서 수정");
          } else {
              var prevTripTimeEl = document.querySelector('.card.text-white.mb-3[id="' + id + '"][data-index="' + (index - 1) + '"]'); // 명소를 삭제했을 때 이전 시간 리스트박스
              var newTripTimeEl = document.createElement('div'); // 대체할 새로운 시간 리스트박스
@@ -61,7 +61,8 @@
              newTripTimeEl.setAttribute('data-index', index - 1);
 
              var tripTimeEl = document.querySelector('.card.text-white.mb-3[id="' + id + '"][data-index="' + index + '"]'); // 명소를 삭제했을 때 시간 리스트박스
-
+             console.log("test");
+             console.log(tripTimeEl);
              // 배열에서 해당 명소 정보 삭제
              if (placeTripTimes['map' + id][index] != undefined || placeTripTimes['map' + id][index] != null) {
                totalTripTimes[id] = totalTripTimes[id] - placeTripTimes['map' + id][index]; // 시간을 다시 구하기 위해 총 더한 시간에서 없어진 시간들을 지움
@@ -427,7 +428,7 @@
     function handleKeyPress(event, indexCheck) {
 
           if (event.keyCode === 13) {
-            var textValue = document.getElementById("placeName" + indexCheck).value;
+            //var textValue = document.getElementById("placeName" + indexCheck).value;
             var ps = new kakao.maps.services.Places(); // 장소 검색 객체를 생성합니다
             var infowindow = new kakao.maps.InfoWindow({zindexCheck:1}); // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
             searchPlaces(); // 키워드로 장소를 검색합니다
@@ -805,7 +806,7 @@
                 for(var j=0; j<placeSum+1; j++){
                     var placeText = allPlaces['map' + i][j];
                     var tripTimeText = placeTripTimes['map' + i][j];
-                    var place = placeText; // JSON 문자열을 객체로 파싱
+                    var place = placeText;
                     place.tripTime = tripTimeText; // 시간 값을 할당
                     placeInfo.push(JSON.stringify(placeText));
                 }
