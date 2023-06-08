@@ -117,13 +117,8 @@
   </table>
 
   <div class="button-container">
-    <a href="review/addReviewView">후기작성</a>
-    <a href="review/getMyReviewList?reviewAuthor=${sessionScope.userId}">나의 후기1</a>
-
-    <c:if test="${not empty sessionScope.userId}">
-      <a href="review/review/getMyReviewList/${sessionScope.userId}">나의 후기2</a>
-    </c:if>
-
+    <a href="addReviewView">후기작성</a>
+    <a href="getMyReviewList?reviewAuthor=${sessionScope.userId}">나의 후기1</a>
   </div>
 </div>
 </body>

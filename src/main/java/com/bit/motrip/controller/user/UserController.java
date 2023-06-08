@@ -56,7 +56,7 @@ public class UserController {
     public String naverLogin() throws Exception{
         System.out.println("/user/naverLoginSuccess : GET");
 
-        return "/index.tiles";
+        return "/index.jsp";
     }
 
     @RequestMapping( value="login", method=RequestMethod.POST )
@@ -88,7 +88,7 @@ public class UserController {
         if(dbUser.isSecession() == true) {
             return "user/restoreUser.jsp";
         }else {
-            return "/index.tiles";
+            return "/index.jsp";
         }
     }
 
@@ -121,7 +121,7 @@ public class UserController {
 
         System.out.println("addNaverUser.jsp 로 보내질 user의 값은? => "+user);
 
-        return "user/addNaverUser.tiles";
+        return "user/addNaverUser.jsp";
     }
 
     @RequestMapping( value="listUser" )
@@ -161,13 +161,13 @@ public class UserController {
             User user = userService.getUserById(userId);
             System.out.println(user);
             // Model 과 View 연결
-            model.addAttribute("modelUser", user);
+            model.addAttribute("getUser", user);
 
         } else if(nickname != null) {
             User user = userService.getUserByNickname(nickname);
             System.out.println("getUserByNickname으로 가져온 user값은 ? " +user);
             // Model 과 View 연결
-            model.addAttribute("modelUser", user);
+            model.addAttribute("getUser", user);
 
         }
 

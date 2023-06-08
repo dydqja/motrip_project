@@ -10,6 +10,8 @@ import java.util.Map;
 @Mapper
 public interface ReviewDao {
     //후기 부분 CRUD
+    // chatRoomNo가 제공되지 않은 경우 여행플랜들 가져오기
+    public List<TripPlan> getPublicNonDeletedTripPlans() throws Exception;
     //INSERT C 후기 작성
     public void addReview(Review review)throws Exception ;
 

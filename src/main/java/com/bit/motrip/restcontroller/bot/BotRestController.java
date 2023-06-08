@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -138,8 +137,6 @@ public class BotRestController {
         System.out.println("::");
         System.out.println("입력질문: " + message);
 
-
-
         String encodeBase64String = makeSignature(message, secretKey);
 
         try {
@@ -218,11 +215,11 @@ public class BotRestController {
             return encodeBase64String;
 
         } catch (Exception e){
+
             System.out.println(e);
         }
 
         return encodeBase64String;
-
     }
 
     public static String getReqMessage(String text) {
@@ -273,6 +270,7 @@ public class BotRestController {
             requestBody = obj.toString();
 
         } catch (Exception e){
+
             System.out.println("## Exception : " + e);
         }
         return requestBody;

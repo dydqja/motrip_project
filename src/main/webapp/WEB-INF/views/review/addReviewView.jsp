@@ -9,10 +9,13 @@
     <title>✈️Motrip🚤</title>
 
     <!-- Bootstrap, jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"><!--모달창-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script><!--모달창-->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
 
     <!-- Summernote CDN -->
@@ -21,7 +24,64 @@
     <!-- Summernote CSS 파일 추가 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
 
+    <style>
+        /* 모달 스타일 */
+        .modal {
+            display: none; /* 기본적으로 숨겨진 상태로 시작 */
+            position: fixed; /* 고정 위치 */
+            z-index: 9999; /* 다른 요소보다 위에 표시 */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* 스크롤 가능하도록 설정 */
+            background-color: rgba(0, 0, 0, 0.6); /* 배경색 및 투명도 설정 */
+        }
 
+        .modal-content {
+            background-color: #fff; /* 모달 내용 배경색 */
+            margin: 10% auto; /* 모달을 수직 및 수평 가운데로 위치 */
+            padding: 20px;
+            width: 500px; /* 모달 너비 */
+            max-width: 90%; /* 최대 너비 */
+            max-height: 80vh; /* 최대 높이 */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+            overflow: auto; /* 내용이 넘칠 경우 스크롤 가능하도록 설정 */
+        }
+
+        .modal-content table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .modal-content th,
+        .modal-content td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .modal-content th {
+            background-color: #f2f2f2; /* 헤더 배경색 */
+        }
+
+        .modal-content .trip-plan-item:hover {
+            background-color: #f2f2f2; /* 아이템 호버 시 배경색 */
+            cursor: pointer;
+        }
+    </style>
+
+    <style>/* 모달 작성취소버튼 */
+        .cancel-button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .cancel-button-container button {
+            padding: 5px 10px;
+        }
+    </style>
     <style>
         /* 에디터의 높이를 500px로 설정*/
         .note-editor .note-editing-area .note-editable {
@@ -127,6 +187,7 @@
         .overlaybox li:hover .up {background-position:0 0px;}
         .overlaybox li:hover .down {background-position:0 -20px;}
     </style>
+
     <script>
         $(document).ready(function() {
             $('#reviewContents').summernote();
@@ -140,7 +201,8 @@
     function fncAddReview() {
         var reviewTitle = $("input[name='reviewTitle']").val();
         var reviewContents = $("textarea[name='reviewContents']").val();
-
+        var tripPlanNo = parseInt($("input[name='tripPlanNo']").val());
+        console.log("tripPlanNo: >>>>",tripPlanNo);
 
         if (reviewTitle == null || reviewTitle.length < 1) {
             alert("후기 제목을 반드시 입력하여야 합니다.");
@@ -152,20 +214,22 @@
         }
         $("form")
             .attr("method", "post")
-            .attr("action", "/review/addReview")
+            .attr("action", "/review/addReview?tripPlanNo=" + tripPlanNo) // tripPlanNo를 URL의 쿼리 파라미터로 전달
             .submit();
     }
 
     $(function () {
         $("button.btn.btn-primary").on("click", function () {
+            console.log("작성완료버튼을 눌렀습니다.")
             fncAddReview();
         });
 
         $("a[href='#']").on("click", function () {
-            $("form")[0].reset(); 0
+            $("form")[0].reset();
         });
     });
 </script>
+
 
 <script>
     $(function () {
@@ -180,31 +244,7 @@
 
 </script>
 
-<!-- 모달 JavaScript 코드 -->
-<script>
-    $(document).ready(function() {
-        $("#tripPlanModal").modal({backdrop: 'static', keyboard: false}); // Prevent closing the modal by clicking outside or pressing ESC key
 
-        $(document).on('click', function(event) {
-            if ($(event.target).closest("#tripPlanModal").length === 0) {
-                if ($("#selectedTripPlanTitle").val() === "") {
-                    alert("후기를 작성할 여행 플랜을 선택하세요 !");
-                }
-            }
-        });
-    });
-
-</script>
-<script>
-    function selectTripPlan(tripPlanTitle, tripPlanNo) {
-        $("#selectedTripPlanTitle").val(tripPlanTitle);
-        $("#selectedTripPlanNo").val(tripPlanNo); // Set the tripPlanNo value
-        $("#displaySelectedTripPlanNo").text(tripPlanNo);
-        $("#displaySelectedTripPlanTitle").text(tripPlanTitle);
-        $("#tripPlanModal").modal("hide");
-    }
-
-</script>
 <script>
     $(document).ready(function() {
         $(".isReviewPublic").change(function() {
@@ -227,45 +267,188 @@
     });
 </script>
 
-
-
 <!-- 화면구성 div Start -->
 <!-- 모달 창 내용 -->
-<div id="tripPlanModal" class="modal">
+<script>
+    // 모달 창이 열릴 때 자동으로 실행되는 함수
+    $(document).ready(function() {
+        // 모달 창 열기
+        $("#myModal").modal({
+            backdrop: "static",
+            keyboard: false
+        });
+
+        // 모달 창 외부 클릭 시 경고창 띄우기
+        $(document).on("click", ".modal-backdrop", function() {
+            alert("여행플랜을 반드시 선택해야 합니다.");
+        });
+
+        // 모달 창에서 tripPlanTitle 클릭 시 처리
+        $(document).ready(function() {
+            // 모달 창에서 tripPlanTitle 클릭 시 처리
+            $("#tripPlansTableBody").on("click", ".tripPlanTitle", function() {
+                // 선택한 tripPlan의 정보 가져오기
+                var tripPlanNo = $(this).closest("tr").find(".tripPlanNo").text();
+                var tripPlanTitle = $(this).text();
+
+                // addReviewView.jsp에 tripPlan 정보 전달
+                $("#tripPlanNo").val(tripPlanNo);
+                $("#tripPlanTitle").val(tripPlanTitle);
+
+                // 콘솔에 선택한 값 출력
+                console.log("선택한 Trip Plan No:",tripPlanNo);
+                console.log("선택한 Trip Plan 제목:", tripPlanTitle);
+
+                // 선택한 tripPlanTitle을 표시
+                $("#displaySelectedTripPlanTitle").text(tripPlanTitle);
+
+                // 선택한 tripPlanTitle을 표시
+                $("#displayTripPlanNo").text(tripPlanNo);
+
+                // 모달 창 닫기
+                $("#myModal").modal("hide");
+            });
+        });
+
+        // 작성 취소 버튼 클릭 시 뒤로 가기
+        $("#cancelButton").click(function() {
+            history.back();
+        });
+    });
+</script>
+
+
+
+</script>
+<!-- 모달 창 내용 붛러오기 시작 -->
+<script>
+    $(document).ready(function () {
+        // AJAX 요청을 통해 tripPlans 목록을 가져옴
+        $.ajax({
+            url: "/review/getCompletedTripPlan",
+            method: "GET",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            headers: { "Accept": "application/json" },
+            success: function (data, textStatus, jqXHR)  {
+
+                console.log("상태 코드: ", jqXHR.status);
+                console.log("상태 메시지: ", textStatus);
+
+                // 테이블에 동적으로 표시할 tbody
+                var tbody = $("#tripPlansTableBody");
+                // tbody 내용 비우기
+                tbody.empty();
+                // tripPlans 목록을 받아와 테이블에 동적으로 표시
+                for (var i = 0; i < data.length; i++) {
+                    var tripPlan = data[i];
+                    var tripPlanNo = tripPlan.tripPlanNo;
+                    var tripPlanTitle = tripPlan.tripPlanTitle;
+
+                    // 테이블에 동적으로 추가
+                    var tripPlanItem = "<tr class='trip-plan-item'><td class='tripPlanNo'>" + tripPlanNo + "</td><td class='tripPlanTitle' data-tripPlanNo='" + tripPlanNo + "'>" + tripPlanTitle + "</td></tr>";
+
+
+                    tbody.append(tripPlanItem);
+                }
+
+                // tripPlan 선택 시 이벤트 처리
+                $(".trip-plan-item").click(function() {
+                    var tripPlanNo = $(this).find(".tripPlanTitle").data("tripPlanNo");
+                    var tripPlanTitle = $(this).find(".tripPlanTitle").text();
+
+                    // 선택한 tripPlanNo와 tripPlanTitle을 숨겨진 입력 폼에 설정
+                    $("#tripPlanNo").val(tripPlanNo);
+                    $("#tripPlanTitle").val(tripPlanTitle);
+                });
+
+                // 모달 창 보이기
+                $("#myModal").modal({
+                    backdrop: "static",
+                    keyboard: false
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log("AJAX Error: " + error);
+                console.log("상태 코드: ", jqXHR.status);
+                console.log("상태 메시지: ", textStatus);
+                console.log("AJAX 에러: ", errorThrown);
+            }
+        });
+    });
+
+
+</script>
+<!-- 모달 창 내용 붛러오기 끝 -->
+<!-- 모달 창 내용 -->
+<div id="myModal" class="modal">
     <div class="modal-content">
-        <h4>✈️✈️Trip Plans✈️✈️</h4>
-        <ul>
-            <c:if test="${not empty tripPlanList['tripPlanList']}">
-                <ul>
-                    <c:forEach items="${tripPlanList['tripPlanList']}" var="tripPlan">
-                        <li>
-                            <a href="#" onclick="selectTripPlan('${tripPlan.tripPlanTitle}', '${tripPlan.tripPlanNo}')">${tripPlan.tripPlanTitle}</a>
-                        </li>
-                    </c:forEach>
-                </ul>
-            </c:if>
-        </ul>
+        <div class="modal-guide">후기를 작성할 여행플랜을 선택하세요.</div>
+        <table>
+            <thead>
+            <tr>
+                <th>Trip Plan No</th>
+                <th>Trip Plan 제목</th>
+            </tr>
+            </thead>
+            <tbody id="tripPlansTableBody">
+            <!-- 각 여행 계획 목록 항목을 출력 -->
+            </tbody>
+        </table>
+        <div class="cancel-button-container">
+            <button id="cancelButton">작성취소</button>
+        </div>
     </div>
 </div>
+<script>
+    // 모달 창에서 전달받은 tripPlanNo와 tripPlanTitle 가져오는 함수 정의
+    function getSelectedTripPlanInfo() {
+        var tripPlanNo = $("#tripPlanNo").val();
+        var tripPlanTitle = $("#tripPlanTitle").val();
+
+        // 가져온 값 확인
+        console.log("선택한 Trip Plan No:", tripPlanNo);
+        console.log("선택한 Trip Plan 제목:", tripPlanTitle);
+        // 선택된 Trip Plan 제목을 출력
+        $("#displayTripPlanNo").text(tripPlanNo);
+        $("#displaySelectedTripPlanTitle").text(tripPlanTitle);
+    }
+
+    // 문서가 로드된 후 실행
+    $(document).ready(function() {
+        getSelectedTripPlanInfo();
+    });
+</script>
 
 <div class="container">
     <h1>후기 작성</h1>
     <!-- form Start -->
     <form action="/review/addReview" method="post">
         <div class="row">
-
-            <div class="col-xs-4 col-md-2"><strong>TripPlanTitle:</strong></div>
+            <div class="col-xs-4 col-md-2">
+                <strong>TripPlanNo:</strong>
+            </div>
             <div class="col-xs-8 col-md-4">
-                <input type="hidden" id="selectedTripPlanTitle" name="selectedTripPlanTitle" value="${TripPlan.tripPlanTitle}" />
-                <input type="hidden" id="selectedTripPlanNo" name="tripPlanNo" value="${TripPlan.tripPlanNo}" />
+                <span id="displayTripPlanNo"></span>
+                <input type="hidden" name="tripPlanNo" value="${selectedTripPlanNo}" />
+                <input type="hidden" name="reviewAuthor" value="${loggedInUser.userId}" />
+            </div>
+            <!-- addReviewView.jsp에서 표시할 tripPlanTitle -->
+            <div class="col-xs-4 col-md-2">
+                <strong>TripPlanTitle:</strong>
+            </div>
+            <div class="col-xs-8 col-md-4">
                 <span id="displaySelectedTripPlanTitle"></span>
             </div>
         </div>
         <hr/>
+        <c:set var="nickname" value="${user.nickname}"/>
         <div class="form-group">
-            <label for="reviewAuthor">Review Author:</label>
-            <input type="text" id="reviewAuthor" name="reviewAuthor" required><br><br>
+            <label for="nickname">ReviewAuthor's nickname:</label>
+            <span id="nickname"><c:out value="${nickname}" /></span>
         </div>
+
+
         <hr/>
 
         <div class="form-group">
@@ -341,11 +524,11 @@
         </div>
         <div class="form-group">
             <label for="reviewThumbnail">썸네일:</label>
-            <input type="text" id="reviewThumbnail" name="reviewThumbnail" required /><br><br>
+            <input type="text" id="reviewThumbnail" name="reviewThumbnail"  /><br><br>
         </div>
         <div class="form-group">
             <label for="instaPostLink">인스타그램 링크:</label>
-            <input type="text" id="instaPostLink" name="instaPostLink" required /><br><br>
+            <input type="text" id="instaPostLink" name="instaPostLink"  /><br><br>
         </div>
 
         <div class="form-group">

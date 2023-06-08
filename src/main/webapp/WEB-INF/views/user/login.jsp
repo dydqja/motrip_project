@@ -5,12 +5,17 @@
 
 <html>
 <head>
-<link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
-<link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
-<link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
-<link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
-<link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
-<link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+    <title>MoTrip 로그인</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
+    <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
+    <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
+    <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
+    <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
+    <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+    <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>
 </head>
 
 <body class="login" style="background-image: url('http://placehold.it/1200x800');">
@@ -43,14 +48,27 @@
                         <input type="password" class="form-control" name="pwd" id="loginPwd" placeholder="비밀번호" />
                     </div>
                 </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <div id="naverIdLogin"></div>
+                    <div style="display: flex;">
+                        <button id="login" type="submit" class="btn btn-primary hvr-grow">로그인</button>
+                        <button id="addUser" type="button" class="btn btn-default hvr-grow">회원가입</button>
+                    </div>
 
-                <button id="login" type="submit" class="btn btn-primary hvr-sweep-to-right">로그인</button>
-                <button id="addUser" class="btn btn-sm btn-success"><i class="icon-plus"></i>회원가입</button>
+                </div>
+                <div style="text-align: right;">
+                    <a href="#" data-toggle="modal" data-target="#findIdPwdModal">아이디&비밀번호 찾기</a>
+                </div>
+
+
 
             </form>
+
         </div>
     </div>
 </div>
+
+
 
 <script src="/vendor/jquery/dist/jquery.min.js"></script>
 <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
@@ -59,6 +77,8 @@
 
 <script src="/vendor/retina.min.js"></script>
 <script src="/assets/js/main.js"></script>
+
+
 
 <!-- Current Page JS -->
 <script src="/assets/js/min/login.min.js"></script>
@@ -111,7 +131,7 @@
             clientId: "${sessionScope.naverClientId}",
             callbackUrl: "${sessionScope.naverCallbackUrl}",
             isPopup: false,
-            loginButton: {color: "green", type: 1, height: 50}
+            loginButton: {color: "green", type: 1, height: 34 }
         });
         naverLogin.init();
     };
@@ -127,6 +147,11 @@
     });
 
 </script>
+
+<!-- 회원가입 모달 인클루드 -->
+<jsp:include page="addUserModal.jsp"/>
+<!-- 아이디&비밀번호찾기 모달 인클루드 -->
+<jsp:include page="findIdPwdModal.jsp"/>
 
 
 </body>

@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -15,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>공지사항 목록</title>
+        <title>공지사항</title>
 
         <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
         <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
@@ -32,11 +30,22 @@
 
         <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-        <h1 class="text-center">공지사항</h1>
+        <div class="page-img">
+            <div class="container">
+                <div class="col-sm-8">
+                    <h1 class="main-head">공지사항</h1>
+                </div>
+                <div class="col-sm-4">
+                    <ul class="breadcrumb">
+                        <li><a href=""><span class="icon-home"></span></a>
+                        </li>
+                        <li><a href="">List</a>
+                        </li>
+                    </ul>
+                </div>
 
-        <br>
-        <br>
-        <br>
+            </div>
+        </div>
 
         <div class="container">
 
@@ -45,7 +54,6 @@
                 <thead>
 
                     <tr>
-                        <th class="text-center">번호</th>
                         <th class="text-center">말머리</th>
                         <th class="text-center">제목</th>
                         <th class="text-center">글쓴이</th>
@@ -60,9 +68,10 @@
                 <c:forEach var="notice" items="${noticeListData.list}">
                     <fmt:formatDate value="${notice.noticeRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
                     <c:choose>
-                        <c:when test="${notice.isNoticeImportant == 1 && importantCount < 3}">
+                        <c:when test="${notice.isNoticeImportant == 1 && importantCount < 3 && page.currentPage == 1}">
+
                             <tr>
-                                <td class="text-center important-row">${notice.noticeNo}</td>
+
                                 <td class="text-center important-row">최신</td>
                                 <td class="important-row">
                                     <a href="#" onclick="viewDetail(${notice.noticeNo})">
@@ -73,12 +82,13 @@
                                 <td class="text-center important-row">${notice.noticeAuthor == 'admin' ? '운영자' : ''}</td>
                                 <td class="text-center important-row">${formattedDate}</td>
                                 <td class="text-center important-row">${notice.noticeViews}</td>
+
                             </tr>
+
                             <c:set var="importantCount" value="${importantCount + 1}" />
                         </c:when>
                         <c:otherwise>
                             <tr>
-                                <td class="text-center">${notice.noticeNo}</td>
                                 <td class="text-center">일반</td>
                                 <td>
                                     <a href="#" onclick="viewDetail(${notice.noticeNo})">${notice.noticeTitle}</a>
@@ -94,48 +104,53 @@
 
             </table>
 
-            <nav aria-label="Page navigation example">
-
-                <ul class="pagination justify-content-center">
-
-                    <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
-
-                        <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage - 1}" aria-label="Previous">
-                            &laquo;
-                        </a>
-
-                    </li>
-
-                    <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
-
-                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-
-                            <a class="page-link" href="/notice/noticeList?currentPage=${i}">${i}</a>
-
-                        </li>
-
-                    </c:forEach>
-
-                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
-
-                        <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage + 1}" aria-label="Next">
-                            &raquo;
-                        </a>
-
-                    </li>
-
-                </ul>
-
-            </nav>
-
-            <c:if test="${sessionScope.user.userId eq 'admin'}">
-
-                <div>
-                    <button id="addNoticeView" class="btn btn-primary">공지 등록</button>
+            <div class="row">
+                <div class="col-md-6">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
+                                <c:choose>
+                                    <c:when test="${page.currentPage == 1}">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            &laquo;
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage - 1}" aria-label="Previous">
+                                            &laquo;
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </li>
+                            <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
+                                <li class="page-item ${i == page.currentPage ? 'active' : ''}">
+                                    <a class="page-link" href="/notice/noticeList?currentPage=${i}">${i}</a>
+                                </li>
+                            </c:forEach>
+                            <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
+                                <c:choose>
+                                    <c:when test="${page.currentPage == maxPage}">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            &raquo;
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a class="page-link" href="/notice/noticeList?currentPage=${page.currentPage + 1}" aria-label="Next">
+                                            &raquo;
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
 
-            </c:if>
-
+                <c:if test="${sessionScope.user.userId eq 'admin'}">
+                    <div class="col-md-6 text-right">
+                        <button id="addNoticeView" class="btn btn-primary text-right">공지 등록</button>
+                    </div>
+                </c:if>
+            </div>
         </div>
 
         <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
@@ -168,14 +183,6 @@
                 window.location.href = "/notice/noticeList?currentPage=" + page;
             }
 
-            $(function() {
-
-                // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-                $("#addNoticeView").on("click" , function() {
-
-                    window.location.href = "/notice/addNoticeView";
-                });
-            });
 
         </script>
 

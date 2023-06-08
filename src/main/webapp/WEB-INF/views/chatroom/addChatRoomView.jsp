@@ -21,7 +21,12 @@
     <tr>
         <td width="104" class="ct_write">나잇대</td>
         <td bgcolor="D6D6D6" width="1"></td>
-        <td class="ct_write01">${chatRoom.ageRange}</td>
+        <td class="ct_write01">${chatRoom.minAge} ~ ${chatRoom.maxAge}</td>
+    </tr>
+    <tr>
+        <td width="104" class="ct_write">성별</td>
+        <td bgcolor="D6D6D6" width="1"></td>
+        <td class="ct_write01">${chatRoom.gender}</td>
     </tr>
     <tr>
         <td width="104" class="ct_write">최대 인원수</td>
