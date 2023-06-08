@@ -234,8 +234,8 @@
                         </div>
                         <div class="item-book">
                             <button class="btn btn-primary hvr-fade go" name="chatRoomNo" value="${chatRoom.chatRoomNo}">Enter</button>
+                            <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Eroll</button>
 
-                            <a href="trip_detail.html" class="btn btn-primary hvr-fade" style="margin-left: 10px; background-color: #00b3ee">Enroll</a>
                             <div class="price">${chatRoom.currentPersons} / ${chatRoom.maxPersons}</div>
                         </div>
                     </div>
@@ -316,10 +316,10 @@
     function fncGoChatroom(){
         $("form").attr("method","POST").attr("action","/chatRoom/chat").submit();
     }
-    // function fncJoinChatroom(){
-    //     alert("join-chatRoom");
-    //     $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
-    // }
+    function fncJoinChatroom(){
+        alert("join-chatRoom");
+        $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
+    }
     // function fncDeleteChatroom(){
     //     $("form").attr("method","get").attr("action","/chatRoom/deleteChatRoom").submit();
     // }
@@ -329,8 +329,8 @@
 
     //참여된 채팅방 들어가기
     $(function() {$(".go").on("click", function() {fncGoChatroom();});});
-    // //참여안된 채팅방 조인하기
-    // $(function() {$(".join-chatRoom").on("click", function() {fncJoinChatroom();});});
+    //참여안된 채팅방 조인하기
+    $(function() {$(".join-chatRoom").on("click", function() {fncJoinChatroom();});});
     // //채팅방 삭제
     // $(function() {$(".delete").on("click", function() {fncDeleteChatroom();});});
     //채팅방 생성

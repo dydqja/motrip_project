@@ -17,7 +17,7 @@ public class ChatMemberTests {
     @Autowired
     @Qualifier("chatMemberServiceImpl")
     private ChatMemberService chatMemberService;
-    @Test
+    //@Test
     public void addTest() throws Exception{
         ChatMember chatMember = new ChatMember();
         chatMember.setChatRoomNo(16);

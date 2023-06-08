@@ -17,13 +17,13 @@ public interface ReviewDao {
 
     public int selectReviewCount() throws Exception;
 
-    public List<Review> selectReviewList(Map<String, Object> paramaters) throws Exception;
+    public List<Review> selectReviewList(Map<String, Object> parameters) throws Exception;
 
     //SELECT All Public ReviewList 공개된 후기 목록 조회
-    public List<Review> getPublicReviewList(Search search) throws Exception;
+    //public List<Review> getPublicReviewList(Search search) throws Exception;
 
     //SELECT All My ReviewList 나의 후기 목록 조회
-    public List<Review> getMyReviewList(String reviewAuthor, Search search) throws Exception;
+    //public List<Review> getMyReviewList(Map<String, Object> parameterMap) throws Exception;
 
     //SELECT ONE R 특정 후기 조회
     public Review getReview(int reviewNo)throws Exception;
@@ -36,6 +36,11 @@ public interface ReviewDao {
 
     //RECOVER 후기 복구
     public void recoverReview(int reviewNo);
+    //후기 좋아요
+    public void reviewLikes(Review review) throws Exception;
+    //후기 조회수
+    public void reviewViews(Review review) throws Exception;
+
 
 
 }//end of ReviewDao

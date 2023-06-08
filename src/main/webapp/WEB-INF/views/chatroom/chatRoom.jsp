@@ -541,7 +541,7 @@
     <title>ChatCord App</title>
 
 </head>
-<body style="height: 100%;width: 100%">
+<body>
 <header class="nav-menu fixed" >
 
     <style>
@@ -821,22 +821,17 @@
     <div class="chat-form-container">
 
         <form id="chat-form" enctype="multipart/form-data">
-            <input multiple="multiple" type="file" class="form-control" id="uploadFile" name="uploadFile" style="display: none" />
-            <label for="uploadFile" id="uploadIcon">
-                <img class="icon-plus" alt="Upload Icon">
-            </label>
             <input
                     id="msg"
                     type="text"
                     placeholder="Enter Message"
-                    required
+<%--                    required--%>
                     autocomplete="off"
             />
-
-            <%--            <input multiple="multiple" type="file" class="form-control"--%>
-            <%--                   id="uploadFile" name="uploadFile" style="width: 100px"/>--%>
-
+            <input multiple="multiple" type="file" class="form-control" id="uploadFile" name="uploadFile" style="display: none;"/>
+            <button class="btn btn-primary hvr-grow" style="background-color: #bdb9ee; color:black" id="upload">+</button>
             <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+
         </form>
     </div>
 </div>
@@ -864,12 +859,14 @@
 
 <%--    <script src="/js/imagepreview.js"></script>--%>
 <script>
-    const uploadFileInput = document.getElementById('uploadFile');
-    const uploadIcon = document.getElementById('uploadIcon');
+    const realUpload = document.querySelector('#uploadFile');
+    const upload = document.querySelector('#upload');
+   // upload.addEventListener('click', () => realUpload.click());
 
-    uploadIcon.addEventListener('click', function() {
-        uploadFileInput.click();
-    });
+
+
+
 </script>
+
 </body>
 </html>
