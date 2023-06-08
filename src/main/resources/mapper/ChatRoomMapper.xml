@@ -62,7 +62,7 @@
 		set
 			chat_room_title = #{chatRoomTitle},
 			travel_start_date = #{travelStartDate},
-			age_range = #{ageRange},
+
 			max_persons = #{maxPersons},
 			current_persons = #{currentPersons}
 		where

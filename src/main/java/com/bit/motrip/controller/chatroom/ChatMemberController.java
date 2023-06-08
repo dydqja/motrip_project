@@ -23,10 +23,10 @@ public class ChatMemberController {
     @PostMapping("joinChatRoom")
     public String joinChatRoom(@ModelAttribute("chatMember") ChatMember chatMember,
                                Model model) throws Exception{
-        System.out.println(chatMember);
-        ChatRoom chatRoom = chatRoomService.getChatRoom(chatMember.getChatRoomNo());
-        chatMember.setTripPlanNo(chatRoom.getTripPlanNo());
-        System.out.println(chatMember);
+        System.out.println(chatMember); // ***(userId, chatroomNo) + Tripplanno
+        ChatRoom chatRoom = chatRoomService.getChatRoom(chatMember.getChatRoomNo()); //chatroomno => chatroom
+        chatMember.setTripPlanNo(chatRoom.getTripPlanNo()); // chatroom => gettripplanno => chatmember에 삽입
+        System.out.println(chatMember); //
         chatMemberService.addChatMember(chatMember);
         return "redirect:/chatRoom/chatRoomList";
     }
