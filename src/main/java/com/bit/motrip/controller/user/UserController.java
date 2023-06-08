@@ -103,7 +103,7 @@ public class UserController {
 
         session.setAttribute("user", user);
 
-        return "redirect:/index_old.jsp";
+        return "redirect:/";
     }
 
     @RequestMapping( value="naverLogin", method=RequestMethod.GET )
