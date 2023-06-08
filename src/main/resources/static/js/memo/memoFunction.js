@@ -135,3 +135,29 @@ function changeMemoColor(colorInput, selectedColor){
     console.log("changeMemoColor on");
     //버튼이 속한 dialog 요소를 잡는다.
 }
+
+function shareMemo(memoDialog){
+    console.log("shareMemo on");
+    //dialog의 info를 추출한다.
+    let infoJson = memoDialog.find('.memo-dialog-info').val();
+    //info를 json으로 변환한다.
+    let info = JSON.parse(infoJson);
+    //info 의 memoNo를 추출한다.
+    let memoNo = info.memoNo;
+    //info 의 memoAuthor를 추출한다.
+    let memoAuthor = info.memoAuthor;
+    //세션의 유저를 추출한다.
+    let userId = $('#memo-user-id').val();
+    console.log("공유할 메모의 memoNo : " + memoNo);
+    console.log("공유할 메모의 memoAuthor : " + memoAuthor);
+    console.log("현재 접속중인 userId : " + userId);
+    //공유할 메모의 작성자와 현재 접속중인 유저가 같으면 공유 컨트롤 모달을 띄운다.
+    if(memoAuthor === userId){
+        console.log("공유 컨트롤 모달을 띄운다.");
+        getMemoShareListRequest(memoNo);
+    }else {
+        //공유할 메모의 작성자와 현재 접속중인 유저가 다르면 공유 해제 모달을 띄운다.
+        console.log("공유 해제 절차로");
+    }
+
+}

@@ -76,6 +76,8 @@ function getMemoList(searchCondition,currentPage){
     }else if(searchCondition == 'deletedMemo'){
         listContainer = $("#del-memo-list-container");
     }
+    //list-container를 비운다.
+    listContainer.html('');
 
     //userId 를 받는다.
     //memo 를 ajax로 받는다.
@@ -97,38 +99,49 @@ function getMemoList(searchCondition,currentPage){
 }
 
 function buildMemoListThumbnail(memoDoc,listContainer){
-    //list-container를 비운다.
-    listContainer.html('');
+
     //memoDoc의 상태를 체크한다.
     let btnClass = "btn btn-sm btn-default";
     let btnText = "무소속";
+    let btnValue = "none";
     if(memoDoc.tripPlan){
-        btnClass = "btn btn-sm btn-primary";
+        btnClass = "btn btn-sm btn-primary trip-plan-memo-btn";
         btnText = memoDoc.tripPlan.tripPlanTitle;
+        btnValue = memoDoc.tripPlan.tripPlanNo;
     }else if(memoDoc.chatRoom){
-        btnClass = "btn btn-sm btn-info";
+        btnClass = "btn btn-sm btn-info chat-room-memo-btn";
         btnText = memoDoc.chatRoom.chatRoomTitle;
+        btnValue = memoDoc.chatRoom.chatRoomNo;
     }else if(memoDoc.review){
-        btnClass = "btn btn-sm btn-warning";
+        btnClass = "btn btn-sm btn-warning review-memo-btn";
         btnText = memoDoc.review.reviewTitle;
+        btnValue = memoDoc.review.reviewNo;
     }
+
     //memoDoc를 담을 버튼을 만든다.
     let memoDocBtn = $('<div>').addClass('my-memo-thumbnail btn-group-justified').attr('role', 'group');
     let innerBtn = $('<a>').attr('href', '#').addClass(btnClass).attr('role', 'button').text(btnText);
+    innerBtn.val(btnValue);
     memoDocBtn.append(innerBtn);
     //memoDocBtn를 list-container에 붙인다.
     listContainer.append(memoDocBtn);
-    //memoDoc의 내부 메모를 확인한다.
+
     memoDoc.memoList.forEach(memo => {
-        //내부 메모의 내용을 확인한다.
-        console.log("memo : " + memo);
-        console.log("memo.memoNo : " + memo.memoNo);
+        //memo의 정보를 콘솔에 찍어본다.
+/*        console.log("memo : " + memo);
         console.log("memo.memoTitle : " + memo.memoTitle);
         console.log("memo.memoContents : " + memo.memoContents);
-        console.log("memo.memoColor : " + memo.memoColor);
+        console.log("memo.memoNo : " + memo.memoNo);
+        console.log("memo.memoRegDate : " + memo.memoRegDate);
+        console.log("memo.memoDelDate : " + memo.memoDelDate);
+        console.log("memo.memoAuthor : " + memo.memoAuthor);
+        */
+        //memo를 Json으로 바꾼다.
+        let memoJson = JSON.stringify(memo);
         //내부 메모를 담을 버튼을 만든다.
         let memoBtn = $('<div>').addClass('my-memo-thumbnail btn-group-justified').attr('role', 'group');
-        let innerBtn = $('<a>').attr('href', '#').addClass('btn btn-line btn-sm btn-default').attr('role', 'button').text(memo.memoTitle);
+        let innerBtn = $('<a>').attr('href', '#').addClass('btn btn-line btn-sm btn-default memo-list-thumbnail-btn').attr('role', 'button').text(memo.memoTitle);
+        innerBtn.val(memoJson);
         memoBtn.append(innerBtn);
         //memoBtn를 list-container에 붙인다.
         listContainer.append(memoBtn);
