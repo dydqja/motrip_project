@@ -1,20 +1,28 @@
-
-.memoAttachedNoneBtn {
-    background-color: black;
+#memo-section .panel {
+    background-color: transparent;
+}
+#memo-section .panel .panel-heading{
+    background-color: transparent;
+}
+#memo-section .panel .panel-title{
+    background-color: transparent;
+}
+#memo-section .panel .panel-title > a{
     color: white;
 }
-
-.memoAttachedTripPlanBtn {
-    background-color: lime;
-    color: black;
+#memo-section .panel .panel-title > a::before{
+    background-color: transparent;
 }
-
-.memoAttachedReviewBtn {
-    background-color: skyblue;
-    color: black;
+#memo-section .panel .panel-title > a::after{
+    background-color: transparent;
 }
-
-.memoAttachedChatRoomBtn {
-    background-color: red;
-    color: white;
+.memo-dialog .input-group-addon{
+    font-size: 12px;
+    border-radius: 0px;
+    color: black;
+    padding: 0 12px;
+}
+.memo-dialog .note-btn {
+    padding: 3px 3px; /* 원하는 크기로 설정 */
+    font-size: 5px; /* 원하는 글꼴 크기로 설정 */
 }

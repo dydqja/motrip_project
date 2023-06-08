@@ -22,8 +22,8 @@
         console.log('서버로부터 받은 알람 폴링 시간은'+pollingTime+'초이다.');
         //폴링 타임이 falsy일 경우 기본값 3초로 세팅한다.
         if(!pollingTime){
-            pollingTime = 5;
-            console.log('서버로부터 알람 폴링 시간을 받지 못했으므로, 기본값 5초로 세팅한다.')
+            pollingTime = 60;
+            console.log('서버로부터 알람 폴링 시간을 받지 못했으므로, 기본값 60초로 세팅한다.')
         }
         //서버에 연락할 유저의 Id는
         let userId = $("#alarmUserId").val();

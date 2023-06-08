@@ -47,7 +47,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
 
         //서비스단
         //DB에 메모를 추가한 뒤 추가된 메모를 get 해서 즉시 화면에 반환할 생각이다.
-        Memo insertedMemo = new Memo();
+        /*Memo insertedMemo = new Memo();
         try {
             insertedMemo = memoService.addMemo(user);
 
@@ -55,7 +55,7 @@ class MemoServiceTest {//컨트롤러 역할의 드라이버
             e.printStackTrace();
         }
         //반환된 메모를 화면에 뿌린다.
-        System.out.println(insertedMemo);
+        System.out.println(insertedMemo);*/
 
     }
 
