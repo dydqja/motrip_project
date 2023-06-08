@@ -17,7 +17,10 @@
 <script src="/summernote/summernote.js"></script>
 <script src="/js/alarm/alarm.js"></script>
 <script src="/js/memo/listMemo.js"></script>
-<script src="/js/memo/newMemo.js"></script>
+<script src="/js/memo/buildMemo.js"></script>
+<script src="/js/memo/memoBtnCtrl.js"></script>
+<script src="/js/memo/memoFunction.js"></script>
+<script src="/js/memo/ajaxMemo.js"></script>
 <%--
 <script src="/js/alarm/alarm.js"></script>
 --%>
@@ -32,7 +35,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
-                    <img src="/images/motrip-logo.png" alt="">
+                    <img src="/images/motrip-logo.gif" alt="">
                 </a>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -95,7 +98,7 @@
                         <a href="#" class="dropdown-toggle">메모</a>
                         <ul id="memo-dropdown" class="dropdown-menu">
                             <div class="my-memo-thumbnail btn-group-justified" role="group">
-                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">+ 새 메모</a>
+                                <a href="#" class="btn btn-line btn-sm btn-default" role="button" onclick="buildMemo('user2')">+ 새 메모</a>
                             </div>
                             <div class="panel-group" id="memo-accordion" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
@@ -113,11 +116,8 @@
                                                 <a href="#" id="my-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
                                                 <a href="#" id="my-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('myMemo',+1)">▶</a>
                                             </div>
-                                            <div class="my-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
-                                            </div>
-                                            <div class="my-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
+                                            <div id="my-memo-list-container">
+
                                             </div>
                                         </div>
                                     </div>
@@ -137,24 +137,18 @@
                                                 <a href="#" id="shared-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
                                                 <a href="#" id="shared-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('sharedMemo',+1)">▶</a>
                                             </div>
-                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
+                                            <div id="shared-memo-list-container">
+
                                             </div>
-                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
-                                            </div>
-                                        </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="del-memo-btn">
                                         <p class="panel-title">
-
                                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#del-memo-collapse" aria-expanded="false" aria-controls="collapseThree">
                                                 삭제된 메모 보기
                                             </a>
-
                                         </p>
                                     </div>
                                     <div id="del-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
@@ -164,14 +158,12 @@
                                                 <a href="#" id="del-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
                                                 <a href="#" id="del-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('deletedMemo',+1)">▶</a>
                                             </div>
-                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
-                                            </div>
-                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
-                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
+                                            <div id="del-memo-list-container">
+
                                             </div>
                                         </div>
-                                 </div>
+                                    </div>
+                                </div>
                             </div>
                         </ul>
                     </li>
@@ -189,10 +181,10 @@
                             </li>
                         </ul>
                     </li>
-                    <c:if test="${empty sessionScope.user}"> >
+                    <c:if test="${empty sessionScope.user}">
                     <li> <a href="/user/login"><span class="icon-user"></span>로그인</a>
                     </c:if>
-                    <c:if test="${not empty sessionScope.user}"> >
+                    <c:if test="${not empty sessionScope.user}">
                         <li class="dropdown">
                             <a class="icon-user" href="#">${sessionScope.user.nickname}</a>
                             <ul class="dropdown-menu">
@@ -254,19 +246,43 @@
     </div>
 </div>
 <div id="memo-dialogs">
-    <div class="memo-dialog" title="메모 제목">
-        <input class="memo-dialog-memono" type="hidden" value="1">
-        <input class="memo-dialog-info" type="hidden" value="JSON">
-        <div class="memo-dialog-view modal-body">
-            <div class="memo-contents-div">
-                히이얏호
+    <%--유저 아이디를 담을 hidden input 만들기.--%>
+    <input type="hidden" id="memo-user-id" value="${sessionScope.user.userId}">
+</div>
+<div id="memo-share-modal" class="modal" aria-labelledby="myModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="memo-share-modal-title" class="modal-title">메모 권한설정</h3>
+                <input id="memo-share-modal-memo-no" type="hidden" value="invalidMemoNo">
             </div>
-            <div id="summernote">ㅇㅇ</div>
-        </div>
-        <div class="memo-dialog-control modal-footer">
-            <button type="button" class="btn btn-sm btn-default hvr-grow" data-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-sm btn-primary hvr-grow">수정</button>
-            <button type="button" class="btn btn-sm btn-danger hvr-grow">삭제</button>
+            <div id="memo-share-modal-contents" class="modal-body">
+                <div id="memo-share-modal-list-area">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">이 메모를 공유중인 사람들</div>
+                        <!-- Table -->
+                        <table class="table">
+                            <thead>
+                            </thead>
+                            <tbody id="memo-sharer-list-body">
+                            <%--<tr>
+                                <td>id</td>
+                                <td>nick</td>
+                                <td>email</td>
+                                <td><a href="#">자세히</a></td>
+                                <td><button>공유해제</button></td>
+                            </tr>--%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="memo-share-modal-footer" class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default hvr-grow" data-dismiss="modal">닫기</button>
+                <button type="button" id="memo-share-modal-unShare-btn-for-shared" class="btn btn-sm btn-danger hvr-grow">공유 해제</button>
+            </div>
         </div>
     </div>
 </div>

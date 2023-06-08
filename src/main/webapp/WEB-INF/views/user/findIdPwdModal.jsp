@@ -80,57 +80,57 @@
                             <!-- 아이디찾기 부분 ################################################################################ -->
                             <div class="form-group" id="idModal">
                                 <label for="phoneByFindId" class="label label-primary">전화번호</label>
-                                <input type="text" class="form-control" name="phone" id="phoneByFindId" placeholder="01012345678" required maxlength="11" aria-describedby="helpBlock2">
-                                <span id="checkPhoneByFindId"></span>
-                                <button type="button" class="btn btn-line btn-sm btn-primary" id="sendSmsByFindId">인증번호전송</button>
+                                <input type="text" class="form-control" name="phone" id="phoneByFindId" placeholder="01012345678" required maxlength="11" aria-describedby="helpBlock2" style="width: 200px;">
+                                <span id="checkPhoneByFindId" style= "white-space: nowrap; display: block;"></span>
+                                <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" id="sendSmsByFindId">인증번호전송</button>
                             </div>
 
                             <!-- sms인증번호 입력폼 ==> 평상시 숨김 -->
                             <div class="form-group" id="PhCodeGroupByFindId" style="display: none;">
                                 <label for="phCodeConfirmByFindId" class="label label-primary">전화번호 인증</label>
-                                <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirmByFindId" placeholder="발송된 인증번호 입력" aria-describedby="helpBlock2">
+                                <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirmByFindId" placeholder="발송된 인증번호 입력" aria-describedby="helpBlock2" style="width: 200px;">
                                 <span id="checkPhCodeConfirmByFindId" style= "white-space: nowrap; display: block;"></span>
-                                <button type="button" class="btn btn-line btn-sm btn-primary" style="text-align: left;" id="confirmPhCodeByFindId">확인</button>
-                                <button type="button" class="btn btn-line btn-sm btn-primary" style="text-align: left;" id="resendPhCodeByFindId">재전송</button>
+                                <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" style="text-align: left;" id="confirmPhCodeByFindId">확인</button>
+                                <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" style="text-align: left;" id="resendPhCodeByFindId">재전송</button>
                             </div>
                         </div>
 
                         <!-- 아이디찾기 결과 부분 -->
-                        <div id="getIdShow" style="display:none">
-                            <span id="getIdByPhone"></span>
+                        <div class="main-title" id="getIdShow" style="display:none">
+                            회원님의 아이디는 <strong><span id="getIdByPhone"></span></strong> 입니다.
                         </div>
                         <!-- 아이디찾기 결과 부분 끝 -->
 
                         <!-- 비밀번호찾기 부분 ################################################################################ -->
                         <div class="tab-pane" id="findPwd">
                             <label for="UserIdByFindPwd" class="label label-primary">아 이 디</label>
-                            <input type="text" class="form-control" name="userId" id="userIdByFindPwd"  placeholder="아이디" required>
-                            <span id="checkIdByFindPwd"></span>
+                            <input type="text" class="form-control" name="userId" id="userIdByFindPwd"  placeholder="아이디" style="width: 200px;" required>
+                            <span id="checkIdByFindPwd" style= "white-space: nowrap; display: block;"></span>
 
                             <br/>
 
                             <label for="phoneByFindId" class="label label-primary">전화번호</label>
-                            <input type="text" class="form-control" name="phone" id="phoneByFindPwd" placeholder="01012345678" required maxlength="11">
-                            <span id="checkPhoneByFindPwd"></span>
-                            <button type="button" class="btn btn-line btn-sm btn-primary" id="sendSmsByFindPwd">인증번호전송</button>
+                            <input type="text" class="form-control" name="phone" id="phoneByFindPwd" placeholder="01012345678" required maxlength="11" style="width: 200px;">
+                            <span id="checkPhoneByFindPwd" style= "white-space: nowrap; display: block;"></span>
+                            <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" id="sendSmsByFindPwd">인증번호전송</button>
 
                             <!-- sms인증번호 입력폼 ==> 평상시 숨김 -->
                             <div class="form-group" id="PhCodeGroupByFindPwd" style="display: none;">
                                 <label for="phCodeConfirmByFindId" class="label label-primary">전화번호 인증</label>
-                                <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirmByFindPwd" placeholder="발송된 인증번호 입력">
-                                <span id="checkPhCodeConfirmByFindPwd"></span>
-                                <button type="button" class="btn btn-primary" id="confirmPhCodeByFindPwd">확인</button>
-                                <button type="button" class="btn btn-primary" id="resendPhCodeByFindPwd">재전송</button>
+                                <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirmByFindPwd" placeholder="발송된 인증번호 입력" style="width: 200px;">
+                                <span id="checkPhCodeConfirmByFindPwd" style= "white-space: nowrap; display: block;"></span>
+                                <button type="button" class="btn btn-primary hvr-grow" id="confirmPhCodeByFindPwd">확인</button>
+                                <button type="button" class="btn btn-primary hvr-grow" id="resendPhCodeByFindPwd">재전송</button>
                             </div>
 
                             <!-- 비밀번호 변경 입력폼 #################################################### -->
                             <div class="form-group" id="changePwd" style="display: none;">
                                 <label for="updatePwd" class="label label-primary">비밀번호 변경</label>
-                                <input type="password" class="form-control" name="updatePwd" id="updatePwd" placeholder="변경 비밀번호">
-                                <span id="updatePwdCheck"></span>
-                                <input type="password" class="form-control" name="pwd" id="updatePwdConfirm" placeholder="변경 비밀번호 확인">
-                                <span id="updatePwdConfirmCheck"></span>
-                                <button type="button" class="btn btn-primary" id="changePwdCommit">확인</button>
+                                <input type="password" class="form-control" name="updatePwd" id="updatePwd" placeholder="변경 비밀번호" style="width: 200px;">
+                                <span id="updatePwdCheck" style= "white-space: nowrap; display: block;"></span>
+                                <input type="password" class="form-control" name="pwd" id="updatePwdConfirm" placeholder="변경 비밀번호 확인" style="width: 200px;">
+                                <span id="updatePwdConfirmCheck" style= "white-space: nowrap; display: block;"></span>
+                                <button type="button" class="btn btn-primary hvr-grow" id="changePwdCommit">확인</button>
 
                             </div>
 
@@ -157,8 +157,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-sm btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default hvr-grow" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -514,7 +513,9 @@
                 if (response.result) {
 
                     $("#PhCodeGroupByFindPwd").hide();
-                    $("#sendSmsByFindPwd").text("인증완료");
+                    $("#sendSmsByFindPwd").text("인증완료").css({
+                        "color": "white"
+                    });  // 텍스트 색상과 폰트 크기 변경
                     $("#sendSmsByFindPwd").prop("disabled", true);
                     $("#changePwd").show();
 

@@ -13,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>질의응답 목록</title>
+        <title>질의응답</title>
 
         <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
         <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
@@ -32,22 +32,11 @@
 
         <div class="page-img">
             <div class="container">
-                <div class="col-sm-8">
-                    <h1 class="main-head">질의응답</h1>
-                </div>
-                <div class="col-sm-4">
-                    <ul class="breadcrumb">
-                        <li><a href=""><span class="icon-home"></span></a>
-                        </li>
-                        <li><a href="">List</a>
-                        </li>
-                    </ul>
-                </div>
-
+                <h1 class="main-head text-center board-title">질의응답</h1>
             </div>
         </div>
 
-        <div class="container">
+        <div class="container" >
 
             <table class="table table-striped">
 
@@ -94,7 +83,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
+                        <ul class="pagination">
                             <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
                                 <c:choose>
                                     <c:when test="${page.currentPage == 1}">
@@ -132,11 +121,15 @@
                     </nav>
                 </div>
 
-                <c:if test="${sessionScope.user.userId != 'admin' && not empty sessionScope.user.userId}">
-                    <div class="col-md-6 text-right">
-                        <button id="addQnaView" class="btn btn-primary">질문 등록</button>
-                    </div>
-                </c:if>
+                <div class="text-right">
+
+                    <c:if test="${sessionScope.user.userId != 'admin' && not empty sessionScope.user.userId}">
+                        <button id="addQnaView" class="btn btn-primary">문의 등록</button>
+                    </c:if>
+
+                    <button id="addQnaList" class="btn btn-primary text-right">처음으로</button>
+                </div>
+
             </div>
         </div>
 
@@ -176,6 +169,15 @@
                 $("#addQnaView").on("click" , function() {
 
                     window.location.href = "/qna/addQnaView";
+                });
+            });
+
+            $(function() {
+
+                // 처음으로 서비스 실행
+                $("#addQnaList").on("click" , function() {
+
+                    window.location.href = "/qna/qnaList?currentPage=1";
                 });
             });
 

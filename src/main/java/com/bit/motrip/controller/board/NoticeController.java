@@ -31,7 +31,7 @@ public class NoticeController {
 
     ///Method
     @RequestMapping("noticeList")
-    public String getNoticeList(@RequestParam(defaultValue = "1") int currentPage, HttpServletRequest request, Model model) throws Exception {
+    public String getNoticeList(@RequestParam(defaultValue = "1") int currentPage, Model model) throws Exception {
 
         System.out.println("::");
         System.out.println("[NoticeController] 공지사항 목록 조회 서비스를 실행합니다.");
@@ -54,23 +54,18 @@ public class NoticeController {
         // 화면 하단에 표시할 페이지 수
         int pageUnit = 3;
 
-        // maxPage, beginUnitPage, endUnitPage 연산
+        // 총 페이지 수, 페이지 시작 번호, 페이지 끝 번호 연산
         Page page = new Page(currentPage, totalCount, pageUnit, pageSize);
 
         // 총 페이지 수
         int maxPage = page.getMaxPage();
 
-        // 화면 하단에 표시할 페이지의 시작 번호
+        // 페이지 시작 번호
         int beginUnitPage = page.getBeginUnitPage();
 
-        // 화면 하단에 표시할 페이지의 끝 번호
+        // 페이지 끝 번호
         int endUnitPage = page.getEndUnitPage();
 
-        java.util.Date currentDate = new java.util.Date();
-
-        System.out.println("testetestestestset" + currentDate);
-
-        request.setAttribute("currentDate", currentDate);
         model.addAttribute("noticeListData", noticeListData);
         model.addAttribute("page", page);
         model.addAttribute("maxPage", maxPage);

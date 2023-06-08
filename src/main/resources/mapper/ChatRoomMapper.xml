@@ -62,7 +62,7 @@
 		set
 			chat_room_title = #{chatRoomTitle},
 			travel_start_date = #{travelStartDate},
-			age_range = #{ageRange},
+
 			max_persons = #{maxPersons},
 			current_persons = #{currentPersons}
 		where
@@ -100,17 +100,24 @@
 <!--						   on cr.chat_room_no = crm.chat_room_no order by cr.chat_room_no-->
 <!--		LIMIT 4;-->
 <!--	</select>-->
-		<select id="chatRoomListPage" resultMap="chatRoomResultMap">
-			SELECT cr.*, tp.trip_days, tp.trip_plan_title
+		<select id="chatRoomListPage" parameterType="com.bit.motrip.common.Search" resultMap="chatRoomResultMap">
+		select * from
+		(SELECT cr.*, tp.trip_plan_no,tp.trip_days, tp.trip_plan_title, ROW_NUMBER() OVER (ORDER BY cr.chat_room_no) AS row_seq
 			FROM chat_rooms cr
 					 RIGHT JOIN (
 				SELECT crm.chat_room_no, crm.trip_plan_no
 				FROM chat_room_members crm
+				<if test="searchCondition != null">
+					<where>
+							chat_room_title like '%${searchKeyword}'
+					</where>
+				</if>
 				GROUP BY crm.chat_room_no, crm.trip_plan_no
 			) crm ON cr.chat_room_no = crm.chat_room_no
 					 LEFT JOIN trip_plan tp ON crm.trip_plan_no = tp.trip_plan_no
-			ORDER BY cr.chat_room_no
-			LIMIT 4;
+			ORDER BY cr.chat_room_no) AS temp
+		WHERE
+            row_seq BETWEEN #{startRowNum} AND #{endRowNum}
 		</select>
 
 	<select id="chatRoomCount" resultType="int">
@@ -118,5 +125,37 @@
 			count(chat_room_no)
 		FROM
 			chat_rooms
+	</select>
+
+<!--	<select  id="getChatRoomTotalCount" parameterType="com.bit.motrip.common.Search" resultType="int">-->
+<!--		SELECT-->
+<!--			COUNT(*)-->
+<!--		FROM-->
+<!--			(-->
+<!--				SELECT-->
+<!--					*-->
+<!--				FROM-->
+<!--					chat_rooms-->
+
+<!--			) countTable-->
+<!--	</select>-->
+	<select  id="getChatRoomTotalCount"  parameterType="com.bit.motrip.common.Search"	 resultType="int">
+		SELECT COUNT(*)
+		FROM(	SELECT *
+		FROM chat_rooms
+<!--		<if test="searchCondition != null">-->
+<!--			<where>-->
+<!--				<if test="searchCondition == 0 and searchKeyword !='' ">-->
+<!--					prod_no = #{searchKeyword}-->
+<!--				</if>-->
+<!--				<if test="searchCondition == 1 and searchKeyword !='' ">-->
+<!--					prod_name = #{searchKeyword}-->
+<!--				</if>-->
+<!--				<if test="searchCondition == 2 and searchKeyword !='' ">-->
+<!--					price = #{searchKeyword}-->
+<!--				</if>-->
+<!--			</where>-->
+<!--		</if> ) countTable-->
+		) countTable
 	</select>
 </mapper>

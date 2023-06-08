@@ -161,13 +161,13 @@ public class UserController {
             User user = userService.getUserById(userId);
             System.out.println(user);
             // Model 과 View 연결
-            model.addAttribute("modelUser", user);
+            model.addAttribute("getUser", user);
 
         } else if(nickname != null) {
             User user = userService.getUserByNickname(nickname);
             System.out.println("getUserByNickname으로 가져온 user값은 ? " +user);
             // Model 과 View 연결
-            model.addAttribute("modelUser", user);
+            model.addAttribute("getUser", user);
 
         }
 

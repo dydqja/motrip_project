@@ -56,16 +56,16 @@ public class QnaController {
         // 화면 하단에 표시할 페이지 수
         int pageUnit = 3;
 
-        // maxPage, beginUnitPage, endUnitPage 연산
+        // 총 페이지 수, 페이지 시작 번호, 페이지 끝 번호 연산
         Page page = new Page(currentPage, totalCount, pageUnit, pageSize);
 
         // 총 페이지 수
         int maxPage = page.getMaxPage();
 
-        // 화면 하단에 표시할 페이지의 시작 번호
+        // 페이지 시작 번호
         int beginUnitPage = page.getBeginUnitPage();
 
-        // 화면 하단에 표시할 페이지의 끝 번호
+        // 페이지 끝 번호
         int endUnitPage = page.getEndUnitPage();
 
         model.addAttribute("qnaListData", qnaListData);

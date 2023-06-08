@@ -3,6 +3,7 @@ package com.bit.motrip.config;
 import com.bit.motrip.common.ImageSaveService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
@@ -53,6 +54,14 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public ImageSaveService imageSaveService() {
         return new ImageSaveService(resourcePath);
+    }
+
+    //CORS 관련 설정해 보았으나, 해결 안됨(그래도 혹시몰라서 남겨둠)
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedMethods("*")
+                .allowedOrigins("*");
     }
 
 
