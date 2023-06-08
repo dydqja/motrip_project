@@ -68,6 +68,32 @@
         </collection>
     </resultMap>
 
+    <resultMap id="chatMemberResultMap" type="com.bit.motrip.domain.ChatMember">
+        <id column="member_no" property="memberNo" jdbcType="INTEGER"/>
+        <result column="chat_room_no" property="chatRoomNo" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
+        <result column="is_chat_room_author" property="isChatRoomAuthor" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <!-- ReviewDao.xml -->
+    <select id="getPublicNonDeletedTripPlans" parameterType="Map" resultMap="tripPlanResultMap">
+        SELECT *
+        FROM trip_plan
+        WHERE is_plan_public = true
+          AND is_plan_deleted = false
+          AND is_trip_completed = true
+    </select>
+    <select id="getCompletedTripPlan"  parameterType="Map" resultMap="tripPlanResultMap">
+        SELECT *
+        FROM trip_plan
+        WHERE (is_plan_public = true AND is_plan_deleted = false)
+           OR (trip_plan_no IN (
+            SELECT trip_plan_no
+            FROM member_no
+            WHERE chat_room_no = #{chatRoomNo}
+        ) AND is_trip_completed = true)
+    </select>
     <select id="selectTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
         SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail, tp.trip_days, tp.trip_plan_reg_date,
         tp.trip_plan_del_date, tp.is_plan_deleted, tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed,

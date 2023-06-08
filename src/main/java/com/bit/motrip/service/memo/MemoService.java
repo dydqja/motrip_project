@@ -10,7 +10,7 @@ public interface MemoService {
 
     //메모 관련
 
-    Memo addMemo(User user) throws Exception;
+    Memo addMemo(Memo memo) throws Exception;
     ///새로운 메모를 작성하는 기능.
 
     //유저 객체를 받아서, 그 id를 받는다.

@@ -59,18 +59,22 @@
     <hr/>
 
     <div class="row">
-        <div class="col-xs-4 col-md-2"><strong>Trip Plan No:</strong></div>
-        <div class="col-xs-8 col-md-4">${review.tripPlanNo}</div>
+        <c:set var="tripPlanNo" value="${selectedTripPlanNo}" />
+        <p>Trip Plan Number: ${tripPlanNo}</p>
         <div class="col-xs-4 col-md-2"><strong>Trip Plan Title:</strong></div>
         <div class="col-xs-8 col-md-4">${tripPlan.tripPlanTitle}</div>
     </div>
 
     <hr/>
 
-    <div class="row">
-        <div class="col-xs-4 col-md-2"><strong>Review Author:</strong></div>
-        <div class="col-xs-8 col-md-4">${review.reviewAuthor}</div>
+    <c:set var="nickname" value="${user.nickname}"/>
+    <div class="form-group">
+        <label for="nickname">ReviewAuthor's nickname:</label>
+        <span id="nickname"><c:out value="${nickname}" /></span>
     </div>
+    <!-- <div class="col-xs-4 col-md-2"><strong>Review Author:</strong></div>
+    <div class="col-xs-8 col-md-4">${review.reviewAuthor}</div> -->
+
 
 
     <hr/>
@@ -143,6 +147,26 @@
         customOverlay.setMap(map);
     </script>
 
+    <!-- JavaScript로 서버에서 받아온 게시물 링크를 임베드하는 스크립트 -->
+    <script>
+        // 서버에서 전달받은 인스타그램 게시물 링크
+        var instagramLink = "<c:out value="${instagramLink}" />";
+
+        // 인스타그램 게시물 임베드 함수
+        function embedInstagramPost(link) {
+            // 인스타그램 게시물을 임베드할 코드 작성
+            var embedCode = "<!-- 인스타그램 게시물 임베드 코드 -->";
+
+            // 게시물을 보여줄 영역에 임베드 코드 삽입
+            $("#instagramEmbed").html(embedCode);
+        }
+
+        // 페이지 로드 시 게시물 임베드 함수 호출
+        $(document).ready(function() {
+            embedInstagramPost(instagramLink);
+        });
+    </script>
+
     <div class="row">
         <div class="col-xs-4 col-md-2"><strong>내용:</strong></div>
         <div class="col-xs-8 col-md-4">${review.reviewContents}</div>
@@ -157,10 +181,8 @@
 
     <hr/>
 
-    <div class="row">
-        <div class="col-xs-4 col-md-2"><strong>인스타그램 게시물:</strong></div>
-        <div class="col-xs-8 col-md-4">${review.instaPostLink}</div>
-    </div>
+    <!-- 인스타그램 게시물을 보여줄 영역 -->
+    <div id="instagramEmbed"></div>
 
     <hr/>
 

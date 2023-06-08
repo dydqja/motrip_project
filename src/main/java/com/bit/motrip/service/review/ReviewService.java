@@ -2,10 +2,20 @@ package com.bit.motrip.service.review;
 
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.Review;
+import com.bit.motrip.domain.TripPlan;
+import org.springframework.ui.Model;
+
 import java.util.List;
 import java.util.Map;
 
 public interface ReviewService {
+
+    // chatRoomNo가 제공되지 않은 경우 여행플랜들 가져오기
+    public List<TripPlan> getPublicNonDeletedTripPlans() throws Exception;
+
+    //완료된 플랜목록 가져옴(ajax)
+    public List<TripPlan> getCompletedTripPlan(int chatRoomNo) throws Exception;
+
     //INSERT C 후기 등록
     public void addReview(Review review) throws Exception;
 

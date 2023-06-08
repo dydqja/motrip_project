@@ -44,29 +44,34 @@ public class MemoServiceImpl implements MemoService {
 
     //Method
     @Override
-    public Memo addMemo(User user) {
+    public Memo addMemo(Memo memo) {
 
-        //add에서는 컨트롤러로부터 memo객체의 정보는 받지 않는다.
-        //단, author 에 대한 정보는 컨트롤러에서 Session으로부터 user를 추출해서 받아야 한다. 잊지않고 넣기위해 author를 따로 받는다.
-
-        //바인드 단계
-        Memo newMemo = new Memo();
-        newMemo.setMemoAuthor(user.getUserId());
-        newMemo.setMemoTitle(newMemoTitle);
-        newMemo.setMemoColor(Integer.parseInt(newMemoColor));
-        newMemo.setMemoContents(newMemoContents);
-
+        //썸머노트 내부의 html 문자를 빼낸다.
+        String html = memo.getMemoContents();
+        //이미지를 저장하고, html 내부의 이미지 경로를 변경한다.
+        try {
+            String userId = memo.getMemoAuthor();
+            String subSystem = "memo";
+            html = imageSaveService.saveImage(html, userId, subSystem);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //경로가 변경된 html을 memo에 넣는다.
+        memo.setMemoContents(html);
+        
         //DB에 메모를 추가한다.
         int affectedRows = 0;
         try {
-            affectedRows = memoDao.addMemo(newMemo);
+            affectedRows = memoDao.addMemo(memo);
             if (affectedRows == 1) {
                 //삽입된 메모의 Author 로서의 접근권한을 DB에 추가한다.
-                MemoAccess memoAccess = new MemoAccess(newMemo.getMemoNo(), newMemo.getMemoAuthor(), true);
+                MemoAccess memoAccess = new MemoAccess(memo.getMemoNo(), memo.getMemoAuthor(), true);
                 int isSuccess2 = memoDao.addMemoAccess(memoAccess);
                 if (isSuccess2 == 1) {
                     //끝까지 완전 성공시 추가된 메모의 상태를 get 해서 리턴한다.
-                    return memoDao.getMemo(newMemo.getMemoNo());
+                    int addedMemoNo = memo.getMemoNo();
+                    System.out.println("추가된 메모의 번호는 " + addedMemoNo);
+                    return memoDao.getMemo(addedMemoNo);
                 } else {
                     throw new Exception("메모의 접근권한이 추가되지 않았습니다.");
                 }
@@ -158,10 +163,9 @@ public class MemoServiceImpl implements MemoService {
         //경로가 변경된 html을 memo에 넣는다.
         memo.setMemoContents(html);
 
-        //컨트롤러로부터 memo의 정보를 받는다.
+        //메모 업데이트를 시도한다.
         int isSuccess = 0;
         try {
-            //메모 업데이트를 시도한다.
             isSuccess =  memoDao.updateMemo(memo);
             if (isSuccess == 1) {
                 //메모 업데이트가 성공하면 화면단에 변경된 메모의 내용을 보여주기 위해 다시 한번 getMemo를 한다.

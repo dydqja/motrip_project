@@ -8,28 +8,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<style>
-    #memo-section .panel {
-        background-color: transparent;
-    }
-    #memo-section .panel .panel-heading{
-        background-color: transparent;
-    }
-    #memo-section .panel .panel-title{
-        background-color: transparent;
-    }
-    #memo-section .panel .panel-title > a{
-        color: white;
-    }
-    #memo-section .panel .panel-title > a::before{
-        background-color: transparent;
-    }
-    #memo-section .panel .panel-title > a::after{
-        background-color: transparent;
-    }
-</style>
+
+
 <link rel="stylesheet" href="/css/alarm/alarm.css" media="all">
+<link rel="stylesheet" href="/css/memo/memo.css" media="all">
+<link rel="stylesheet" href="/summernote/summernote.css" media="all">
+
+<script src="/summernote/summernote.js"></script>
 <script src="/js/alarm/alarm.js"></script>
+<script src="/js/memo/listMemo.js"></script>
+<script src="/js/memo/buildMemo.js"></script>
+<script src="/js/memo/memoBtnCtrl.js"></script>
+<script src="/js/memo/memoFunction.js"></script>
+<script src="/js/memo/ajaxMemo.js"></script>
+<%--
+<script src="/js/alarm/alarm.js"></script>
+--%>
+
 
 <div class="pre-loader" style="display: none;">
     <div class="loading-img"></div>
@@ -102,18 +97,12 @@
                     <li id="memo-section" class="dropdown">
                         <a href="#" class="dropdown-toggle">메모</a>
                         <ul id="memo-dropdown" class="dropdown-menu">
+                            <div class="my-memo-thumbnail btn-group-justified" role="group">
+                                <a href="#" class="btn btn-line btn-sm btn-default" role="button" onclick="buildMemo('user2')">+ 새 메모</a>
+                            </div>
                             <div class="panel-group" id="memo-accordion" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="new-memo-btn">
-                                        <p class="panel-title">
-                                            <a role="button" data-parent="#memo-accordion" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                                + 새 메모
-                                            </a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading1One">
+                                    <div class="panel-heading" role="tab" id="my-memo-btn">
                                         <p class="panel-title">
                                             <a role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#my-memo-collapse" aria-expanded="true" aria-controls="collapseOne">
                                                 나의 메모 보기
@@ -122,16 +111,22 @@
                                     </div>
                                     <div id="my-memo-collapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                         <div class="panel-body">
-                                            <div class="btn-group-vertical" role="group" aria-label="...">
-                                                <div class="btn btn-line btn-sm btn-default" role="group" aria-label="...">ㅁaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-                                                <div class="btn btn-line btn-sm btn-default" role="group" aria-label="...">ㅁaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-                                                <div class="btn btn-line btn-sm btn-default" role="group" aria-label="...">ㅁaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+                                            <div id="my-memo-control" class="btn-group btn-group-justified " role="group">
+                                                <a href="#" id="my-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('myMemo',-1)">◀</a>
+                                                <a href="#" id="my-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
+                                                <a href="#" id="my-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('myMemo',+1)">▶</a>
+                                            </div>
+                                            <div class="my-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
+                                            </div>
+                                            <div class="my-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading1Two">
+                                    <div class="panel-heading" role="tab" id="shared-memo-btn">
                                         <p class="panel-title">
                                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#shared-memo-collapse" aria-expanded="false" aria-controls="collapseTwo">
                                                 공유받은 메모 보기
@@ -140,14 +135,23 @@
                                     </div>
                                     <div id="shared-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                         <div class="panel-body">
-                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-                                            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table,
-                                            raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                            <div id="shared-memo-control" class="btn-group btn-group-justified " role="group">
+                                                <a href="#" id="shared-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('sharedMemo',-1)">◀</a>
+                                                <a href="#" id="shared-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
+                                                <a href="#" id="shared-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('sharedMemo',+1)">▶</a>
+                                            </div>
+                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
+                                            </div>
+                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
+                                            </div>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading1Three">
+                                    <div class="panel-heading" role="tab" id="del-memo-btn">
                                         <p class="panel-title">
 
                                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#del-memo-collapse" aria-expanded="false" aria-controls="collapseThree">
@@ -158,12 +162,19 @@
                                     </div>
                                     <div id="del-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                                         <div class="panel-body">
-                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-                                            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table,
-                                            raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                            <div id="del-memo-control" class="btn-group btn-group-justified " role="group">
+                                                <a href="#" id="del-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('deletedMemo',-1)">◀</a>
+                                                <a href="#" id="del-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
+                                                <a href="#" id="del-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('deletedMemo',+1)">▶</a>
+                                            </div>
+                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모1</a>
+                                            </div>
+                                            <div class="shared-memo-thumbnail btn-group-justified" role="group">
+                                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">메모2</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                 </div>
                             </div>
                         </ul>
                     </li>
@@ -235,13 +246,17 @@
                 Modal Content..
             </div>
             <div id="alarm-modal-footer" class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">닫기</button>
-                <button type="button" id="alarm-confirm-btn" class="btn btn-sm btn-primary">읽음</button>
-                <button type="button" id="alarm-navigate-btn" class="btn btn-sm btn-info">이동</button>
-                <button type="button" id="alarm-accept-btn" class="btn btn-sm btn-primary">승인</button>
-                <button type="button" id="alarm-hold-btn" class="btn btn-sm btn-warning">보류</button>
-                <button type="button" id="alarm-reject-btn" class="btn btn-sm btn-danger">거절</button>
+                <button type="button" class="btn btn-sm btn-default hvr-grow" data-dismiss="modal">닫기</button>
+                <button type="button" id="alarm-confirm-btn" class="btn btn-sm btn-primary hvr-grow">읽음</button>
+                <button type="button" id="alarm-navigate-btn" class="btn btn-sm btn-info hvr-grow">이동</button>
+                <button type="button" id="alarm-accept-btn" class="btn btn-sm btn-primary hvr-grow">승인</button>
+                <button type="button" id="alarm-hold-btn" class="btn btn-sm btn-warning hvr-grow">보류</button>
+                <button type="button" id="alarm-reject-btn" class="btn btn-sm btn-danger hvr-grow">거절</button>
             </div>
         </div>
     </div>
+</div>
+<div id="memo-dialogs">
+    <%--유저 아이디를 담을 hidden input 만들기.--%>
+    <input type="hidden" id="memo-user-id" value="${sessionScope.user.userId}">
 </div>
