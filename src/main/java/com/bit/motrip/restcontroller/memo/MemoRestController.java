@@ -111,7 +111,6 @@ public class MemoRestController {
             ,@RequestParam("memoNo") String memoNo
             ,@RequestParam("memoContents") String memoContents
             ,@RequestParam("memoTitle") String memoTitle
-            ,@RequestParam("memoDialogNo") String memoDialogNo
              )  {
         //System.out.println("레스트컨트롤러 업데이트메모 동작");
         //System.out.println("메모번호는 "+memoNo+"입니다.");
@@ -202,12 +201,37 @@ public class MemoRestController {
     @PostMapping("addMemo")
     public String addMemo(
             HttpSession session,
-            @RequestParam("memoDialogNo") String memoDialogNo) {
-        //System.out.println("레스트컨트롤러 addMemo 동작");
-        Memo memo = null;
+            @RequestParam("userId") String userId
+            ,@RequestParam("memoTitle") String memoTitle
+            ,@RequestParam("memoContents") String memoContents
+            ,@RequestParam("memoColor") String memoColor) {
+
+
+        System.out.println("레스트컨트롤러 addMemo 동작");
+        System.out.println("유저아이디는 "+userId+"입니다.");
+        System.out.println("메모제목은 "+memoTitle+"입니다.");
+        System.out.println("메모내용은 "+memoContents+"입니다.");
+        System.out.println("메모색상은 "+memoColor+"입니다.");
+
+        //세션유저와 받은 유저를 검증한다.
         User user = (User) session.getAttribute("user");
+        if(!user.getUserId().equals(userId)){
+            throw new RuntimeException("세션유저와 받은 유저가 다릅니다.");
+        }
+
+        Memo memo = new Memo();
+        memo.setMemoTitle(memoTitle);
+        memo.setMemoContents(memoContents);
+        //memo.setMemoColor(memoColor);
+        memo.setMemoAuthor(user.getUserId());
+
         try {
-            memo = memoService.addMemo(user);
+            memo = memoService.addMemo(memo);
+            System.out.println("레스트컨트롤러 addMemo 동작 완료");
+            System.out.println("메모번호는 "+memo.getMemoNo()+"입니다.");
+            System.out.println("메모제목은 "+memo.getMemoTitle()+"입니다.");
+            System.out.println("메모내용은 "+memo.getMemoContents()+"입니다.");
+            System.out.println("메모색상은 "+memo.getMemoColor()+"입니다.");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -104,7 +104,6 @@
         memo_title = #{memoTitle},
         memo_contents = #{memoContents},
         memo_reg_date = NOW(),
-        memo_del_date = #{memoDelDate},
         memo_color = #{memoColor}
         WHERE
         memo_no = #{memoNo}
