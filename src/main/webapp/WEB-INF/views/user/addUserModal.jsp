@@ -95,8 +95,9 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title">MoTrip 회원가입</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 class="modal-title" style="margin-right: 0;">MoTrip 회원가입
+              <button type="button" class="close hvr-grow" data-dismiss="modal" aria-hidden="true">×</button>
+          </h3>
         </div>
         <div class="modal-body" style="display: flex; margin : 0% 15%;">
 
@@ -135,7 +136,7 @@
                         <label class="label label-primary">전화번호<span style="color:red"> *</span></label>
                         <input type="text" class="form-control" name="phone" id="phone" placeholder="01012345678" aria-describedby="helpBlock2">
                         <span id="checkPhone"></span>
-                        <button type="button" class="btn btn-line btn-sm btn-primary" id="sendSms">인증번호전송</button>
+                        <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" id="sendSms">인증번호전송</button>
                     </div>
 
                     <!-- sms인증번호 입력폼 ==> 평상시 숨김 -->
@@ -143,15 +144,15 @@
                         <label class="label label-primary">전화번호 인증</label>
                         <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirm" placeholder="발송된 인증번호 입력" aria-describedby="helpBlock2">
                         <span id="checkPhCodeConfirm"></span>
-                        <button type="button" class="btn btn-line btn-sm btn-primary" id="confirmPhCode">확인</button>
-                        <button type="button" class="btn btn-line btn-sm btn-primary" id="resendPhCode">재전송</button>
+                        <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" id="confirmPhCode">확인</button>
+                        <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" id="resendPhCode">재전송</button>
                     </div>
 
                     <div class="form-group" >
                         <label class="label label-primary">주소<span style="color:red"> *</span></label>
                         <div>
                             <input type="text" class="form-control" id="sample3_address" name="addr" aria-describedby="helpBlock2">
-                            <input type="button" class="btn btn-line btn-sm btn-primary" onclick="sample3_execDaumPostcode()" value="주소 찾기">
+                            <input type="button" class="btn btn-line btn-sm btn-primary hvr-grow" onclick="sample3_execDaumPostcode()" value="주소 찾기">
                         </div>
                     </div>
 
@@ -217,8 +218,8 @@
             </div>
         </div>
         <div class="modal-footer" style="margin: 0 auto;">
-          <button type="button" class="btn btn-sm btn-default" id="addUserModalCancle" data-dismiss="modal">닫기</button>
-          <button type="button" class="btn btn-sm btn-primary" id="addUserModalCommit">가입</button>
+          <button type="button" class="btn btn-sm btn-default hvr-grow" id="addUserModalCancle" data-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-sm btn-primary hvr-grow" id="addUserModalCommit">가입</button>
         </div>
       </div>
     </div>
