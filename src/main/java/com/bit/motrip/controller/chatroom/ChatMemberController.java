@@ -53,8 +53,10 @@ public class ChatMemberController {
 
             //받을사람
             User receiver = userService.getUserById(authorId);
+            System.out.println("receiver = "+receiver.getUserId());
             //보낼사람
             User sender = userService.getUserById(chatMember.getUserId());
+            System.out.println("sender = "+sender.getUserId());
             //알람 내용
             String content = sender.getNickname() + "님이 " + chatRoom.getChatRoomTitle() + "에 참가 신청합니다.";
             //알람 제목
@@ -63,7 +65,7 @@ public class ChatMemberController {
             String acceptUrl = "/chatMember/acceptMember/"+chatRoomNo+"/"+sender.getUserId()+"/"+tripPlanNo;
             //rejectUrl
             String rejectUrl = "/미구현";
-            alarmService.addAcceptableAlarm(receiver, sender, content, title, acceptUrl, rejectUrl);
+            alarmService.addAcceptableAlarm(sender,receiver, content, title, acceptUrl, rejectUrl);
 
         System.out.println(chatMember); //
 //        chatMemberService.addChatMember(chatMember);
