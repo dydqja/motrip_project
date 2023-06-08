@@ -17,7 +17,10 @@
 <script src="/summernote/summernote.js"></script>
 <script src="/js/alarm/alarm.js"></script>
 <script src="/js/memo/listMemo.js"></script>
-<script src="/js/memo/newMemo.js"></script>
+<script src="/js/memo/buildMemo.js"></script>
+<script src="/js/memo/memoBtnCtrl.js"></script>
+<script src="/js/memo/memoFunction.js"></script>
+<script src="/js/memo/ajaxMemo.js"></script>
 <%--
 <script src="/js/alarm/alarm.js"></script>
 --%>
@@ -95,7 +98,7 @@
                         <a href="#" class="dropdown-toggle">메모</a>
                         <ul id="memo-dropdown" class="dropdown-menu">
                             <div class="my-memo-thumbnail btn-group-justified" role="group">
-                                <a href="#" class="btn btn-line btn-sm btn-default" role="button">+ 새 메모</a>
+                                <a href="#" class="btn btn-line btn-sm btn-default" role="button" onclick="buildMemo('user2')">+ 새 메모</a>
                             </div>
                             <div class="panel-group" id="memo-accordion" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
@@ -254,19 +257,6 @@
     </div>
 </div>
 <div id="memo-dialogs">
-    <div class="memo-dialog" title="메모 제목">
-        <input class="memo-dialog-memono" type="hidden" value="1">
-        <input class="memo-dialog-info" type="hidden" value="JSON">
-        <div class="memo-dialog-view modal-body">
-            <div class="memo-contents-div">
-                히이얏호
-            </div>
-            <div id="summernote">ㅇㅇ</div>
-        </div>
-        <div class="memo-dialog-control modal-footer">
-            <button type="button" class="btn btn-sm btn-default hvr-grow" data-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-sm btn-primary hvr-grow">수정</button>
-            <button type="button" class="btn btn-sm btn-danger hvr-grow">삭제</button>
-        </div>
-    </div>
+    <%--유저 아이디를 담을 hidden input 만들기.--%>
+    <input type="hidden" id="memo-user-id" value="${sessionScope.user.userId}">
 </div>
