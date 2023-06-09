@@ -27,3 +27,42 @@ $(document).on('click', '.memo-dialog-edit-btn', function() {
     editMemo(dialog);
 });
 
+$(document).on('click', '.trip-plan-memo-btn', function() {
+    event.preventDefault();
+    console.log("trip-plan-memo-btn clicked");
+    //이 버튼의 값은 tripPlanNo 이다.
+    let tripPlanNo = $(this).val();
+    window.location.href = "/tripPlan/selectTripPlan?tripPlanNo="+tripPlanNo;
+});
+
+$(document).on('click', '.review-memo-btn', function() {
+    event.preventDefault();
+    console.log("review-memo-btn clicked");
+    //이 버튼의 값은 reviewNo 이다.
+    let reviewNo = $(this).val();
+    window.location.href = "/review/getReview?reviewNo="+reviewNo;
+});
+
+$(document).on('click', '.chat-room-memo-btn', function() {
+    event.preventDefault();
+    console.log("chat-room-memo-btn clicked");
+    //이 버튼의 값은 chatRoomNo 이다.
+    let chatRoomNo = $(this).val();
+    window.location.href = "/chatRoom/getChatRoom?chatRoomNo="+chatRoomNo;
+});
+
+//memo-list-thumbnail-btn
+$(document).on('click', '.memo-list-thumbnail-btn', function() {
+    event.preventDefault();
+    console.log("memo-list-thumbnail-btn clicked");
+    //이 버튼의 값은 memoNo 이다.
+    let memoJson = $(this).val();
+    let memo = JSON.parse(memoJson);
+    showMemoDialog(memo);
+});
+
+$(document).on('click', '.memo-dialog-share-btn', function() {
+    let dialog = $(this).closest('.memo-dialog');
+    shareMemo(dialog);
+});
+

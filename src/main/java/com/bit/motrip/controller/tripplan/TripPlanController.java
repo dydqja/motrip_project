@@ -1,5 +1,6 @@
 package com.bit.motrip.controller.tripplan;
 
+import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.TripPlan;
 import com.bit.motrip.domain.User;
@@ -31,47 +32,112 @@ public class TripPlanController {
         System.out.println(this.getClass());
     }
 
-    @GetMapping("tripPlanList") // 기본 여행플랜 리스트 (비회원도 가능)
-    public String tripPlanList(@ModelAttribute("search")Search search, Model model) throws Exception {
+//    @GetMapping("tripPlanList") // 기본 여행플랜 리스트 (비회원도 가능)
+//    public String tripPlanList(@ModelAttribute("search")Search search, Model model) throws Exception {
+//        System.out.println("GET : tripPlanList()");
+//
+//        if(search.getPageSize() == 0){
+//            search.setCurrentPage(1);
+//        } else {
+//            search.setCurrentPage(search.getCurrentPage());
+//        }
+//
+//        Map<String, Object> paramaters = new HashMap<>();
+//        paramaters.put("search", search);
+//
+//        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(paramaters);
+//
+//        model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
+//
+//        return "tripplan/tripPlanList2.jsp";
+//    }
+
+//    @GetMapping("myTripPlanList") // 나의 여행플랜 리스트
+//    public String myTripPlanList(@ModelAttribute("search")Search search, Model model, HttpSession session) throws Exception {
+//        System.out.println("GET : myTripPlanList()");
+//
+//        if(search.getPageSize() == 0){
+//            search.setCurrentPage(1);
+//        } else {
+//            search.setCurrentPage(search.getCurrentPage());
+//        }
+//
+//        User dbUser = (User) session.getAttribute("user");
+//        Map<String, Object> paramaters = new HashMap<>();
+//        paramaters.put("search", search);
+//        paramaters.put("user", dbUser);
+//
+//        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(paramaters);
+//
+//        model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
+//        model.addAttribute("publicPlanList", true); // 전체 공유에서는 삭제버튼이 안보이게 하기위함
+//
+//        return "tripplan/tripPlanList2.jsp";
+//    }
+
+    @GetMapping("tripPlanList")
+    public String tripPlanList(@RequestParam(defaultValue = "1") int currentPage, Model model) throws Exception{
         System.out.println("GET : tripPlanList()");
 
-        if(search.getPageSize() == 0){
-            search.setCurrentPage(1);
-        } else {
-            search.setCurrentPage(search.getCurrentPage());
-        }
+        Search search = new Search();
+        search.setCurrentPage(currentPage);
 
-        Map<String, Object> paramaters = new HashMap<>();
-        paramaters.put("search", search);
+        int pageSize = 5;
+        search.setPageSize(pageSize);
+        Map<String, Object> tripPlanList= tripPlanService.selectTripPlanList(search);
 
-        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(paramaters);
+        int totalCount = (int) tripPlanList.get("totalCount");
+        int pageUnit = 3; // 화면 하단에 표시할 페이지 수
 
-        model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
+        Page page = new Page(currentPage, totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
+        int maxPage = page.getMaxPage(); // 총 페이지 수
+        int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
+        int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
 
-        return "tripplan/tripPlanList.jsp";
+        model.addAttribute("tripPlanList",tripPlanList.get("list"));
+        model.addAttribute("page", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
+
+        return "tripplan/tripPlanList2.jsp";
     }
 
     @GetMapping("myTripPlanList") // 나의 여행플랜 리스트
-    public String myTripPlanList(@ModelAttribute("search")Search search, Model model, HttpSession session) throws Exception {
-        System.out.println("GET : tripPlanList()");
+    public String myTripPlanList(@RequestParam(defaultValue = "1") int currentPage, Model model, HttpSession session) throws Exception {
+        System.out.println("GET : myTripPlanList()");
 
-        if(search.getPageSize() == 0){
-            search.setCurrentPage(1);
-        } else {
-            search.setCurrentPage(search.getCurrentPage());
-        }
+        Search search = new Search();
+        search.setCurrentPage(currentPage);
+        int pageSize = 5;
+        search.setPageSize(pageSize);
 
         User dbUser = (User) session.getAttribute("user");
-        Map<String, Object> paramaters = new HashMap<>();
-        paramaters.put("search", search);
-        paramaters.put("user", dbUser);
 
-        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(paramaters);
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("search", search);
+        parameters.put("user", dbUser);
 
-        model.addAttribute("tripPlanList", tripPlanList.get("tripPlanList"));
+        Map<String, Object> tripPlanList = tripPlanService.selectMyTripPlanList(parameters);
+
+        int totalCount = (int) tripPlanList.get("totalCount");
+        int pageUnit = 3; // 화면 하단에 표시할 페이지 수
+
+        Page page = new Page(currentPage, totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
+        int maxPage = page.getMaxPage(); // 총 페이지 수
+        int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
+        int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
+
+        model.addAttribute("tripPlanList", tripPlanList.get("list"));
+        model.addAttribute("user", dbUser);
         model.addAttribute("publicPlanList", true); // 전체 공유에서는 삭제버튼이 안보이게 하기위함
+        model.addAttribute("page", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
 
-        return "tripplan/tripPlanList.jsp";
+
+        return "tripplan/tripPlanList2.jsp";
     }
 
     @GetMapping("addTripPlanView") // addTripPlanView 일반 네비게이션
