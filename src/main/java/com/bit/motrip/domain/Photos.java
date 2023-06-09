@@ -4,6 +4,15 @@ public class Photos { //사진 도메인
     private int photoNo; //사진 번호
     private String photoId; //사진 아이디
     private int chatRoomNo; //채팅방 번호
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public int getPhotoNo() {
         return photoNo;

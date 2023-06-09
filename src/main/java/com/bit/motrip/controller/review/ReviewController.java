@@ -43,6 +43,10 @@ public class ReviewController {
     private  TripPlanService tripPlanService;
 
     @Autowired
+    @Qualifier("userServiceImpl")
+    private  UserService userService;
+
+    @Autowired
     @Qualifier("chatRoomDao")
     ChatRoomDao chatRoomDao; //Chatroom
 
@@ -84,13 +88,11 @@ public class ReviewController {
                 tripPlans = reviewService.getPublicNonDeletedTripPlans();
                 System.out.println("chatRoomNo가 제공되지 않은 경우 tripPlans?>>>>>>>"+tripPlans);
             }
-
-            // 첫 번째 tripPlanNo를 가져옴
+            // 첫 번째 tripPlanNo를 가져옴(@!!!!!!!!!!!!!원인 아니까 나중에 고치면 됨!!!!!!!!!!!!!!!!!!!!)
             int selectedTripPlanNo = 0;
             if (!tripPlans.isEmpty()) {
                 selectedTripPlanNo = tripPlans.get(0).getTripPlanNo();
             }
-
             // 세션에 선택한 tripPlanNo 저장
             session.setAttribute("selectedTripPlanNo", selectedTripPlanNo);
             System.out.println("selectedTripPlanNo?>>>>>"+selectedTripPlanNo);
@@ -101,11 +103,6 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
-
-
-
 
     @RequestMapping(value = "addReviewView", method = {RequestMethod.GET, RequestMethod.POST}) // 후기 작성
     public String addReviewView(Search search, Model model, HttpSession session) throws Exception {
@@ -120,6 +117,10 @@ public class ReviewController {
         // 로그인된 유저 정보 가져오기
         User loggedInUser = (User) session.getAttribute("user");
         System.out.println("loggedInUser는>>>>" + loggedInUser);
+        if (loggedInUser == null) {
+            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
+            return "user/login.jsp";
+        }
 
         // 로그인되지 않은 경우 로그인 페이지로 이동
         if (loggedInUser == null) {
@@ -171,27 +172,34 @@ public class ReviewController {
 
 
 
-    @GetMapping("getReviewList")// 공개된 모든 후기 목록 조회
-    public String getReviewList(@ModelAttribute("search")Search search, Model model, HttpSession session) throws Exception {
+
+    @GetMapping("getReviewList") // 공개된 모든 후기 목록 조회
+    public String getReviewList(@ModelAttribute("search") Search search, Model model, HttpSession session) throws Exception {
         System.out.println("/review/getReviewList : GET");
 
-        if(search.getPageSize() == 0){
-            search.setCurrentPage(1);
-        } else {
-            search.setCurrentPage(search.getCurrentPage());
-        }
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("search", search);
+        parameters.put("condition", "publicReviewList"); // 전체 공개 후기 목록을 조회하기 위한 조건 설정
 
-        Map<String, Object> reviewList = reviewService.selectReviewList(search);
+        // 세션에서 로그인한 회원의 정보 가져오기
+        User user = (User) session.getAttribute("user");
+        parameters.put("user", user);
 
-        System.out.println(reviewList.get("reviewList").toString());
-        model.addAttribute("reviewList", reviewList.get("reviewList"));
+        System.out.println("컨트롤러 parameters >>>>>>>>" + parameters);
+
+        Map<String, Object> result = reviewService.selectReviewList(parameters);
+        List<Review> reviewList = (List<Review>) result.get("reviewList");
+
+        model.addAttribute("reviewList", reviewList);
+        System.out.println("컨트롤러 reviewList >>>>>>>>" + reviewList);
 
         return "review/getReviewList.jsp";
     }
 
-    @GetMapping("getMyReviewList")// 내가 작성한 모든 후기 목록 조회
+
+    @GetMapping("getMyReviewList") // 나의 후기 목록
     public String getMyReviewList(@ModelAttribute("search")Search search, Model model, HttpSession session) throws Exception {
-        System.out.println("/review/getMyReviewList : GET");
+        System.out.println("getMyReviewList(): GET ");
 
         if(search.getPageSize() == 0){
             search.setCurrentPage(1);
@@ -199,52 +207,68 @@ public class ReviewController {
             search.setCurrentPage(search.getCurrentPage());
         }
 
-        User user = (User) session.getAttribute("user");
-        System.out.println("여긴 컨트롤러 user"+user);
-        if (user != null) {
-            String userId = user.getUserId();
-            System.out.println("여긴 컨트롤러 userId"+userId);
-            model.addAttribute("reviewAuthor", userId);
-            model.addAttribute("userId", userId);
+        User dbUser = (User) session.getAttribute("user");
+        if (dbUser == null) {
+            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
+            return "user/login.jsp";
         }
-        Map<String, Object> myReviewList = reviewService.selectReviewList(search);
-        System.out.println("myReviewList>>>>>"+myReviewList);
-        model.addAttribute("myReviewList", myReviewList.get("reviewList"));
+
+       Map<String, Object> parameters = new HashMap<>();
+        parameters.put("search", search);
+        parameters.put("user", dbUser);
+        parameters.put("condition", "myReviewList"); // 나의 후기 목록을 조회하기 위한 조건 설정
+
+        System.out.println("컨트롤러 parameters >>>>>>>>" + parameters);
+
+        Map<String, Object> myReviewList = reviewService.selectReviewList(parameters);
+
+        model.addAttribute("myReviewList", myReviewList.get("reviewList")); // 수정된 키 이름으로 변경
+        System.out.println("myReviewList >>>>>>>>" + myReviewList);
+
+        model.addAttribute("publicReviewList", true); // 전체 공유에서는 삭제버튼이 안보이게 하기위함
 
         return "review/getMyReviewList.jsp";
     }
 
-    @GetMapping("getReview")// 후기 단 1개 상세조회
+
+
+    @GetMapping("getReview") // 후기 단 1개 상세조회
     public String getReview(@RequestParam("reviewNo") int reviewNo, Model model, HttpSession session) {
         System.out.println("/review/getReview : GET");
         try {
             // 후기 상세 조회
             Review getReview = reviewService.getReview(reviewNo);
             if (getReview != null) {
+                // 조회수 증가
+                reviewService.getReview(reviewNo);
+
                 // 댓글 목록 조회
                 List<Comment> commentList = commentService.getCommentList(reviewNo);
 
                 model.addAttribute("getReview", getReview);
-                System.out.println("getReview>>>>>>>>>>>"+getReview);
+                System.out.println("getReview >>>>>>>>" + getReview);
                 model.addAttribute("commentList", commentList);
-                System.out.println("commentList>>>>>>>>>"+commentList);
+                System.out.println("commentList >>>>>>>>" + commentList);
 
                 // 작성자 정보 설정
                 String commentAuthor = (String) session.getAttribute("nickname");
-                System.out.println("commentAuthor>>>>>>>>>>>>>"+commentAuthor);
+                System.out.println("commentAuthor >>>>>>>>" + commentAuthor);
                 model.addAttribute("commentAuthor", commentAuthor);
 
                 return "review/getReview.jsp";
             } else {
                 model.addAttribute("errorMessage", "해당 후기를 찾을 수 없습니다.");
-                return "error";
+                return "errorPage.jsp";
             }
         } catch (Exception e) {
             model.addAttribute("errorMessage", "후기 조회 중 오류가 발생했습니다.");
             e.printStackTrace();
-            return "error";
-        }//컨트롤러에 유저 세션 저장해야만해- 했어
+            return "errorPage.jsp";
+        }
     }
+
+
+
 
     @PostMapping(value = "updateReview")//후기 수정
     public String updateReview(@ModelAttribute("review") Review review, Model model) throws Exception {

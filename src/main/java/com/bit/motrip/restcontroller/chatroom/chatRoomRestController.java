@@ -1,6 +1,7 @@
 
 package com.bit.motrip.restcontroller.chatroom;
 
+import com.bit.motrip.domain.ChatMember;
 import com.bit.motrip.domain.ChatRoom;
 import com.bit.motrip.service.chatroom.ChatMemberService;
 import com.bit.motrip.service.chatroom.ChatRoomService;
@@ -32,6 +33,19 @@ public class chatRoomRestController {
         int count = chatRoomService.chatRoomCount();
 
         return count;
+    }
+
+    @RequestMapping(value="json/updateStatus", method= RequestMethod.POST)
+    public int updateStatus(@RequestBody ChatRoom chatRoom) throws Exception{
+        System.out.println("updateStatus");
+        if(chatRoom.getChatRoomStatus() == 0){
+            chatRoomService.changeRoomStatus(1,chatRoom.getChatRoomNo());
+        }else if (chatRoom.getChatRoomStatus() == 1){
+            chatRoomService.changeRoomStatus(0,chatRoom.getChatRoomNo());
+        }else if (chatRoom.getChatRoomStatus() == 2){
+            chatRoomService.changeRoomStatus(2,chatRoom.getChatRoomNo());
+        }
+        return chatRoom.getChatRoomStatus();
     }
 
 }

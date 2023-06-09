@@ -62,7 +62,9 @@
 		set
 			chat_room_title = #{chatRoomTitle},
 			travel_start_date = #{travelStartDate},
-			age_range = #{ageRange},
+			min_age=#{minAge},
+			max_age=#{maxAge},
+			gender=#{gender},
 			max_persons = #{maxPersons},
 			current_persons = #{currentPersons}
 		where
@@ -100,25 +102,25 @@
 <!--						   on cr.chat_room_no = crm.chat_room_no order by cr.chat_room_no-->
 <!--		LIMIT 4;-->
 <!--	</select>-->
-		<select id="chatRoomListPage" parameterType="com.bit.motrip.common.Search" resultMap="chatRoomResultMap">
-		select * from
-		(SELECT cr.*, tp.trip_plan_no,tp.trip_days, tp.trip_plan_title, ROW_NUMBER() OVER (ORDER BY cr.chat_room_no) AS row_seq
-			FROM chat_rooms cr
-					 RIGHT JOIN (
-				SELECT crm.chat_room_no, crm.trip_plan_no
-				FROM chat_room_members crm
-				<if test="searchCondition != null">
-					<where>
-							chat_room_title like '%${searchKeyword}'
-					</where>
-				</if>
-				GROUP BY crm.chat_room_no, crm.trip_plan_no
-			) crm ON cr.chat_room_no = crm.chat_room_no
-					 LEFT JOIN trip_plan tp ON crm.trip_plan_no = tp.trip_plan_no
-			ORDER BY cr.chat_room_no) AS temp
-		WHERE
-            row_seq BETWEEN #{startRowNum} AND #{endRowNum}
-		</select>
+	<select id="chatRoomListPage" parameterType="com.bit.motrip.common.Search" resultMap="chatRoomResultMap">
+		SELECT * FROM (
+		SELECT cr.*, tp.trip_plan_no, tp.trip_days, tp.trip_plan_title, ROW_NUMBER() OVER (ORDER BY cr.chat_room_no) AS row_seq
+		FROM chat_rooms cr
+		RIGHT JOIN (
+		SELECT crm.chat_room_no, crm.trip_plan_no
+		FROM chat_room_members crm
+		<if test="searchCondition != null and searchKeyword != ''">
+			<where>
+				chat_room_title LIKE CONCAT('%', #{searchKeyword}, '%')
+			</where>
+		</if>
+		GROUP BY crm.chat_room_no, crm.trip_plan_no
+		) crm ON cr.chat_room_no = crm.chat_room_no
+		LEFT JOIN trip_plan tp ON crm.trip_plan_no = tp.trip_plan_no
+		ORDER BY cr.chat_room_no
+		) AS temp
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+	</select>
 
 	<select id="chatRoomCount" resultType="int">
 		SELECT

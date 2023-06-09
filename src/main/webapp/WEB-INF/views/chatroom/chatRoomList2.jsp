@@ -69,7 +69,7 @@
 
 <main>
     <form>
-        <input type="hidden" name="userId" value="${sessionScope.user.userId}" >
+        <input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}" >
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
@@ -90,7 +90,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search Site">
                             <div class="input-group-btn">
-                                <button class="btn btn-primary">Search</button>
+                                <button class="btn btn-primary" id="search-chatroom">Search</button>
                             </div>
                         </div>
                     </div>
@@ -234,8 +234,25 @@
                         </div>
                         <div class="item-book">
                             <button class="btn btn-primary hvr-fade go" name="chatRoomNo" value="${chatRoom.chatRoomNo}">Enter</button>
+                            <c:if test="${chatRoom.currentPersons eq chatRoom.maxPersons}">
+                                <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}"
+                                        style="margin-left: 10px; background-color: #ee3f00" disabled>Hottest</button>
+                            </c:if>
+                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 0}">
+                                <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Enroll</button>
+                            </c:if>
+                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">
+                                <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}"
+                                        style="margin-left: 10px; background-color: #66ffd6" disabled>Completed</button>
+                            </c:if>
+                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 2}">
+                                <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}"
+                                        style="margin-left: 10px; background-color: #f5ff66; color: red" disabled>Finished</button>
+                            </c:if>
 
-                            <a href="trip_detail.html" class="btn btn-primary hvr-fade" style="margin-left: 10px; background-color: #00b3ee">Enroll</a>
+
+
+
                             <div class="price">${chatRoom.currentPersons} / ${chatRoom.maxPersons}</div>
                         </div>
                     </div>
@@ -316,24 +333,24 @@
     function fncGoChatroom(){
         $("form").attr("method","POST").attr("action","/chatRoom/chat").submit();
     }
-    // function fncJoinChatroom(){
-    //     alert("join-chatRoom");
-    //     $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
-    // }
-    // function fncDeleteChatroom(){
-    //     $("form").attr("method","get").attr("action","/chatRoom/deleteChatRoom").submit();
-    // }
+    function fncJoinChatroom(){
+        alert("join-chatRoom");
+        $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
+    }
+
     function fncAddChatroom(){
         $("form").attr("method","get").attr("action","/chatRoom/addChatRoom").submit();
     }
 
-    //참여된 채팅방 들어가기
-    $(function() {$(".go").on("click", function() {fncGoChatroom();});});
-    // //참여안된 채팅방 조인하기
-    // $(function() {$(".join-chatRoom").on("click", function() {fncJoinChatroom();});});
-    // //채팅방 삭제
-    // $(function() {$(".delete").on("click", function() {fncDeleteChatroom();});});
-    //채팅방 생성
+    // //참여된 채팅방 들어가기
+    // $(function() {
+    //     $(".go").on("click", function() {
+    //         fncGoChatroom();
+    //     });
+    // });
+    //참여안된 채팅방 조인하기
+    $(function() {$(".join-chatRoom").on("click", function() {fncJoinChatroom();});});
+
     $(function() {$("#addChatRoom").on("click", function() {fncAddChatroom();});});
 
 
@@ -416,7 +433,64 @@
             });
         });
     });
+    $(function() {
+        $(".go").on("click", function() {
+            let value = $(this).attr('value');
+            let userId = $("#userId").attr('value');
+            console.log(value);
+            console.log(userId);
+            $.ajax({
+                url: '/chatMember/json/fetchChatMembers/'+value,
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                success: function(members) {
+                    console.log(members);
+                    let flag=0;
+                    // 멤버 인지 확인
+                    members.forEach(function(member) {
+                        console.log("member name : ",member.userId);
 
+                        if(member.userId === userId){
+                            flag=1;
+                        }
+                    });
+                    if(flag === 1){
+                        $(function(){
+                            $("form").append($('<input>').attr({
+                                type: 'hidden',
+                                name: 'chatRoomNo',
+                                value: value
+                            })
+                            );
+                            fncGoChatroom();
+                        });
+                    }else{alert("your not a member!!!");}
+                },
+                error: function(xhr, status, error) {
+                    console.log('AJAX Error:', error);
+                }
+            });
+        });
+    });
+    $(window).on('beforeunload', function() {
+        $('input[name="chatRoomNo"]').remove();
+    });
+
+
+    function fncGetUserList(currentPage){
+        $("#currentPage").val(currentPage)
+        $("form").attr("method" , "GET").attr("action" , "/chatRoom/chatRoomList?").submit();
+    }
+
+    $(function() {
+        $( "#search-chatroom" ).on("click" , function() {
+            fncGetUserList(1);
+        });
+    })
 </script>
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
