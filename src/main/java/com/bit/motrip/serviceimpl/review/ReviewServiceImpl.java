@@ -53,7 +53,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Search search = (Search) parameters.get("search");
         int offset = (search.getCurrentPage() - 1) * reviewPageSize;
-        search.setTotalCount(tripPlanDao.selectTripPlanCount()); // 여행플랜 총 카운트
+        search.setTotalCount(tripPlanDao.selectTripPlanTotalCount(search)); // 여행플랜 총 카운트
         search.setCurrentPage(search.getCurrentPage()); // 클라이언트에서 요청한 페이지 번호
         search.setLimit(reviewPageSize); // LIMIT 값은 페이지당 항목 수와 동일합니다.
         search.setOffset(offset);

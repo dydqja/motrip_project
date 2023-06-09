@@ -108,7 +108,7 @@ public class ChatRoomController {
     //chatRoom/addChatRoom
     @GetMapping("addChatRoom")
     public String addChatRoom(@RequestParam("userId") String userId,
-                              @RequestParam("createTripPlanNo") int tripPlanNo,Model model) throws Exception{
+                              @RequestParam("tripPlanNo") int tripPlanNo,Model model) throws Exception{
         System.out.println("/chatRoom/addChatRoom/GET");
         System.out.println("userId : "+ userId);
         System.out.println("tripPlanNo : "+ tripPlanNo);

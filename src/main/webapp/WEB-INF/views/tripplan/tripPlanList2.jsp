@@ -147,11 +147,11 @@
                                     </div>
                                     <div>
                                         <c:if test="${not empty sessionScope.user.userId}">
-                                            <c:if test="sessionScope.user.userId == user.userId">
-                                                <button class="btn-sm btn-info right" id="addChatRoom"
-                                                        value="${tripPlan.tripPlanNo}">채팅방 생성
-                                                </button>
-                                            </c:if>
+<%--                                            <c:if test="sessionScope.user.userId == user.userId">--%>
+                                                <a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=${tripPlan.tripPlanNo}"  class="btn-sm btn-info right" id="addChatRoom"
+                                                   >채팅방 생성
+                                                </a>
+<%--                                            </c:if>--%>
                                         </c:if>
                                         <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
                                             <c:if test="sessionScope.user.userId == user.userId">
@@ -356,6 +356,7 @@
         // 페이지가 열리면 함수 실행
         listCounter();
     });
+
 
 </script>
 
