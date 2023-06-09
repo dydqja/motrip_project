@@ -200,7 +200,7 @@
     /////////////////////// 아래는 설정용 스크립트 입니다. ////////////////////////////
 
   <script>
-     <!-- 서머노트 CDN 스크립트 -->
+     <!-- 서머노트 -->
     $(document).ready(function() {
       $('#dailyPlanContents').summernote({
       });

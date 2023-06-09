@@ -1,182 +1,211 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
-<%@ page pageEncoding="EUC-KR"%>
-
-<!--  ///////////////////////// JSTL  ////////////////////////// -->
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
-
 <html lang="ko">
 
 <head>
-  <meta charset="EUC-KR">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-  <!-- ÂüÁ¶ : http://getbootstrap.com/css/   ÂüÁ¶ -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+  <title>íšŒì›ëª©ë¡</title>
 
 
-  <!-- Bootstrap Dropdown Hover CSS -->
-<%--  <link href="/css/animate.min.css" rel="stylesheet">--%>
-<%--  <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">--%>
-  <!-- Bootstrap Dropdown Hover JS -->
-<%--  <script src="/javascript/bootstrap-dropdownhover.min.js"></script>--%>
 
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+  <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
+  <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
+  <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
+  <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
+  <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
+  <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 
-  <!-- jQuery UI toolTip »ç¿ë CSS-->
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <!-- jQuery UI toolTip »ç¿ë JS-->
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-  <!--  ///////////////////////// CSS ////////////////////////// -->
-  <style>
-    body {
-      padding-top : 50px;
-    }
-  </style>
-
-  <!--  ///////////////////////// JavaScript ////////////////////////// -->
-  <script type="text/javascript">
-
-    //=============    °Ë»ö / page µÎ°¡Áö °æ¿ì ¸ğµÎ  Event  Ã³¸® =============
-    function fncGetList(currentPage) {
-      $("#currentPage").val(currentPage)
-      $("form").attr("method" , "POST").attr("action" , "/user/listUser").submit();
-    }
-
-
-    //============= "°Ë»ö"  Event  Ã³¸® =============
-    $(function() {
-      //==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-      //$( "button.btn.btn-default" ).on("click" , function() {
-      //	fncGetUserList(1);
-      //});
-      $("#search").on("click" , function() {
-        //Debug..
-        //alert(  $( "td.ct_btn01:contains('°Ë»ö')" ).html() );
-        fncGetList(${ search.currentPage })
-      });
-
-      $("#searchKeyword").on("keydown", function(e) {
-        if (e.keyCode == 13) {
-          e.preventDefault();
-          fncGetList(${ search.currentPage })
-        };
-      });
-    });
-
-
-    //============= userId ¿¡ È¸¿øÁ¤º¸º¸±â  Event  Ã³¸®(Click) =============
-    $(function() {
-
-      //==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-      $( ".getUser" ).on("click" , function() {
-        console.log("È¸¿øID Å¬¸¯µÊ"+$(this).text().trim());
-        self.location ="/user/getUser?userId="+$(this).text().trim();
-      });
-
-      //==> userId LINK Event End User ¿¡°Ô º¸ÀÏ¼ö ÀÖµµ·Ï
-      $( "td:nth-child(2)" ).css("color" , "red");
-    });
-
-  </script>
+  <link rel="stylesheet" href="/css/notice/noticeList.css">
 
 </head>
 
 <body>
 
-<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
-<div class="container">
+<div class="page-img" style="background-image: url('/images/user/userListTop.jpg');">
 
-  <div class="page-header text-info">
-    <h3>È¸¿ø¸ñ·ÏÁ¶È¸</h3>
+  <header class="nav-menu fixed">
+  <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+  </header>
+
+
+  <div class="container">
+    <h1 class="main-head text-center board-title noticeZooming">íšŒì›ëª©ë¡</h1>
   </div>
+</div>
 
-  <!-- table À§ÂÊ °Ë»ö Start /////////////////////////////////////-->
+<div class="page-img" style="background-image: url('/images/user/userListPage.jpg');">
+
+
   <div class="row">
 
     <div class="col-md-6 text-left">
       <p class="text-primary">
-        ÀüÃ¼  ${resultPage.totalCount } °Ç¼ö, ÇöÀç ${resultPage.currentPage}  ÆäÀÌÁö
+        ì „ì²´  ${resultPage.totalCount } ê±´ìˆ˜, í˜„ì¬ ${resultPage.currentPage}  í˜ì´ì§€
       </p>
     </div>
 
-    <div class="col-md-6 text-right">
+    <div class="col-md-11 text-right">
       <form class="form-inline" name="detailForm">
 
         <div class="form-group">
           <select class="form-control" name="searchCondition" >
-            <option value="0"  ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>È¸¿øID</option>
-            <option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>È¸¿ø¸í</option>
-            <option value="2"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>´Ğ³×ÀÓ</option>
+            <option value="0"  ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>íšŒì›ID</option>
+            <option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>íšŒì›ëª…</option>
+            <option value="2"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>ë‹‰ë„¤ì„</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label class="sr-only" for="searchKeyword">°Ë»ö¾î</label>
-          <input type="text" class="form-control" id="searchKeyword" name="searchKeyword"  placeholder="°Ë»ö¾î"
+          <label class="sr-only" for="searchKeyword">ê²€ìƒ‰ì–´</label>
+          <input type="text" class="form-control" id="searchKeyword" name="searchKeyword"  placeholder="ê²€ìƒ‰ì–´"
                  value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
         </div>
 
-        <button type="button" class="btn btn-default" id="search">°Ë»ö</button>
+        <button type="button" class="btn btn-default" id="search">ê²€ìƒ‰</button>
 
-        <!-- PageNavigation ¼±ÅÃ ÆäÀÌÁö °ªÀ» º¸³»´Â ºÎºĞ -->
+        <!-- PageNavigation ì„ íƒ í˜ì´ì§€ ê°’ì„ ë³´ë‚´ëŠ” ë¶€ë¶„ -->
         <input type="hidden" id="currentPage" name="currentPage" value=""/>
 
       </form>
     </div>
 
   </div>
-  <!-- table À§ÂÊ °Ë»ö Start /////////////////////////////////////-->
 
 
-  <!--  table Start /////////////////////////////////////-->
-  <table class="table table-hover table-striped" >
+  <div class="container">
 
-    <thead>
-    <tr>
-      <th align="center">No</th>
-      <th align="left" >È¸¿ø ID</th>
-      <th align="left">ÀÌ¸§</th>
-      <th align="left">´Ğ³×ÀÓ</th>
-      <th align="left">°¡ÀÔÀÏÀÚ</th>
-      <th align="left">Å»ÅğÀ¯¹«</th>
-    </tr>
-    </thead>
+    <table class="table table-striped">
 
-    <tbody>
+      <thead class="table-header">
 
-    <c:set var="i" value="0" />
-    <c:forEach var="user" items="${list}">
-      <c:set var="i" value="${ i+1 }" />
       <tr>
-        <td align="center">${ i }</td>
-        <td align="left"  class="getUser" title="Click : È¸¿øÁ¤º¸ È®ÀÎ">${user.userId}</td>
-        <td align="left">${user.userName}</td>
-        <td align="left">${user.nickname}</td>
-        <td align="left">${user.userRegDate}</td>
-        <td align="left">${user.secession}</td>
+        <th class="text-center">No</th>
+        <th class="text-center">ì•„ì´ë””</th>
+        <th class="text-center">ì´ ë¦„</th>
+        <th class="text-center">ë‹‰ë„¤ì„</th>
+        <th class="text-center">ê°€ì…ì¼ì</th>
+        <th class="text-center">íƒˆí‡´ìœ ë¬´</th>
       </tr>
-    </c:forEach>
 
-    </tbody>
+      </thead>
 
-  </table>
-  <!--  table End /////////////////////////////////////-->
+      <tbody class="table-body">
+      <c:set var="i" value="0" />
+      <c:forEach var="user" items="${list}">
+        <c:set var="i" value="${ i+1 }" />
+        <tr>
+          <td class="text-center">${ i }</td>
+          <td class="text-center getUser">${user.userId}</td>
+          <td class="text-center">${user.userName}</td>
+          <td class="text-center">${user.nickname}</td>
+          <td class="text-center"><fmt:formatDate value="${user.userRegDate}" pattern="yyyy.MM.dd" /></td>
+          <td class="text-center">${user.secession}</td>
+        </tr>
+      </c:forEach>
+      </tbody>
 
+    </table>
+
+    <div class="row">
+      <div class="col-md-6">
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+          <ul class="pagination">
+            <li class="page-item ${resultPage.currentPage == 1 ? 'disabled' : ''}">
+              <c:choose>
+                <c:when test="${resultPage.currentPage == 1}">
+                  <a class="page-link" href="#" aria-label="Previous">
+                    &laquo;
+                  </a>
+                </c:when>
+                <c:otherwise>
+                  <a class="page-link" href="/user/listUser?currentPage=${resultPage.currentPage - 1}" aria-label="Previous">
+                    &laquo;
+                  </a>
+                </c:otherwise>
+              </c:choose>
+            </li>
+
+            <c:forEach var="i" begin="${resultPage.beginUnitPage}" end="${resultPage.endUnitPage}">
+              <li class="page-item ${i == resultPage.currentPage ? 'active' : ''}">
+                <button type="button" class="page-link" data-page="${i}">${i}</button>
+              </li>
+            </c:forEach>
+
+
+
+
+            <li class="page-item ${resultPage.currentPage == resultPage.maxPage ? 'disabled' : ''}">
+              <c:choose>
+                <c:when test="${resultPage.currentPage == resultPage.maxPage}">
+                  <a class="page-link" href="#" aria-label="Next">
+                    &raquo;
+                  </a>
+                </c:when>
+                <c:otherwise>
+                  <a class="page-link" href="/user/listUser?currentPage=${resultPage.currentPage + 1}" aria-label="Next">
+                    &raquo;
+                  </a>
+                </c:otherwise>
+              </c:choose>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
 </div>
-<!--  È­¸é±¸¼º div End /////////////////////////////////////-->
+
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
+
+<script src="/vendor/jquery/dist/jquery.min.js"></script>
+<script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+<script src="/vendor/retina.min.js"></script>
+<script src="/vendor/jquery.imageScroll.min.js"></script>
+<script src="/assets/js/min/responsivetable.min.js"></script>
+<script src="/assets/js/bootstrap-tabcollapse.js"></script>
+<script src="/assets/js/min/countnumbers.min.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/min/home.min.js"></script>
+
+<script type="text/javascript">
+    //============= userId ì— íšŒì›ì •ë³´ë³´ê¸°  Event  ì²˜ë¦¬(Click) =============
+    $(function() {
+
+      //==> DOM Object GET 3ê°€ì§€ ë°©ë²• ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+      $( ".getUser" ).on("click" , function() {
+        console.log("íšŒì›ID í´ë¦­ë¨"+$(this).text().trim());
+        self.location ="/user/getUser?userId="+$(this).text().trim();
+      });
+
+      //==> userId LINK Event End User ì—ê²Œ ë³´ì¼ìˆ˜ ìˆë„ë¡
+      $( "td:nth-child(2)" ).css("color" , "red");
+    });
+
+    $(document).ready(function() {
+
+      $(".page-link").click(function() {
+
+        var page = $(this).data("page");
+        window.location.href = "/user/listUser?currentPage=" + page;
+      });
+    });
 
 
-<!-- PageNavigation Start... -->
-<jsp:include page="../user/pageNavigator.jsp"/>
-<!-- PageNavigation End... -->
+</script>
 
 </body>
 

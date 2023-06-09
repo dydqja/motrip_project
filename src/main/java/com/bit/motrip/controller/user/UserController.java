@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -102,7 +103,7 @@ public class UserController {
 
         session.setAttribute("user", user);
 
-        return "redirect:/index_old.jsp";
+        return "redirect:/";
     }
 
     @RequestMapping( value="naverLogin", method=RequestMethod.GET )
@@ -124,12 +125,15 @@ public class UserController {
         return "user/addNaverUser.jsp";
     }
 
-    @RequestMapping( value="listUser" )
-    public String listUser(@ModelAttribute("search") Search search , Model model , HttpServletRequest request) throws Exception{
+    @RequestMapping(value="listUser", method = RequestMethod.GET)
+    public String listUser(@RequestParam(defaultValue = "0", required = false) int currentPage, Model model) throws Exception{
 
         System.out.println("/user/listUser : GET / POST");
 
-        if(search.getCurrentPage() ==0 ){
+        Search search = new Search();
+        search.setCurrentPage(currentPage);
+
+        if(search.getCurrentPage() == 0 ){
             search.setCurrentPage(1);
         }
         search.setPageSize(pageSize);
