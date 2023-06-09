@@ -227,11 +227,11 @@ public class MemoRestController {
 
         try {
             memo = memoService.addMemo(memo);
-            System.out.println("레스트컨트롤러 addMemo 동작 완료");
+            /*System.out.println("레스트컨트롤러 addMemo 동작 완료");
             System.out.println("메모번호는 "+memo.getMemoNo()+"입니다.");
             System.out.println("메모제목은 "+memo.getMemoTitle()+"입니다.");
             System.out.println("메모내용은 "+memo.getMemoContents()+"입니다.");
-            System.out.println("메모색상은 "+memo.getMemoColor()+"입니다.");
+            System.out.println("메모색상은 "+memo.getMemoColor()+"입니다.");*/
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

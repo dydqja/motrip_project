@@ -102,7 +102,7 @@ function buildMemoDialog(memo){
     });
     let deleteBtn = $('<button>', {
         type: 'button',
-        class: 'btn btn-sm btn-danger hvr-grow',
+        class: 'btn btn-sm btn-danger hvr-grow memo-dialog-delete-btn',
         text: '삭제'
     });
     let shareBtn = $('<button>', {
@@ -112,13 +112,44 @@ function buildMemoDialog(memo){
     });
     let attachBtn = $('<button>', {
         type: 'button',
-        class: 'btn btn-sm btn-warning hvr-grow',
+        class: 'btn btn-sm btn-warning hvr-grow memo-dialog-attach-btn',
         text: '부착'
     });
-    dialogControl.append(saveBtn,closeBtn, editBtn, deleteBtn,shareBtn,attachBtn);
+    let restoreBtn = $('<button>', {
+        type: 'button',
+        class: 'btn btn-sm btn-primary hvr-grow memo-dialog-restore-btn',
+        text: '복구'
+    });
+    let removeBtn = $('<button>', {
+        type: 'button',
+        class: 'btn btn-sm btn-danger hvr-grow memo-dialog-remove-btn',
+        text: '제거'
+    });
+    dialogControl.append(saveBtn,closeBtn, editBtn, deleteBtn,shareBtn,attachBtn,restoreBtn,removeBtn);
 
     // memo-dialog에 모든 요소 추가
     memoDialog.append(memoNoInput, infoInput, dialogView, dialogControl);
+
+    //현재 서치 컨디션을 갖고온다.
+    let searchCondition = $('#memo-search-condition').val();
+    if(searchCondition == 'myMemo'){
+        restoreBtn.hide();
+        removeBtn.hide()
+    }else if(searchCondition == 'sharedMemo'){
+        saveBtn.hide();
+        editBtn.hide();
+        deleteBtn.hide();
+        attachBtn.hide();
+        restoreBtn.hide();
+        removeBtn.hide()
+    } else {
+        saveBtn.hide();
+        editBtn.hide();
+        attachBtn.hide();
+        deleteBtn.hide();
+        shareBtn.hide();
+    }
+
 
     return memoDialog;
 }
@@ -176,12 +207,10 @@ function buildMemoSharerTableRow(memoAccess){
     let userEmail = memoAccess.userEmail;
 
     let row = $('<tr>');
-    row.append($('<td>').text(userId));
     row.append($('<td>').text(userNickname));
     row.append($('<td>').text(userEmail));
     row.append($('<td>').html('<a href="/user/getUser?userId="'+userId+'>자세히</a>'));
     row.append($('<td>').html('<button class="memo-share-modal-unShare-btn-for-sharer" value="'+userId+'">공유해제</button>'));
-    //TODO memo-share-modal-unShare-btn-for-sharer에 리스너 달아야함.
     return row;
 }
 

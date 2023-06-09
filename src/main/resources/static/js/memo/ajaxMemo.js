@@ -113,15 +113,176 @@ function getMemoShareListRequest(memoNo){
             memoNo: memoNo
         }
     }).success(function (memoAccessList) {
-       //shareList 의 구성원인 각 user 를 for 문으로 순회하며 buildMemoSharerTableRow() 를 호출한다.
         $("#memo-sharer-list-body").html('');
-        for(let i=0; i<memoAccessList.length; i++){
-            let memoAccess = memoAccessList[i];
-            let row = buildMemoSharerTableRow(memoAccess);
-            //row 를 #memo-sharer-list-body 에 추가한다.
+        $("#memo-sharer-list-body").append("<input type='hidden' id='memo-sharer-list-memoNo' value='"+memoNo+"'>");
+        //shareList 의 구성원인 각 user 를 for 문으로 순회하며 buildMemoSharerTableRow() 를 호출한다.
+        if(memoAccessList.length == 0){
+            //공유자가 없음을 알리는 row 를 #memo-sharer-list-body 에 추가한다.
+            let row = "<tr><td colspan='3' style='text-align:center;'> - 공유자가 없습니다. - </td></tr>";
             $("#memo-sharer-list-body").append(row);
+        }else{
+            let row1 = $('<tr>');
+            row1.append($('<td>').text("닉네임"));
+            row1.append($('<td>').text("이메일"));
+            row1.append($('<td>').text(""));
+            row1.append($('<td>').text(''));
+            $("#memo-sharer-list-body").append(row1);
+
+            for(let i=0; i<memoAccessList.length; i++){
+                let memoAccess = memoAccessList[i];
+                let row = buildMemoSharerTableRow(memoAccess);
+                //row 를 #memo-sharer-list-body 에 추가한다.
+                $("#memo-sharer-list-body").append(row);
+            }
+            $("#memo-sharer-list-body").append(row1);
+
+            //첫 td에 새 공유자를 추가하는 버튼을 추가한다.
+            let newRowBtn = $('<button>').attr('type','button').attr('class','btn btn-primary').attr('nickname','memo-sharer-list-new-row-btn').text('+');
+            newRowBtn.addClass('btn btn-outline-primary btn-sm');
+            //두 번째 td에 닉네임을 입력받을 input 을 추가한다.
+            let newNicknameInput = $('<input>').attr('type','text').attr('class','form-control')
+            newNicknameInput.addClass('new-nickname-input');
+            //세 번째 td에 닉네임 유효성 체크를 할 span을 추가한다.
+            let newNicknameCheckSpan = $('<span>').attr('class','new-nickname-check-span');
+            //네 번째 td에 닉네임을 추가하는 버튼을 추가한다.
+            let newNicknameBtn = $('<button>').attr('type','button').attr('class','btn btn-primary').attr('nickname','memo-sharer-list-new-nickname-btn').text('추가');
+            //그것들을 row 로 묶는다.
+            let newRow = $('<tr>');
+            newRow.append($('<td>').append(newRowBtn));
+            newRow.append($('<td>').append(newNicknameInput));
+            newRow.append($('<td>').append(newNicknameCheckSpan));
+            newRow.append($('<td>').append(newNicknameBtn));
+
+            $("#memo-sharee-list-body").append(newRow)
+
+
+
         }
+
+        //#memo-sharer-list-body에 memoNo를 담을 hidden input 을 추가한다.
         $("#memo-share-modal").modal('show');
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+
+function unshareMemoReQuestForShared(memoNo,userId){
+    $.ajax({
+        type: 'post'
+        ,url: '/memo/deleteMemoAccess'
+        ,dataType: 'json'
+        ,data: {
+            memoNo: memoNo,
+            userId: userId
+        }
+    }).success(function (result) {
+        if(result){
+            //alert("공유를 해제했습니다.");
+            Swal.fire(
+                '성공!',
+                '이 메모를 보지 않게 되었습니다.',
+                'success'
+            )
+            $("#memo-share-modal").modal('hide');
+            getMemoList('sharedMemo');
+        }
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+
+function unshareMemoRequest(memoNo,userId){
+    $.ajax({
+        type: 'post'
+        ,url: '/memo/deleteMemoAccess'
+        ,dataType: 'json'
+        ,data: {
+            memoNo: memoNo,
+            userId: userId
+        }
+        }).success(function (result) {
+            if(result){
+                //alert("공유를 해제했습니다.");
+                Swal.fire(
+                    '성공!',
+                    '대상이 이 메모를 볼 수 없게 되었습니다.',
+                    'success'
+                )
+                $("#memo-share-modal").modal('hide');
+                getMemoShareListRequest(memoNo);
+            }
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+}
+
+function deleteMemoRequest(memoNo, memoDialog){
+    $.ajax({
+        type: 'post',
+        url: '/memo/deleteMemo',
+        dataType: 'json',
+        data:{
+            memoNo: memoNo
+        }
+    }).success(function (result) {
+        if(result){
+            //alert("삭제되었습니다.");
+            Swal.fire(
+                '성공!',
+                '메모가 완전히 삭제되었습니다. 복구하지 않으면 15일 뒤에 완전히 삭제됩니다.',
+                'success'
+            )
+            getMemoList('myMemo');
+            memoDialog.dialog('close');
+        }
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+
+function restoreMemoRequest(memoNo, memoDialog){
+    $.ajax({
+        type: 'post',
+        url: '/memo/restoreMemo',
+        dataType: 'json',
+        data:{
+            memoNo: memoNo
+        }
+    }).success(function (result) {
+        if(result){
+            //alert("복구되었습니다.");
+            Swal.fire(
+                '성공!',
+                '메모가 복구되었습니다.',
+                'success'
+            )
+            getMemoList('deletedMemo');
+            memoDialog.dialog('close');
+        }
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+
+function removeMemoRequest(memoNo, memoDialog){
+    $.ajax({
+        type: 'post',
+        url: '/memo/removeMemo',
+        dataType: 'json',
+        data:{
+            memoNo: memoNo
+        }
+    }).success(function (result) {
+        if(result){
+            //alert("제거되었습니다.");
+            Swal.fire(
+                '성공!',
+                '메모가 완전히 제거되었습니다.',
+                'success'
+            )
+            getMemoList('deletedMemo');
+            memoDialog.dialog('close');
+        }
     }).fail(function (error) {
         alert(JSON.stringify(error));
     });
