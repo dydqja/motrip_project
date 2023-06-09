@@ -221,6 +221,11 @@ public class ReviewServiceImpl implements ReviewService {
         reviewDao.reviewLikes(review);
         return review.getReviewLikes();
     }
+
+    @Override
+    public int reviewCount() throws Exception {
+        return reviewDao.reviewCount();
+    }
 }
 
 

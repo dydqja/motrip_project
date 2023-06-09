@@ -42,5 +42,5 @@ public interface ReviewDao {
     public void reviewViews(Review review) throws Exception;
 
 
-
+    public int reviewCount() throws Exception;
 }//end of ReviewDao
