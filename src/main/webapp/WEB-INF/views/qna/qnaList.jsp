@@ -28,11 +28,13 @@
 
     <body>
 
-        <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+        <header class="nav-menu fixed">
+            <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+        </header>
 
         <div class="page-img">
             <div class="container">
-                <h1 class="main-head text-center board-title">질의응답</h1>
+                <h1 class="main-head text-center board-title noticeZooming">질의응답</h1>
             </div>
         </div>
 

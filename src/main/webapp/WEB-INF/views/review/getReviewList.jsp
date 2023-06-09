@@ -104,10 +104,14 @@
     </thead>
     <tbody>
     <c:forEach items="${reviewList}" var="review">
-      <!-- review 객체의 속성을 가져와서 출력 -->
-      <p>${review.reviewTitle}</p>
-      <p>${review.reviewAuthor}</p>
-      <!-- 필요한 속성들을 추가로 출력 -->
+      <tr>
+        <td>${review.reviewNo}</td>
+        <td><a href="getReview?reviewNo=${review.reviewNo}">${review.reviewTitle}</a></td>
+        <td>${review.reviewAuthor}</td>
+        <td>${review.reviewRegDate}</td>
+        <td>${review.viewCount}</td>
+        <td>${review.reviewLikes}</td>
+      </tr>
     </c:forEach>
 
     </tbody>

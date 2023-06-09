@@ -29,7 +29,9 @@
 
     <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
 
-        <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+        <header class="nav-menu fixed">
+            <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+        </header>
 
         <div class="container">
             <h1 class="main-head text-center board-title noticeZooming">${noticeGetData.noticeTitle}</h1>
@@ -46,39 +48,39 @@
                 <input type="hidden" name="noticeNo" value="${noticeGetData.noticeNo}" />
                 <input type="hidden" name="noticeContents" value="${noticeGetData.noticeContents}" />
 
-                <div class="notice-content">
-                    ${noticeGetData.noticeContents}
-                </div>
+                <div>
+                    <div class="col-md-8 notice-content">
+                        <div class="centered-content">
+                            ${noticeGetData.noticeContents}
+                        </div>
+                    </div>
 
-                <br>
+                    <div class="text-right">
+                        <div class="d-inline-block">
 
-                <div class="text-right">
-                    <div class="d-inline-block">
+                            <c:if test="${sessionScope.user.userId eq 'admin'}">
 
-                        <c:if test="${sessionScope.user.userId eq 'admin'}">
+                                <div>
+                                    <button id="updateNoticeView" class="btn btn-primary">내용 수정</button>
+                                </div>
 
-                            <div>
-                                <button id="updateNoticeView" class="btn btn-primary">내용 수정</button>
-                            </div>
+                                <br>
+
+                                <div>
+                                    <button id="deleteNotice" class="btn btn-primary">삭제하기</button>
+                                </div>
+
+                            </c:if>
 
                             <br>
 
                             <div>
-                                <button id="deleteNotice" class="btn btn-primary">삭제하기</button>
+                                <button id="getNoticeList" class="btn btn-primary">목록보기</button>
                             </div>
 
-                        </c:if>
-
-                        <br>
-
-                        <div>
-                            <button id="getNoticeList" class="btn btn-primary">목록보기</button>
                         </div>
-
                     </div>
-
                 </div>
-
             </form>
 
         </div>
