@@ -64,9 +64,9 @@ class TripPlanDaoTest {
         paramaters.put("search", search);
         paramaters.put("tripPlanAuthor", "");
 
-        List<TripPlan> tripPlan = tripPlanDao.selectTripPlanList(paramaters);
+        //List<TripPlan> tripPlan = tripPlanDao.selectTripPlanList(paramaters);
 
-        System.out.println(tripPlan.toString());
+        //System.out.println(tripPlan.toString());
     }
 
     //@Test // 여행플랜, 일차별여행플랜, 명소 한번에 저장
