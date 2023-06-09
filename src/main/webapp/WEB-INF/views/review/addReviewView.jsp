@@ -72,15 +72,15 @@
     </style>
 
     <style>/* 모달 작성취소버튼 */
-        .cancel-button-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-        }
+    .cancel-button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
 
-        .cancel-button-container button {
-            padding: 5px 10px;
-        }
+    .cancel-button-container button {
+        padding: 5px 10px;
+    }
     </style>
     <style>
         /* 에디터의 높이를 500px로 설정*/
@@ -543,11 +543,11 @@
         </div>
         <div class="form-group">
             <label for="reviewLikes">Review Likes:</label>
-            <input type="number" id="reviewLikes" name="reviewLikes" required><br><br>
+            <input type="number" id="reviewLikes" name="reviewLikes" value="0"  ><br><br>
         </div>
         <div class="form-group">
             <label for="viewCount">View Count:</label>
-            <input type="number" id="viewCount" name="viewCount" required><br><br>
+            <input type="number" id="viewCount" name="viewCount"  value="0" ><br><br>
         </div>
 
 
