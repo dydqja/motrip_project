@@ -12,17 +12,14 @@
 <title>✈️Motrip🚤</title>
 
 <script type="text/javascript">
-
     $(function () {
-        $( "button.btn.btn-primary" ).on("click" , function() { //확인
-            self.location = "/review/getMyReviewList.jsp";
+        $("button.btn.btn-primary").on("click", function() { // 확인
+            self.location = "/review/getMyReviewList";
         });
 
-        $("a[href='#' ]").on("click" , function() {
-            self.location = "../review/addReviewView.jsp"; //추가등록
-        });
-        $("a[href='#' ]").on("click" , function() {
-            self.location = "../review/reviewList"; //모든 리뷰목록
+
+        $("a[href='#']").on("click", function() {
+            self.location = "/review/getReviewList"; // 모든 리뷰목록
         });
     });
 </script>
@@ -188,7 +185,7 @@
 
     <div class="row">
         <div class="col-xs-4 col-md-2"><strong>공개 여부:</strong></div>
-        <div class="col-xs-8 col-md-4">${review.reviewPublic}</div>
+        <div class="col-xs-8 col-md-4">${review.isReviewPublic}</div>
     </div>
 
     <hr/>
@@ -209,7 +206,7 @@
 
     <div class="row">
         <div class="col-xs-4 col-md-2"><strong>삭제 처리 여부:</strong></div>
-        <div class="col-xs-8 col-md-4">${review.reviewDeleted}</div>
+        <div class="col-xs-8 col-md-4">${review.isReviewDeleted}</div>
     </div>
 
     <hr/>
@@ -217,7 +214,6 @@
     <div class="form-group">
         <div class="col-sm-offset-4  col-sm-4 text-center">
             <button type="button" class="btn btn-primary">확&nbsp;인</button>
-            <a class="btn btn-primary btn" href="#" role="button">추가등록</a>
             <a class="btn btn-primary btn2" href="#" role="button">다른 후기들 보러가기</a>
         </div>
     </div>

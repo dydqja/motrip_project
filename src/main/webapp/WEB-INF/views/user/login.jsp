@@ -18,18 +18,19 @@
     <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>
 </head>
 
-<body class="login" style="background-image: url('http://placehold.it/1200x800');">
+<body class="login" style="background-image: url('/images/user/login.jpg'); opacity: 1;">
 <div class="pre-loader">
     <div class="loading-img"></div>
 </div>
 
 <div class="main">
     <div class="form-box">
-        <div class="form-head">
-            <div class="mold-logo">
-                <div class="mold">Mold</div>
-                <div class="logo"></div>
-                <div class="logo-txt">MoTrip</div>
+        <div class="form-head" style="padding: 10px 15px; ">
+            <div class="mold-logo" style="margin-top: 10px; margin-bottom: 10px;">
+<%--                <div class="mold">Mold</div>--%>
+<%--                <div class="logo"></div>--%>
+                <img src="/images/motrip-logo.gif" alt="">
+<%--                <div class="logo-txt">MoTrip</div>--%>
             </div>
         </div>
         <div class="form-body">

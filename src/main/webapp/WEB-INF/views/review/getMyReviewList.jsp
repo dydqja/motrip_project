@@ -86,7 +86,7 @@
 <div class="container">
     <h1>내가 작성한 후기 게시글 목록</h1>
 
-    <form action="${pageContext.request.contextPath}/searchReview" method="GET">
+    <form action="review/searchReview" method="GET">
         <input type="text" name="keyword" placeholder="후기 검색">
         <button type="submit">검색</button>
     </form>
@@ -103,10 +103,10 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="review" items="${myReviewList}">
+        <c:forEach items="${myReviewList}" var="review">
             <tr>
                 <td>${review.reviewNo}</td>
-                <td><a href='getReview?reviewNo=${review.reviewNo}'>${review.reviewTitle}</a></td>
+                <td><a href="getReview?reviewNo=${review.reviewNo}">${review.reviewTitle}</a></td>
                 <td>${review.reviewRegDate}</td>
                 <td>${review.viewCount}</td>
                 <td>${review.reviewLikes}</td>
@@ -114,11 +114,18 @@
             </tr>
         </c:forEach>
         </tbody>
+        <!-- <div class="col-xs-4 col-md-2"><strong>Review Author:</strong></div>
+                <div class="col-xs-8 col-md-4">${review.reviewAuthor}</div> -->
+        <!-- <div class="col-xs-4 col-md-2"><strong>Review Author:</strong></div>
+                <div class="col-xs-8 col-md-4">${user.userId}</div> -->
     </table>
+
+
+
 
     <div class="button-container">
         <a href="addReviewView">후기작성</a>
-        <a href="getMyReviewList?reviewAuthor=${sessionScope.userId}">나의 후기1</a>
+        <a href="getMyReviewList?reviewAuthor=${sessionScope.userId}">나의 후기</a>
     </div>
 </div>
 </body>

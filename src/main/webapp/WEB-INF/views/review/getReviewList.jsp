@@ -103,22 +103,19 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="review" items="${reviewList}">
-      <tr>
-        <td>${review.reviewNo}</td>
-        <td><a href='getReview?reviewNo=${review.reviewNo}'>${review.reviewTitle}</a></td>
-        <td>${review.reviewAuthor}</td>
-        <td>${review.reviewRegDate}</td>
-        <td>${review.viewCount}</td>
-        <td>${review.reviewLikes}</td>
-      </tr>
+    <c:forEach items="${reviewList}" var="review">
+      <!-- review 객체의 속성을 가져와서 출력 -->
+      <p>${review.reviewTitle}</p>
+      <p>${review.reviewAuthor}</p>
+      <!-- 필요한 속성들을 추가로 출력 -->
     </c:forEach>
+
     </tbody>
   </table>
 
   <div class="button-container">
     <a href="addReviewView">후기작성</a>
-    <a href="getMyReviewList?reviewAuthor=${sessionScope.userId}">나의 후기1</a>
+    <a href="getMyReviewList?reviewAuthor=${sessionScope.userId}">나의 후기</a>
   </div>
 </div>
 </body>

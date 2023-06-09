@@ -104,3 +104,25 @@ function updateMemoRequest(userId, memoTitle, memoContents,memoColor,memoDialog)
             return null;
         });
 }
+function getMemoShareListRequest(memoNo){
+    $.ajax({
+        type: 'post',
+        url: '/memo/getMemoSharerList',
+        dataType: 'json',
+        data:{
+            memoNo: memoNo
+        }
+    }).success(function (memoAccessList) {
+       //shareList 의 구성원인 각 user 를 for 문으로 순회하며 buildMemoSharerTableRow() 를 호출한다.
+        $("#memo-sharer-list-body").html('');
+        for(let i=0; i<memoAccessList.length; i++){
+            let memoAccess = memoAccessList[i];
+            let row = buildMemoSharerTableRow(memoAccess);
+            //row 를 #memo-sharer-list-body 에 추가한다.
+            $("#memo-sharer-list-body").append(row);
+        }
+        $("#memo-share-modal").modal('show');
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}

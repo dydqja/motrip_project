@@ -157,7 +157,7 @@
       <c:set var="i" value="${ i+1 }" />
       <tr>
         <td align="center">${ i }</td>
-        <td align="left"  class="getUser" title="Click : 회원정보 확인">${user.userId}</td>
+        <td align="left"  class="getUser">${user.userId}</td>
         <td align="left">${user.userName}</td>
         <td align="left">${user.nickname}</td>
         <td align="left">${user.userRegDate}</td>
