@@ -328,6 +328,12 @@ public class UserRestController {
         return "";
     }
 
+    @RequestMapping( value="getUserCount", method= RequestMethod.POST  )
+    public int getListCount() throws Exception{
+        int count = userService.userCount();
+
+        return count;
+    }
 
 }
 

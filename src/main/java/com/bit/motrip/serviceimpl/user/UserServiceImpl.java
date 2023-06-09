@@ -466,7 +466,10 @@ public class UserServiceImpl implements UserService{
         userDao.updatePwd(user);
     }
 
-
+    @Override
+    public int userCount() throws Exception {
+        return userDao.userCount();
+    }
 
 
 }

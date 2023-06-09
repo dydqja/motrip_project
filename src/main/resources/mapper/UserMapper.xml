@@ -170,6 +170,7 @@
         WHERE user_id = #{userId}
     </update>
 
-
-
+    <select id="userCount" resultType="int">
+        select count(user_id) from users;
+    </select>
 </mapper>
