@@ -37,9 +37,11 @@ public class ChatRoomController {
         System.out.println("==> ChatRoomController default Constructor call....");
     }//chatroom 생성자
     @GetMapping("chatRoomList")
-    public String chatRoomList(@RequestParam(defaultValue = "1") int currentPage,Model model) throws Exception{
-        Search search = new Search();
-        search.setCurrentPage(currentPage);
+    public String chatRoomList( @ModelAttribute("search") Search search ,Model model) throws Exception{
+        if(search.getCurrentPage() == 0){
+
+            search.setCurrentPage(1);
+        }
         int pageSize = 3;
         search.setPageSize(pageSize);
 
@@ -51,7 +53,7 @@ public class ChatRoomController {
         int pageUnit = 3;
 
         // maxPage, beginUnitPage, endUnitPage 연산
-        Page page = new Page(currentPage, totalCount, pageUnit, pageSize);
+        Page page = new Page(search.getCurrentPage(), totalCount, pageUnit, pageSize);
 
         // 총 페이지 수
         int maxPage = page.getMaxPage();
@@ -82,8 +84,8 @@ public class ChatRoomController {
         model.addAttribute("chatRoom",ch); //채팅방 객체 전송
         model.addAttribute("chatMembers",chatMemberList);
         model.addAttribute("author",author);
-        System.out.println(chatRoom.getChatRoomNo());
-        System.out.println(userId);
+        System.out.println("chatRoomNo"+chatRoom.getChatRoomNo());
+        System.out.println("chatuserId : "+userId);
         System.out.println(author.getUserId());
         int flag = 0;
         //chatMemberService.getChatMember()
@@ -135,17 +137,17 @@ public class ChatRoomController {
     public String updateChatRoom(@RequestParam("chatRoomNo") int chatRoomNo,
                                  Model model) throws Exception{
         System.out.println("getUpdateChatRoom");
-        model.addAttribute("chatRoom",chatRoomService.getChatRoom(chatRoomNo));
-//        System.out.println(chatRoom);
-//        model.addAttribute("chatRoom",chatRoom);
-        //채팅방 이름 변경 x & 나이대,인원수,여행번호,날짜 변경 가능
+        ChatRoom chatRoom = chatRoomService.getChatRoom(chatRoomNo); //chatroomno => chatroom
+        int tripPlanNo = chatRoom.getTripPlanNo(); // chatroom => gettripplanno => chatmember에 삽입
+        model.addAttribute("chatRoom",chatRoom);
+        model.addAttribute("tripPlanNo",tripPlanNo);
         return "chatroom/updateChatRoom.jsp";
     }
     @PostMapping("updateChatRoom")
     public String updateChatRoom(@ModelAttribute("chatRoom") ChatRoom chatRoom,
-                                 @RequestParam("travelStartDateHtml") String travelStartDateHtml,
+//                                 @RequestParam("travelStartDateHtml") String travelStartDateHtml,
                                  Model model) throws Exception{
-        chatRoom.setTravelStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(travelStartDateHtml));
+//        chatRoom.setTravelStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(travelStartDateHtml));
         chatRoomService.updateChatRoom(chatRoom);
         //채팅방 이름 변경 x & 나이대,인원수,여행번호,날짜 변경 가능
         return "redirect:/chatRoom/chatRoomList";

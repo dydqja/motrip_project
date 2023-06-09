@@ -98,7 +98,7 @@
         }
         .nav-menu .nav > li > a:focus,
         .nav-menu .nav > li > a:hover {
-            border-bottom: 5px solid #558B2F;
+            border-bottom: 5px solid #4ada4a;
             background: transparent;
         }
         .nav-menu .nav > li.open > a,
@@ -106,7 +106,7 @@
         .nav-menu .nav > li.open > a:focus,
         .nav-menu .nav > li.open > a:hover,
         .nav-menu .nav > li.open *[class^="icon"] {
-            border-bottom: 5px solid #558B2F;
+            border-bottom: 5px solid #4ada4a;
             background: transparent;
         }
         .nav-menu .nav > li.open [class^='icon-'],
@@ -119,7 +119,7 @@
             margin-top: -1px;
             border: none;
             background: #1e1e1e;
-            color: #558B2F;
+            color: #4ada4a;
             letter-spacing: .06em;
             font-size: .9em;
             box-shadow: none;
@@ -142,7 +142,7 @@
             padding: 8px 15px !important;
         }
         .nav-menu .nav > li .dropdown-menu li a:hover {
-            color: #558B2F;
+            color: #4ada4a;
             background: transparent;
         }
         .nav-menu .nav > li .dropdown-menu li:hover {
@@ -224,7 +224,7 @@
         .nav-menu .nav > li .dropdown-menu.cart-menu li [class^='icon-']:hover,
         .nav-menu .nav > li .dropdown-menu.cart-menu li .fa:hover,
         .nav-menu .nav > li .dropdown-menu.cart-menu li .glyphicon:hover {
-            color: #558B2F;
+            color: #1b6d85;
         }
         .nav-menu .nav > li .dropdown-menu.cart-menu li img {
             height: 40px;
@@ -370,7 +370,7 @@
                 margin: 15px;
             }
             .nav-menu.fixed .navbar-toggle .icon-bar {
-                background-color: #558B2F;
+                background-color: #1b6d85;
             }
             .nav-menu.fixed .nav > li > a {
                 color: #fff;
@@ -406,9 +406,13 @@
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
+        const username = "${username}";
+        const room = "${chatRoom.chatRoomNo}";
+        const author = "${author.userId}"
+        const chatRoomNo = "${chatRoom.chatRoomNo}"
         //업데이트 컨트롤러로 이동
         function fncUpdateChatroom(){
-            $("#chat-room").attr("method","get").attr("action","/chatRoom/updateChatRoom").submit();
+            $("#chat-room").attr("method","get").attr("action","/chatRoom/updateChatRoom?chatRoomNo="+chatRoomNo).submit();
         }
 
         $(function() {
@@ -418,7 +422,8 @@
         });
         //사진 컨트롤러로 이동
         function fncPhotoChatroom(){
-            $("#chat-room").attr("method","get").attr("action","/photos/roomPhotos").submit();
+            alert("photos")
+            $("#chat-room").attr("method","get").attr("action","/photos/roomPhotos?chatRoomNo="+chatRoomNo).submit();
         }
 
         $(function() {
@@ -427,14 +432,23 @@
             });
         });
 
-        //kick
-        $(document).ready(function() {
-            $(document).on("click", ".kick",function() {
-                alert($(this).data("userid"));
-                alert("kick!!!");
+
+
+        // const realUpload = document.querySelector('#uploadFile');
+        // const upload = document.querySelector('#upload');
+        // // upload.addEventListener('click', () => realUpload.click());
+
+
+        $(function() {
+            $(document).on("click", ".kick", function() {
+                alert("kick");
+
+                var chatRoomForm = $("#chat-room");
+                chatRoomForm.attr("onsubmit", "return false;"); // 동적으로 onsubmit 속성 설정
+
                 $.ajax({
                     url: "/chatMember/json/kickMember",
-                    method: "post",
+                    method: "POST",
                     dataType: "json",
                     headers: {
                         "Accept": "application/json",
@@ -445,12 +459,14 @@
                         "userId": $(this).data("userid"),
                     }),
                     success: function(JSONData, status) {
+                        // 성공적으로 처리된 후의 동작
 
+                        // 폼 제출을 허용하기 위해 onsubmit 속성 제거
+                        chatRoomForm.removeAttr("onsubmit");
                     }
                 });
             });
         });
-
         //
 
 
@@ -466,6 +482,7 @@
                         "Content-Type": "application/json"
                     },
                     success: function(members) {
+                        $("#chat-room").removeAttr("onsubmit"); //강퇴 기능 때문에 막힌 onsubmit 해제
                         console.log(chatRoomNo);
                         console.log(members);
                         let memberArray = [];
@@ -517,7 +534,7 @@
         // }
         //out
         function fncOutChatroom(){
-            $("#chat-room").attr("method","get").attr("action","/chatMember/outMember").submit();
+            $("#chat-room").attr("method","get").attr("action","/chatMember/outMember?userId="+username+"&chatRoomNo="+chatRoomNo).submit();
         }
 
         $(function() {
@@ -528,17 +545,65 @@
 
         //delete
         function fncDeleteChatroom(){
-            $("form").attr("method","get").attr("action","/chatRoom/deleteChatRoom").submit();
+            alert("delete");
+            alert(username);
+            alert(chatRoomNo);
+            $("#chat-room").attr("method","get").attr("action","/chatRoom/deleteChatRoom?userId="+username+"&chatRoomNo="+chatRoomNo).submit();
         }
         $(function() {$("#delete").on("click", function() {fncDeleteChatroom();});});
+
+        $(function() {
+            //updateStatus
+            $(".updateStatus").on("click", function () {
+                alert("updateStatus");
+                $.ajax({
+                    url: "/chatRoom/json/updateStatus",
+                    method: "post",
+                    dataType: "json",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify({
+                        "chatRoomNo": $('input[name=chatRoomNo]').val(),
+                        "chatRoomStatus": $('input[name=chatRoomStatus]').val()
+                    }),
+                    success: function (JSONData, status) {
+
+                        if(JSONData === 0){
+                            $('.updateStatus').text("모집 하기");
+                            $('input[name=chatRoomStatus]').val(1);
+                        }else if(JSONData === 1){
+                            $('.updateStatus').text("모집 완료");
+                            $('input[name=chatRoomStatus]').val(0);
+                        }
+                    }
+                });
+            });
+            $("#finishChatRoom").on("click", function () {
+                alert("updateStatus");
+                $.ajax({
+                    url: "/chatRoom/json/updateStatus",
+                    method: "post",
+                    dataType: "json",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify({
+                        "chatRoomNo": $('input[name=chatRoomNo]').val(),
+                        "chatRoomStatus": 2
+                    }),
+                    success: function (JSONData, status) {
+                        alert(JSONData);
+                        $('.updateStatus').remove();
+                        $("#finishChatRoom").remove();
+                    }
+                });
+            });
+        });
     </script>
-    <script>
-        const username = "${username}";
-        const room = "${chatRoom.chatRoomNo}";
-        const author = "${author.userId}"
-        const chatRoomNo = "${chatRoom.chatRoomNo}"
-    </script>
-    <title>ChatCord App</title>
+    <title>Motrip</title>
 
 </head>
 <body>
@@ -573,7 +638,7 @@
 
     <header class="nav-menu fixed">
         <nav class="navbar normal transparent">
-            <div class="container-fluid" style="background-color: #477427">
+            <div class="container-fluid" style="background-color: #1b6d85">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/">
                         <img src="/images/motrip-logo.gif" alt="" height="120" width="180">
@@ -594,12 +659,24 @@
                         <li class="dropdown">
                             <a href="#">채팅방 Menu <i class="fa fa-chevron-down nav-arrow"></i></a>
                             <ul class="dropdown-menu">
-                                <li><a href="home_slider.html">채팅창 수정</a></li>
-                                <li><a href="home_slider_html">채팅방 삭제</a></li>
-                                <c:if test="${empty sessionScope.user}">
-                                    <li><a href="/test/login/user1">채팅방 나가기</a></li>
+                                <c:if test="${author.userId eq username}">
+                                <li><a id="updateChatRoom">채팅창 수정</a></li>
+                                <li><a id="delete">채팅방 삭제</a></li>
                                 </c:if>
-                                <li><a href="home_slider_html">사진첩</a></li>
+                                <c:if test="${author.userId ne username}">
+                                    <li><a id="out">채팅방 나가기</a></li>
+                                </c:if>
+                                <li><a id="roomPhotos">채팅방 사진첩</a></li>
+                                <c:if test="${chatRoom.chatRoomStatus eq 0 and chatRoom.chatRoomStatus ne 3}">
+                                    <li><a class="updateStatus">모집 완료</a></li>
+                                </c:if>
+                                <c:if test="${chatRoom.chatRoomStatus eq 1 and chatRoom.chatRoomStatus ne 3}">
+                                    <li><a class="updateStatus">모집 하기</a></li>
+                                </c:if>
+                                <c:if test="${chatRoom.chatRoomStatus eq 0 or chatRoom.chatRoomStatus eq 1}">
+                                    <li><a id="finishChatRoom">여행 완료</a></li>
+                                </c:if>
+
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -797,10 +874,12 @@
     </div>
 
 </header>
+<%--onsubmit="return false;"--%>
 <div class="chat-container" >
-    <form id="chat-room" onsubmit="return false;">
+    <form id="chat-room"  >
         <input type="hidden" name="chatRoomNo" value="${chatRoom.chatRoomNo}"/>
         <input type="hidden" name="userId" value="${username}"/>
+        <input type="hidden" name="chatRoomStatus" value="${chatRoom.chatRoomStatus}"/>
         <input type="hidden" id="room-name"/>
         <main class="chat-main">
             <div class="chat-sidebar">
@@ -828,8 +907,11 @@
 <%--                    required--%>
                     autocomplete="off"
             />
-            <input multiple="multiple" type="file" class="form-control" id="uploadFile" name="uploadFile" style="display: none;"/>
-            <button class="btn btn-primary hvr-grow" style="background-color: #bdb9ee; color:black" id="upload">+</button>
+            <input multiple="multiple" type="file" class="form-control"
+                   id="uploadFile" name="uploadFile" style="width: 10vh"/>
+
+<%--            <input multiple="multiple" type="file" class="form-control" id="uploadFile" name="uploadFile" style="display: none;"/>--%>
+<%--            <button class="btn btn-primary hvr-grow" style="background-color: #bdb9ee; color:black" id="upload">+</button>--%>
             <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
 
         </form>
@@ -858,15 +940,14 @@
 <script src="/assets/js/main.js"></script>
 
 <%--    <script src="/js/imagepreview.js"></script>--%>
-<script>
-    const realUpload = document.querySelector('#uploadFile');
-    const upload = document.querySelector('#upload');
-   // upload.addEventListener('click', () => realUpload.click());
+<%--<script>--%>
+<%--    const realUpload = document.querySelector('#uploadFile');--%>
+<%--    const upload = document.querySelector('#upload');--%>
+<%--   // upload.addEventListener('click', () => realUpload.click());--%>
 
 
 
-
-</script>
+<%--</script>--%>
 
 </body>
 </html>
