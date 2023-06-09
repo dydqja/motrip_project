@@ -908,8 +908,8 @@
                     autocomplete="off"
             />
             <input multiple="multiple" type="file" class="form-control"
-                   id="uploadFile" name="uploadFile" style="width: 10vh"/>
-
+                   id="uploadFile" name="uploadFile" style="width: 10vh" diplay="none"/>
+            <label class="fileButton" for ="uploadFile"><button class="btn btn-primary hvr-grow" style="background-color: #bdb9ee; color:black" id="upload">+</button></label>
 <%--            <input multiple="multiple" type="file" class="form-control" id="uploadFile" name="uploadFile" style="display: none;"/>--%>
 <%--            <button class="btn btn-primary hvr-grow" style="background-color: #bdb9ee; color:black" id="upload">+</button>--%>
             <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
