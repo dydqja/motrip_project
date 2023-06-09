@@ -41,7 +41,31 @@
     </resultMap>
 
     <!-- 여행플랜 목록 조회 -->
-    <select id="selectTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
+    <select id="selectTripPlanList" parameterType="com.bit.motrip.common.Search" resultMap="tripPlanResultMap">
+        SELECT *
+        FROM (
+                 SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail, tp.trip_days, tp.trip_plan_reg_date,
+                        tp.trip_plan_del_date, tp.is_plan_deleted, tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed,
+                        tp.trip_plan_likes, tp.trip_plan_views,
+                        GROUP_CONCAT(DISTINCT dp.daily_plan_no) AS daily_plan_nos, GROUP_CONCAT(DISTINCT dp.daily_plan_contents) AS daily_plan_contents,
+                        GROUP_CONCAT(DISTINCT dp.total_trip_time) AS total_trip_times,
+                        GROUP_CONCAT(DISTINCT p.place_no) AS place_nos, GROUP_CONCAT(DISTINCT p.place_tags) AS place_tags,
+                        GROUP_CONCAT(DISTINCT p.place_coordinates) AS place_coordinates, GROUP_CONCAT(DISTINCT p.place_image) AS place_images,
+                        GROUP_CONCAT(DISTINCT p.place_phone_number) AS place_phone_numbers, GROUP_CONCAT(DISTINCT p.place_address) AS place_addresses,
+                        GROUP_CONCAT(DISTINCT p.place_category) AS place_categories, GROUP_CONCAT(DISTINCT p.trip_time) AS trip_times,
+                        ROW_NUMBER() OVER (ORDER BY tp.trip_plan_reg_date DESC, tp.trip_plan_no DESC) AS row_seq
+                 FROM trip_plan tp
+                          LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
+                          LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
+                 WHERE tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
+                 GROUP BY tp.trip_plan_no
+             ) AS subquery
+        WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+    </select>
+
+    <select id="selectMyTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
+        SELECT *
+        FROM (
         SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail, tp.trip_days, tp.trip_plan_reg_date,
         tp.trip_plan_del_date, tp.is_plan_deleted, tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed,
         tp.trip_plan_likes, tp.trip_plan_views,
@@ -50,38 +74,19 @@
         GROUP_CONCAT(DISTINCT p.place_no) AS place_nos, GROUP_CONCAT(DISTINCT p.place_tags) AS place_tags,
         GROUP_CONCAT(DISTINCT p.place_coordinates) AS place_coordinates, GROUP_CONCAT(DISTINCT p.place_image) AS place_images,
         GROUP_CONCAT(DISTINCT p.place_phone_number) AS place_phone_numbers, GROUP_CONCAT(DISTINCT p.place_address) AS place_addresses,
-        GROUP_CONCAT(DISTINCT p.place_category) AS place_categories, GROUP_CONCAT(DISTINCT p.trip_time) AS trip_times
+        GROUP_CONCAT(DISTINCT p.place_category) AS place_categories, GROUP_CONCAT(DISTINCT p.trip_time) AS trip_times,
+        ROW_NUMBER() OVER (ORDER BY tp.trip_plan_reg_date DESC, tp.trip_plan_no DESC) AS row_seq
         FROM trip_plan tp
         LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
         LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
         WHERE
-            <choose>
-                <when test="tripPlanAuthor != null">
-                    tp.trip_plan_author = #{tripPlanAuthor}
-                </when>
-                <otherwise>
-                    tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
-                </otherwise>
-            </choose>
-        GROUP BY tp.trip_plan_no
-        ORDER BY
-            <choose>
-                <when test="'trip_plan_views' == search.searchCondition">
-                    tp.trip_plan_views DESC, tp.trip_plan_no DESC
-                </when>
-                <when test="'trip_plan_likes' == search.searchCondition">
-                    tp.trip_plan_likes DESC, tp.trip_plan_no DESC
-                </when>
-                <otherwise>
-                    tp.trip_plan_reg_date DESC, tp.trip_plan_no DESC
-                </otherwise>
-            </choose>
-        LIMIT #{search.offset}, #{search.limit};
-    </select>
-
-    <select id="selectTripPlanCount" resultType="int">
-        SELECT COUNT(*) FROM trip_plan
-        WHERE is_plan_public = TRUE AND is_plan_deleted = FALSE
+        <choose>
+            <when test="tripPlanAuthor != null">
+                tp.trip_plan_author = #{tripPlanAuthor}
+            </when>
+        </choose>
+        GROUP BY tp.trip_plan_no) AS subquery
+        WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
     </select>
 
     <!-- 서치 쿼리문 추가해야함 -->
@@ -173,12 +178,40 @@
         WHERE trip_plan_no = #{tripPlanNo}
     </update>
 
-    <!-- 조회수(진행예정) -->
+    <!-- 조회수 -->
     <update id="tripPlanViews" parameterType="com.bit.motrip.domain.TripPlan">
         UPDATE trip_plan
         SET trip_plan_views = #{tripPlanViews}
         WHERE trip_plan_no = #{tripPlanNo}
     </update>
+
+    <!-- 여행플랜 수 -->
+    <select id="tripPlanCount" resultType="int">
+        SELECT count(trip_plan_no)
+        FROM trip_plan
+        WHERE is_plan_public = TRUE AND is_plan_deleted = FALSE
+    </select>
+
+    <!-- 조건으로 찾은 여행플랜 수 -->
+    <select id="selectTripPlanTotalCount" parameterType="com.bit.motrip.common.Search"	resultType="int">
+        SELECT COUNT(*)
+        FROM(	SELECT *
+        FROM trip_plan
+        <!--		<if test="searchCondition != null">-->
+        <!--			<where>-->
+        <!--				<if test="searchCondition == 0 and searchKeyword !='' ">-->
+        <!--					prod_no = #{searchKeyword}-->
+        <!--				</if>-->
+        <!--				<if test="searchCondition == 1 and searchKeyword !='' ">-->
+        <!--					prod_name = #{searchKeyword}-->
+        <!--				</if>-->
+        <!--				<if test="searchCondition == 2 and searchKeyword !='' ">-->
+        <!--					price = #{searchKeyword}-->
+        <!--				</if>-->
+        <!--			</where>-->
+        <!--		</if> ) countTable-->
+        ) countTable
+    </select>
 
     <!-- 태그 찾아오기 -->
 
