@@ -63,5 +63,5 @@ public interface UserService {
     public void updatePwd(User user) throws Exception;
 
 
-
+    public int userCount()throws Exception;
 }

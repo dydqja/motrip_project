@@ -68,7 +68,7 @@ public class TripPlanRestController {
         return tripPlanService.selectTripPlan(tripPlanNo);
     }
 
-    @GetMapping("tripPlanLikes") /// 여행플랜 추천하기
+    @GetMapping("tripPlanLikes") // 여행플랜 추천하기
     public int tripPlanLikes(@RequestParam("tripPlanNo") int tripPlanNo, HttpSession session) throws Exception {
         System.out.println("GET : tripPlanLikes()");
 
@@ -82,6 +82,11 @@ public class TripPlanRestController {
             tripPlanLikes.put("user", dbUser);
             return tripPlanService.tripPlanLikes(tripPlanLikes);
         }
+    }
+
+    @PostMapping("tripPlanCount") // 여행플랜 총 개수
+    public int tripPlanCount() throws Exception {
+        return tripPlanService.tripPlanCount();
     }
 
     @GetMapping("tripTime")

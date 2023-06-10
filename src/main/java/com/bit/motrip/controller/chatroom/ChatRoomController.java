@@ -4,9 +4,11 @@ import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.ChatMember;
 import com.bit.motrip.domain.ChatRoom;
+import com.bit.motrip.domain.User;
 import com.bit.motrip.service.chatroom.ChatMemberService;
 import com.bit.motrip.service.chatroom.ChatRoomService;
 import com.bit.motrip.service.tripplan.TripPlanService;
+import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,13 +35,25 @@ public class ChatRoomController {
     @Autowired
     @Qualifier("chatMemberServiceImpl")
     private ChatMemberService chatMemberService;
+    @Autowired
+    @Qualifier("userServiceImpl")
+    private UserService userService;
     public ChatRoomController(){
         System.out.println("==> ChatRoomController default Constructor call....");
     }//chatroom 생성자
     @GetMapping("chatRoomList")
-    public String chatRoomList(@RequestParam(defaultValue = "1") int currentPage,Model model) throws Exception{
-        Search search = new Search();
-        search.setCurrentPage(currentPage);
+    public String chatRoomList( @ModelAttribute("search") Search search,
+            @RequestParam("userId") String userId
+            ,Model model) throws Exception{
+        if(search.getCurrentPage() == 0){
+
+            search.setCurrentPage(1);
+        }
+//        if(search.getSearchKeyword() == null){
+//            search.setSearchKeyword('');
+//        }
+        System.out.println(search);
+        System.out.println(search.getGender());
         int pageSize = 3;
         search.setPageSize(pageSize);
 
@@ -51,7 +65,7 @@ public class ChatRoomController {
         int pageUnit = 3;
 
         // maxPage, beginUnitPage, endUnitPage 연산
-        Page page = new Page(currentPage, totalCount, pageUnit, pageSize);
+        Page page = new Page(search.getCurrentPage(), totalCount, pageUnit, pageSize);
 
         // 총 페이지 수
         int maxPage = page.getMaxPage();
@@ -67,8 +81,14 @@ public class ChatRoomController {
         model.addAttribute("maxPage", maxPage);
         model.addAttribute("beginUnitPage", beginUnitPage);
         model.addAttribute("endUnitPage", endUnitPage);
-
-
+        model.addAttribute("search",search);
+        model.addAttribute("user",userService.getUserById(userId));
+        System.out.println(page);
+        System.out.println(maxPage);
+        System.out.println(beginUnitPage);
+        System.out.println(endUnitPage);
+        System.out.println(totalCount);
+        System.out.println(search);
         return "chatroom/chatRoomList2.jsp";
     }
     @PostMapping("chat")
@@ -82,8 +102,8 @@ public class ChatRoomController {
         model.addAttribute("chatRoom",ch); //채팅방 객체 전송
         model.addAttribute("chatMembers",chatMemberList);
         model.addAttribute("author",author);
-        System.out.println(chatRoom.getChatRoomNo());
-        System.out.println(userId);
+        System.out.println("chatRoomNo"+chatRoom.getChatRoomNo());
+        System.out.println("chatuserId : "+userId);
         System.out.println(author.getUserId());
         int flag = 0;
         //chatMemberService.getChatMember()
@@ -106,7 +126,7 @@ public class ChatRoomController {
     //chatRoom/addChatRoom
     @GetMapping("addChatRoom")
     public String addChatRoom(@RequestParam("userId") String userId,
-                              @RequestParam("createTripPlanNo") int tripPlanNo,Model model) throws Exception{
+                              @RequestParam("tripPlanNo") int tripPlanNo,Model model) throws Exception{
         System.out.println("/chatRoom/addChatRoom/GET");
         System.out.println("userId : "+ userId);
         System.out.println("tripPlanNo : "+ tripPlanNo);
@@ -135,17 +155,17 @@ public class ChatRoomController {
     public String updateChatRoom(@RequestParam("chatRoomNo") int chatRoomNo,
                                  Model model) throws Exception{
         System.out.println("getUpdateChatRoom");
-        model.addAttribute("chatRoom",chatRoomService.getChatRoom(chatRoomNo));
-//        System.out.println(chatRoom);
-//        model.addAttribute("chatRoom",chatRoom);
-        //채팅방 이름 변경 x & 나이대,인원수,여행번호,날짜 변경 가능
+        ChatRoom chatRoom = chatRoomService.getChatRoom(chatRoomNo); //chatroomno => chatroom
+        int tripPlanNo = chatRoom.getTripPlanNo(); // chatroom => gettripplanno => chatmember에 삽입
+        model.addAttribute("chatRoom",chatRoom);
+        model.addAttribute("tripPlanNo",tripPlanNo);
         return "chatroom/updateChatRoom.jsp";
     }
     @PostMapping("updateChatRoom")
     public String updateChatRoom(@ModelAttribute("chatRoom") ChatRoom chatRoom,
-                                 @RequestParam("travelStartDateHtml") String travelStartDateHtml,
+//                                 @RequestParam("travelStartDateHtml") String travelStartDateHtml,
                                  Model model) throws Exception{
-        chatRoom.setTravelStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(travelStartDateHtml));
+//        chatRoom.setTravelStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(travelStartDateHtml));
         chatRoomService.updateChatRoom(chatRoom);
         //채팅방 이름 변경 x & 나이대,인원수,여행번호,날짜 변경 가능
         return "redirect:/chatRoom/chatRoomList";

@@ -16,7 +16,9 @@
 
 <body>
 
-<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+    <header class="nav-menu fixed">
+        <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+    </header>
 
     <h1>질의응답 등록</h1>
 

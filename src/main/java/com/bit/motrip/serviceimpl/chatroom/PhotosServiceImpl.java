@@ -34,6 +34,7 @@ public class PhotosServiceImpl implements PhotosService {
     public List<Photos> listPhotos(int chatRoomNo) throws Exception {
         System.out.println("listPhotos");
         List<Photos> photosList = photosdao.listPhotos(chatRoomNo);
+
         return photosList;
     }
     //list 추가할 것

@@ -27,7 +27,9 @@
 
     <body>
 
-        <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+        <header class="nav-menu fixed">
+            <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+        </header>
 
         <div class="page-img">
             <div class="container">

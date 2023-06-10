@@ -1,6 +1,11 @@
 .notice-content {
     white-space: pre-line;
-    font-size: 16px;
+    font-size: 20px;
+}
+
+.centered-content {
+    display: flex;
+    justify-content: center;
 }
 
 .page-img{
@@ -81,9 +86,6 @@ td {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.text-right {
-    margin-right: 15px;
-}
 
 /* Button effect animation */
 #updateNoticeView {

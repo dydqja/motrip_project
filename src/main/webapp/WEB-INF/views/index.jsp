@@ -45,7 +45,101 @@
 
   <!-- Current Page JS -->
   <script src="/assets/js/min/home.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // AJAX 요청을 보내고 채팅방의 수를 가져오는 함수
+      function listChatRoomCounter() {
+        $.ajax({
+          url: "/chatRoom/json/getListCount",
+          type: "POST",
+          dataType: "json",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          data: JSON.stringify({}),
+          success: function (data) {
+            console.log(data);
+            $("#chatRoomCounter").html(data); // 변경된 부분: data.count 값을 출력합니다.
 
+          },
+          error: function(xhr, status, error) {
+            console.log("An error occurred: " + error);
+          }
+        });
+      }
+      function listTripCounter() {
+        $.ajax({
+          url: "/tripPlan/tripPlanCount",
+          type: "POST",
+          dataType: "json",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          data: JSON.stringify({}),
+          success: function (data) {
+            console.log(data);
+            $("#tripPlanCounter").html(data); // 변경된 부분: data.count 값을 출력합니다.
+            $(".total").text("Total : " + data);
+
+          },
+          error: function (xhr, status, error) {
+            console.log("An error occurred: " + error);
+          }
+        });
+      }
+      function listUserCounter() {
+        $.ajax({
+          url: "/user/getUserCount",
+          type: "POST",
+          dataType: "json",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          data: JSON.stringify({}),
+          success: function (data) {
+            console.log(data);
+            $("#userCounter").html(data); // 변경된 부분: data.count 값을 출력합니다.
+            $(".total").text("Total : " + data);
+
+          },
+          error: function (xhr, status, error) {
+            console.log("An error occurred: " + error);
+          }
+        });
+      }
+      function listReviewCounter() {
+        $.ajax({
+          url: "/review/getReviewCount",
+          type: "POST",
+          dataType: "json",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          data: JSON.stringify({}),
+          success: function (data) {
+            console.log(data);
+            $("#reviewCounter").html(data); // 변경된 부분: data.count 값을 출력합니다.
+            $(".total").text("Total : " + data);
+
+          },
+          error: function (xhr, status, error) {
+            console.log("An error occurred: " + error);
+          }
+        });
+      }
+
+      // 페이지가 열리면 함수 실행
+      listChatRoomCounter();
+      listTripCounter();
+      listReviewCounter();
+      listUserCounter();
+    });
+
+  </script>
 </head>
 
 <!--
@@ -341,23 +435,23 @@
   <div class="clearfix">
     <div class="col-sm-6 col-md-3 light">
       <span class="icon-font icon-tent"></span>
-      <span class="counter">32</span>
-      <p>등록된 여행계획의 숫자</p>
+      <span class="counter" id="chatRoomCounter"></span>
+      <p>등록된 채팅방 숫자</p>
     </div>
     <div class="col-sm-6 col-md-3 dark">
-      <span class="icon-font icon-camera"></span>
-      <span class="counter">12437</span>
-      <p>나눈 대화의 수</p>
+      <span class="icon-font icon-map"></span>
+      <span class="counter" id="tripPlanCounter"></span>
+      <p>작성된 여행 수</p>
     </div>
     <div class="col-sm-6 col-md-3 light">
-      <span class="icon-font icon-sun"></span>
-      <span class="counter">35</span>
+      <span class="icon-font icon-pencil"></span>
+      <span class="counter" id="reviewCounter"></span>
       <p>작성된 후기의 숫자</p>
     </div>
     <div class="col-sm-6 col-md-3 dark">
-      <span class="icon-font icon-umbrella"></span>
-      <span class="counter">45</span>
-      <p>Rainfall Last Year</p>
+      <span class="icon-font icon-user"></span>
+      <span class="counter" id="userCounter"></span>
+      <p>가입된 회원 수</p>
     </div>
   </div>
 </div>
@@ -394,6 +488,10 @@
 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d37319.30096857599!2d-111.50394094053527!3d44.81298564157587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5351e55555555555%3A0xaca8f930348fe1bb!2sYellowstone+National+Park!5e0!3m2!1sen!2snp!4v1493435077252"
         style="width: 100%; border:0" height="450" allowfullscreen></iframe>--%>
 
+<script>
+
+
+</script>
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
 </body>

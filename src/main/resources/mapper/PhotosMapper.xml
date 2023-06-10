@@ -9,6 +9,8 @@
 		<id column="photo_no" property="photoNo" jdbcType="INTEGER"/>
 		<result column="photo_id" property="photoId" jdbcType="VARCHAR"/>
 		<result column="chat_room_no" property="chatRoomNo" jdbcType="INTEGER"/>
+		<result column="user_id" property="userId" jdbcType="VARCHAR"/>
+
 	</resultMap>
 
 	<select id="getPhotos" resultMap="PhotosResultMap">
@@ -16,8 +18,8 @@
 	</select>
 
 	<insert id="addPhotos" parameterType="com.bit.motrip.domain.Photos">
-		insert into photos (photo_id,chat_room_no)
-		values (#{photoId},#{chatRoomNo})
+		insert into photos (photo_id,chat_room_no,user_id)
+		values (#{photoId},#{chatRoomNo},#{userId})
 	</insert>
 
 	<delete id="deletePhotos" parameterType="int">

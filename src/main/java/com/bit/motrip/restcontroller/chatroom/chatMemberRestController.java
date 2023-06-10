@@ -20,13 +20,23 @@ public class chatMemberRestController {
     }
 
 
-    @RequestMapping(value="json/kickMember" , method=RequestMethod.POST )
-    public List<ChatMember> kickChatMember(@RequestBody ChatMember chatMember) throws Exception {
-        // 메서드 내용
-        System.out.println("POST : json/kickMember");
-        System.out.println(chatMember.getUserId());
+//    @RequestMapping(value = "/json/kickMember", method = RequestMethod.GET)
+//    public void kickChatMember(@RequestParam("chatRoomNo") int chatRoomNo,
+//                               @RequestParam("userId") String userId) throws Exception {
+//        // 메서드 내용
+//        System.out.println("GET : json/kickMember");
+//        System.out.println("Chat Room No: " + chatRoomNo);
+//        System.out.println("User ID: " + userId);
+//
+//        chatMemberService.kickChatMember(chatRoomNo, userId, true);
+//    }
+    @RequestMapping(value = "/json/kickMember", method = RequestMethod.POST)
+    @ResponseBody
+    public void  kickChatMember(@RequestBody ChatMember request) throws Exception {
 
-        return chatMemberService.kickChatMember(chatMember.getChatRoomNo(),chatMember.getUserId(),true);
+            chatMemberService.kickChatMember(request.getChatRoomNo(), request.getUserId(), true);
+
+
     }
 
     @RequestMapping(value="json/fetchChatMembers/{chatRoomNo}" , method=RequestMethod.GET )
