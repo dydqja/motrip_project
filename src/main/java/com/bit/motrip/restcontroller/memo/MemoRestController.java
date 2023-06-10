@@ -3,6 +3,7 @@ package com.bit.motrip.restcontroller.memo;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.*;
 import com.bit.motrip.service.memo.MemoService;
+import com.bit.motrip.service.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +19,16 @@ import java.util.List;
 public class MemoRestController {
 
     //Constructor wiring
-    public MemoRestController(MemoService memoService) {
+    public MemoRestController(MemoService memoService, UserService userService) {
         this.memoService = memoService;
+        this.userService = userService;
     }
     //Field
     private final MemoService memoService;
     private final String successJson = "{\"status\": \"success\", \"key2\": \"value2\", \"key3\": \"value3\"}";
     private final String failJson = "{\"status\": \"fail\", \"key2\": \"value2\", \"key3\": \"value3\"}";
+
+    private final UserService userService;
 
     @PostMapping("getMemoList")
     public String getMemoList(HttpSession session,
@@ -291,9 +295,16 @@ public class MemoRestController {
     @PostMapping("addMemoAccess")
     public String addMemoAccess(
             @RequestParam("memoNo") String memoNo,
-            @RequestParam("userId") String userId)  {
+            @RequestParam("nickname") String nickname)  {
 
         int memoNoInt = Integer.parseInt(memoNo);
+        String userId = "";
+        try {
+            userId = userService.getUserByNickname(nickname).getUserId();
+        } catch (Exception e) {
+            System.out.println("failJson");
+            return failJson;
+        }
 
         int isSuccess = 0;
         try {

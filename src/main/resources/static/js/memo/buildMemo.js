@@ -222,10 +222,19 @@ function buildMemoSharerTableRow(memoAccess){
     let userEmail = memoAccess.userEmail;
 
     let row = $('<tr>');
-    row.append($('<td>').text(userNickname));
+    row.append($('<td>').html('<span class="memo-sharer">'+userNickname+'</span>'));
     row.append($('<td>').text(userEmail));
     row.append($('<td>').html('<a href="/user/getUser?userId="'+userId+'>자세히</a>'));
     row.append($('<td>').html('<button class="memo-share-modal-unShare-btn-for-sharer" value="'+userId+'">공유해제</button>'));
+    return row;
+}
+function buildMemoShareeTableRow(memoNo){
+
+    let row = $('<tr>');
+    row.append($('<td>').html('<input class="new-memo-sharee-input" placeholder="nickname">'));
+    row.append($('<td>').html('_'));
+    row.append($('<td>').html('<span class="nickname-valid-check"></span>'));
+    row.append($('<td>').html('<button class="new-memo-sharee-ajax-btn" value="'+memoNo+'">공유</button>'));
     return row;
 }
 

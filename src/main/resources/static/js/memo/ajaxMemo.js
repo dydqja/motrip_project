@@ -135,25 +135,17 @@ function getMemoShareListRequest(memoNo){
                 $("#memo-sharer-list-body").append(row);
             }
             $("#memo-sharer-list-body").append(row1);
-
-            //첫 td에 새 공유자를 추가하는 버튼을 추가한다.
-            let newRowBtn = $('<button>').attr('type','button').attr('class','btn btn-primary').attr('nickname','memo-sharer-list-new-row-btn').text('+');
-            newRowBtn.addClass('btn btn-outline-primary btn-sm');
-            //두 번째 td에 닉네임을 입력받을 input 을 추가한다.
-            let newNicknameInput = $('<input>').attr('type','text').attr('class','form-control')
-            newNicknameInput.addClass('new-nickname-input');
-            //세 번째 td에 닉네임 유효성 체크를 할 span을 추가한다.
-            let newNicknameCheckSpan = $('<span>').attr('class','new-nickname-check-span');
-            //네 번째 td에 닉네임을 추가하는 버튼을 추가한다.
-            let newNicknameBtn = $('<button>').attr('type','button').attr('class','btn btn-primary').attr('nickname','memo-sharer-list-new-nickname-btn').text('추가');
-            //그것들을 row 로 묶는다.
-            let newRow = $('<tr>');
-            newRow.append($('<td>').append(newRowBtn));
-            newRow.append($('<td>').append(newNicknameInput));
-            newRow.append($('<td>').append(newNicknameCheckSpan));
-            newRow.append($('<td>').append(newNicknameBtn));
-
-            $("#memo-sharee-list-body").append(newRow)
+            let isEmpty = false;
+            $('.new-memo-sharee-input').each(function() {
+                if ($(this).val() === '') {
+                    isEmpty = true;
+                    return false;
+                }
+            });
+            if (!isEmpty) {
+                let newRow = buildMemoShareeTableRow(memoNo);
+                $("#memo-sharee-list-body").append(newRow)
+            }
 
 
 
@@ -284,6 +276,48 @@ function removeMemoRequest(memoNo, memoDialog){
             memoDialog.dialog('close');
         }
     }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+function addMemoAccessRequest(memoNo,nickname){
+    console.log('addMemoAccessRequest on')
+    $.ajax({
+        type: 'post',
+        url: '/memo/addMemoAccess',
+        dataType: 'json',
+        data:{
+            memoNo: memoNo,
+            nickname: nickname
+        }
+    }).success(function (data){
+        if(data.status==='fail'){
+            Swal.fire(
+                '이런!',
+                '존재하지 않는 회원에게 메모를 공유할순 없습니다!',
+                'error'
+            )
+        }
+
+        getMemoShareListRequest(memoNo);
+    }).fail(function (){
+        alert(JSON.stringify(error));
+    });
+}
+function nicknameCheckRequest(nickname,checkSpace){
+    $.ajax({
+        type: 'post',
+        url: '/user/checkNickname',
+        dataType: 'json',
+        data:{
+            value: nickname
+        }
+    }).success(function (data){
+        if(data===1){
+            checkSpace.text('존재하지 않는 회원입니다.');
+        }else{
+            checkSpace.text('존재하는 회원입니다.');
+        }
+    }).fail(function (){
         alert(JSON.stringify(error));
     });
 }

@@ -257,6 +257,7 @@
 <div id="memo-dialogs">
     <%--유저 아이디를 담을 hidden input 만들기.--%>
     <input type="hidden" id="memo-user-id" value="${sessionScope.user.userId}">
+    <input type="hidden" id="memo-user-nickname" value="${sessionScope.user.nickname}">
 </div>
 <div id="memo-share-modal" class="modal" aria-labelledby="myModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
