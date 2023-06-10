@@ -293,7 +293,8 @@ public class User {
                 ", gender='" + gender + '\'' +
                 ", age='" + age + '\'' +
                 ", isSecession=" + isSecession +
-                ", isSuspension=" + isSuspension +
+                ", isSelfIntroPublic=" + isSelfIntroPublic +
+                ", isUserPhotoPublic=" + isUserPhotoPublic +
                 ", role=" + role +
                 ", evaluateCount=" + evaluateCount +
                 '}';
