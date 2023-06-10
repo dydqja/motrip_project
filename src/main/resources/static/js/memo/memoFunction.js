@@ -71,6 +71,12 @@ function unEditMemo(memoDialog){
     memoDialog.find('.memo-dialog-save-btn').hide();
     //수정버튼을 드러낸다.
     memoDialog.find('.memo-dialog-edit-btn').show();
+    //삭제버튼을 드러낸다.
+    memoDialog.find('.memo-dialog-delete-btn').show();
+    //공유버튼을 드러낸다.
+    memoDialog.find('.memo-dialog-share-btn').show();
+    //부착버튼을 드러낸다.
+    memoDialog.find('.memo-dialog-attach-btn').show();
 }
 
 function saveMemo(memoDialog){
@@ -95,7 +101,12 @@ function addMemo(memoDialog){
     let userId = $('#memo-user-id').val();
     //유저 아이디가 없으면 얼럿창을 띄운다.
     if(!userId){
-        alert('로그인이 필요합니다');
+        swal.fire(
+            '로그인이 필요합니다',
+            '',
+            'warning'
+        );
+        //alert('로그인이 필요합니다');
         return;
     }
     //다이얼로그로부터 입력된 title을 추출한다.

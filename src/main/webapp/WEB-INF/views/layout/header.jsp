@@ -101,7 +101,7 @@
                         <a href="#" class="dropdown-toggle">메모</a>
                         <ul id="memo-dropdown" class="dropdown-menu">
                             <div class="my-memo-thumbnail btn-group-justified" role="group">
-                                <a href="#" class="btn btn-line btn-sm btn-default" role="button" onclick="buildMemo('user2')">+ 새 메모</a>
+                                <a href="#" class="btn btn-line btn-sm btn-default" role="button" onclick="buildNewMemo('user2')">+ 새 메모</a>
                             </div>
                             <div class="panel-group" id="memo-accordion" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
@@ -224,6 +224,11 @@
         </div>
 
     </nav>
+<%--    <div class="alert alert-info" role="alert" style="text-align: center">읽지 않은 3개의 알람이 있습니다.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>--%>
 </header>
 <%--button trigger modal--%>
 <input type="hidden" data-toggle="modal" href="#alarm-modal"></input>

@@ -29,7 +29,7 @@ class Memo{
 }
 
 function buildMemoDialog(memo){
-    console.log("buildMemoDialog on");
+    //console.log("buildMemoDialog on");
     let memoNo = memo.memoNo;
     let memoTitle = memo.memoTitle;
     let memoContents = memo.memoContents;
@@ -156,7 +156,7 @@ function buildMemoDialog(memo){
 
 
 
-function buildMemo(userId){
+function buildNewMemo(userId){
     console.log("buildMemo on");
     let memo = new Memo();
     memo.memoAuthor = userId;
@@ -166,11 +166,23 @@ function buildMemo(userId){
     memo.memoRegDate = new Date();
     let memoDialog = buildMemoDialog(memo);
     console.log("buildMemoDialog done");
+    //반환받은 메모 다이얼로그에서 버튼들을 숨긴다.
+    memoDialog.find('.memo-dialog-edit-btn').hide();
+    memoDialog.find('.memo-dialog-delete-btn').hide();
+    memoDialog.find('.memo-dialog-share-btn').hide();
+    memoDialog.find('.memo-dialog-attach-btn').hide();
+    memoDialog.find('.memo-dialog-restore-btn').hide();
+    memoDialog.find('.memo-dialog-remove-btn').hide();
+
+
     //반환받은 다이얼로그를 id="memo-dialogs" 에 추가한다.
     $('#memo-dialogs').append(memoDialog);
     //다이얼로그를 열어준다.
     memoDialog.dialog({
-        autoOpen: true
+        autoOpen: true,
+        autoResize: true,
+        width: 400,
+        height: 'auto'
     });
 
 
@@ -190,7 +202,10 @@ function showMemoDialog(memo){
     $('#memo-dialogs').append(memoDialog);
     //다이얼로그를 열어준다.
     memoDialog.dialog({
-        autoOpen: true
+        autoOpen: true,
+        autoResize: true,
+        width: 400,
+        height: 'auto'
     });
     //서머노트를 적용한다.
     memoDialog.find('.summernote-contents').summernote();

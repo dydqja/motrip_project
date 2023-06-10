@@ -65,17 +65,25 @@
             let clientAlarmCount = $("#unreadAlarmCount").text().trim();
             console.log('현재 클라이언트의 알람 카운터의 값은'+clientAlarmCount+'이다.');
             if(clientAlarmCount<serverAlarmCount){
-                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 작다면, 알람 카운터를 업데이트한다.
+                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 작다면 새로운 알람이 있단 뜻이다.
+                $("#unreadAlarmCount").show();//빨간 뱃지를 보여준다.
+
+                // 알람 카운터를 업데이트하고 new 를 띄운다.
                 $("#unreadAlarmCount").text(serverAlarmCount);
                 let alarmCount = serverAlarmCount-clientAlarmCount;
                 let popover = $('#alarm-bell');
                 let userNickname = $("#alarmUserNickname").val();
-                popover.attr('data-content', alarmCount+' new')
+                popover.attr('data-content', 'new')
                 popover.popover('show');
             }
             if(clientAlarmCount>serverAlarmCount){
-                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 크다면, 알람 카운터를 업데이트한다.
+                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 크다면, 알람이 읽혔단 뜻이다.
+                // 알람 카운터를 업데이트하고
                 $("#unreadAlarmCount").text(serverAlarmCount);
+                //만약 알람 카운터가 0이라면 카운터를 숨긴다.
+                if(serverAlarmCount==0){
+                    $("#unreadAlarmCount").hide();
+                }
             }
         }
     });
