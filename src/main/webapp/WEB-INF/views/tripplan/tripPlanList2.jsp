@@ -39,13 +39,12 @@
 
 <body>
 
-<header class="nav-menu fixed">
     <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
 
 <div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
     <div class="container">
         <div class="col-sm-8">
+            <br><br><br><br><br>
             <h1 class="main-head">여행플랜</h1>
         </div>
     </div>

@@ -16,14 +16,15 @@
     $(document).ready(function(){
         $("#alarm-modal").modal('hide');
 
+
         let pollingCount = 0;
         //몇 초에 한번씩 폴링을 시도할지 결정한다.
         let pollingTime = $("#pollingTime").val();
         console.log('서버로부터 받은 알람 폴링 시간은'+pollingTime+'초이다.');
-        //폴링 타임이 falsy일 경우 기본값 3초로 세팅한다.
+        //폴링 타임이 falsy일 경우 기본값 30초로 세팅한다.
         if(!pollingTime){
-            pollingTime = 5;
-            console.log('서버로부터 알람 폴링 시간을 받지 못했으므로, 기본값 5초로 세팅한다.')
+            pollingTime = 30;
+            console.log('서버로부터 알람 폴링 시간을 받지 못했으므로, 기본값 30초로 세팅한다.')
         }
         //서버에 연락할 유저의 Id는
         let userId = $("#alarmUserId").val();
@@ -33,6 +34,8 @@
             console.log('유저 아이디가 없으므로 폴링을 하지 않는다.');
             return;
         }
+        //문서 로드후 최초 1회 폴링을 시도한다.
+        getUnreadAlarmCount(userId);
 
         //id 폴링타임의 값을 폴링타임으로 세팅한다.
         $("#pollingTime").val(pollingTime);
@@ -62,17 +65,25 @@
             let clientAlarmCount = $("#unreadAlarmCount").text().trim();
             console.log('현재 클라이언트의 알람 카운터의 값은'+clientAlarmCount+'이다.');
             if(clientAlarmCount<serverAlarmCount){
-                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 작다면, 알람 카운터를 업데이트한다.
+                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 작다면 새로운 알람이 있단 뜻이다.
+                $("#unreadAlarmCount").show();//빨간 뱃지를 보여준다.
+
+                // 알람 카운터를 업데이트하고 new 를 띄운다.
                 $("#unreadAlarmCount").text(serverAlarmCount);
                 let alarmCount = serverAlarmCount-clientAlarmCount;
                 let popover = $('#alarm-bell');
                 let userNickname = $("#alarmUserNickname").val();
-                popover.attr('data-content', alarmCount+' new')
+                popover.attr('data-content', 'new')
                 popover.popover('show');
             }
             if(clientAlarmCount>serverAlarmCount){
-                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 크다면, 알람 카운터를 업데이트한다.
+                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 크다면, 알람이 읽혔단 뜻이다.
+                // 알람 카운터를 업데이트하고
                 $("#unreadAlarmCount").text(serverAlarmCount);
+                //만약 알람 카운터가 0이라면 카운터를 숨긴다.
+                if(serverAlarmCount==0){
+                    $("#unreadAlarmCount").hide();
+                }
             }
         }
     });

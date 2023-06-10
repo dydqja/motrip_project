@@ -69,7 +69,6 @@ public class ImageSaveService {
             Element newImgElement = new Element(Tag.valueOf("img"), doc.baseUri());
             newImgElement.attr("src", "/imagePath/" + fileName);
             imgElement.replaceWith(newImgElement);
-
         }
         return doc.html();
     }

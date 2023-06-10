@@ -42,7 +42,9 @@ $(document).on("click", "#my-memo-btn, #shared-memo-btn, #del-memo-btn", functio
     } else {
         searchCondition = 'deletedMemo';
     }
-    console.log("searchCondition : " + searchCondition);
+    //memo-search-condition 에 searchCondition 을 담는다.
+    $("#memo-search-condition").val(searchCondition);
+
     //해당 서치컨디션에 어울리는 currentPage 를 잡는다.
     let currentPage = 1;
     if(searchCondition == 'myMemo'){
@@ -64,10 +66,10 @@ function getMemoList(searchCondition,currentPage){
     if (currentPage == undefined){
         currentPage = 1;
     }
-    console.log("getMemoList on");
+/*    console.log("getMemoList on");
     console.log("searchCondition : " + searchCondition);
     console.log("currentPage : " + currentPage);
-    console.log("위의 조건으로 ajax를 날립니다.");
+    console.log("위의 조건으로 ajax를 날립니다.");*/
 
     //searchCondition 에 맞는 list-container 를 잡는다.
     let listContainer = $("#my-memo-list-container");

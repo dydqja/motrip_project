@@ -71,10 +71,16 @@ function unEditMemo(memoDialog){
     memoDialog.find('.memo-dialog-save-btn').hide();
     //수정버튼을 드러낸다.
     memoDialog.find('.memo-dialog-edit-btn').show();
+    //삭제버튼을 드러낸다.
+    memoDialog.find('.memo-dialog-delete-btn').show();
+    //공유버튼을 드러낸다.
+    memoDialog.find('.memo-dialog-share-btn').show();
+    //부착버튼을 드러낸다.
+    memoDialog.find('.memo-dialog-attach-btn').show();
 }
 
 function saveMemo(memoDialog){
-    console.log("saveMemoDialog on");
+//    console.log("saveMemoDialog on");
     //dialog의 info를 추출한다.
     let infoJson = memoDialog.find('.memo-dialog-info').val();
     //info를 json으로 변환한다.
@@ -90,12 +96,17 @@ function saveMemo(memoDialog){
 }
 
 function addMemo(memoDialog){
-    console.log("addMemo on");
+//    console.log("addMemo on");
     //유저 아이디를 받는다.
     let userId = $('#memo-user-id').val();
     //유저 아이디가 없으면 얼럿창을 띄운다.
     if(!userId){
-        alert('로그인이 필요합니다');
+        swal.fire(
+            '로그인이 필요합니다',
+            '',
+            'warning'
+        );
+        //alert('로그인이 필요합니다');
         return;
     }
     //다이얼로그로부터 입력된 title을 추출한다.
@@ -105,13 +116,13 @@ function addMemo(memoDialog){
     //다이얼로그로부터 입력된 color 를 추출한다.
     let memoColor = memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-color-input').val();
 
-    console.log("memoTitle : " + memoTitle);
-    console.log("memoContents : " + memoContents);
+    /*console.log("memoTitle : " + memoTitle);
+    console.log("memoContents : " + memoContents);*/
     addMemoRequest(userId, memoTitle, memoContents,memoColor,memoDialog);
 }
 
 function updateMemo(memoDialog){
-    console.log("updateMemo on");
+    //console.log("updateMemo on");
     //유저 아이디를 받는다.
     let userId = $('#memo-user-id').val();
     //유저 아이디가 없으면 얼럿창을 띄운다.
@@ -151,13 +162,84 @@ function shareMemo(memoDialog){
     console.log("공유할 메모의 memoNo : " + memoNo);
     console.log("공유할 메모의 memoAuthor : " + memoAuthor);
     console.log("현재 접속중인 userId : " + userId);
+
+    //리스트 만들 곳 비워주고 히든 인풋 넣어주는 영역.
     //공유할 메모의 작성자와 현재 접속중인 유저가 같으면 공유 컨트롤 모달을 띄운다.
     if(memoAuthor === userId){
-        console.log("공유 컨트롤 모달을 띄운다.");
+        $("#memo-share-modal-list-area").show();
+        //또한 공유 해제 버튼을 숨긴다.
+        $("#memo-share-modal-footer").find('#memo-share-modal-unShare-btn-for-shared').hide();
+        //ajax를 통해 동적으로 공유자 목록을 만든다.
         getMemoShareListRequest(memoNo);
     }else {
+        $("#memo-sharer-list-body").html('');
+        $("#memo-sharer-list-body").append("<input type='hidden' id='memo-sharer-list-memoNo' value='"+memoNo+"'>");
+
+        $("#memo-share-modal-footer").find('#memo-share-modal-unShare-btn-for-shared').show();
         //공유할 메모의 작성자와 현재 접속중인 유저가 다르면 공유 해제 모달을 띄운다.
-        console.log("공유 해제 절차로");
+//        console.log("공유 해제 절차로");
+        $("#memo-share-modal-list-area").hide();
+        $("#memo-share-modal-unShare-btn-for-shared").val(userId);
+        $("#memo-share-modal").modal('show');
+    }
+}
+function deleteMemo(memoDialog){
+    //dialog의 info를 추출한다.
+    let infoJson = memoDialog.find('.memo-dialog-info').val();
+    //info를 json으로 변환한다.
+    let info = JSON.parse(infoJson);
+    //info 의 memoNo를 추출한다.
+    let memoNo = info.memoNo;
+    //info 의 memoAuthor를 추출한다.
+    let memoAuthor = info.memoAuthor;
+    //세션의 유저를 추출한다.
+    let userId = $('#memo-user-id').val();
+    if(memoAuthor === userId){
+        //작성자와 현재 접속중인 유저가 같으면
+        deleteMemoRequest(memoNo, memoDialog);
+    }else {
+        //작성자와 현재 접속중인 유저가 다르면
+        console.log("세션유저와 작성자가 다릅니다. 삭제할 수 없습니다.");
+    }
+}
+
+function restoreMemo(memoDialog){
+    //dialog의 info를 추출한다.
+    let infoJson = memoDialog.find('.memo-dialog-info').val();
+    //info를 json으로 변환한다.
+    let info = JSON.parse(infoJson);
+    //info 의 memoNo를 추출한다.
+    let memoNo = info.memoNo;
+    //info 의 memoAuthor를 추출한다.
+    let memoAuthor = info.memoAuthor;
+    //세션의 유저를 추출한다.
+    let userId = $('#memo-user-id').val();
+    if(memoAuthor === userId){
+        //작성자와 현재 접속중인 유저가 같으면
+        restoreMemoRequest(memoNo, memoDialog);
+    }else {
+        //작성자와 현재 접속중인 유저가 다르면
+        console.log("세션유저와 작성자가 다릅니다. 복구할 수 없습니다.");
+    }
+}
+
+function removeMemo(memoDialog){
+    //dialog의 info를 추출한다.
+    let infoJson = memoDialog.find('.memo-dialog-info').val();
+    //info를 json으로 변환한다.
+    let info = JSON.parse(infoJson);
+    //info 의 memoNo를 추출한다.
+    let memoNo = info.memoNo;
+    //info 의 memoAuthor를 추출한다.
+    let memoAuthor = info.memoAuthor;
+    //세션의 유저를 추출한다.
+    let userId = $('#memo-user-id').val();
+    if(memoAuthor === userId){
+        //작성자와 현재 접속중인 유저가 같으면
+        removeMemoRequest(memoNo, memoDialog);
+    }else {
+        //작성자와 현재 접속중인 유저가 다르면
+        console.log("세션유저와 작성자가 다릅니다. 제거할 수 없습니다.");
     }
 
 }
