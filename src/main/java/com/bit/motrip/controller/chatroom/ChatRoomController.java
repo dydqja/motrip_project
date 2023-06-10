@@ -4,9 +4,11 @@ import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.ChatMember;
 import com.bit.motrip.domain.ChatRoom;
+import com.bit.motrip.domain.User;
 import com.bit.motrip.service.chatroom.ChatMemberService;
 import com.bit.motrip.service.chatroom.ChatRoomService;
 import com.bit.motrip.service.tripplan.TripPlanService;
+import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,15 +35,25 @@ public class ChatRoomController {
     @Autowired
     @Qualifier("chatMemberServiceImpl")
     private ChatMemberService chatMemberService;
+    @Autowired
+    @Qualifier("userServiceImpl")
+    private UserService userService;
     public ChatRoomController(){
         System.out.println("==> ChatRoomController default Constructor call....");
     }//chatroom 생성자
     @GetMapping("chatRoomList")
-    public String chatRoomList( @ModelAttribute("search") Search search ,Model model) throws Exception{
+    public String chatRoomList( @ModelAttribute("search") Search search,
+            @RequestParam("userId") String userId
+            ,Model model) throws Exception{
         if(search.getCurrentPage() == 0){
 
             search.setCurrentPage(1);
         }
+//        if(search.getSearchKeyword() == null){
+//            search.setSearchKeyword('');
+//        }
+        System.out.println(search);
+        System.out.println(search.getGender());
         int pageSize = 3;
         search.setPageSize(pageSize);
 
@@ -69,8 +81,14 @@ public class ChatRoomController {
         model.addAttribute("maxPage", maxPage);
         model.addAttribute("beginUnitPage", beginUnitPage);
         model.addAttribute("endUnitPage", endUnitPage);
-
-
+        model.addAttribute("search",search);
+        model.addAttribute("user",userService.getUserById(userId));
+        System.out.println(page);
+        System.out.println(maxPage);
+        System.out.println(beginUnitPage);
+        System.out.println(endUnitPage);
+        System.out.println(totalCount);
+        System.out.println(search);
         return "chatroom/chatRoomList2.jsp";
     }
     @PostMapping("chat")

@@ -94,39 +94,34 @@
 
                 <div class="sidebar">
                     <div class="border-box">
-                        <div class="box-title" >테스트 채팅방 생성</div>
-                        <div class="input-group">
-                            <input type="text" name="createTripPlanNo" class="form-control" placeholder="TripPlan">
-                            <div class="input-group-btn">
-                                <button class="btn btn-primary hvr-grow" id="addChatRoom">Create</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border-box">
                         <div class="box-title">ChatRoom Search</div>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search Site">
+                            <input type="text" name="searchKeyword" value="" class="form-control" placeholder="Search Site">
                             <div class="input-group-btn">
                                 <button class="btn btn-primary" id="search-chatroom">Search</button>
+                                <input type="hidden" id="currentPage" name="currentPage" value="0"/>
                             </div>
                         </div>
                     </div>
 
                     <div class="border-box">
                         <div class="box-title">Gender</div>
-                        <div class="center-div" style="width: 100%; height: 100%;">
+                        <div class="left-div" style="width: 150%; height: 100%;">
                             <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default active" data-toggle="tooltip" data-placement="bottom" title="venus-mars">
-                                    <input type="radio" name="options" id="option1" checked>
+<%--                                <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="ALL">--%>
+<%--                                    <input type="radio" name="gender" id="option1" value="">--%>
+<%--                                    <span>A</span>--%>
+<%--                                </label>--%>
+                                <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="venus-mars">
+                                    <input type="radio" name="gender" id="option2" value="MF">
                                     <span class="fa fa-venus-mars"></span>
                                 </label>
                                 <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="mars">
-                                    <input type="radio" name="options" id="option4">
+                                    <input type="radio" name="gender" id="option4" value="M">
                                     <span class="fa fa-mars"></span>
                                 </label>
                                 <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="venus">
-                                    <input type="radio" name="options" id="option5">
+                                    <input type="radio" name="gender" id="option5" value="F">
                                     <span class="fa fa-venus"></span>
                                 </label>
                             </div>
@@ -159,18 +154,13 @@
                             <input type="text" class="form-control" placeholder="Days">
                         </div>
                     </div>
-
                 </div>
-
-
-
-
             </div>
 
             <div class="col-sm-8">
 
                 <div class="sort-wrap">
-                    <div class="sort-title counter-div"><span class="icon-tent counter" style="color: green" id="chatRoomCounter"></span>Matching Result</div>
+                    <div class="sort-title counter-div"><span class="icon-tent counter" style="color: green" id="chatRoomCounter">${page.totalCount}</span>Matching Result</div>
                 </div>
                 <c:set var="i" value="0" />
                 <c:forEach var="chatRoom" items="${list}">
@@ -208,27 +198,7 @@
                             <div class="left"><span class="icon-calendar"></span>   ${chatRoom.strDate} [${chatRoom.tripDays}일]</div>
 
                             <div class="right">
-<%--                                <a href="" data-toggle="tooltip" data-placement="bottom" title="Difficulty - Hard"><span class="icon-hard"></span></a>--%>
-<%--                                <a href="" data-toggle="tooltip" data-placement="bottom" title="Ticket"><span class="icon-plane"></span></a>--%>
-<%--                                <a href="" data-toggle="tooltip" data-placement="bottom" title="Style - Camping"><span class="icon-tent"></span></a>--%>
                                     <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}" data-toggle="modal" ><span class="icon-plane"></span></a>
-<%--                                    <div id="modal-regular" class="modal" tabindex="-1" role="dialog" aria-hidden="true">--%>
-<%--                                        <div class="modal-dialog">--%>
-<%--                                            <div class="modal-content">--%>
-<%--                                                <div class="modal-header">--%>
-<%--                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>--%>
-<%--                                                    <h3 class="modal-title">Modal Title</h3>--%>
-<%--                                                </div>--%>
-<%--                                                <div class="modal-body">--%>
-<%--                                                    <jsp:include page="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"/>--%>
-<%--                                                </div>--%>
-<%--                                                <div class="modal-footer">--%>
-<%--                                                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>--%>
-<%--                                                    <button type="button" class="btn btn-sm btn-primary">Save changes</button>--%>
-<%--                                                </div>--%>
-<%--                                            </div>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
                                     <a href="#modal-regular2" data-toggle="modal"><span class="icon-user" value="${chatRoom.chatRoomNo}"></span></a>
                                     <input type="hidden" />
                                     <div id="modal-regular2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -247,7 +217,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                             </div>
                         </div>
                         <div class="item-book">
@@ -267,10 +236,6 @@
                                 <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}"
                                         style="margin-left: 10px; background-color: #f5ff66; color: red" disabled>Finished</button>
                             </c:if>
-
-
-
-
                             <div class="price">${chatRoom.currentPersons} / ${chatRoom.maxPersons}</div>
                         </div>
                     </div>
@@ -278,43 +243,26 @@
                 </c:forEach>
 
                 <nav aria-label="Page navigation example" class="text-center">
-
                     <ul class="pagination justify-content-center">
-
                         <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
-
-                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${page.currentPage - 1}" aria-label="Previous">
+                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${page.currentPage - 1}&searchKeyword=${search.searchKeyword}" aria-label="Previous">
                                 &laquo;
                             </a>
-
                         </li>
-
                         <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
-
                             <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-
-                                <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${i}">${i}</a>
-
+                                <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${i}&searchKeyword=${search.searchKeyword}">${i}</a>
                             </li>
-
                         </c:forEach>
-
                         <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${page.currentPage + 1}" aria-label="Next">
+                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${page.currentPage + 1}&searchKeyword=${search.searchKeyword}" aria-label="Next">
                                 &raquo;
                             </a>
-
                         </li>
-
                     </ul>
-
                 </nav>
-
-
-
             </div>
-
         </div>
     </div>
     </form>
@@ -334,9 +282,9 @@
     function fncGoChatroom(){
         $("form").attr("method","POST").attr("action","/chatRoom/chat").submit();
     }
+
     function fncJoinChatroom(){
-        alert("join-chatRoom");
-        $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
+        // $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
     }
 
     function fncAddChatroom(){
@@ -350,7 +298,36 @@
     //     });
     // });
     //참여안된 채팅방 조인하기
-    $(function() {$(".join-chatRoom").on("click", function() {fncJoinChatroom();});});
+    $(function() {
+        $(".join-chatRoom").on("click", function(event) {
+            let userId = $("#userId").attr('value')
+            event.preventDefault()
+            const value = $(this).attr('value');
+            alert("join-chatroom");
+            $.ajax({
+                url: '/chatMember/json/fetchChatMembers/'+value,
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                success: function(members) {
+                    console.log(userId);
+                    const matchingMember = members.find(member => member.userId === userId);
+                    if(matchingMember){
+                        alert("이미가입했던 채팅방입니다.")
+                    }else{
+
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("fail");
+                    console.log('AJAX Error:', error);
+                }
+            });
+        // fncJoinChatroom();
+        });});
 
     $(function() {$("#addChatRoom").on("click", function() {fncAddChatroom();});});
 
@@ -370,34 +347,32 @@
     //         }
     //     });
     // });
+    // $(document).ready(function() {
+    //     // AJAX 요청을 보내고 채팅방의 수를 가져오는 함수
+    //     function chatList() {
+    //         $.ajax({
+    //             url: "/chatRoom/json/chatList",
+    //             type: "POST",
+    //             dataType: "json",
+    //             headers: {
+    //                 "Accept": "application/json",
+    //                 "Content-Type": "application/json"
+    //             },
+    //             data: JSON.stringify({}),
+    //             success: function (data) {
+    //                 console.log(data);
+    //
+    //             },
+    //             error: function(xhr, status, error) {
+    //                 console.log("An error occurred: " + error);
+    //             }
+    //         });
+    //     }
+    //
+    //     // 페이지가 열리면 함수 실행
+    //     chatList();
+    // });
 
-    $(document).ready(function() {
-        // AJAX 요청을 보내고 채팅방의 수를 가져오는 함수
-        function listCounter() {
-            $.ajax({
-                url: "/chatRoom/json/getListCount",
-                type: "POST",
-                dataType: "json",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                data: JSON.stringify({}),
-                success: function (data) {
-                    console.log(data);
-                    $("#chatRoomCounter").html(data); // 변경된 부분: data.count 값을 출력합니다.
-                    $(".total").text("Total : "+data);
-                    var t=$(".counter");t.countUp({delay:30,time:3e3})
-                },
-                error: function(xhr, status, error) {
-                    console.log("An error occurred: " + error);
-                }
-            });
-        }
-
-        // 페이지가 열리면 함수 실행
-        listCounter();
-    });
     $(function() {
         $(".icon-user").on("click", function() {
             var value = $(this).attr('value');
@@ -483,7 +458,7 @@
 
 
     function fncGetUserList(currentPage){
-        $("#currentPage").val(currentPage)
+        console.log($("#currentPage").val(currentPage));
         $("form").attr("method" , "GET").attr("action" , "/chatRoom/chatRoomList?").submit();
     }
 
@@ -492,6 +467,9 @@
             fncGetUserList(1);
         });
     })
+
+
+
 </script>
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
