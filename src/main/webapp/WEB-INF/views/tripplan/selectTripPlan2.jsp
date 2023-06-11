@@ -52,9 +52,7 @@
 
 <body>
 
-<header class="nav-menu fixed">
     <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
 
 <div class="post-single left">
     <div class="page-img" style="background-image: url('/images/tripImage.jpg');">

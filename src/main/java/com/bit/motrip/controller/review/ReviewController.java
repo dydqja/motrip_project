@@ -3,10 +3,7 @@ package com.bit.motrip.controller.review;
 
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.chatroom.ChatRoomDao;
-import com.bit.motrip.dao.tripplan.TripPlanDao;
 import com.bit.motrip.domain.*;
-import com.bit.motrip.service.chatroom.ChatMemberService;
-import com.bit.motrip.service.chatroom.ChatRoomService;
 import com.bit.motrip.service.review.CommentService;
 import com.bit.motrip.service.review.ReviewService;
 import com.bit.motrip.service.tripplan.TripPlanService;
@@ -21,8 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Controller

@@ -1,5 +1,5 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
-<%@ page pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
@@ -9,7 +9,7 @@
 <html lang="ko">
 
 <head>
-    <meta charset="EUC-KR">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -24,10 +24,12 @@
     <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-<%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">--%>
-<%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">--%>
+    <%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">--%>
+    <%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">--%>
 
     <script src="https://kit.fontawesome.com/b2ece947c7.js" crossorigin="anonymous"></script>
+
+
 
 
 
@@ -43,6 +45,57 @@
         .icon-heart {
             font-size: 20px;
             margin-left: 1rem;
+        }
+
+        .blacklist-button {
+            /* ë²„íŠ¼ì˜ ë„ˆë¹„ì™€ ë†’ì´ ì„¤ì • */
+            width: 50px;
+            height: 25px;
+            /* ë²„íŠ¼ ë°°ê²½ìƒ‰ì„ ê²€ì •ìƒ‰ìœ¼ë¡œ ì„¤ì • */
+            background-color: black;
+            /* ë²„íŠ¼ì˜ ê¸€ì ìƒ‰ìƒì„ í°ìƒ‰ìœ¼ë¡œ ì„¤ì • */
+            color: white;
+            /* ê¸€ì í¬ê¸°ë¥¼ ì¡°ì ˆ */
+            font-size: 10px;
+            /* ë²„íŠ¼ì˜ íŒ¨ë”© (ë‚´ë¶€ ì—¬ë°±)ì„ ì„¤ì • */
+            padding: 2px 4px;
+            /* ë²„íŠ¼ì˜ í…Œë‘ë¦¬ë¥¼ ë‘¥ê¸€ê²Œ ë§Œë“­ë‹ˆë‹¤ */
+            border-radius: 5px;
+            /* ë²„íŠ¼ í…Œë‘ë¦¬ ìƒ‰ìƒ */
+            border: 1px solid white;
+            /* ì»¤ì„œë¥¼ ì˜¬ë ¸ì„ ë•Œì˜ ìŠ¤íƒ€ì¼ */
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .secession-button {
+            /* ë²„íŠ¼ì˜ ë„ˆë¹„ì™€ ë†’ì´ ì„¤ì • */
+            width: 50px;
+            height: 25px;
+            /* ë²„íŠ¼ ë°°ê²½ìƒ‰ì„ ê²€ì •ìƒ‰ìœ¼ë¡œ ì„¤ì • */
+            background-color: #ff4444;
+            /* ë²„íŠ¼ì˜ ê¸€ì ìƒ‰ìƒì„ í°ìƒ‰ìœ¼ë¡œ ì„¤ì • */
+            color: white;
+            /* ê¸€ì í¬ê¸°ë¥¼ ì¡°ì ˆ */
+            font-size: 10px;
+            /* ë²„íŠ¼ì˜ íŒ¨ë”© (ë‚´ë¶€ ì—¬ë°±)ì„ ì„¤ì • */
+            padding: 2px 4px;
+            /* ë²„íŠ¼ì˜ í…Œë‘ë¦¬ë¥¼ ë‘¥ê¸€ê²Œ ë§Œë“­ë‹ˆë‹¤ */
+            border-radius: 5px;
+            /* ë²„íŠ¼ í…Œë‘ë¦¬ ìƒ‰ìƒ */
+            border: 1px solid white;
+            /* ì»¤ì„œë¥¼ ì˜¬ë ¸ì„ ë•Œì˜ ìŠ¤íƒ€ì¼ */
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .blacklist-button:hover {
+            /* ì»¤ì„œë¥¼ ì˜¬ë ¸ì„ ë•Œ ë°°ê²½ìƒ‰ê³¼ ê¸€ììƒ‰ì„ ë°”ê¾¸ì–´ ì£¼ëŠ” ë¶€ë¶„ */
+            background-color: white;
+            color: black;
+        }
+
+        .secession-button:hover {
+            /* ì»¤ì„œë¥¼ ì˜¬ë ¸ì„ ë•Œ ë°°ê²½ìƒ‰ê³¼ ê¸€ììƒ‰ì„ ë°”ê¾¸ì–´ ì£¼ëŠ” ë¶€ë¶„ */
+            background-color: #cc0000;
         }
 
         .btn:hover {
@@ -61,7 +114,7 @@
         }
 
         .profile-bio p {
-            width: 33.33%; /* div ¿ä¼ÒÀÇ 1/3 Å©±â */
+            width: 33.33%; /* div ìš”ì†Œì˜ 1/3 í¬ê¸° */
         }
 
         .update-user-icon {
@@ -177,7 +230,7 @@
 
         .welcome-msg {
             font-size: 1.6rem;
-            font-weight: 300;
+            display: flex;
         }
 
         .profile-edit-btn {
@@ -215,8 +268,8 @@
         /*    font-weight: 400;*/
         /*    line-height: 1.5;*/
         /*    margin-top: 2.3rem;*/
-        /*    display: flex; !* ÁÁ¾Æ¿ä ¿µ¿ª Ãß°¡ *!*/
-        /*} ---- ¿ø·¡ css */
+        /*    display: flex; !* ì¢‹ì•„ìš” ì˜ì—­ ì¶”ê°€ *!*/
+        /*} ---- ì›ë˜ css */
 
         .profile-bio {
             display: grid;
@@ -510,6 +563,13 @@
             /* Support for IE. */
             font-feature-settings: 'liga';
         }
+
+        .welcome-row {
+            display: flex;
+            align-items: center; /* ì´ë¯¸ì§€ì™€ í…ìŠ¤íŠ¸ë¥¼ ì¤‘ì•™ì •ë ¬í•©ë‹ˆë‹¤. */
+            gap: 10px; /* ìš”ì†Œë“¤ ì‚¬ì´ì— ê°„ê²©ì„ ì¤ë‹ˆë‹¤. */
+        }
+
     </style>
 
 
@@ -519,14 +579,20 @@
 
 <body>
 
+<%--<div class="page-img" style="background-image: url('/images/user/getUserTop.jpg');">--%>
 
-<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
+<%--<header class="nav-menu fixed">--%>
+<%--<%@ include file="/WEB-INF/views/layout/header.jsp" %>--%>
+<%--</header>--%>
+
+
+<!--  í™”ë©´êµ¬ì„± div Start /////////////////////////////////////-->
 <div class="container">
 
 
 
     <div class="page-header">
-        <h3 class=" text-info">profile</h3>
+        <h3  style="background-color: #558B2F; color: #F5F1E3;">profile</h3>
     </div>
 
 
@@ -536,43 +602,58 @@
 
         <div class="profile-image">
 
-            <img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&amp;h=152&amp;fit=crop&amp;crop=faces" alt="">
+            <img src="/images/user/khunam.png" style="width: 200px; height: 200px;" alt="">
 
 
-                <img class="text-right get-user-male" style="max-width: 25px; max-height: 25px;" src="/images/male.png">
-
-                <img class="text-right get-user-female" style="max-width: 25px; max-height: 25px;" src="/images/female.png">
 
 
         </div>
 
-        <div class="profile-user-settings">
+        <div class="profile-user-settings" style="display: inline-block; align-items: center;">
 
-            <div class="profile-user-name">
+            <div class="welcome-row">
                 <c:if test="${sessionScope.user.userId eq getUser.userId}" >
                     <span class="nickname1" id="nickname1">${getUser.nickname}</span>
-                    <span class="welcome-msg">´Ô, È¯¿µÇÕ´Ï´Ù!</span>
+                    <span class="welcome-msg">ë‹˜, í™˜ì˜í•©ë‹ˆë‹¤!
+                        <c:if test="${getUser.gender eq 'M'}">
+                            <img class="text-right get-user-male" style="max-width: 25px; max-height: 25px; margin: 0;" src="/images/male.png">
+                        </c:if>
+                        <c:if test="${getUser.gender eq 'F'}">
+                            <img class="text-right get-user-female" style="max-width: 25px; max-height: 25px; margin: 0;" src="/images/female.png">
+                        </c:if>
+                    </span>
                 </c:if>
                 <c:if test="${sessionScope.user.userId ne getUser.userId}" >
                     <span class="nickname2" id="nickname2">${getUser.nickname}</span>
-                    <span class="welcome-msg">´ÔÀÇ È¸¿øÁ¤º¸ÀÔ´Ï´Ù.</span>
+                    <span class="welcome-msg">ë‹˜ì˜ íšŒì›ì •ë³´ì…ë‹ˆë‹¤.
+                        <c:if test="${getUser.gender eq 'M'}">
+                            <img class="text-right get-user-male" style="max-width: 25px; max-height: 25px; margin: 0;" src="/images/male.png">
+                        </c:if>
+                        <c:if test="${getUser.gender eq 'F'}">
+                            <img class="text-right get-user-female" style="max-width: 25px; max-height: 25px; margin: 0;" src="/images/female.png">
+                        </c:if>
+                    </span>
                 </c:if>
             </div>
 
-            <div style="opacity: 1; display: inline-block; font: inherit; background: none; border: none; color: inherit; padding: 0; cursor: pointer;">
-<%--                <span class="icon-heart" id="evaluateCount" style="opacity: 1;">${getUser.evaluateCount}</span>--%>
-                    <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px; cursor: default;" src="/images/redheart.png">
-                    <span style="cursor: default; font-size: 20px;" id="evaluateCount">${getUser.evaluateCount}</span>
+            <div id="imgs" style="opacity: 1; display: inline-block; font: inherit; background: none; border: none; color: inherit; padding: 0; cursor: pointer;">
+                <%--                <span class="icon-heart" id="evaluateCount" style="opacity: 1;">${getUser.evaluateCount}</span>--%>
+                <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px; cursor: default;" src="/images/redheart.png">
+                <span style="cursor: default; font-size: 20px;" id="evaluateCount">${getUser.evaluateCount}</span>
 
                 <c:if test="${sessionScope.user.userId eq getUser.userId}">
-                    <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px; cursor: default;" src="/images/gear.png">
-                </c:if>
-                <c:if test="${sessionScope.user.userId ne getUser.userId}">
-<%--                    <i class="fa-regular fa-circle-xmark" name="blacklist" id="blacklist" title="ºí·¢¸®½ºÆ® µî·Ï" style="opacity: 1;"></i>--%>
-                    <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px;" src="/images/userban.png" name="blacklist" id="blacklist" title="ºí·¢¸®½ºÆ® µî·Ï">
+                    <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px; cursor: pointer;" src="/images/gear.png">
                 </c:if>
 
-                <button type="button" class="btn btn-default" name="listBlack" id="listBlack">ºí·¢¸®½ºÆ®¸ñ·Ïº¸±â</button>
+                <c:if test="${sessionScope.user.userId ne getUser.userId}">
+                    <%--                    <i class="fa-regular fa-circle-xmark" name="blacklist" id="blacklist" title="ë¸”ë™ë¦¬ìŠ¤íŠ¸ ë“±ë¡" style="opacity: 1;"></i>--%>
+                    <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px;" src="/images/userban.png" name="blacklist" id="blacklist" title="ë¸”ë™ë¦¬ìŠ¤íŠ¸ ë“±ë¡">
+                </c:if>
+
+                <c:if test="${sessionScope.user.userId eq getUser.userId}">
+                    <button type="button" class="blacklist-button" name="listBlack" id="listBlack">Blacklist</button>
+                    <button type="button" class="secession-button" name="secessionUser" id="secessionUser">íšŒì›íƒˆí‡´</button>
+                </c:if>
 
             </div>
 
@@ -580,14 +661,19 @@
 
         <div class="profile-stats">
             <blockquote class="with-icon">
-                <p>${getUser.selfIntro}</p>
+                <c:if test="${getUser.selfIntroPublic}">
+                    <h3 id="selfIntro">${getUser.selfIntro}</h3>
+                </c:if>
+                <c:if test="${!getUser.selfIntroPublic}">
+                    <h3 id="selfIntro">"ë¹„ê³µê°œì •ë³´ì…ë‹ˆë‹¤."</h3>
+                </c:if>
             </blockquote>
         </div>
 
 
 
         <div class="profile-bio">
-<%--            //style="display: flex; justify-content: flex-end"--%>
+            <%--            //style="display: flex; justify-content: flex-end"--%>
             <div class="box" style="grid-area: box1; display: flex; justify-content: flex-end">
                 <c:if test="${sessionScope.user.userId ne getUser.userId}">
                     <button type="button" class="btn" name="likeUser" id="likeUser">
@@ -644,12 +730,15 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
 
 <script type="text/javascript">
 
 
-    //ÆäÀÌÁö°¡ ·ÎµåµÉ ½Ã ½ÇÇàµÇ¾î ÁÁ¾Æ¿ä,½È¾î¿ä ¹öÆ° state °ªÀ» °¡Á®¿Â´Ù.
+    //í˜ì´ì§€ê°€ ë¡œë“œë  ì‹œ ì‹¤í–‰ë˜ì–´ ì¢‹ì•„ìš”,ì‹«ì–´ìš” ë²„íŠ¼ state ê°’ì„ ê°€ì ¸ì˜¨ë‹¤.
     $(document).ready(function(){
 
         evaluateButtonState();
@@ -657,7 +746,7 @@
         if("${getUser.gender eq 'M'}") {
             $(".get-user-male").show()
             $(".get-user-female").hide()
-        }else if("${getUser.gender eq 'M'}") {
+        }else if("${getUser.gender eq 'F'}") {
             $(".get-user-female").show()
             $(".get-user-male").hide()
         }
@@ -684,21 +773,21 @@
             success: function (response) {
 
                 if (response == "0" || response == "") {
-                    console.log("response °ª 0ÀÌ°Å³ª nullÀÏ ¶§ ½ÇÇàµÊ");
+                    console.log("response ê°’ 0ì´ê±°ë‚˜ nullì¼ ë•Œ ì‹¤í–‰ë¨");
                     $("#likeUserCancle").hide();
                     $("#disLikeUserCancle").hide();
                     $("#likeUser").show();
                     $("#dislikeUser").show();
 
                 } else if (response == "1") {
-                    console.log("response °ª 1 ÀÏ ¶§ ½ÇÇàµÊ");
+                    console.log("response ê°’ 1 ì¼ ë•Œ ì‹¤í–‰ë¨");
                     $("#likeUser").hide();
                     $("#disLikeUserCancle").hide();
                     $('#disLikeUser').prop('disabled', true);
                     $("#likeUserCancle").show();
 
                 } else {
-                    console.log("response °ª -1 ÀÏ ¶§ ½ÇÇàµÊ");
+                    console.log("response ê°’ -1 ì¼ ë•Œ ì‹¤í–‰ë¨");
                     $("#likeUserCancle").hide();
                     $("#disLikeUser").hide();
                     $("#likeUser").prop('disabled', true);
@@ -706,7 +795,7 @@
                 }
             },
             error: function (error) {
-                alert("½ÇÆĞ");
+                alert("ì‹¤íŒ¨");
             }
         });
     }
@@ -730,18 +819,18 @@
                 success: function (response) {
 
                     if (response == "${getUser.userId}") {
-                        console.log("blacklist °ªÀÌ ÀÖÀ» ¶§ ½ÇÇàµÊ  " +response);
+                        console.log("blacklist ê°’ì´ ìˆì„ ë•Œ ì‹¤í–‰ë¨  " +response);
                         $("#blacklist").attr('src','/images/userbancancle.png');
-                        $("#blacklist").attr('title', 'ºí·¢¸®½ºÆ® Ãë¼Ò');
+                        $("#blacklist").attr('title', 'ë¸”ë™ë¦¬ìŠ¤íŠ¸ ì·¨ì†Œ');
 
                     } else {
-                        console.log("blacklist  °ªÀÌ ¾øÀ» ¶§ ½ÇÇàµÊ  " +response);
+                        console.log("blacklist  ê°’ì´ ì—†ì„ ë•Œ ì‹¤í–‰ë¨  " +response);
                         $("#blacklist").attr('src', '/images/userban.png');
-                        $("#blacklist").attr('title', 'ºí·¢¸®½ºÆ® Ãß°¡');
+                        $("#blacklist").attr('title', 'ë¸”ë™ë¦¬ìŠ¤íŠ¸ ì¶”ê°€');
                     }
                 },
                 error: function (error) {
-                    alert("½ÇÆĞ");
+                    alert("ì‹¤íŒ¨");
                 }
             });
         }
@@ -749,7 +838,7 @@
 
     $(document).ready(function(){
 
-        //ÁÁ¾Æ¿äÃë¼Ò Å¬¸¯ÀÌº¥Æ®
+        //ì¢‹ì•„ìš”ì·¨ì†Œ í´ë¦­ì´ë²¤íŠ¸
         $("#likeUserCancle").on("click" , function() {
 
             $.ajax({
@@ -774,12 +863,12 @@
 
                 },
                 error: function (error) {
-                    alert("½ÇÆĞ");
+                    alert("ì‹¤íŒ¨");
                 }
             });
         });
 
-        //ÁÁ¾Æ¿ä Å¬¸¯ÀÌº¥Æ®
+        //ì¢‹ì•„ìš” í´ë¦­ì´ë²¤íŠ¸
         $("#likeUser").on("click" , function() {
 
             $.ajax({
@@ -801,12 +890,12 @@
                     $("#evaluateCount").text(response);
                 },
                 error: function (error) {
-                    alert("½ÇÆĞ");
+                    alert("ì‹¤íŒ¨");
                 }
             });
         });
 
-        //½È¾î¿ä Å¬¸¯ÀÌº¥Æ®
+        //ì‹«ì–´ìš” í´ë¦­ì´ë²¤íŠ¸
         $("#disLikeUser").on("click" , function() {
 
             $.ajax({
@@ -828,12 +917,12 @@
                     $("#evaluateCount").text(response);
                 },
                 error: function (error) {
-                    alert("½ÇÆĞ");
+                    alert("ì‹¤íŒ¨");
                 }
             });
         });
 
-        //½È¾î¿äÃë¼Ò Å¬¸¯ÀÌº¥Æ®
+        //ì‹«ì–´ìš”ì·¨ì†Œ í´ë¦­ì´ë²¤íŠ¸
         $("#disLikeUserCancle").on("click" , function() {
 
             $.ajax({
@@ -857,12 +946,12 @@
                     }
                 },
                 error: function (error) {
-                    alert("½ÇÆĞ");
+                    alert("ì‹¤íŒ¨");
                 }
             });
         });
 
-        //ºí·¢¸®½ºÆ® Ãß°¡ Å¬¸¯ÀÌº¥Æ®
+        //ë¸”ë™ë¦¬ìŠ¤íŠ¸ ì¶”ê°€ í´ë¦­ì´ë²¤íŠ¸
         $("#blacklist").on("click" , function() {
             if($(this).attr('src') === '/images/userban.png') {
 
@@ -879,12 +968,12 @@
 
                         if(response == "") {
                             $("#blacklist").attr('src', '/images/userbancancle.png');
-                            $("#blacklist").attr('title', 'ºí·¢¸®½ºÆ® Ãë¼Ò');
+                            $("#blacklist").attr('title', 'ë¸”ë™ë¦¬ìŠ¤íŠ¸ ì·¨ì†Œ');
 
                         }
                     },
                     error: function (error) {
-                        alert("½ÇÆĞ");
+                        alert("ì‹¤íŒ¨");
                     }
                 });
             } else if($(this).attr('src') === '/images/userbancancle.png') {
@@ -901,10 +990,10 @@
                     success: function (response) {
 
                         $("#blacklist").attr('src', '/images/userban.png');
-                        $("#blacklist").attr('title', 'ºí·¢¸®½ºÆ® µî·Ï');
+                        $("#blacklist").attr('title', 'ë¸”ë™ë¦¬ìŠ¤íŠ¸ ë“±ë¡');
                     },
                     error: function (error) {
-                        alert("½ÇÆĞ");
+                        alert("ì‹¤íŒ¨");
                     }
                 });
 
@@ -912,32 +1001,50 @@
         });
     });
 
-    //ºí·¢¸®½ºÆ®º¸±â
+    //ë¸”ë™ë¦¬ìŠ¤íŠ¸ë³´ê¸°
     $( function() {
 
         $("#listBlack").on("click" , function() {
-            console.log("ºí·¢¸®½ºÆ®¸ñ·Ïº¸±â Å¬¸¯");
+            console.log("ë¸”ë™ë¦¬ìŠ¤íŠ¸ëª©ë¡ë³´ê¸° í´ë¦­");
 
             $('#listBlackModal').modal('show');
-            console.log("'#listBlackModal' ¸ğ´ŞÀÌ Ç¥½ÃµÇ¾ú¾î¾ß ÇÕ´Ï´Ù.");
+            console.log("'#listBlackModal' ëª¨ë‹¬ì´ í‘œì‹œë˜ì—ˆì–´ì•¼ í•©ë‹ˆë‹¤.");
         });
     });
 
-    //È¸¿øÁ¤º¸¼öÁ¤
+    //íšŒì›ì •ë³´ìˆ˜ì •
     $( function() {
 
-        $("#updateUser").on("click" , function() {
+        $('#imgs img[src="/images/gear.png"]').on("click" , function() {
 
             $('#updateUserModal').modal('show');
         });
     });
 
-    //È¸¿øÅ»ÅğÈ®ÀÎ
+    //íšŒì›íƒˆí‡´í™•ì¸
     $( function() {
 
-        $("#secessionUser").on("click" , function() {
+        $("#secessionUser").on("click", function () {
 
-            $('#secessionUserModal').modal('show');
+            Swal.fire({
+                title: 'ì •ë§ íƒˆí‡´í•˜ì‹œê² ìŠµë‹ˆê¹Œ?',
+                text: "ì´ ë™ì‘ì€ ë˜ëŒë¦´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!",
+                icon: 'warning',
+                showCancelButton: true,  // ì·¨ì†Œ ë²„íŠ¼ í™œì„±í™”
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ë„¤, íƒˆí‡´í•˜ê² ìŠµë‹ˆë‹¤.',
+                cancelButtonText: 'ì•„ë‹ˆì˜¤, ì·¨ì†Œí•©ë‹ˆë‹¤.'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // ì‚¬ìš©ìê°€ í™•ì¸ì„ ëˆŒë €ì„ ë•Œì˜ ë™ì‘
+                    console.log('íƒˆí‡´ë¥¼ í™•ì¸í•˜ì˜€ìŠµë‹ˆë‹¤.')
+                    self.location.href = "/user/secessionUser";
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // ì‚¬ìš©ìê°€ ì·¨ì†Œë¥¼ ëˆŒë €ì„ ë•Œì˜ ë™ì‘
+                    console.log('íƒˆí‡´ë¥¼ ì·¨ì†Œí•˜ì˜€ìŠµë‹ˆë‹¤.')
+                }
+            })
         });
     });
 
@@ -945,13 +1052,13 @@
 
 </script>
 
-<!-- È¸¿øÁ¤º¸¼öÁ¤ ¸ğ´Ş ÀÎÅ¬·çµå -->
+<!-- íšŒì›ì •ë³´ìˆ˜ì • ëª¨ë‹¬ ì¸í´ë£¨ë“œ -->
 <jsp:include page="updateUserModal.jsp"/>
 
-<!-- ºí·¢¸®½ºÆ® ¸ğ´Ş ÀÎÅ¬·çµå -->
+<!-- ë¸”ë™ë¦¬ìŠ¤íŠ¸ ëª¨ë‹¬ ì¸í´ë£¨ë“œ -->
 <jsp:include page="listBlackModal.jsp"/>
 
-<!-- È¸¿øÅ»ÅğÈ®ÀÎ ¸ğ´Ş ÀÎÅ¬·çµå -->
+<!-- íšŒì›íƒˆí‡´í™•ì¸ ëª¨ë‹¬ ì¸í´ë£¨ë“œ -->
 <jsp:include page="secessionUserModal.jsp"/>
 
 

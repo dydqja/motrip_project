@@ -262,17 +262,19 @@ public class UserRestController {
         System.out.println(user);
 
         if (user.getPhone() == null || user.getPhone() == "" || user.getPhone().equals("") || user.getPhone().equals(null)) {
-
+            System.out.println("updateUser() getPhone == null 실행됨.");
             User getUser = userService.getUserById(user.getUserId());
             user.setPhone(getUser.getPhone());
+            System.out.println("저장된 user정보");
 
         }else if (user.getPwd() == null || user.getPwd() == "" || user.getPwd().equals("") || user.getPwd().equals(null)) {
-
+            System.out.println("updateUser() getPwd == null 실행됨.");
             User getUser = userService.getUserById(user.getUserId());
             user.setPwd(getUser.getPwd());
         }else {
-            userService.updateUser(user);
+
         }
+        userService.updateUser(user);
 
         return user;
     }
@@ -327,6 +329,19 @@ public class UserRestController {
 
         return "";
     }
+
+    @RequestMapping(value = "nicknameToUserId", method = RequestMethod.POST)
+    public String nicknameToUserId(@RequestBody User user) throws Exception {
+        System.out.println("/user/nicknameToUserId : POST");
+
+        String userNickname = user.getNickname();
+
+        User nickname = userService.getUserByNickname(userNickname);
+        System.out.println("nicknameToUserId() 결과는 :: "+nickname);
+
+        return nickname.getUserId();
+    }
+
 
 
 }

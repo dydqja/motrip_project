@@ -113,16 +113,211 @@ function getMemoShareListRequest(memoNo){
             memoNo: memoNo
         }
     }).success(function (memoAccessList) {
-       //shareList 의 구성원인 각 user 를 for 문으로 순회하며 buildMemoSharerTableRow() 를 호출한다.
         $("#memo-sharer-list-body").html('');
-        for(let i=0; i<memoAccessList.length; i++){
-            let memoAccess = memoAccessList[i];
-            let row = buildMemoSharerTableRow(memoAccess);
-            //row 를 #memo-sharer-list-body 에 추가한다.
+        $("#memo-sharer-list-body").append("<input type='hidden' id='memo-sharer-list-memoNo' value='"+memoNo+"'>");
+        //shareList 의 구성원인 각 user 를 for 문으로 순회하며 buildMemoSharerTableRow() 를 호출한다.
+        if(memoAccessList.length == 0){
+            //공유자가 없음을 알리는 row 를 #memo-sharer-list-body 에 추가한다.
+            let row = "<tr><td colspan='3' style='text-align:center;'> - 공유자가 없습니다. - </td></tr>";
             $("#memo-sharer-list-body").append(row);
+        }else{
+            let row1 = $('<tr>');
+            row1.append($('<td>').text("닉네임"));
+            row1.append($('<td>').text("이메일"));
+            row1.append($('<td>').text(""));
+            row1.append($('<td>').text(''));
+            $("#memo-sharer-list-body").append(row1);
+
+            for(let i=0; i<memoAccessList.length; i++){
+                let memoAccess = memoAccessList[i];
+                let row = buildMemoSharerTableRow(memoAccess);
+                //row 를 #memo-sharer-list-body 에 추가한다.
+                $("#memo-sharer-list-body").append(row);
+            }
+            $("#memo-sharer-list-body").append(row1);
+            let isEmpty = false;
+            $('.new-memo-sharee-input').each(function() {
+                if ($(this).val() === '') {
+                    isEmpty = true;
+                    return false;
+                }
+            });
+            if (!isEmpty) {
+                let newRow = buildMemoShareeTableRow(memoNo);
+                $("#memo-sharee-list-body").append(newRow)
+            }
+
+
+
         }
+
+        //#memo-sharer-list-body에 memoNo를 담을 hidden input 을 추가한다.
         $("#memo-share-modal").modal('show');
     }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+
+function unshareMemoReQuestForShared(memoNo,userId){
+    $.ajax({
+        type: 'post'
+        ,url: '/memo/deleteMemoAccess'
+        ,dataType: 'json'
+        ,data: {
+            memoNo: memoNo,
+            userId: userId
+        }
+    }).success(function (result) {
+        if(result){
+            //alert("공유를 해제했습니다.");
+            Swal.fire(
+                '성공!',
+                '이 메모를 보지 않게 되었습니다.',
+                'success'
+            )
+            $("#memo-share-modal").modal('hide');
+            getMemoList('sharedMemo');
+        }
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+
+function unshareMemoRequest(memoNo,userId){
+    $.ajax({
+        type: 'post'
+        ,url: '/memo/deleteMemoAccess'
+        ,dataType: 'json'
+        ,data: {
+            memoNo: memoNo,
+            userId: userId
+        }
+        }).success(function (result) {
+            if(result){
+                //alert("공유를 해제했습니다.");
+                Swal.fire(
+                    '성공!',
+                    '대상이 이 메모를 볼 수 없게 되었습니다.',
+                    'success'
+                )
+                $("#memo-share-modal").modal('hide');
+                getMemoShareListRequest(memoNo);
+            }
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+}
+
+function deleteMemoRequest(memoNo, memoDialog){
+    $.ajax({
+        type: 'post',
+        url: '/memo/deleteMemo',
+        dataType: 'json',
+        data:{
+            memoNo: memoNo
+        }
+    }).success(function (result) {
+        if(result){
+            //alert("삭제되었습니다.");
+            Swal.fire(
+                '성공!',
+                '메모가 완전히 삭제되었습니다. 복구하지 않으면 15일 뒤에 완전히 삭제됩니다.',
+                'success'
+            )
+            getMemoList('myMemo');
+            memoDialog.dialog('close');
+        }
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+
+function restoreMemoRequest(memoNo, memoDialog){
+    $.ajax({
+        type: 'post',
+        url: '/memo/restoreMemo',
+        dataType: 'json',
+        data:{
+            memoNo: memoNo
+        }
+    }).success(function (result) {
+        if(result){
+            //alert("복구되었습니다.");
+            Swal.fire(
+                '성공!',
+                '메모가 복구되었습니다.',
+                'success'
+            )
+            getMemoList('deletedMemo');
+            memoDialog.dialog('close');
+        }
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+
+function removeMemoRequest(memoNo, memoDialog){
+    $.ajax({
+        type: 'post',
+        url: '/memo/removeMemo',
+        dataType: 'json',
+        data:{
+            memoNo: memoNo
+        }
+    }).success(function (result) {
+        if(result){
+            //alert("제거되었습니다.");
+            Swal.fire(
+                '성공!',
+                '메모가 완전히 제거되었습니다.',
+                'success'
+            )
+            getMemoList('deletedMemo');
+            memoDialog.dialog('close');
+        }
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+function addMemoAccessRequest(memoNo,nickname){
+    console.log('addMemoAccessRequest on')
+    $.ajax({
+        type: 'post',
+        url: '/memo/addMemoAccess',
+        dataType: 'json',
+        data:{
+            memoNo: memoNo,
+            nickname: nickname
+        }
+    }).success(function (data){
+        if(data.status==='fail'){
+            Swal.fire(
+                '이런!',
+                '존재하지 않는 회원에게 메모를 공유할순 없습니다!',
+                'error'
+            )
+        }
+
+        getMemoShareListRequest(memoNo);
+    }).fail(function (){
+        alert(JSON.stringify(error));
+    });
+}
+function nicknameCheckRequest(nickname,checkSpace){
+    $.ajax({
+        type: 'post',
+        url: '/user/checkNickname',
+        dataType: 'json',
+        data:{
+            value: nickname
+        }
+    }).success(function (data){
+        if(data===1){
+            checkSpace.text('존재하지 않는 회원입니다.');
+        }else{
+            checkSpace.text('존재하는 회원입니다.');
+        }
+    }).fail(function (){
         alert(JSON.stringify(error));
     });
 }

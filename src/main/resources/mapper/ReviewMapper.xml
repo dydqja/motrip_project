@@ -280,4 +280,9 @@
     </update>
     <!-- Recover Review -->
 
+    <!---Review Count-->
+    <select id="reviewCount" resultType="int">
+        select count(review_no) from review;
+    </select>
+    <!---Review Count-->
 </mapper>

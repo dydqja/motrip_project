@@ -13,7 +13,8 @@
 <html lang="en">
 
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<%--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--%>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compastible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +30,24 @@
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 <%--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">--%>
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 
+    <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/vendor/retina.min.js"></script>
+    <script src="/vendor/jquery.imageScroll.min.js"></script>
+    <script src="/assets/js/min/responsivetable.min.js"></script>
+    <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+
+
+    <script src="/assets/js/min/countnumbers.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+
+    <!-- Current Page JS -->
+    <script src="/assets/js/min/priceslider.min.js"></script>
     <style>
         .center-div {
             display: flex;
@@ -70,45 +88,43 @@
 <main>
     <form>
         <input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}" >
+        <input type="hidden" id="birthYear" value="${sessionScope.user.age}" >
+        <input type="hidden" id="gender" value="${sessionScope.user.gender}" >
+
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
 
                 <div class="sidebar">
                     <div class="border-box">
-                        <div class="box-title" >CREATE CHATROOM</div>
-                        <div class="input-group">
-                            <input type="text" name="createTripPlanNo" class="form-control" placeholder="TripPlan">
-                            <div class="input-group-btn">
-                                <button class="btn btn-primary hvr-grow" id="addChatRoom">Create</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border-box">
                         <div class="box-title">ChatRoom Search</div>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search Site">
+                            <input type="text" name="searchKeyword" value="" class="form-control" placeholder="Search Site">
                             <div class="input-group-btn">
                                 <button class="btn btn-primary" id="search-chatroom">Search</button>
+                                <input type="hidden" id="currentPage" name="currentPage" value="0"/>
                             </div>
                         </div>
                     </div>
 
                     <div class="border-box">
                         <div class="box-title">Gender</div>
-                        <div class="center-div" style="width: 100%; height: 100%;">
+                        <div class="left-div" style="width: 150%; height: 100%;">
                             <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default active" data-toggle="tooltip" data-placement="bottom" title="venus-mars">
-                                    <input type="radio" name="options" id="option1" checked>
+<%--                                <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="ALL">--%>
+<%--                                    <input type="radio" name="gender" id="option1" value="">--%>
+<%--                                    <span>A</span>--%>
+<%--                                </label>--%>
+                                <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="venus-mars">
+                                    <input type="radio" name="gender" id="option2" value="MF">
                                     <span class="fa fa-venus-mars"></span>
                                 </label>
                                 <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="mars">
-                                    <input type="radio" name="options" id="option4">
+                                    <input type="radio" name="gender" id="option4" value="M">
                                     <span class="fa fa-mars"></span>
                                 </label>
                                 <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="venus">
-                                    <input type="radio" name="options" id="option5">
+                                    <input type="radio" name="gender" id="option5" value="F">
                                     <span class="fa fa-venus"></span>
                                 </label>
                             </div>
@@ -141,18 +157,13 @@
                             <input type="text" class="form-control" placeholder="Days">
                         </div>
                     </div>
-
                 </div>
-
-
-
-
             </div>
 
             <div class="col-sm-8">
 
                 <div class="sort-wrap">
-                    <div class="sort-title counter-div"><span class="icon-tent counter" style="color: green" id="chatRoomCounter"></span>Matching Result</div>
+                    <div class="sort-title counter-div"><span class="icon-tent counter" style="color: green" id="chatRoomCounter">${page.totalCount}</span>Matching Result</div>
                 </div>
                 <c:set var="i" value="0" />
                 <c:forEach var="chatRoom" items="${list}">
@@ -190,27 +201,7 @@
                             <div class="left"><span class="icon-calendar"></span>   ${chatRoom.strDate} [${chatRoom.tripDays}일]</div>
 
                             <div class="right">
-<%--                                <a href="" data-toggle="tooltip" data-placement="bottom" title="Difficulty - Hard"><span class="icon-hard"></span></a>--%>
-<%--                                <a href="" data-toggle="tooltip" data-placement="bottom" title="Ticket"><span class="icon-plane"></span></a>--%>
-<%--                                <a href="" data-toggle="tooltip" data-placement="bottom" title="Style - Camping"><span class="icon-tent"></span></a>--%>
                                     <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}" data-toggle="modal" ><span class="icon-plane"></span></a>
-<%--                                    <div id="modal-regular" class="modal" tabindex="-1" role="dialog" aria-hidden="true">--%>
-<%--                                        <div class="modal-dialog">--%>
-<%--                                            <div class="modal-content">--%>
-<%--                                                <div class="modal-header">--%>
-<%--                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>--%>
-<%--                                                    <h3 class="modal-title">Modal Title</h3>--%>
-<%--                                                </div>--%>
-<%--                                                <div class="modal-body">--%>
-<%--                                                    <jsp:include page="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"/>--%>
-<%--                                                </div>--%>
-<%--                                                <div class="modal-footer">--%>
-<%--                                                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>--%>
-<%--                                                    <button type="button" class="btn btn-sm btn-primary">Save changes</button>--%>
-<%--                                                </div>--%>
-<%--                                            </div>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
                                     <a href="#modal-regular2" data-toggle="modal"><span class="icon-user" value="${chatRoom.chatRoomNo}"></span></a>
                                     <input type="hidden" />
                                     <div id="modal-regular2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -229,7 +220,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                             </div>
                         </div>
                         <div class="item-book">
@@ -239,6 +229,9 @@
                                         style="margin-left: 10px; background-color: #ee3f00" disabled>Hottest</button>
                             </c:if>
                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 0}">
+                                <input type="hidden" class="roomGender" value="${chatRoom.gender}">
+                                <input type="hidden" class="minAge" value="${chatRoom.minAge}">
+                                <input type="hidden" class="maxAge" value="${chatRoom.maxAge}">
                                 <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Enroll</button>
                             </c:if>
                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">
@@ -249,10 +242,6 @@
                                 <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}"
                                         style="margin-left: 10px; background-color: #f5ff66; color: red" disabled>Finished</button>
                             </c:if>
-
-
-
-
                             <div class="price">${chatRoom.currentPersons} / ${chatRoom.maxPersons}</div>
                         </div>
                     </div>
@@ -260,43 +249,26 @@
                 </c:forEach>
 
                 <nav aria-label="Page navigation example" class="text-center">
-
                     <ul class="pagination justify-content-center">
-
                         <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
-
-                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${page.currentPage - 1}" aria-label="Previous">
+                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${page.currentPage - 1}&searchKeyword=${search.searchKeyword}" aria-label="Previous">
                                 &laquo;
                             </a>
-
                         </li>
-
                         <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
-
                             <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-
-                                <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${i}">${i}</a>
-
+                                <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${i}&searchKeyword=${search.searchKeyword}">${i}</a>
                             </li>
-
                         </c:forEach>
-
                         <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${page.currentPage + 1}" aria-label="Next">
+                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${page.currentPage + 1}&searchKeyword=${search.searchKeyword}" aria-label="Next">
                                 &raquo;
                             </a>
-
                         </li>
-
                     </ul>
-
                 </nav>
-
-
-
             </div>
-
         </div>
     </div>
     </form>
@@ -304,24 +276,7 @@
 </main>
 
 
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 
-<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-<script src="/vendor/retina.min.js"></script>
-<script src="/vendor/jquery.imageScroll.min.js"></script>
-<script src="/assets/js/min/responsivetable.min.js"></script>
-<script src="/assets/js/bootstrap-tabcollapse.js"></script>
-
-
-<script src="/assets/js/min/countnumbers.min.js"></script>
-<script src="/assets/js/main.js"></script>
-
-<!-- Current Page JS -->
-<script src="/assets/js/min/priceslider.min.js"></script>
 <script>
     $(document).ready(function(){
         $('#datepicker').datepicker();
@@ -333,8 +288,8 @@
     function fncGoChatroom(){
         $("form").attr("method","POST").attr("action","/chatRoom/chat").submit();
     }
+
     function fncJoinChatroom(){
-        alert("join-chatRoom");
         $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
     }
 
@@ -342,14 +297,50 @@
         $("form").attr("method","get").attr("action","/chatRoom/addChatRoom").submit();
     }
 
-    // //참여된 채팅방 들어가기
-    // $(function() {
-    //     $(".go").on("click", function() {
-    //         fncGoChatroom();
-    //     });
-    // });
-    //참여안된 채팅방 조인하기
-    $(function() {$(".join-chatRoom").on("click", function() {fncJoinChatroom();});});
+    $(function() {
+        $(".join-chatRoom").on("click", function(event) {
+            event.preventDefault();
+            const userId = $("#userId").attr('value');
+            const gender = $("#gender").attr('value');
+            const roomGender = $(this).siblings('.roomGender').val();
+            const minAge = $(this).siblings('.minAge').val();
+            const maxAge = $(this).siblings('.maxAge').val();
+            const age = calculateAge($("#birthYear").attr('value'));
+
+            if(userId !== '') {
+                const value = $(this).attr('value');
+                alert("join-chatroom");
+                $.ajax({
+                    url: '/chatMember/json/fetchChatMembers/' + value,
+                    type: 'GET',
+                    dataType: 'json',
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    success: function (members) {
+                        const matchingMember = members.find(member => member.userId === userId);
+                        if (matchingMember) {
+                            alert("이미가입했던 채팅방입니다.")
+                        } else {
+                            if ((roomGender === gender || roomGender === "MF") && age >= minAge && age <= maxAge) {
+                                alert("신청완료 방장의 허락을 기다려 주세요");
+                                fncJoinChatroom();
+                            } else {
+                                alert("조건에 부합하지 않습니다.");
+                            }
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("fail");
+                        console.log('AJAX Error:', error);
+                    }
+                });
+            }else{
+                alert("로그인하세요");
+            }
+        });
+    });
 
     $(function() {$("#addChatRoom").on("click", function() {fncAddChatroom();});});
 
@@ -370,33 +361,6 @@
     //     });
     // });
 
-    $(document).ready(function() {
-        // AJAX 요청을 보내고 채팅방의 수를 가져오는 함수
-        function listCounter() {
-            $.ajax({
-                url: "/chatRoom/json/getListCount",
-                type: "POST",
-                dataType: "json",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                data: JSON.stringify({}),
-                success: function (data) {
-                    console.log(data);
-                    $("#chatRoomCounter").html(data); // 변경된 부분: data.count 값을 출력합니다.
-                    $(".total").text("Total : "+data);
-                    var t=$(".counter");t.countUp({delay:30,time:3e3})
-                },
-                error: function(xhr, status, error) {
-                    console.log("An error occurred: " + error);
-                }
-            });
-        }
-
-        // 페이지가 열리면 함수 실행
-        listCounter();
-    });
     $(function() {
         $(".icon-user").on("click", function() {
             var value = $(this).attr('value');
@@ -482,7 +446,7 @@
 
 
     function fncGetUserList(currentPage){
-        $("#currentPage").val(currentPage)
+        console.log($("#currentPage").val(currentPage));
         $("form").attr("method" , "GET").attr("action" , "/chatRoom/chatRoomList?").submit();
     }
 
@@ -491,6 +455,16 @@
             fncGetUserList(1);
         });
     })
+
+    //생년월일 구하기
+    function calculateAge(birthYear) {
+        let currentDate = new Date();
+        let currentYear = currentDate.getFullYear();
+        let age = currentYear - birthYear;
+        return age;
+    }
+
+
 </script>
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 

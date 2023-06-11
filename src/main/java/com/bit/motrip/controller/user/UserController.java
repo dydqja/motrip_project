@@ -126,12 +126,12 @@ public class UserController {
     }
 
     @RequestMapping(value="listUser", method = RequestMethod.GET)
-    public String listUser(@RequestParam(defaultValue = "0", required = false) int currentPage, Model model) throws Exception{
+    public String listUser(@ModelAttribute("search") Search search, Model model) throws Exception{
 
         System.out.println("/user/listUser : GET / POST");
 
-        Search search = new Search();
-        search.setCurrentPage(currentPage);
+//        Search search = new Search();
+//        search.setCurrentPage(currentPage);
 
         if(search.getCurrentPage() == 0 ){
             search.setCurrentPage(1);
@@ -163,7 +163,7 @@ public class UserController {
         //Business Logic
         if(userId != null) {
             User user = userService.getUserById(userId);
-            System.out.println(user);
+            System.out.println("getUserById로 가져온 user값은 ? " +user);
             // Model 과 View 연결
             model.addAttribute("getUser", user);
 

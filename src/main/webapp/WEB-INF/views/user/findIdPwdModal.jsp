@@ -141,20 +141,6 @@
                         <!-- END Tabs Content -->
                 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default hvr-grow" data-dismiss="modal">Close</button>
