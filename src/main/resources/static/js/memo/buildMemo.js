@@ -209,7 +209,6 @@ function showMemoDialog(memo){
     });
     //서머노트를 적용한다.
     memoDialog.find('.summernote-contents').summernote();
-
     //메모다이얼로그에서 서머노트를 숨긴다.
     memoDialog.find('.summernote-container').hide();
     //메모다이얼로그에서 저장 버튼을 숨긴다.
