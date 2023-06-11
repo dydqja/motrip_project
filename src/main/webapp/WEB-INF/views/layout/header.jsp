@@ -36,7 +36,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
-                    <img src="/images/motrip-logo.gif" alt="">
+                    <img src="/images/motrip-logo.gif" alt="" style="height: 120%;">
                 </a>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -80,7 +80,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">채팅</a>
                         <ul class="dropdown-menu">
-                            <li><a href="/chatRoom/chatRoomList">채팅 리스트</a>
+                            <li><a href="/chatRoom/chatRoomList">채팅방 목록</a>
                             </li>
                         </ul>
                     </li>
