@@ -359,4 +359,26 @@ public class MemoRestController {
             return successJson;
         }
     }
+    @PostMapping("attachMemoToChatRoom")
+    public String attachMemoToChatRoom(
+            @RequestParam("memoNo") String memoNo,
+            @RequestParam("chatRoomNo") String chatRoomNo)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+        int chatRoomNoInt = Integer.parseInt(chatRoomNo);
+
+        int isSuccess = 1;
+        try {
+            memoService.updateMemoAttach(2,chatRoomNoInt,memoNoInt);
+        } catch (Exception e) {
+            isSuccess = 0;
+        }
+        if (isSuccess == 0) {
+            System.out.println("null 을 보내겠다.");
+            return null;
+        }else {
+            System.out.println("successJson 을 보내겠다.");
+            return successJson;
+        }
+    }
 }

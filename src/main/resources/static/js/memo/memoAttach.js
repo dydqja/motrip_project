@@ -4,6 +4,8 @@ let memoNo = 0;
 let tripPlanNo = 0;
 let tripPlanTitle = '';
 let memoTitle = '';
+let chatRoomNo = 0;
+let chatRoomTitle = '';
 
 $(document).on('click', '.memo-dialog-attach-btn', function(event) {
     event.preventDefault();
@@ -49,7 +51,6 @@ $(document).on('click', function(event) {
 //트립플랜 리스너
 $(document).on('mouseenter', '.trip-plan-item-list', function() {
     if(isCellMode){
-        let button = $('#mini-memo-btn');
         tripPlanNo = $(this).find('.tripPlanNo').val();
         tripPlanTitle = $(this).find('.item-title').text().trim();
     }
@@ -62,6 +63,23 @@ $(document).on('click', '.trip-plan-item-list', function() {
         attachMemoToTripPlanRequest(memoNo,tripPlanNo);
    }
 });
+
+//채팅방 리스너
+$(document).on('mouseenter', '.chat-room-item-list', function() {
+if(isCellMode){
+        chatRoomNo = $(this).find('.chat-room-no-hidden-input').val();
+        chatRoomTitle = $(this).find('.item-title').text().trim();
+    }
+});
+$(document).on('click', '.chat-room-item-list', function() {
+    if(isCellMode){
+        disableCellMode();
+        isInfoMessageDisplayed = false;
+        attachMemoToChatRoomRequest(memoNo,chatRoomNo);
+    }
+});
+
+
 
 
 function attachMemoToTripPlanRequest(memoNo,tripPlanNo){
@@ -96,6 +114,67 @@ function attachMemoToTripPlanRequest(memoNo,tripPlanNo){
         }
     });
 }
+
+function attachMemoToChatRoomRequest(memoNo,chatRoomNo){
+    $.ajax({
+        type: 'post',
+        url: '/memo/attachMemoToChatRoom',
+        dataType: 'json',
+        data: {
+            memoNo: memoNo,
+            chatRoomNo: chatRoomNo
+        },
+        success: function (result) {
+            if (result.status === 'success') {
+                // 부착 성공
+                swal.fire({
+                    title: '메모 부착 성공',
+                    text: '채팅방, ['+chatRoomTitle+']에 ['+memoTitle+'] 를 부착하였습니다.',
+                    icon: 'success'
+                });
+                getMemoList('myMemo');
+            } else {
+                // 부착 실패
+                swal.fire({
+                    title: '메모 부착 실패',
+                    text: '채팅방, ['+chatRoomTitle+']에 ['+memoTitle+'] 를 부착하는데 실패하였습니다.',
+                    icon: 'error'
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $(document).on('click', '.memo-dialog-detach-btn', function(event) {
     event.preventDefault();

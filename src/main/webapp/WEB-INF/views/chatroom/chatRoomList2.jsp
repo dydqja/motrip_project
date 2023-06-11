@@ -168,7 +168,8 @@
                 <c:set var="i" value="0" />
                 <c:forEach var="chatRoom" items="${list}">
                 <c:set var="i" value="${ i+1 }" />
-                <div class="item-list">
+                <div class="item-list chat-room-item-list">
+                    <input type="hidden" class="chat-room-no-hidden-input" value="${chatRoom.chatRoomNo}">
                     <div class="col-sm-5">
                         <div class="item-img row" style="background-image: url('http://placehold.it/320x250');">
                             <div class="item-overlay">
