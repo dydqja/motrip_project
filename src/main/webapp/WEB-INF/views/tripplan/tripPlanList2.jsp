@@ -35,6 +35,7 @@
         }
 
     </style>
+
 </head>
 
 <body>
@@ -147,14 +148,14 @@
                                     </div>
                                     <div>
                                         <c:if test="${not empty sessionScope.user.userId}">
-                                            <c:if test="sessionScope.user.userId == user.userId">
+                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                                 <button class="btn-sm btn-info right" id="addChatRoom"
                                                         value="${tripPlan.tripPlanNo}">채팅방 생성
                                                 </button>
                                             </c:if>
                                         </c:if>
                                         <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
-                                            <c:if test="sessionScope.user.userId == user.userId">
+                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                                 <button class="btn-sm btn-info right" name="tripPlanNo"
                                                         value="${tripPlan.tripPlanNo}">여행완료
                                                 </button>
@@ -172,7 +173,7 @@
                                 </button>
 
                                 <c:if test="${not empty sessionScope.user.userId && !tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                    <c:if test="sessionScope.user.userId == user.userId">
+                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                         <button id="btnDelete" class="btn btn-sm btn-danger"
                                                 value="${tripPlan.tripPlanNo}">삭제<input type="hidden"
                                                                                         value="${tripPlan.tripPlanNo}"
@@ -182,7 +183,7 @@
                                 </c:if>
 
                                 <c:if test="${not empty sessionScope.user.userId && tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                    <c:if test="sessionScope.user.userId == user.userId">
+                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                         <button id="btnDelete" class="btn btn-sm btn-info"
                                                 value="${tripPlan.tripPlanNo}">복구<input type="hidden"
                                                                                         value="${tripPlan.tripPlanNo}"
@@ -207,26 +208,30 @@
                     <ul class="pagination justify-content-center">
 
                         <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="/tripPlan/tripPlanList?currentPage=${page.currentPage - 1}"
-                                   aria-label="Previous">
-                                    &laquo;
-                                </a>
+
+                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage - 1}"
+                               aria-label="Previous">
+                                &laquo;
+                            </a>
+
                         </li>
 
                         <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
 
                             <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-                                    <a class="page-link" href="/tripPlan/tripPlanList?currentPage=${i}">${i}</a>
+
+                                <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}">${i}</a>
+
                             </li>
 
                         </c:forEach>
 
                         <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-                                <a class="page-link" href="/tripPlan/tripPlanList?currentPage=${page.currentPage + 1}"
-                                   aria-label="Next">
-                                    &raquo;
-                                </a>
+                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage + 1}"
+                               aria-label="Next">
+                                &raquo;
+                            </a>
 
                         </li>
 
