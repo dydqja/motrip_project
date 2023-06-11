@@ -5,18 +5,72 @@
 <html lang="ko">
 
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     <title>회원 탈퇴</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+    <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
+    <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
+    <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
+    <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
+    <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
+    <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+<%--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">--%>
+
+
+
+
+
+
+
+
 
     <style>
     .shake {
     animation: shake 0.5s;
     animation-iteration-count: infinite;
+    }
+
+    .pwd-btn {
+        color: #fff;
+        background-color: #003049;
+        border: none;
+        padding: 10px 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .pwd-input {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: 2px solid #558B2F;
+    }
+
+    .main-container {
+        margin: 0 auto;  /* 상하 0, 좌우는 자동으로 마진을 주는 방식으로 중앙에 정렬 */
+        max-width: 800px;  /* 원하는 폭에 맞게 설정하세요. */
+        padding: 0 20px;  /* 양옆에 약간의 padding을 주어 콘텐츠가 가장자리에 닿지 않도록 합니다. */
+        margin-top: 10px;
+    }
+
+    .guide-text {
+        display: inline-block;
+        padding: 10px;
+        border: 2px solid #000;
+        background-color: transparent;
+        color: #ffffff;
+        font-weight: bold;
+        border-radius: 5px;
     }
 
     @keyframes shake {
@@ -32,7 +86,94 @@
     90% { transform: translate(1px, 2px) rotate(0deg); }
     100% { transform: translate(1px, -2px) rotate(-1deg); }
     }
+
     </style>
+
+
+
+
+
+
+</head>
+<body style="background: linear-gradient(to bottom, #4B544B 40%, #000000 60%);">
+
+<div class="page-img" style="background-image: url('/images/user/secessionTop.jpg');">
+
+    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+
+    <div class="container">
+        <h1 class="main-head text-center board-title noticeZooming">회원탈퇴</h1>
+    </div>
+</div>
+
+<%--<div class="page-img" style="background-image: url('/images/board/noticeBack.jpg');">--%>
+
+    <div class="main-container text-center">
+
+        <span class="guide-text">가입시 등록했던 전화번호로 인증 후 탈퇴가 완료됩니다.</span>
+
+
+        <form class="form-horizontal text-center">
+
+            <div class="text-center" style="margin-left: 20%; margin-right: 20%;">
+                <div class="text-center" style="margin-left: 20%; margin-right: 20%;">
+                    <input type="text" class="pwd-input" name="phone" id="phone" placeholder="01012345678" value="${getUser.phone}" required maxlength="11">
+                    <span id="checkPhone" style= "white-space: nowrap; display: block;"></span>
+                    <button type="button" class="pwd-btn" id="sendSms">인증번호전송</button>
+                </div>
+            </div>
+
+            <!-- sms인증번호 입력폼 ==> 평상시 숨김 -->
+            <div class="form-group text-center" id="PhCodeGroup" style="display: none; margin-left: 20%; margin-right: 20%;">
+                <div class="text-center" style="margin-left: 20%; margin-right: 20%;">
+                    <input type="text" class="pwd-input" name="phCodeConfirm" id="phCodeConfirm" placeholder="발송된 인증번호 입력">
+                    <span id="checkPhCodeConfirm" style= "white-space: nowrap; display: block;"></span>
+                    <button type="button" class="pwd-btn" id="confirmPhCode">확인</button>
+                    <button type="button" class="pwd-btn" id="resendPhCode" style="background-color: #8B2955;">재전송</button>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="footer" style="margin-top: 10px;">
+            <button type="button" class="pwd-btn" id="secessionCommit" style="background-color: #0A0E1C">탈퇴</button>
+        </div>
+
+    </div>
+
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
+
+
+
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/vendor/retina.min.js"></script>
+    <script src="/vendor/jquery.imageScroll.min.js"></script>
+    <script src="/assets/js/min/responsivetable.min.js"></script>
+    <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+    <script src="/assets/js/min/countnumbers.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+<%--    <script src="/assets/js/min/home.min.js"></script>--%>
+<%--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>--%>
+<%--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>--%>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -42,7 +183,7 @@
         //탈퇴
         $(function() {
 
-            $( "#commit" ).on("click" , function() {
+            $( "#secessionCommit" ).on("click" , function() {
                 fncSecessionUser();
             });
         });
@@ -59,9 +200,14 @@
                 return;
             }
 
-            alert("회원 탈퇴가 완료되었습니다.")
+            swal({
+                title: "회원 탈퇴가 완료되었습니다.",
+                icon: "success",
+                button: "확인",
 
-            $("form").attr("method" , "POST").attr("action" , "/user/deleteUser").submit();
+            }).then((value) => {
+                $("form").attr("method" , "POST").attr("action" , "/user/deleteUser").submit();
+            });
         }
 
         let isPhoneNumberVerified = true;
@@ -190,47 +336,7 @@
                 });	//ajax close
             });
         });
-
-
-
-
-
-
     </script>
-
-</head>
-<body>
-
-
-
-    <form class="form-horizontal">
-
-        <div class="form-group">
-            <label for="phone" class="col-sm-4 control-label">전화번호</label>
-            <div class="col-sm-6">
-                <input type="text" class="form-control" name="phone" id="phone" placeholder="01012345678" required maxlength="11">
-                <span id="checkPhone"></span>
-                <button type="button" class="btn btn-primary" id="sendSms">인증번호전송</button>
-            </div>
-        </div>
-
-        <!-- sms인증번호 입력폼 ==> 평상시 숨김 -->
-        <div class="form-group" id="PhCodeGroup" style="display: none;">
-            <label for="phCodeConfirm" class="col-sm-4 control-label">전화번호 인증</label>
-            <div class="col-sm-6">
-                <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirm" placeholder="발송된 인증번호 입력">
-                <span id="checkPhCodeConfirm"></span>
-                <button type="button" class="btn btn-primary" id="confirmPhCode">확인</button>
-                <button type="button" class="btn btn-primary" id="resendPhCode">재전송</button>
-            </div>
-        </div>
-
-</form>
-
-    <div class="footer">
-        <button type="button" class="btn btn-default" id="commit">탈퇴</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-    </div>
 
 </body>
 </html>
