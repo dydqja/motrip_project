@@ -317,4 +317,46 @@ public class MemoRestController {
         }
         return successJson;
     }
+    @PostMapping("attachMemoToTripPlan")
+    public String attachMemoToTripPlan(
+            @RequestParam("memoNo") String memoNo,
+            @RequestParam("tripPlanNo") String tripPlanNo)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+        int tripPlanNoInt = Integer.parseInt(tripPlanNo);
+
+        int isSuccess = 1;
+        try {
+            memoService.updateMemoAttach(0,tripPlanNoInt,memoNoInt);
+        } catch (Exception e) {
+            isSuccess = 0;
+        }
+        if (isSuccess == 0) {
+            System.out.println("null 을 보내겠다.");
+            return null;
+        }else {
+            System.out.println("successJson 을 보내겠다.");
+            return successJson;
+        }
+    }
+    @PostMapping("detachMemo")
+    public String detachMemo(
+            @RequestParam("memoNo") String memoNo)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+
+        int isSuccess = 1;
+        try {
+            memoService.updateMemoAttach(99,0,memoNoInt);
+        } catch (Exception e) {
+            isSuccess = 0;
+        }
+        if (isSuccess == 0) {
+            System.out.println("null 을 보내겠다.");
+            return null;
+        }else {
+            System.out.println("successJson 을 보내겠다.");
+            return successJson;
+        }
+    }
 }
