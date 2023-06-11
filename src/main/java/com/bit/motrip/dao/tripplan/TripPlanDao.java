@@ -12,8 +12,7 @@ import java.util.Map;
 @Mapper
 public interface TripPlanDao {
 
-    public List<TripPlan> selectTripPlanList(Search search) throws Exception;
-    public List<TripPlan> selectMyTripPlanList(Map<String, Object> parameters) throws Exception;
+    public List<TripPlan> selectTripPlanList(Map<String, Object> parameters) throws Exception;
     public void addTripPlan(TripPlan tripPlan) throws Exception;
     public int getTripPlan() throws Exception;
     public TripPlan selectTripPlan(int tripPlanNo) throws Exception;

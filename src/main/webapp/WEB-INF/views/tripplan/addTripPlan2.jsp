@@ -10,165 +10,28 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Mold Discover . HTML Template</title>
-
     <!-- 구분선 -->
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
-    <link rel="stylesheet" href="/css/tripplan/tripplan.css">
-    <link rel="stylesheet" href="/css/tripplan/overlay.css">
+<%--    <link rel="stylesheet" href="/css/tripplan/tripplan.css">--%>
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
     <link rel="stylesheet" href="/summernote/summernote.css">
     <script src="/summernote/summernote.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <!-- 구분선 -->
-
     <link rel="icon" type="image/png" href="assets/img/favicon.png"/>
     <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
     <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
-    <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">ㅅ
+    <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-
     <!-- sortable -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script>
-        $(function () {
-            $(".column").sortable({
-                // 드래그 앤 드롭 단위 css 선택자
-                connectWith: ".column",
-                // 움직이는 css 선택자
-                handle: ".card-header",
-                // 움직이지 못하는 css 선택자
-                cancel: ".no-move",
-                // 이동하려는 location에 추가 되는 클래스
-                placeholder: "card-placeholder",
-                // 요소를 잡는 순간 실행
-                start: function (event, ui) {
-                    $(this).css('background-color', 'rgb(213,222,232)');
-                },
-                // 모든 이동이 끝난 후에 마지막으로 실행
-                stop: function (event, ui) {
-                    $(this).css('background-color', 'transparent');
-                }
-            });
-            // 해당 클래스 하위의 텍스트 드래그를 막는다.
-            $(".column .card").disableSelection();
-        });
 
-        // 삭제 라벨
-        $(document).on('click', ".deleteBox", function () {
-            var id = $(this).attr('id');
-            var indexCheck = id.slice("deleteBox".length);
-            var index = $(this).data('index');
-
-            console.log("id : " + indexCheck);
-            console.log("index : " + index);
-
-            if (index == 0) {
-                alert("첫번째값은 다른 명소가 있는 경우에는 삭제시킬수없습니다. 나중에 앞서 다른 명소들 삭제후 삭제시킬수있게 만들것이며 이동순서를 바꿔서 삭제");
-            } else {
-                var prevTripTimeEl = document.querySelector('.card.text-white.mb-3[id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]'); // 명소를 삭제했을 때 이전 시간 리스트박스
-                var newTripTimeEl = document.createElement('div'); // 대체할 새로운 시간 리스트박스
-                newTripTimeEl.className = 'card text-white mb-3';
-                newTripTimeEl.setAttribute('id', 'tripTime' + indexCheck);
-                newTripTimeEl.setAttribute('name', 'tripTime');
-                newTripTimeEl.style.backgroundColor = 'rgb(132, 200, 224)';
-                newTripTimeEl.style.width = 'auto';
-                newTripTimeEl.style.height = 'auto';
-                newTripTimeEl.style.textAlign = 'center';
-                newTripTimeEl.setAttribute('data-index', index - 1);
-                console.log(prevTripTimeEl);
-
-                var tripTimeEl = document.querySelector('.card.text-white.mb-3[id="tripTime' + indexCheck + '"][data-index="' + (index) + '"]'); // 명소를 삭제했을 때 시간 리스트박스
-                console.log(tripTimeEl);
-
-                // 배열에서 해당 명소 정보 삭제
-                if (placeTripTimes['map' + indexCheck][index] != undefined || placeTripTimes['map' + indexCheck][index] != null) {
-                    totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index]; // 시간을 다시 구하기 위해 총 더한 시간에서 없어진 시간들을 지움
-                    tripTimeEl.parentNode.replaceChild(newTripTimeEl, tripTimeEl); // 시간 리스트박스를 대체할 새로운 시간 리스트박스로 교체
-                }
-
-                totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index - 1]; // 시간을 다시 구하기 총 더한 시간에서 없어진 시간들을 지움
-                prevTripTimeEl.parentNode.removeChild(prevTripTimeEl);
-
-                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
-                placeTripTimes['map' + indexCheck].splice(index - 1, index + 1); // 시간을 다시 구하기 위해서 앞뒤로 지워야함
-                placeTripPositions[indexCheck].splice(index, index); // 삭제된 좌표 인덱스
-                allPlaces['map' + indexCheck].splice(index, index); // 삭제된 명소정보
-                var marker = markers[indexCheck][index];
-                marker.setMap(null); // 마커를 지도에서 제거
-                markers[indexCheck].splice(index, index); // 마커 삭제
-
-                // 삭제된 화면을 재구성
-                var bounds = new kakao.maps.LatLngBounds();
-                for (var i = 0; i < markers[indexCheck].length; i++) {
-                    bounds.extend(markers[indexCheck][i].getPosition());
-                }
-                markersBound[indexCheck] = bounds;
-                maps[indexCheck].setBounds(bounds);
-
-                // 이후 남아있는 리스트박스들의 id 값을 업데이트
-                var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
-                if (index != elTripTimes.length) {
-                    for (var i = index; i < elTripTimes.length; i++) {
-                        elTripTimes[i].setAttribute('data-index', i);
-                    }
-                } else {
-                    elTripTimes[index - 1].setAttribute('data-index', index - 1);
-                }
-                var elCategory = document.querySelectorAll('.card-header[name="placeCategory"][id="placeCategory' + indexCheck + '"]');
-                for (var i = index; i < elCategory.length; i++) {
-                    elCategory[i].setAttribute('data-index', i - 1);
-                    console.log(elCategory[i]);
-                }
-                var elDeleteBoxes = document.querySelectorAll('.deleteBox[id="deleteBox' + indexCheck + '"]');
-                for (var i = index; i < elDeleteBoxes.length; i++) {
-                    elDeleteBoxes[i].setAttribute('data-index', i - 1);
-                    console.log(elDeleteBoxes[i]);
-                }
-                var elPlaceTitles = document.querySelectorAll('.card-title[name="placeTitle"][id="placeTitle' + indexCheck + '"]');
-                for (var i = index; i < elPlaceTitles.length; i++) {
-                    elPlaceTitles[i].setAttribute('data-index', i - 1);
-                    console.log(elPlaceTitles[i]);
-                }
-
-                var start = placeTripPositions[indexCheck][index - 1];
-                var end = placeTripPositions[indexCheck][index];
-                if (end != null) { // 마지막 값이 없다면 시간을 다시 찾지않는다.
-                    $.ajax({ // 명소간 이동시간 구하기(길찾기 API)
-                        url: "/tripPlan/tripTime",
-                        type: "GET",
-                        data: {start: start, end: end},
-                        dataType: "JSON",
-                        success: function (data) {
-
-                            var hour = parseInt(data.hour);
-                            var minute = parseInt(data.minute);
-
-                            var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
-                            console.log(tripTimeEl);
-                            if (hour == 0) {
-                                tripTimeEl.textContent = minute;
-                                placeTripTimes['map' + indexCheck].push(minute);
-                                totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
-                            } else {
-                                tripTimeEl.textContent = (hour * 60) + minute;
-                                placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
-                                totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
-                            }
-                            $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
-                        },
-                        error: function (xhr, status, error) {
-                            console.log(error);
-                        }
-                    });
-                }
-                $(this).parent().parent().remove();
-            }
-
-        });
-    </script>
 
     <!-- 설정용 변수 -->
     <script>
@@ -179,6 +42,8 @@
         let placeTripTimes = []; // 좌표와 좌표사이의 이동시간들을 담아둔 배열
         let allPlaces = []; // 각 지도별 명소들의 배열로 저장되었었던 명소와 새로운 명소들
         let totalTripTimes = []; // 총 이동시간들의 배열
+        let polylineArray = []; // 명소간 이동경로를 보여주기 위한 경로
+        let pathArray = []; // 디비에 저장할 이동경로 패스값
         //let overlays = []; // 기존 저장되어있던 마커
 
         let mapOption = {
@@ -188,25 +53,49 @@
 
         let idCheck = 1; // 늘어나거나 줄어나는 id의 값을 체크
         let isPlanPublic = false; // 공유여부
-        let isPlanDownloadable = false; // 가져가기 여부
-
+        let isPlanDownloadable = false; // 가져가기여부 (미구현)
     </script>
+
+    <style>
+        .day {
+            font-size: 30px; /* 원하는 크기로 설정 */
+            font-weight: bold; /* 굵은 글씨체 설정 */
+        }
+    </style>
+    <style>
+        /* 리스트 css */
+        .column {
+            border: 1px solid #cecece;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .container-fluid .card {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 마우스 포인터를 손가락으로 변경 */
+        .card:not(.no-move) .card-header {
+            cursor: pointer;
+        }
+    </style>
 
     <c:if test="${empty sessionScope.user.userId}">
         <script>
             // 유저가 로그인되어 있지 않은 경우
+            alert("비회원은 여행플랜을 작성할수 없습니다.")
             history.back();
         </script>
     </c:if>
 
-
 </head>
-
-<body>
 
 <header class="nav-menu fixed">
     <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 </header>
+
+<body>
 
 <div class="post-single left">
     <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
@@ -230,33 +119,32 @@
 
     <main class="white">
         <div class="container">
-
-            <div>
-                <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목"
-                                 style="color: black; width: 57%; height: 40px; opacity: 0.5;"></h4></span>
+            <div >
+                <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목" style="color: black; width: 57%; height: 40px; opacity: 0.5;"></h4></span>
                 <h5>
                     공개<input type="checkbox" id="chbispublic" class="round" value="true"/>&nbsp;&nbsp;
                     비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true" disabled/>
-                    <span class="dot">·</span>
-                    가져가기 가능<input type="checkbox" id="chbIsDownloadle" class="round" value="true" disabled/>&nbsp;&nbsp;
-                    가져가기 불가능<input type="checkbox" id="chbDownloadle" class="round" value="false" disabled/>
                 </h5>
+                <div style="text-align: right;">
+                    <div class="tag-link">여행일수</div>
+                    <button class="icon-triangle-up" id="btnAddTripDay"
+                            style="background-color: #558B2F;"></button>
+                    <button class="icon-triangle-down" id="btnRemoveTripDay"
+                            style="background-color: #558B2F;"></button>
+                </div>
             </div>
+        </div>
 
+        <div class="container">
+            <div class="day"> 1일차 여행플랜 </div>
             <div class="row">
                 <div class="col-sm-7">
-                    <textarea id="dailyPlanContents0" name="dailyPlanContents" required></textarea>
+                    <textarea id="dailyPlanContents0" name="dailyPlanContents" required style="width: 100%;"></textarea>
                 </div>
 
                 <div class="col-sm-5">
                     <div class="sidebar">
-                        <div style="text-align: center;">
-                            <div class="tag-link">여행일수</div>
-                            <button class="icon-triangle-up" id="btnAddTripDay"
-                                    style="background-color: #558B2F;"></button>
-                            <button class="icon-triangle-down" id="btnRemoveTripDay"
-                                    style="background-color: #558B2F;"></button>
-                        </div>
+
                         <div class="border-box">
                             <div id="menu_wrap0"></div>
                             <div class="box-title">
@@ -354,85 +242,88 @@
     <!-- 서머노트기본생성 -->
     $(document).ready(function () {
         $('#dailyPlanContents0').summernote({
-            height: '100vh',
-            scrollingContainer: '.note-editor',
-            lang: "ko-KR"
+            callbacks: {
+                onImageUpload: function (files) {
+                    // 이미지 업로드 후, 이미지 태그에 contenteditable 속성을 false로 설정
+                    var img = $('<img>').attr('src', URL.createObjectURL(files[0]));
+                    img.attr('contenteditable', false);
+                    $(this).summernote('insertNode', img[0]);
+                }
+            },
+            toolbar: [
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['style', ['bold', 'italic', 'underline']],
+                ['color', ['forecolor', 'color']],
+                ['table', ['table']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['insert', ['picture']],
+            ],
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+            height: 620,
+            disableResizeEditor: true
         });
     });
 
     function initializeSummernote(idCheck) {
         $('#dailyPlanContents' + idCheck).summernote({
-            height: '100vh',
-            scrollingContainer: '.note-editor',
+            callbacks: {
+                onImageUpload: function (files) {
+                    // 이미지 업로드 후, 이미지 태그에 contenteditable 속성을 false로 설정
+                    var img = $('<img>').attr('src', URL.createObjectURL(files[0]));
+                    img.attr('contenteditable', false);
+                    $(this).summernote('insertNode', img[0]);
+                }
+            },
+            toolbar: [
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['style', ['bold', 'italic', 'underline']],
+                ['color', ['forecolor', 'color']],
+                ['table', ['table']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['insert', ['picture']],
+            ],
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
             focus: true,
-            lang: "ko-KR"
+            height: 620,
+            disableResizeEditor: true
         });
     }
 
     <!-- 체크박스 true, false -->
     $("#chbispublic").click(function () {
+
         isPlanPublic = this.value;
         console.log(isPlanPublic);
 
         var chbispublic = $(this);
         var chbpublic = $("#chbpublic");
-        var chbIsDownloadle = $("#chbIsDownloadle");
-        var chbDownloadle = $("#chbDownloadle");
 
         if (chbispublic.prop("checked")) {
             chbispublic.prop("disabled", true);
             chbpublic.prop("disabled", false);
             chbpublic.prop("checked", false);
-            chbIsDownloadle.prop("disabled", false);
-            chbDownloadle.prop("checked", true);
-            chbDownloadle.prop("disabled", true);
         }
     });
 
     // 비공개 체크박스 클릭 이벤트 핸들러
     $("#chbpublic").click(function () {
         isPlanPublic = this.value;
-        isPlanDownloadable = false; // 가져가기 불가능으로 변경
         console.log(isPlanPublic);
 
         var chbpublic = $(this);
         var chbispublic = $("#chbispublic");
-        var chbIsDownloadle = $("#chbIsDownloadle");
-        var chbDownloadle = $("#chbDownloadle");
 
         if (chbpublic.prop("checked")) {
             chbpublic.prop("disabled", true);
             chbispublic.prop("disabled", false);
             chbispublic.prop("checked", false);
-            chbIsDownloadle.prop("checked", false);
-            chbDownloadle.prop("checked", false);
-            chbIsDownloadle.prop("disabled", true);
-            chbDownloadle.prop("disabled", true);
         }
-    });
-
-    // 가져가기 가능 체크박스 클릭 이벤트 핸들러
-    $("#chbIsDownloadle").click(function () {
-        isPlanDownloadable = this.value;
-        console.log(isPlanDownloadable);
-        var chbIsDownloadle = $(this);
-        var chbDownloadle = $("#chbDownloadle");
-
-        chbIsDownloadle.prop("disabled", true);
-        chbDownloadle.prop("disabled", false);
-        chbDownloadle.prop("checked", false);
-    });
-
-    // 가져가기 불가능 체크박스 클릭 이벤트 핸들러
-    $("#chbDownloadle").click(function () {
-        isPlanDownloadable = this.value;
-        console.log(isPlanDownloadable);
-        var chbDownloadle = $(this);
-        var chbIsDownloadle = $("#chbIsDownloadle");
-
-        chbDownloadle.prop("disabled", true);
-        chbIsDownloadle.prop("disabled", false);
-        chbIsDownloadle.prop("checked", false);
     });
 
 </script>
@@ -449,7 +340,7 @@
 
     // 명소 검색 관련
     function handleKeyPress(event, indexCheck) {
-
+        console.log(indexCheck)
         if (event.type === 'click' || event.keyCode === 13) {
             // 검색창에 입력한 키워드로 목록 출력 요청
             var ps = new kakao.maps.services.Places();
@@ -497,7 +388,6 @@
                         itemEl = getListItem(i, places[i]);
 
                     positions.push({coordinates: placePosition.La + "," + placePosition.Ma}); // 반복문에 출력되는 위도+경도 저장
-
                     // 검색된 장소들의 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가합니다
                     bounds.extend(placePosition);
 
@@ -523,6 +413,7 @@
                             marker.setMap(null);
                         };
                         itemEl.onclick = function () {
+
                             // 배열이 존재하지 않는 경우에만 초기화
                             if (!placeTripPositions[indexCheck]) {
                                 placeTripPositions[indexCheck] = [];
@@ -535,6 +426,12 @@
                             }
                             if (!markers[indexCheck]) {
                                 markers[indexCheck] = [];
+                            }
+                            if (!polylineArray[indexCheck]) {
+                                polylineArray[indexCheck] = [];
+                            }
+                            if (!pathArray[indexCheck]) {
+                                pathArray[indexCheck] = [];
                             }
 
                             marker.setMap(maps[indexCheck]); // 해당 지도에 마커를 표출합니다
@@ -555,15 +452,55 @@
                             placeTripPositions[indexCheck].push(positions[placePositionId - 1].coordinates);
                             var varStatusIndex = allPlaces['map' + indexCheck].length; // 어느 맵의 몇번째 명소인지
 
-                            var place = {
-                                placeTags: doc.querySelector('.info h5').textContent.trim(),
-                                placeAddress: doc.querySelector('.info span:not(.tel)').textContent.trim(),
-                                placeCoordinates: positions[placePositionId - 1].coordinates,
-                                placeCategory: 0,
-                                placePhoneNumber: doc.querySelector('.info .tel').textContent.trim(),
-                                tripTime: null
-                            };
-                            allPlaces['map' + indexCheck].push(place);
+                            // 관련 이미지 받아오는 api ajax 호출
+                            $.ajax({
+                                url: 'https://dapi.kakao.com/v2/search/image',
+                                type: 'GET',
+                                data: {
+                                    query: title
+                                },
+                                beforeSend: function(xhr) {
+                                    xhr.setRequestHeader('Authorization', 'KakaoAK ' + '6e3c7aaa8069d3ffebbb72c6865fb977');
+                                },
+                                success: function(response) {
+                                    if (response.documents.length > 0) {
+                                        var placeImage = response.documents[0].thumbnail_url;
+                                        console.log(placeImage);
+
+                                        // 이미지를 받아온 후에 다음 작업을 진행
+                                        setTimeout(function() {
+                                            var place = {
+                                                placeTags: doc.querySelector('.info h5').textContent.trim(),
+                                                placeAddress: doc.querySelector('.info span:not(.tel)').textContent.trim(),
+                                                placeCoordinates: positions[placePositionId - 1].coordinates,
+                                                placeImage: placeImage,
+                                                placeCategory: 0,
+                                                placePhoneNumber: doc.querySelector('.info .tel').textContent.trim(),
+                                                tripTime: null
+                                            };
+                                            allPlaces['map' + indexCheck].push(place);
+                                        }, 1500); // 1.5초 지연 후에 다음 작업을 수행합니다.
+                                    } else {
+                                        console.log('검색 결과가 없습니다.');
+                                        placeImage = '';
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error); // 에러 발생시에도 이미지를 제외하고 저장해야함
+                                    var place = {
+                                        placeTags: doc.querySelector('.info h5').textContent.trim(),
+                                        placeAddress: doc.querySelector('.info span:not(.tel)').textContent.trim(),
+                                        placeCoordinates: positions[placePositionId - 1].coordinates,
+                                        placeImage: placeImage,
+                                        placeCategory: 0,
+                                        placePhoneNumber: doc.querySelector('.info .tel').textContent.trim(),
+                                        tripTime: null,
+                                        tripPath: pathArray[indexCheck][varStatusIndex]
+                                    };
+                                    allPlaces['map' + indexCheck].push(place);
+                                }
+                            });
+
 
                             // 명소 사이 이동시간 구하기
                             if (placeTripPositions[indexCheck].length > 1) {
@@ -573,12 +510,15 @@
                             // 동적 생성
                             var newListBox = '<div class="col-12 column">' +
                                 '<div class="card text-white mb-3" style="background-color: rgb(80, 250, 120); width: auto; height: auto; text-align: center;">' +
-                                '<div class="card-header" name="placeCategory" id="placeCategory' + indexCheck + '" data-index="' + varStatusIndex + '">' +
-                                '</div>' + '<label class="deleteBox" name="deleteBox" id="deleteBox' + indexCheck + '" data-index="' + varStatusIndex + '"> [삭제]</label>' +
-                                '<div class="card-body">' + '<h4 class="card-title" name="placeTitle" id="placeTitle' + indexCheck + '" data-index=' + varStatusIndex + '></h4>' + title + '</div>' +
-                                '</div>' + '</div>' +
-                                '<div class="card text-white mb-3" name="tripTime" id="tripTime' + indexCheck + '" data-index=' + varStatusIndex + ' style="background-color: rgb(132, 200, 224); width: auto; height: auto; text-align: center;">' +
-                                '<div></div></div>';
+                                '<div class="card-header" name="placeCategory" id="placeCategory' + indexCheck + '" data-index="' + varStatusIndex + '"></div>' +
+                                '<label class="deleteBox" name="deleteBox" id="deleteBox' + indexCheck + '" data-index="' + varStatusIndex + '"> [삭제]</label>' +
+                                '<div class="card-body">' +
+                                '<h4 class="card-title" name="placeTitle" id="placeTitle' + indexCheck + '" data-index=' + varStatusIndex + '></h4>' + title +
+                                '</div>' +
+                                '<div class="card text-white mb-3" name="tripTime" id="tripTime' + indexCheck + '" data-index=' + varStatusIndex + ' style="background-color: white; width: auto; height: auto; text-align: center;">tripTime</div>' +
+                                '</div>' +
+                                '<div></div>' +
+                                '</div>';
 
                             var newPlaceElement = document.createElement('div');
                             newPlaceElement.setAttribute('id', 'newPlaceElement' + indexCheck);
@@ -589,16 +529,17 @@
 
                             // 목록 요소에 동적 요소 추가
                             listElement.appendChild(newPlaceElement);
-                            console.log(markers[indexCheck][0].getPosition());
 
                             // 마커가 여려개더라도 한화면으로 재구성
                             var bounds = new kakao.maps.LatLngBounds();
                             for (var i = 0; i < markers[indexCheck].length; i++) {
                                 bounds.extend(markers[indexCheck][i].getPosition());
                             }
+                            // 마커들 중앙값 저장 해놓은 배열
                             markersBound[indexCheck] = bounds;
-
+                            // 입력후 저장된 마커들의 중앙으로 화면 이동
                             maps[indexCheck].setBounds(bounds);
+
                         };
                     })(marker, places[i].place_name);
                     fragment.appendChild(itemEl);
@@ -622,15 +563,33 @@
                     success: function (data) {
                         var hour = parseInt(data.hour);
                         var minute = parseInt(data.minute);
-                        console.log(hour + ":" + minute);
+                        var polylines = data.polylineCoordinates;
+
+                        // 경로 그리기 코드 추가
+                        var path = polylines.map(function (coordinate) {
+                            return new kakao.maps.LatLng(coordinate.lat, coordinate.lng);
+                        });
+                        pathArray[indexCheck].push(path);
+
+                        var polyline = new kakao.maps.Polyline({
+                            map: maps[indexCheck],
+                            path: path,
+                            strokeWeight: 4,
+                            strokeColor: '#2116fa',
+                            strokeOpacity: 0.7,
+                            strokeStyle: 'shortdash'
+                        });
+                        polylineArray[indexCheck].push(polyline);
+
+                        polyline.setMap(maps[indexCheck]);
 
                         var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (varStatusIndex - 1) + '"]');
                         if (hour == 0) {
-                            tripTimeEl.textContent = minute;
+                            tripTimeEl.textContent = minute + "분";
                             placeTripTimes['map' + indexCheck].push(minute);
                             totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
                         } else {
-                            tripTimeEl.textContent = (hour * 60) + minute;
+                            tripTimeEl.textContent = (hour * 60) + "시간" + minute + "분";
                             placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
                             totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
                         }
@@ -643,7 +602,7 @@
                 });
             }
 
-            function addMarker(position, idx, indexCheck) {  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+            function addMarker(position, idx) {  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
                 var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
                     imageSize = new kakao.maps.Size(36, 37),
                     imgOptions = {
@@ -743,26 +702,30 @@
             var placeInfo = [] // 명소를 저장하는 배열
             var placeSum = 0; // 명소의 갯수 파악
 
-            dailyPlanContent = $('#dailyPlanContents' + i).val();
-            totalTripTime = totalTripTimes[i];
-            console.log("idCheck : " + idCheck);
-            console.log("placeSum : " + placeSum);
-            console.log(allPlaces['map' + i]);
-            placeSum = allPlaces['map' + i].length;
+            if(($('#dailyPlanContents' + i).val() != "" && $('#dailyPlanContents' + i).val() != null) && (allPlaces['map' + i] != undefined && allPlaces['map' + i] != null && allPlaces['map' + i].length != 0)) {
+                dailyPlanContent = $('#dailyPlanContents' + i).val();
 
-            for (var j = 0; j < placeSum; j++) {
-                var placeText = allPlaces['map' + i][j];
-                var tripTimeText = placeTripTimes['map' + i][j];
-                var place = placeText;
-                place.tripTime = tripTimeText; // 시간 값을 할당
-                placeInfo.push(JSON.stringify(placeText));
+                totalTripTime = totalTripTimes[i];
+                placeSum = allPlaces['map' + i].length;
+                for (var j = 0; j < placeSum; j++) {
+                    var placeText = allPlaces['map' + i][j];
+                    var tripTimeText = placeTripTimes['map' + i][j];
+                    var place = placeText;
+                    place.tripTime = tripTimeText; // 시간 값을 할당
+                    placeInfo.push(JSON.stringify(placeText));
+                }
+
+                dailyPlanContents.push({
+                    dailyPlanContents: dailyPlanContent,
+                    totalTripTime: totalTripTime,
+                    placesInfo: placeInfo
+                });
+
+            } else {
+                alert("여행플랜을 작성할때에는 반드시 문구와 명소를 간단하게 작성해야합니다.")
+                return;
             }
 
-            dailyPlanContents.push({
-                dailyPlanContents: dailyPlanContent,
-                totalTripTime: totalTripTime,
-                placesInfo: placeInfo
-            });
         }
 
         console.log(dailyPlanContents);
@@ -792,6 +755,7 @@
             }),
         };
 
+        console.log("저장전 확인");
         console.log(tripPlan);
 
 
@@ -818,14 +782,19 @@
         // 일정 시간후에 버튼 활성화
         setTimeout(function () {
             $("#btnAddTripDay").prop('disabled', false);
-        }, 1500); // 1.5초 후에 버튼 활성화
+        }, 500); // 0.5초 후에 버튼 활성화
+
+        // if(($('#dailyPlanContents' + (idCheck-1)).val() == "" || $('#dailyPlanContents' + (idCheck-1)).val() == null) || (allPlaces['map' + (idCheck-1)] == undefined || allPlaces['map' + (idCheck-1)] == null || allPlaces['map' + (idCheck-1)].length == 0)) {
+        //     alert("이전 여행플랜에 내용이 없다면 새로운 여행플랜을 작성할 수 없습니다.")
+        //     return;
+        // }
 
         // 새로운 요소를 생성
         if (idCheck < 10) {
 
             var dynamicHTML = '<hr></hr><main class="white">' +
-                '<div class="container">' + '<div class="row">' + '<div class="col-sm-7">' +
-                '<textarea id="dailyPlanContents' + idCheck + '" name="dailyPlanContents" required></textarea>' +
+                '<div class="day">' + (idCheck+1)  + '일차 여행플랜 </div><div class="container">' + '<div class="row">' + '<div class="col-sm-7">' +
+                '<textarea id="dailyPlanContents' + idCheck + '" name="dailyPlanContents" required style="width: 100%;"></textarea>' +
                 '</div>' + '<div class="col-sm-5">' + '<div class="sidebar">' +
                 '<div class="border-box">' + '<div id="menu_wrap' + idCheck + '"></div>' + '<div class="box-title">' + '<div class="input-group">' +
                 '<input type="text" class="form-control" id="placeName' + idCheck + '" onkeypress="handleKeyPress(event, ' + idCheck + ')" placeholder="명소 검색">' +
@@ -840,10 +809,9 @@
             var newElement = document.createElement('div');
             newElement.setAttribute('id', 'newElement' + idCheck);
             newElement.innerHTML = dynamicHTML;
-            // addButton 요소 가져오기
+
             var btnElement = document.getElementById('btnAddTripPlan');
 
-            // addButton 위에 동적 요소 추가
             btnElement.parentNode.insertBefore(newElement, btnElement);
 
             // 지도를 생성 및 옵션 설정
@@ -851,9 +819,20 @@
             mapDiv.setAttribute('id', 'map' + idCheck);
             maps.push(new kakao.maps.Map(mapDiv, mapOption));
 
+            console.log(placeTripTimes['map' + idCheck]);
+            console.log(totalTripTimes[idCheck]);
+            console.log(placeTripPositions[idCheck]);
+            console.log(allPlaces['map' + idCheck]);
+            console.log(markers[idCheck]);
+            console.log(markersBound[idCheck]);
+            console.log(maps[idCheck]);
+            console.log(maps);
+
+            // 서머노트 추가생성
             initializeSummernote(idCheck);
             idCheck++;
             console.log("idCheck 증가하였음");
+
         } else {
             alert("하나의 여행플랜의 일정은 10개가 최대입니다. \n추가적인 일정은 새로운 여행플랜을 작성하여 이용해주시기 바랍니다.");
         }
@@ -866,19 +845,275 @@
         // 일정 시간후에 버튼 활성화
         setTimeout(function () {
             $("#btnRemoveTripDay").prop('disabled', false);
-        }, 1500); // 1.5초 후에 버튼 활성화
+        }, 500); // 0.5초 후에 버튼 활성화
 
         if (idCheck > 1) {
             var elementToRemove = document.getElementById('newElement' + (idCheck - 1));
             if (elementToRemove) {
-                elementToRemove.parentNode.removeChild(elementToRemove);
-                idCheck--; // idCheck 감소
-                console.log("idCheck 감소하였음");
+                // 내용이 있는지 확인
+                var dailyPlanContents = elementToRemove.querySelector('textarea[name="dailyPlanContents"]');
+                var listElement = elementToRemove.querySelector('.list' + (idCheck - 1));
+                var addedPlaceCount = listElement.children.length;
+
+                if (dailyPlanContents && dailyPlanContents.value.trim() !== '' ||
+                    addedPlaceCount > 0) {
+                    // 내용이 있을 경우 확인 후 삭제
+                    if (confirm("작성중인 내용이 있습니다 삭제하시겠습니까?")) {
+                        elementToRemove.parentNode.removeChild(elementToRemove);
+                        delDailyPlan((idCheck - 1))
+                        idCheck = idCheck --; // idCheck 감소
+                        console.log("idCheck 감소하였음");
+                    }
+                } else {
+                    // 내용이 없을 경우 바로 삭제
+                    elementToRemove.parentNode.removeChild(elementToRemove);
+                    delDailyPlan((idCheck - 1));
+                    idCheck--; // idCheck 감소
+                    console.log("idCheck 감소하였음");
+                }
             }
         } else {
             alert("하나의 여행플랜의 반드시 필요합니다.");
         }
     });
+
+    function delDailyPlan(indexCheck) {
+        // 배열에서 전체 삭제
+        console.log("삭제하겠습니다");
+        console.log(indexCheck);
+
+        console.log(placeTripTimes['map' + indexCheck]);
+        console.log(totalTripTimes[indexCheck]);
+        console.log(placeTripPositions[indexCheck]);
+        console.log(allPlaces['map' + indexCheck]);
+        console.log(markers[indexCheck]);
+        console.log(markersBound[indexCheck]);
+        console.log(maps[indexCheck]);
+
+        delete placeTripTimes['map' + indexCheck];
+        totalTripTimes.splice(indexCheck, 1);
+        delete placeTripPositions[indexCheck];
+        delete allPlaces['map' + indexCheck];
+        delete markers[indexCheck];
+        delete markersBound[indexCheck];
+        maps.splice(indexCheck, 1);
+        console.log(maps);
+    }
+
+</script>
+
+<script>
+
+    // 명소 삭제 로직
+    $(document).on('click', ".deleteBox", function () {
+        var id = $(this).attr('id');
+        var indexCheck = id.slice("deleteBox".length);
+        var index = $(this).data('index');
+
+        console.log("id : " + indexCheck);
+        console.log("index : " + index);
+
+        var prevTripTimeEl = document.querySelector('.card.text-white.mb-3[id="tripTime' + indexCheck + '"][data-index="' + (index) + '"]'); // 명소를 기준으로 이전 시간 리스트박스
+        $(prevTripTimeEl).parent().remove();
+        $(prevTripTimeEl).remove();
+
+        if(index == 0){
+
+            console.log("0으로 시작")
+
+            totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index];
+            $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+
+            placeTripTimes['map' + indexCheck].splice(index, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
+            placeTripPositions[indexCheck].splice(index, index + 1); // 삭제된 좌표 인덱스
+            allPlaces['map' + indexCheck].splice(index, index + 1); // 삭제된 명소정보
+            pathArray[indexCheck].splice(index, index + 1); // 폴리라인 경로 삭제
+
+            var marker = markers[indexCheck][index];
+            marker.setMap(null); // 마커를 지도에서 제거
+            markers[indexCheck].splice(index, index + 1); // 마커 삭제
+
+            var polyline = polylineArray[indexCheck][index]
+            polyline.setMap(null);
+            polylineArray[indexCheck].splice(index, index + 1); // 폴리라인 삭제
+
+            // 이후 남아있는 리스트박스들의 id 값을 업데이트
+            var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
+            console.log(elTripTimes)
+            console.log(elTripTimes.length)
+            console.log("위에가 남아있는 리스트 크기임")
+
+            if(elTripTimes.length == 0){
+                $("#totalTripTime" + indexCheck).text("");
+                elTripTimes.textContent = "";
+                return
+            } else {
+                // console.log("예상대로 라면 이게 실행 ")
+                //
+                // console.log("여기가 가장 중요한 값입니다")
+                // console.log(placeTripTimes['map' + indexCheck])
+                // console.log(placeTripPositions[indexCheck])
+                // console.log(allPlaces['map' + indexCheck])
+                // console.log(markers[indexCheck])
+                // console.log("여기가 가장 중요한 값입니다")
+
+                for (var i = index; i < elTripTimes.length; i++) {
+                    elTripTimes[i].setAttribute('data-index', i);
+                    console.log(elTripTimes[i])
+                }
+                var elCategory = document.querySelectorAll('.card-header[name="placeCategory"][id="placeCategory' + indexCheck + '"]');
+                for (var i = index; i < elCategory.length; i++) {
+                    elCategory[i].setAttribute('data-index', i);
+                    console.log(elCategory[i]);
+                }
+                var elDeleteBoxes = document.querySelectorAll('.deleteBox[id="deleteBox' + indexCheck + '"]');
+                for (var i = index; i < elDeleteBoxes.length; i++) {
+                    elDeleteBoxes[i].setAttribute('data-index', i);
+                    console.log(elDeleteBoxes[i]);
+                }
+                var elPlaceTitles = document.querySelectorAll('.card-title[name="placeTitle"][id="placeTitle' + indexCheck + '"]');
+                for (var i = index; i < elPlaceTitles.length; i++) {
+                    elPlaceTitles[i].setAttribute('data-index', i);
+                    console.log(elPlaceTitles[i]);
+                }
+
+                // 삭제된 화면을 재구성
+                var bounds = new kakao.maps.LatLngBounds();
+                for (var i = 0; i < markers[indexCheck].length; i++) {
+                    bounds.extend(markers[indexCheck][i].getPosition());
+                }
+                markersBound[indexCheck] = bounds;
+                maps[indexCheck].setBounds(bounds);
+
+                var start = placeTripPositions[indexCheck][index - 1];
+                var end = placeTripPositions[indexCheck][index];
+
+                console.log(start)
+                console.log(end)
+            }
+
+        } else {
+
+            console.log("0이상의 값으로 시작")
+
+            totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index - 1];
+            totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index];
+            $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+
+            placeTripTimes['map' + indexCheck].splice(index - 1, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
+            placeTripPositions[indexCheck].splice(index, index); // 삭제된 좌표 인덱스
+            allPlaces['map' + indexCheck].splice(index, index); // 삭제된 명소정보
+            pathArray[indexCheck].splice(index -1, index + 1);
+
+            var marker = markers[indexCheck][index];
+            marker.setMap(null); // 마커를 지도에서 제거
+            markers[indexCheck].splice(index, index); // 마커 삭제
+
+            var polyline = polylineArray[indexCheck][index -1] // 앞뒤로 지우기
+            if(polylineArray[indexCheck][index] != null) {
+                var polyline2 = polylineArray[indexCheck][index]
+                polyline2.setMap(null);
+            }
+            polyline.setMap(null);
+
+            polylineArray[indexCheck].splice(index-1 , index + 1); // 폴리라인 삭제
+
+            // 이후 남아있는 리스트박스들의 id 값을 업데이트
+            var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
+            console.log(elTripTimes)
+            console.log(elTripTimes.length)
+            console.log("위에가 남아있는 리스트 크기임")
+
+            // console.log("여기가 가장 중요한 값입니다")
+            // console.log(placeTripTimes['map' + indexCheck])
+            // console.log(placeTripPositions[indexCheck])
+            // console.log(allPlaces['map' + indexCheck])
+            // console.log(markers[indexCheck])
+            // console.log("여기가 가장 중요한 값입니다")
+
+            for (var i = index; i < elTripTimes.length; i++) {
+                elTripTimes[i].setAttribute('data-index', i);
+            }
+            var elCategory = document.querySelectorAll('.card-header[name="placeCategory"][id="placeCategory' + indexCheck + '"]');
+            for (var i = index; i < elCategory.length; i++) {
+                elCategory[i].setAttribute('data-index', i);
+                console.log(elCategory[i]);
+            }
+            var elDeleteBoxes = document.querySelectorAll('.deleteBox[id="deleteBox' + indexCheck + '"]');
+            for (var i = index; i < elDeleteBoxes.length; i++) {
+                elDeleteBoxes[i].setAttribute('data-index', i);
+                console.log(elDeleteBoxes[i]);
+            }
+            var elPlaceTitles = document.querySelectorAll('.card-title[name="placeTitle"][id="placeTitle' + indexCheck + '"]');
+            for (var i = index; i < elPlaceTitles.length; i++) {
+                elPlaceTitles[i].setAttribute('data-index', i);
+                console.log(elPlaceTitles[i]);
+            }
+
+            // 삭제된 화면을 재구성
+            var bounds = new kakao.maps.LatLngBounds();
+            for (var i = 0; i < markers[indexCheck].length; i++) {
+                bounds.extend(markers[indexCheck][i].getPosition());
+            }
+            markersBound[indexCheck] = bounds;
+            maps[indexCheck].setBounds(bounds);
+
+            var start = placeTripPositions[indexCheck][index - 1];
+            var end = placeTripPositions[indexCheck][index];
+
+            console.log(start)
+            console.log(end)
+        }
+
+        if (end != null || start != null || start != end || end != undefined || start != undefined ) { // 마지막 값이 없거나 명소가 같을 경우에는 찾지않음
+            $.ajax({ // 명소간 이동시간 구하기(길찾기 API)
+                url: "/tripPlan/tripTime",
+                type: "GET",
+                data: {start: start, end: end},
+                dataType: "JSON",
+                success: function (data) {
+                    var hour = parseInt(data.hour);
+                    var minute = parseInt(data.minute);
+                    var polylines = data.polylineCoordinates;
+
+                    // 경로 그리기 코드 추가
+                    var path = polylines.map(function (coordinate) {
+                        return new kakao.maps.LatLng(coordinate.lat, coordinate.lng);
+                    });
+                    pathArray[indexCheck].push(path);
+
+                    var polyline = new kakao.maps.Polyline({
+                        map: maps[indexCheck],
+                        path: path,
+                        strokeWeight: 4,
+                        strokeColor: '#2116fa',
+                        strokeOpacity: 0.7,
+                        strokeStyle: 'shortdash'
+                    });
+                    polylineArray[indexCheck].push(polyline);
+
+                    polyline.setMap(maps[indexCheck]);
+
+                    var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
+                    console.log(tripTimeEl);
+                    if (hour == 0) {
+                        tripTimeEl.textContent = minute;
+                        placeTripTimes['map' + indexCheck].push(minute);
+                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
+                    } else {
+                        tripTimeEl.textContent = (hour * 60) + minute;
+                        placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
+                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
+                    }
+                    $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+
 </script>
 
 <!-- 아래는 템플릿용 스크립트입니다. -->

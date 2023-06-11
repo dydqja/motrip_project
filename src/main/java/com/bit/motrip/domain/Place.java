@@ -10,6 +10,7 @@ public class Place {
         String placeAddress;
         int placeCategory;
         String tripTime;
+        String tripPath;
 
     public int getPlaceNo() {
         return placeNo;
@@ -81,6 +82,14 @@ public class Place {
 
     public void setTripTime(String tripTime) {
         this.tripTime = tripTime;
+    }
+
+    public String getTripPath() {
+        return tripPath;
+    }
+
+    public void setTripPath(String tripPath) {
+        this.tripPath = tripPath;
     }
 
     @Override

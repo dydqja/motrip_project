@@ -67,11 +67,10 @@
                     <li class="dropdown">
                         <a href="#">여행플랜</a>
                         <ul class="dropdown-menu">
-                            <li><a href="/tripPlan/tripPlanList">여행플랜 목록</a>
+                            <li><a href="/tripPlan/tripPlanList?type=all">여행플랜 목록</a>
                             </li>
-                            <li><a href="/tripPlan/myTripPlanList">나의 여행플랜</a>
-                            </li>
-                            <li><a href="/tripPlan/myTripPlanList">나의 여행플랜</a>
+                            <c:if test="${not empty sessionScope.user}">
+                                <li><a href="/tripPlan/tripPlanList?type=my">나의 여행플랜</a></c:if>
                             </li>
                             <li><a href="/tripPlan/addTripPlanView">여행플랜 작성</a>
                             </li>
