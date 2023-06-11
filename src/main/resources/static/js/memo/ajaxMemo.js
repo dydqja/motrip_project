@@ -321,3 +321,4 @@ function nicknameCheckRequest(nickname,checkSpace){
         alert(JSON.stringify(error));
     });
 }
+

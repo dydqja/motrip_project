@@ -9,7 +9,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-
 <link rel="stylesheet" href="/css/alarm/alarm.css" media="all">
 <link rel="stylesheet" href="/css/memo/memo.css" media="all">
 <link rel="stylesheet" href="/summernote/summernote.css" media="all">
@@ -22,6 +21,7 @@
 <script src="/js/memo/memoBtnCtrl.js"></script>
 <script src="/js/memo/memoFunction.js"></script>
 <script src="/js/memo/ajaxMemo.js"></script>
+<script src="/js/memo/memoAttach.js"></script>
 <%--
 <script src="/js/alarm/alarm.js"></script>
 --%>
@@ -298,4 +298,7 @@
             </div>
         </div>
     </div>
+</div>
+<div id="mini-memo-container">
+
 </div>

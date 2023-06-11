@@ -28,11 +28,11 @@ public class CommitMaker {
         //                        0         1          2            3                4                5
         String[] commitType = {"Create", "Update", "Delete", "Create&Update", "Update&Delete", "Create&Delete"};
         //커밋 소제목
-        String commitTitle = "메모 공유 완료";
+        String commitTitle = "여행플랜 부착성공";
         //수정내역
-        String commitBody = "부착까지만 하면 끝";
+        String commitBody = "후기와 채팅방만 남음";
         //수정파일
-        String changedFiles = "(memo 관련 파일 전부, 헤더)";
+        String changedFiles = "(memo 관련 파일 전부, 헤더, 여행플랜리스트)";
         gitCommitMSGBuilder(committers[0],commitType[1],commitTitle,commitBody,changedFiles);
     }
 }
