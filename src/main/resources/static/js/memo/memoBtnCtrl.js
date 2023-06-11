@@ -139,7 +139,7 @@ $(document).on('click', '.new-memo-sharee-ajax-btn', function() {
         );
         return;
     }
-
+    //Tjadfdf
     addMemoAccessRequest(memoNo,nickname);
 });
 //    let nickname = $(this).closest('tr').find('.new-memo-sharee-input').val();
