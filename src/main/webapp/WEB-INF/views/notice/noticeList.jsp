@@ -75,13 +75,8 @@
     </head>
 
     <body>
-
+    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
     <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
-
-
-            <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-
-
         <div class="container">
             <h1 class="main-head text-center board-title noticeZooming">공지사항</h1>
         </div>

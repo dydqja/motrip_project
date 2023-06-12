@@ -104,6 +104,7 @@ public class ChatMemberController {
         String title = chatRoomTitle+"에 참가 신청이 수락되었습니다.";
         //naviUrl
         String naviUrl = "/chatRoom/getChat?chatRoomNo="+chatRoomNo+"&userId="+userId;
+        //alarmService.addNavigateAlarm(receiver, contents, title, naviUrl);
 
 
         return "redirect:/chatRoom/chatRoomList";
