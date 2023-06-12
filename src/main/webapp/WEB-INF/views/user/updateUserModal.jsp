@@ -132,7 +132,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header text-center" style="background-color: #558B2F;">
-          <h3 class="modal-title" style="color: white;">회원정보수정</h3>
+          <h3 class="modal-title" style=" margin-right: 0; color: white;">회원정보수정</h3>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #8B2955;">×</button>
         </div>
         <div class="modal-body" style="background-color: #F5F1E3; ">
@@ -144,11 +144,13 @@
 
           <form class="form-horizontal" style="margin-right: 20%; margin-left: 20%;" >
 
+            <c:if test="${getUser.pwd ne null}">
             <div class="form-group text-center" >
               <label class="label label-primary">아이디</label>
               <h3>${getUser.userId}</h3>
               <input type="hidden" name="userId" id="userId" value="${getUser.userId}"  />
             </div>
+
 
             <div class="form-group text-center">
               <input type="button" class="pwd-btn" name="pwd" id="modalUpdatePwd" value="비밀번호 변경" style="margin-left: 30%; margin-right: 30%;">
@@ -165,6 +167,7 @@
                 <span id="updatePwdConfirmCheck"></span>
               </div>
             </div>
+            </c:if>
 
             <div class="form-group text-center" >
               <label for="modalNickname" class="label label-primary">닉 네 임</label>
@@ -409,6 +412,12 @@
       }
 
       $('input[name="userPhoto"]').val(fileRoute);
+
+        var userId = "${getUser.userId}";
+
+        if(formData.get(userId) == null || formData.get(userId) == ''){
+          formData.set('userId',userId)
+        };
 
       $.ajax({
         url: "/user/updateUser",

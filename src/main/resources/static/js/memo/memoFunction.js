@@ -54,6 +54,8 @@ function editMemo(memoDialog){
     memoDialog.find('.memo-dialog-save-btn').show();
     //수정버튼을 숨긴다.
     memoDialog.find('.memo-dialog-edit-btn').hide();
+    //부착버튼을 숨긴다.
+    memoDialog.find('.memo-dialog-attach-btn').hide();
 }
 
 function unEditMemo(memoDialog){

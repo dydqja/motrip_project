@@ -1,18 +1,4 @@
 
-/*$(document).ready(function(){
-    console.log("buildMemo.js loaded");
-    $(".memo-dialog").dialog({
-        autoOpen: true,
-        width: 400
-    });
-
-    $(document).ready(function() {
-        $('.summernote-contents').summernote();
-    });
-    //서머노트의 자식들 중
-    $(".summernote-container").hide();
-});*/
-
 class Memo{
     constructor(memoNo, memoTitle, memoContents, memoRegDate, memoDelDate, memoColor, memoAuthor,tripPlan,review, chatRoom){
         this.memoNo = memoNo;
@@ -37,18 +23,11 @@ function buildMemoDialog(memo){
     let memoDelDate = memo.memoDelDate;
     let memoColor = memo.memoColor;
     let memoAuthor = memo.memoAuthor;
-    let tripPlan = memo.tripPlan;
-    if(!tripPlan){
-        tripPlan = memo.attachedTripPlan;
-    }
-    let review = memo.review;
-    if(!review){
-        review = memo.attachedReview;
-    }
-    let chatRoom = memo.chatRoom;
-    if(!chatRoom){
-        chatRoom = memo.attachedChatRoom;
-    }
+    let tripPlan = memo.attachedTripPlan;
+    let review = memo.attachedReview;
+    let chatRoom = memo.attachedChatRoom;
+//    alert('tripPlan : ' + tripPlan.tripPlanNo + ' review : ' + review.reviewNo + ' chatRoom : ' + chatRoom);
+
     let infoJson = JSON.stringify(memo);
     let memoDialog =  $('<div>', {
         class: 'memo-dialog',
@@ -115,6 +94,11 @@ function buildMemoDialog(memo){
         class: 'btn btn-sm btn-warning hvr-grow memo-dialog-attach-btn',
         text: '부착'
     });
+    let detachBtn = $('<button>', {
+        type: 'button',
+        class: 'btn btn-sm btn-warning hvr-grow memo-dialog-detach-btn',
+        text: '탈착'
+    });
     let restoreBtn = $('<button>', {
         type: 'button',
         class: 'btn btn-sm btn-primary hvr-grow memo-dialog-restore-btn',
@@ -125,7 +109,7 @@ function buildMemoDialog(memo){
         class: 'btn btn-sm btn-danger hvr-grow memo-dialog-remove-btn',
         text: '제거'
     });
-    dialogControl.append(saveBtn,closeBtn, editBtn, deleteBtn,shareBtn,attachBtn,restoreBtn,removeBtn);
+    dialogControl.append(saveBtn,closeBtn, editBtn, deleteBtn,shareBtn,attachBtn,detachBtn,restoreBtn,removeBtn);
 
     // memo-dialog에 모든 요소 추가
     memoDialog.append(memoNoInput, infoInput, dialogView, dialogControl);
@@ -141,7 +125,7 @@ function buildMemoDialog(memo){
         deleteBtn.hide();
         attachBtn.hide();
         restoreBtn.hide();
-        removeBtn.hide()
+        removeBtn.hide();
     } else {
         saveBtn.hide();
         editBtn.hide();
@@ -149,6 +133,29 @@ function buildMemoDialog(memo){
         deleteBtn.hide();
         shareBtn.hide();
     }
+    detachBtn.hide();
+    if (tripPlan && tripPlan.tripPlanNo != 0 && tripPlan.tripPlanNo != null && tripPlan.tripPlanNo != undefined) {
+        // If tripPlan is not null and tripPlanNo is not 0, null, or undefined
+        attachBtn.hide();
+        detachBtn.show();
+        detachBtn.val(memoNo);
+    } else if (review && review.reviewNo != 0 && review.reviewNo != null && review.reviewNo != undefined) {
+        // If review is not null and reviewNo is not 0, null, or undefined
+//        alert('reviewNo: ' + review.reviewNo);
+        attachBtn.hide();
+        detachBtn.show();
+        detachBtn.val(memoNo);
+    } else if (chatRoom && chatRoom.chatRoomNo != 0 && chatRoom.chatRoomNo != null && chatRoom.chatRoomNo != undefined) {
+        // If chatRoom is not null and chatRoomNo is not 0, null, or undefined
+//        alert('chatRoomNo: ' + chatRoom.chatRoomNo);
+        attachBtn.hide();
+        detachBtn.show();
+        detachBtn.val(memoNo);
+    } else {
+//        alert('미부착');
+        attachBtn.show();
+    }
+
 
 
     return memoDialog;
@@ -171,6 +178,7 @@ function buildNewMemo(userId){
     memoDialog.find('.memo-dialog-delete-btn').hide();
     memoDialog.find('.memo-dialog-share-btn').hide();
     memoDialog.find('.memo-dialog-attach-btn').hide();
+    memoDialog.find('.memo-dialog-detach-btn').hide();
     memoDialog.find('.memo-dialog-restore-btn').hide();
     memoDialog.find('.memo-dialog-remove-btn').hide();
 
@@ -209,11 +217,11 @@ function showMemoDialog(memo){
     });
     //서머노트를 적용한다.
     memoDialog.find('.summernote-contents').summernote();
-
     //메모다이얼로그에서 서머노트를 숨긴다.
     memoDialog.find('.summernote-container').hide();
     //메모다이얼로그에서 저장 버튼을 숨긴다.
     memoDialog.find('.memo-dialog-save-btn').hide();
+
 }
 
 function buildMemoSharerTableRow(memoAccess){

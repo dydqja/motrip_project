@@ -11,9 +11,6 @@
     <meta name="author" content="">
     <title>Mold Discover . HTML Template</title>
 
-    <script src="/vendor/jquery/dist/jquery.min.js"></script>
-    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-
     <link rel="icon" type="image/png" href="/assets/img/favicon.png"/>
     <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
@@ -21,6 +18,22 @@
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/vendor/retina.min.js"></script>
+    <script src="/vendor/jquery.imageScroll.min.js"></script>
+    <script src="/assets/js/min/responsivetable.min.js"></script>
+    <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+
+    <script src="/assets/js/min/countnumbers.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+
 
     <style>
         .center-div {
@@ -40,9 +53,9 @@
 
 <body>
 
-<header class="nav-menu fixed">
+<%--<header class="nav-menu fixed">--%>
     <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
+<%--</header>--%>
 
 <div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
     <div class="container">
@@ -114,7 +127,7 @@
                 <c:set var="i" value="0"/>
                 <c:forEach var="tripPlan" items="${tripPlanList}">
                     <c:set var="i" value="${ i+1 }"/>
-                    <div class="item-list">
+                    <div class="item-list trip-plan-item-list">
                         <div class="col-sm-5">
                             <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
                                     type="hidden"
@@ -245,21 +258,6 @@
     </div>
 
 </main>
-
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-
-<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-<script src="/vendor/retina.min.js"></script>
-<script src="/vendor/jquery.imageScroll.min.js"></script>
-<script src="/assets/js/min/responsivetable.min.js"></script>
-<script src="/assets/js/bootstrap-tabcollapse.js"></script>
-
-<script src="/assets/js/min/countnumbers.min.js"></script>
-<script src="/assets/js/main.js"></script>
 
 <!-- Current Page JS -->
 <script src="/assets/js/min/priceslider.min.js"></script>

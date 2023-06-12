@@ -65,9 +65,9 @@
 </head>
 
 <body>
-<header class="nav-menu fixed">
+
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
+
 <div class="page-img" style="background-image: url('/images/chatRoomImage.jpg');">
     <div class="container">
         <div class="col-sm-8">
@@ -309,7 +309,7 @@
 
             if(userId !== '') {
                 const value = $(this).attr('value');
-                alert("join-chatroom");
+
                 $.ajax({
                     url: '/chatMember/json/fetchChatMembers/' + value,
                     type: 'GET',
@@ -321,8 +321,9 @@
                     success: function (members) {
                         const matchingMember = members.find(member => member.userId === userId);
                         if (matchingMember) {
-                            alert("이미가입했던 채팅방입니다.")
+                            alert("이미가입했던 채팅방입니다.");
                         } else {
+
                             if ((roomGender === gender || roomGender === "MF") && age >= minAge && age <= maxAge) {
                                 alert("신청완료 방장의 허락을 기다려 주세요");
                                 fncJoinChatroom();

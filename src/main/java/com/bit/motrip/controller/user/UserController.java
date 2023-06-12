@@ -54,9 +54,15 @@ public class UserController {
     }
 
     @RequestMapping( value="naverLoginSuccess", method=RequestMethod.GET)
-    public String naverLogin() throws Exception{
+    public String naverLogin(HttpSession session) throws Exception{
         System.out.println("/user/naverLoginSuccess : GET");
+        User user = (User) session.getAttribute("user");
 
+        System.out.println(user);
+
+        if(user.isSecession() == true) {
+            return "user/restoreUser.jsp";
+        }
         return "/index.jsp";
     }
 
@@ -107,7 +113,7 @@ public class UserController {
     }
 
     @RequestMapping( value="naverLogin", method=RequestMethod.GET )
-    public String checkUser(HttpSession session, User user) throws Exception {
+    public String checkUser() throws Exception {
         System.out.println("/user/naverLogin : GET");
 
         return "user/naverLoginCallback.jsp";
@@ -190,6 +196,7 @@ public class UserController {
         System.out.println("/user/deleteUser : POST");
 
         User user = (User) session.getAttribute("user");
+        System.out.println("회원탈퇴진행할 유저는 :: "+user);
         userService.secessionAndRestoreUser(user);
 
         return "/user/login.jsp";

@@ -23,13 +23,28 @@
         <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 
         <link rel="stylesheet" href="/css/qna/getQna.css"/>
+
+
+        <script src="/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+        <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+        <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+        <script src="/vendor/retina.min.js"></script>
+        <script src="/vendor/jquery.imageScroll.min.js"></script>
+        <script src="/assets/js/min/responsivetable.min.js"></script>
+        <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+        <script src="/assets/js/min/countnumbers.min.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/min/home.min.js"></script>
     </head>
 
     <body>
 
-        <header class="nav-menu fixed">
+
             <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-        </header>
+
 
         <div class="page-img">
             <div class="container">
@@ -141,19 +156,6 @@
 
         <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
-        <script src="/vendor/jquery/dist/jquery.min.js"></script>
-        <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-        <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-        <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-        <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-        <script src="/vendor/retina.min.js"></script>
-        <script src="/vendor/jquery.imageScroll.min.js"></script>
-        <script src="/assets/js/min/responsivetable.min.js"></script>
-        <script src="/assets/js/bootstrap-tabcollapse.js"></script>
-        <script src="/assets/js/min/countnumbers.min.js"></script>
-        <script src="/assets/js/main.js"></script>
-        <script src="/assets/js/min/home.min.js"></script>
 
         <script type="text/javascript">
 

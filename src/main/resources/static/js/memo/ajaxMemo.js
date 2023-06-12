@@ -121,6 +121,7 @@ function getMemoShareListRequest(memoNo){
             let row = "<tr><td colspan='3' style='text-align:center;'> - 공유자가 없습니다. - </td></tr>";
             $("#memo-sharer-list-body").append(row);
         }else{
+            //칼럼명을 표시할 첫 row를 생성한다.
             let row1 = $('<tr>');
             row1.append($('<td>').text("닉네임"));
             row1.append($('<td>').text("이메일"));
@@ -128,27 +129,26 @@ function getMemoShareListRequest(memoNo){
             row1.append($('<td>').text(''));
             $("#memo-sharer-list-body").append(row1);
 
+            //for문 돌려서 공유자들 리스트를 만들어 붙인다.
             for(let i=0; i<memoAccessList.length; i++){
                 let memoAccess = memoAccessList[i];
                 let row = buildMemoSharerTableRow(memoAccess);
                 //row 를 #memo-sharer-list-body 에 추가한다.
                 $("#memo-sharer-list-body").append(row);
             }
-            $("#memo-sharer-list-body").append(row1);
-            let isEmpty = false;
-            $('.new-memo-sharee-input').each(function() {
-                if ($(this).val() === '') {
-                    isEmpty = true;
-                    return false;
-                }
-            });
-            if (!isEmpty) {
-                let newRow = buildMemoShareeTableRow(memoNo);
-                $("#memo-sharee-list-body").append(newRow)
+        }
+        //공유자 추가 부분을 생성하는 섹션
+        //현재 비어있는 공유자 추가 칸이 있는지 확인하고, 비어있는 칸이 없다면 하나 만든다.
+        let isEmpty = false;
+        $('.new-memo-sharee-input').each(function() {
+            if ($(this).val() === '') {
+                isEmpty = true;
+                return false;
             }
-
-
-
+        });
+        if (!isEmpty) {
+            let newRow = buildMemoShareeTableRow(memoNo);
+            $("#memo-sharee-list-body").append(newRow)
         }
 
         //#memo-sharer-list-body에 memoNo를 담을 hidden input 을 추가한다.
@@ -321,3 +321,4 @@ function nicknameCheckRequest(nickname,checkSpace){
         alert(JSON.stringify(error));
     });
 }
+
