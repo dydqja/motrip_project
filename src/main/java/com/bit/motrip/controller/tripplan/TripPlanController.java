@@ -2,8 +2,10 @@ package com.bit.motrip.controller.tripplan;
 
 import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
+import com.bit.motrip.domain.EvaluateList;
 import com.bit.motrip.domain.TripPlan;
 import com.bit.motrip.domain.User;
+import com.bit.motrip.service.evaluateList.EvaluateListService;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/tripPlan/*")
@@ -28,6 +27,9 @@ public class TripPlanController {
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
+    @Autowired
+    @Qualifier("evaluateListServiceImpl")
+    private EvaluateListService evaluateListService;
 
     public TripPlanController(){
         System.out.println(this.getClass());
