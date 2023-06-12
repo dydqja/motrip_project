@@ -223,34 +223,32 @@
     <c:set var="i" value="${ i+1 }"/>
     <main class="white">
         <div class="container">
-            <div class="day">${i}일차 여행플랜</div>
+
+            <div display="flex;">
+                <span class="icon-map" style="font-size: 50px; "></span><div class="day">${i}일차 여행플랜 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
+            </div>
+
+            <div class="row" >
+                <div class="col-sm-12">
+                    <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
+                </div>
+            </div>
+
+            <div style="margin: 5%"></div>
+
             <div class="row">
-                <div class="col-sm-7">
-                    <div class="post" >
+                <div class="col-sm-9">
+                    <div class="post" style="height: 400px; overflow: auto; border-radius: 15px;">
                         <div>${dailyPlan.dailyPlanContents}</div>
                     </div>
                 </div>
 
 
-                <div class="col-sm-5">
+                <div class="col-sm-3">
 
                     <div class="sidebar">
-                        <div class="input-group">
-                            <div class="input-group-btn">
-                            </div>
-                        </div>
 
-                        <div class="border-box"> <!-- 지도부분 -->
-                            <h4>
-                                <span class="icon-map"><span>Day-${i}</span></span>
-                                <button class="icon-locate-map" id="reset${i-1}"></button>
-                            </h4>
-                            <div class="recent-post-list">
-                                <div id="map${i-1}" style="width: 100%; height: 300px;"></div>
-                            </div>
-                        </div>
-
-                        <div class="border-box">
+                        <div class="border-box" style="height: 400px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
                             <div class="box-title">명소리스트
                                 <div class="tag-link" style="text-align: right;">총 이동시간
                                     : ${dailyPlan.totalTripTime}</div>
@@ -259,12 +257,12 @@
                                 <div class="col-12 column" style="text-align: center; ">
                                     <div class="card text-white mb-3"
                                          style="width: auto; height: auto; font-size: 9px;">
-                                        <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: auto; height: auto;">
-                                            <h4 class="card-title" name="placeTitle">
-                                                <div style="color: black;">
-                                                    <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;&nbsp;#${place.placeTags}
+                                        <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
+                                            <h5 class="card-title" name="placeTitle">
+                                                <div style="color: black; width: 100%;">
+                                                    <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
                                                 </div>
-                                            </h4>
+                                            </h5>
                                         </div>
                                     </div>
                                     <c:if test="${place.tripTime != null}">
@@ -312,12 +310,12 @@
                                     });
 
                                 </script>
-
                             </c:forEach> <!-- place for end -->
                         </div>
                     </div>
                 </div>
             </div>
+            <hr/>
             </c:forEach> <!-- dailyPlan for end -->
 
             <div class="review-comment">
