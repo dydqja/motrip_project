@@ -14,10 +14,11 @@
     <!-- 구분선 -->
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
-    <link rel="stylesheet" href="/css/tripplan/tripplan.css">
-    <link rel="stylesheet" href="/css/tripplan/overlay.css">
+<%--    <link rel="stylesheet" href="/css/tripplan/tripplan.css">--%>
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <link rel="stylesheet" href="/summernote/summernote.css">
+    <script src="/summernote/summernote.js"></script>
     <!-- 구분선 -->
 
     <link rel="icon" type="image/png" href="/assets/img/favicon.png"/>
@@ -32,13 +33,149 @@
         let markers = []; // 마커 배열
         let maps = []; // 지도 배열
     </script>
+
+    <style>
+        .post {
+            width: 100%; /* 원하는 너비 설정 */
+            height: 620px; /* 원하는 높이 설정 */
+            overflow: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+            border: 1px solid #ccc; /* 테두리 스타일 지정 */
+            padding: 10px; /* 내용과 테두리 사이 간격 */
+        }
+        .day {
+            font-size: 30px; /* 원하는 크기로 설정 */
+            font-weight: bold; /* 굵은 글씨체 설정 */
+        }
+
+
+        .wrap {
+            position: absolute;
+            left: 0;
+            bottom: 40px;
+            width: 288px;
+            height: 132px;
+            margin-left: -144px;
+            text-align: left;
+            overflow: hidden;
+            font-size: 12px;
+            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+            line-height: 1.5;
+        }
+
+        .wrap * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .wrap .info {
+            width: 286px;
+            height: 120px;
+            border-radius: 5px;
+            border-bottom: 2px solid #ccc;
+            border-right: 1px solid #ccc;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .wrap .info:nth-child(1) {
+            border: 0;
+            box-shadow: 0px 1px 2px #888;
+        }
+
+        .info .title {
+            padding: 5px 0 0 10px;
+            height: 30px;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .info .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #888;
+            width: 17px;
+            height: 17px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+        }
+
+        .info .close:hover {
+            cursor: pointer;
+        }
+
+        .info .body {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info .desc {
+            position: relative;
+            margin: 13px 0 0 90px;
+            height: 75px;
+        }
+
+        .desc .ellipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .desc .category {
+            font-size: 11px;
+            color: #888;
+            margin-top: -2px;
+        }
+
+        .info .img {
+            position: absolute;
+            top: 6px;
+            left: 5px;
+            width: 73px;
+            height: 71px;
+            border: 1px solid #ddd;
+            color: #888;
+            overflow: hidden;
+        }
+
+        .info:after {
+            content: '';
+            position: absolute;
+            margin-left: -12px;
+            left: 50%;
+            bottom: 0;
+            width: 22px;
+            height: 12px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+        }
+
+        .info .link {
+            color: #5085BB;
+        }
+
+        .custom-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .plan-contents {
+            text-align: left;
+            margin-right: 20px;
+        }
+
+        .place-info {
+            text-align: left;
+        }
+    </style>
+
 </head>
 
 <body>
 
-<header class="nav-menu fixed">
     <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
 
 <div class="post-single left">
     <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
@@ -86,65 +223,58 @@
     <c:set var="i" value="${ i+1 }"/>
     <main class="white">
         <div class="container">
+
+            <div display="flex;">
+                <span class="icon-map" style="font-size: 50px; "></span><div class="day">${i}일차 여행플랜 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
+            </div>
+
+            <div class="row" >
+                <div class="col-sm-12">
+                    <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
+                </div>
+            </div>
+
+            <div style="margin: 5%"></div>
+
             <div class="row">
-                <div class="col-sm-7">
-                    <div class="post">
-                            ${dailyPlan.dailyPlanContents}
+                <div class="col-sm-9">
+                    <div class="post" style="height: 400px; overflow: auto; border-radius: 15px;">
+                        <div>${dailyPlan.dailyPlanContents}</div>
                     </div>
-
-                    <div class="tag-wrap">
-                        <a href="#" rel="tag">여행</a>
-                        <a href="#" rel="tag">3일</a>
-                        <a href="#" rel="tag">2박3일</a>
-                        <a href="#" rel="tag">관광지</a>
-                    </div>
-
                 </div>
 
-                <div class="col-sm-5">
+
+                <div class="col-sm-3">
 
                     <div class="sidebar">
-                        <div class="input-group">
-                            <div class="input-group-btn">
-                            </div>
-                        </div>
 
-                        <div class="border-box"> <!-- 지도부분 -->
-                            <h4>
-                                <span class="icon-map"><span>Day-${i}</span></span>
-                                <button class="icon-locate-map" id="reset${i-1}"></button>
-                            </h4>
-                            <div class="recent-post-list">
-                                <div id="map${i-1}" style="width: 100%; height: 300px;"></div>
-                            </div>
-                        </div>
-
-                        <div class="border-box">
+                        <div class="border-box" style="height: 400px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
                             <div class="box-title">명소리스트
                                 <div class="tag-link" style="text-align: right;">총 이동시간
                                     : ${dailyPlan.totalTripTime}</div>
                             </div>
                             <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                                <div class="col-12 column">
+                                <div class="col-12 column" style="text-align: center; ">
                                     <div class="card text-white mb-3"
-                                         style="background-color: rgb(80, 250, 120); width: auto; height: auto;">
-                                        <div class="card-body">
-                                            <h4 class="card-title" name="placeTitle">
-                                                <div style="text-align: center;"><span class="icon-locate"
-                                                                                       value="${place.placeCategory}"></span>&nbsp;&nbsp;&nbsp;#${place.placeTags}
+                                         style="width: auto; height: auto; font-size: 9px;">
+                                        <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
+                                            <h5 class="card-title" name="placeTitle">
+                                                <div style="color: black; width: 100%;">
+                                                    <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
                                                 </div>
-                                            </h4>
+                                            </h5>
                                         </div>
                                     </div>
-                                    <div class="card text-white mb-3" name="tripTime"
-                                         style="background-color: rgb(132, 200, 224); width: auto; height: auto;">
-                                        <c:if test="${place.tripTime != null}">
-                                            <div style="text-align: center;">이동시간: ${place.tripTime}</div>
-                                        </c:if>
+                                    <c:if test="${place.tripTime != null}">
+                                    <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"
+                                         style="background-color: rgba(188,222,167,0.39); width: auto; height: auto; ">
+                                            <div style=" color: black; display: inline-block;">이동시간: ${place.tripTime}</div>
                                     </div>
+                                    </c:if>
                                 </div>
 
                                 <!-- place 반복문이 내부에있어서 해당 장소에 선언하였으며 마커와 오버레이를 보여주기 위한 스크립트 -->
+
                                 <script type="text/javascript">
                                     var placeTags = "${place.placeTags}";
                                     var placePhoneNumber = "${place.placePhoneNumber}";
@@ -156,6 +286,18 @@
                                     var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
                                     var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
 
+                                        <%--var tripPath = ${place.tripPath};--%>
+
+                                        <%--var polyline = new kakao.maps.Polyline({--%>
+                                        <%--    path: tripPath,--%>
+                                        <%--    strokeWeight: 3, // 폴리라인의 두께--%>
+                                        <%--    strokeColor: '#FF0000', // 폴리라인의 색상--%>
+                                        <%--    strokeOpacity: 0.7 // 폴리라인의 투명도--%>
+                                        <%--});--%>
+
+                                        <%--// 폴리라인을 지도에 표시--%>
+                                        <%--polyline.setMap(map);--%>
+
                                     // markers 배열에 좌표 및 맵 ID 정보 추가
                                     markers.push({
                                         position: markerPosition,
@@ -166,18 +308,19 @@
                                         placeCategory: placeCategory,
                                         placeImage: placeImage
                                     });
-                                </script>
 
+                                </script>
                             </c:forEach> <!-- place for end -->
                         </div>
                     </div>
                 </div>
             </div>
+            <hr/>
             </c:forEach> <!-- dailyPlan for end -->
 
             <div class="review-comment">
                 <div class="add-comment">
-                    <div class="form-group">
+                    <div class="addDaily" style="text-align: right;">
                         <button class="btn btn-primary" id="history">확인</button>
                         <c:if test="${user.userId == tripPlan.tripPlanAuthor}">
                             <button class="btn btn-primary" id="updateTripPlan">수정하기</button>
@@ -257,6 +400,7 @@
                 level: 3
             };
             var map = new kakao.maps.Map(mapContainer, mapOptions);
+
             maps.push(map);
         }
         $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
@@ -290,8 +434,17 @@
             var marker = new kakao.maps.Marker(markerOptions);
             marker.setMap(markerOptions.map);
 
+            var category = '';
+            if (markers[i].placeCategory == 0) {
+                category = '여행지';
+            } else if (markers[i].placeCategory == 1) {
+                category = '식당';
+            } else if (markers[i].placeCategory == 2) {
+                category = '숙소';
+            }
+
             // 오버레이 정보창
-            var content = '<div class="wrap">' +
+            var content = '<div class="wrap custom-container">' +
                 '    <div class="info">' +
                 '        <div class="title">' +
                 '            ' + markers[i].placeTags +
@@ -303,7 +456,7 @@
                 '           </div>' +
                 '            <div class="desc">' +
                 '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
-                '                <div class="category">(카테고리) ' + markers[i].placeCategory + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
+                '                <div class="category">(카테고리) ' + category + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
                 '    </div></div></div></div>';
 
             var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다

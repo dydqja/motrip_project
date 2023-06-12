@@ -4876,9 +4876,10 @@ ul.clean-ul .desc {
   background-image: -webkit-linear-gradient(left, #000 0%, #1d3010 100%);
   background-image: -o-linear-gradient(left, #000 0%, #1d3010 100%);
   background-image: linear-gradient(to right, #000 0%, #1d3010 100%);
+  background-image: url('/images/user/login.jpg');
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff000000', endColorstr='#ff1d3010', GradientType=1);
-  opacity: .8;
+  opacity: .7;
 }
 .login .form-box {
   max-width: 450px;

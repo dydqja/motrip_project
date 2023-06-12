@@ -27,15 +27,85 @@
 
   <link rel="stylesheet" href="/css/notice/noticeList.css">
 
+
+  <script src="/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+  <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+  <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+  <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+  <script src="/vendor/retina.min.js"></script>
+  <script src="/vendor/jquery.imageScroll.min.js"></script>
+  <script src="/assets/js/min/responsivetable.min.js"></script>
+  <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+  <script src="/assets/js/min/countnumbers.min.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/min/home.min.js"></script>
+
+  <script type="text/javascript">
+    //============= userId 에 회원정보보기  Event  처리(Click) =============
+    $(function() {
+
+      //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+      $( ".getUser" ).on("click" , function() {
+        console.log("회원ID 클릭됨"+$(this).text().trim());
+        self.location ="/user/getUser?userId="+$(this).text().trim();
+      });
+
+      //==> userId LINK Event End User 에게 보일수 있도록
+      $( "td:nth-child(2)" ).css("color" , "red");
+    });
+
+    $(document).ready(function() {
+
+      $(".page-link").click(function() {
+
+        var page = $(this).data("page");
+        window.location.href = "/user/listUser?currentPage=" + page;
+      });
+    });
+
+    //=============    검색 / page 두가지 경우 모두  Event  처리 =============
+    function fncGetList(currentPage) {
+      $("#currentPage").val(currentPage)
+      $("form").attr("method" , "GET").attr("action" , "/user/listUser").submit();
+    }
+
+    $(function() {
+
+      $("#search").on("click" , function() {
+        //Debug..
+        //alert(  $( "td.ct_btn01:contains('검색')" ).html() );
+        fncGetList(${ search.currentPage })
+      });
+
+      $("#searchKeyword").on("keydown", function(e) {
+        if (e.keyCode == 13) {
+          e.preventDefault();
+          fncGetList(${ search.currentPage })
+        };
+      });
+    });
+
+    $(function() {
+      // 처음으로 서비스 실행
+      $("#goFirstPage").on("click" , function() {
+
+        window.location.href = "/user/listUser?currentPage=1";
+      });
+    });
+
+
+  </script>
+
+
 </head>
 
 <body>
 
 <div class="page-img" style="background-image: url('/images/user/userListTop.jpg');">
 
-  <header class="nav-menu fixed">
   <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-  </header>
 
 
   <div class="container">
@@ -43,7 +113,7 @@
   </div>
 </div>
 
-<div class="page-img" style="background-image: url('/images/user/userListPage.jpg');">
+<%--<div class="page-img" style="background-image: url('/images/user/userListPage.jpg');">--%>
 
 
   <div class="row">
@@ -61,7 +131,7 @@
           <select class="form-control" name="searchCondition" >
             <option value="0"  ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>회원ID</option>
             <option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>회원명</option>
-            <option value="2"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>닉네임</option>
+            <option value="2"  ${ ! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>닉네임</option>
           </select>
         </div>
 
@@ -115,7 +185,6 @@
       </tbody>
 
     </table>
-
     <div class="row">
       <div class="col-md-6">
         <nav aria-label="Page navigation example" class="d-flex justify-content-center">
@@ -128,7 +197,7 @@
                   </a>
                 </c:when>
                 <c:otherwise>
-                  <a class="page-link" href="/user/listUser?currentPage=${resultPage.currentPage - 1}" aria-label="Previous">
+                  <a class="page-link" href="/user/listUser?currentPage=${resultPage.currentPage - 1}&searchKeyword=${search.searchKeyword}&searchCondition=${search.searchCondition}" aria-label="Previous">
                     &laquo;
                   </a>
                 </c:otherwise>
@@ -137,12 +206,9 @@
 
             <c:forEach var="i" begin="${resultPage.beginUnitPage}" end="${resultPage.endUnitPage}">
               <li class="page-item ${i == resultPage.currentPage ? 'active' : ''}">
-                <button type="button" class="page-link" data-page="${i}">${i}</button>
+                <a class="page-link" href="/user/listUser?currentPage=${i}&searchKeyword=${search.searchKeyword}&searchCondition=${search.searchCondition}">${i}</a>
               </li>
             </c:forEach>
-
-
-
 
             <li class="page-item ${resultPage.currentPage == resultPage.maxPage ? 'disabled' : ''}">
               <c:choose>
@@ -152,7 +218,7 @@
                   </a>
                 </c:when>
                 <c:otherwise>
-                  <a class="page-link" href="/user/listUser?currentPage=${resultPage.currentPage + 1}" aria-label="Next">
+                  <a class="page-link" href="/user/listUser?currentPage=${resultPage.currentPage + 1}&searchKeyword=${search.searchKeyword}&searchCondition=${search.searchCondition}" aria-label="Next">
                     &raquo;
                   </a>
                 </c:otherwise>
@@ -161,8 +227,14 @@
           </ul>
         </nav>
       </div>
+
+      <div class="text-right">
+        <div class="d-inline-block">
+          <button id="goFirstPage" class="btn btn-primary">처음으로</button>
+        </div>
+      </div>
+
     </div>
-  </div>
 </div>
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
@@ -201,6 +273,36 @@
 
         var page = $(this).data("page");
         window.location.href = "/user/listUser?currentPage=" + page;
+      });
+    });
+
+    //=============    검색 / page 두가지 경우 모두  Event  처리 =============
+    function fncGetList(currentPage) {
+      $("#currentPage").val(currentPage)
+      $("form").attr("method" , "GET").attr("action" , "/user/listUser").submit();
+    }
+
+    $(function() {
+
+      $("#search").on("click" , function() {
+        //Debug..
+        //alert(  $( "td.ct_btn01:contains('검색')" ).html() );
+        fncGetList(${ search.currentPage })
+      });
+
+      $("#searchKeyword").on("keydown", function(e) {
+        if (e.keyCode == 13) {
+          e.preventDefault();
+          fncGetList(${ search.currentPage })
+        };
+      });
+    });
+
+    $(function() {
+      // 처음으로 서비스 실행
+      $("#goFirstPage").on("click" , function() {
+
+        window.location.href = "/user/listUser?currentPage=1";
       });
     });
 

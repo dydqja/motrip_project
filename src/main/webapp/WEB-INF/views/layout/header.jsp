@@ -9,24 +9,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-
 <link rel="stylesheet" href="/css/alarm/alarm.css" media="all">
 <link rel="stylesheet" href="/css/memo/memo.css" media="all">
 <link rel="stylesheet" href="/summernote/summernote.css" media="all">
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/summernote/summernote.js"></script>
 <script src="/js/alarm/alarm.js"></script>
+<script src="/js/alarm/ajaxAlarm.js"></script>
 <script src="/js/memo/listMemo.js"></script>
 <script src="/js/memo/buildMemo.js"></script>
 <script src="/js/memo/memoBtnCtrl.js"></script>
 <script src="/js/memo/memoFunction.js"></script>
 <script src="/js/memo/ajaxMemo.js"></script>
+<script src="/js/memo/memoAttach.js"></script>
 <%--
 <script src="/js/alarm/alarm.js"></script>
 --%>
 
 
-<div class="pre-loader" style="display: none;">
+<div class="pre-loader">
     <div class="loading-img"></div>
 </div>
 
@@ -35,7 +37,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
-                    <img src="/images/motrip-logo.gif" alt="">
+                    <img src="/images/motrip-logo.gif" alt="" style="height: 120%;">
                 </a>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -66,11 +68,10 @@
                     <li class="dropdown">
                         <a href="#">여행플랜</a>
                         <ul class="dropdown-menu">
-                            <li><a href="/tripPlan/tripPlanList">여행플랜 목록</a>
+                            <li><a href="/tripPlan/tripPlanList?type=all">여행플랜 목록</a>
                             </li>
-                            <li><a href="/tripPlan/myTripPlanList">나의 여행플랜</a>
-                            </li>
-                            <li><a href="/tripPlan/myTripPlanList">나의 여행플랜</a>
+                            <c:if test="${not empty sessionScope.user}">
+                                <li><a href="/tripPlan/tripPlanList?type=my">나의 여행플랜</a></c:if>
                             </li>
                             <li><a href="/tripPlan/addTripPlanView">여행플랜 작성</a>
                             </li>
@@ -79,7 +80,11 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">채팅</a>
                         <ul class="dropdown-menu">
-                            <li><a href="/chatRoom/chatRoomList">채팅 리스트</a>
+                            <li><a href="/chatRoom/chatRoomList">채팅방 목록</a>
+                            </li>
+                            <li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=2">채팅방 추가테스트2</a>
+                            </li>
+                            <li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=56">채팅방 추가테스트5</a>
                             </li>
                         </ul>
                     </li>
@@ -94,11 +99,13 @@
                             </li>
                         </ul>
                     </li>
+                    <c:if test="${not empty sessionScope.user}">
                     <li id="memo-section" class="dropdown">
+                        <input type="hidden" id="memo-search-condition" value="myMemo">
                         <a href="#" class="dropdown-toggle">메모</a>
                         <ul id="memo-dropdown" class="dropdown-menu">
                             <div class="my-memo-thumbnail btn-group-justified" role="group">
-                                <a href="#" class="btn btn-line btn-sm btn-default" role="button" onclick="buildMemo('user2')">+ 새 메모</a>
+                                <a href="#" class="btn btn-line btn-sm btn-default" role="button" onclick="buildNewMemo('user2')">+ 새 메모</a>
                             </div>
                             <div class="panel-group" id="memo-accordion" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
@@ -167,6 +174,7 @@
                             </div>
                         </ul>
                     </li>
+                    </c:if>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="boardDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
@@ -194,7 +202,8 @@
                                     <li><a href="/user/listUser">회원목록</a>
                                     </li>
                                 </c:if>
-                                <li><a href="#">로그아웃</a>
+                                <li><a href="/user/logout">로그아웃</a>
+
                                 </li>
                             </ul>
                         </li>
@@ -220,6 +229,11 @@
         </div>
 
     </nav>
+<%--    <div class="alert alert-info" role="alert" style="text-align: center">읽지 않은 3개의 알람이 있습니다.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>--%>
 </header>
 <%--button trigger modal--%>
 <input type="hidden" data-toggle="modal" href="#alarm-modal"></input>
@@ -248,6 +262,7 @@
 <div id="memo-dialogs">
     <%--유저 아이디를 담을 hidden input 만들기.--%>
     <input type="hidden" id="memo-user-id" value="${sessionScope.user.userId}">
+    <input type="hidden" id="memo-user-nickname" value="${sessionScope.user.nickname}">
 </div>
 <div id="memo-share-modal" class="modal" aria-labelledby="myModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -267,13 +282,16 @@
                             <thead>
                             </thead>
                             <tbody id="memo-sharer-list-body">
-                            <%--<tr>
-                                <td>id</td>
-                                <td>nick</td>
-                                <td>email</td>
-                                <td><a href="#">자세히</a></td>
-                                <td><button>공유해제</button></td>
-                            </tr>--%>
+
+                            </tbody>
+                        </table>
+                        <div class="panel-heading">이 메모가 필요한 사람들</div>
+                        <!-- Table -->
+                        <table class="table">
+                            <thead>
+                            </thead>
+                            <tbody id="memo-sharee-list-body">
+
                             </tbody>
                         </table>
                     </div>
@@ -285,4 +303,7 @@
             </div>
         </div>
     </div>
+</div>
+<div id="mini-memo-container">
+
 </div>

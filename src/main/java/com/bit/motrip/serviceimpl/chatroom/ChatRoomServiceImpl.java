@@ -96,14 +96,14 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public Map<String , Object >  chatRoomListPage(Search search) throws Exception {
 
-        List<ChatRoom> chatRoomList = chatRoomDao.chatRoomListPage(search);
+        List<ChatRoom> chatRoomList = chatRoomDao.chatRoomListPage(search); // listPage 에 서치조건
         for (ChatRoom cr:chatRoomList) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
             String strDate = simpleDateFormat.format(cr.getTravelStartDate());
             cr.setStrDate(strDate);
         }
-        int totalCount = chatRoomDao.getChatRoomTotalCount(search);
-
+        int totalCount = chatRoomDao.getChatRoomTotalCount(search); //토탈 카운트
+        System.out.println("totalcount in servicelayer : "+totalCount);
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put("list", chatRoomList );
@@ -116,6 +116,22 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     public int changeRoomStatus(int chatRoomStatus, int chatRoomNo) throws Exception {
         chatRoomDao.changeRoomStatus(chatRoomStatus,chatRoomNo);
         return chatRoomStatus;
+    }
+
+    @Override
+    public Map<String , Object > myChatRoomListPage(Search search,String userId) throws Exception {
+        Map<String,Object> map = new HashMap<>();
+        map.put("search",search);
+        map.put("userId",userId);
+        List<ChatRoom> chatRoomList = chatRoomDao.myChatRoomListPage(map);
+
+        int totalCount = chatRoomDao.getChatRoomTotalCount(search); //토탈 카운트
+        System.out.println("totalcount in servicelayer : "+totalCount);
+        Map<String, Object> map2 = new HashMap<String, Object>();
+
+        map2.put("list", chatRoomList );
+        map2.put("totalCount", new Integer(totalCount));
+        return map2;
     }
 
     @Override

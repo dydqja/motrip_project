@@ -11,9 +11,6 @@
     <meta name="author" content="">
     <title>Mold Discover . HTML Template</title>
 
-    <script src="/vendor/jquery/dist/jquery.min.js"></script>
-    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-
     <link rel="icon" type="image/png" href="/assets/img/favicon.png"/>
     <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
@@ -21,6 +18,22 @@
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/vendor/retina.min.js"></script>
+    <script src="/vendor/jquery.imageScroll.min.js"></script>
+    <script src="/assets/js/min/responsivetable.min.js"></script>
+    <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+
+    <script src="/assets/js/min/countnumbers.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+
 
     <style>
         .center-div {
@@ -35,13 +48,14 @@
         }
 
     </style>
+
 </head>
 
 <body>
 
-<header class="nav-menu fixed">
+<%--<header class="nav-menu fixed">--%>
     <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
+<%--</header>--%>
 
 <div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
     <div class="container">
@@ -68,18 +82,19 @@
                     <div class="center-div" style="width: 100%; height: 100%;">
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="newDate">
-                                <h4><span class="icon-calendar"></span>&nbsp<input type="radio" name="options"
-                                                                                   id="newDate" checked></h4>
+                                <h4><span class="icon-calendar"></span>&nbsp
+                                    <input type="radio" name="options" id="newDate"
+                                           value="newDate" OnClick="window.location.href='/tripPlan/tripPlanList?type=${condition}&planCondition=newDate'"></h4>
                                 <h5>최신날짜순</h5>
                             </label>
                             <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="views">
                                 <h4><span class="icon-eye"></span>&nbsp<input type="radio" name="options"
-                                                                              id="views"></h4>
+                                                                              id="views" value="views" OnClick="window.location.href='/tripPlan/tripPlanList?type=${condition}&planCondition=views'"></h4>
                                 <h5>조회수</h5>
                             </label>
                             <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="likes">
                                 <h4><span class="icon-hand-like"></span>&nbsp<input type="radio" name="options"
-                                                                                    id="likes"></h4>
+                                                                                    id="likes" value="likes" OnClick="window.location.href='/tripPlan/tripPlanList?type=${condition}&planCondition=likes'"></h4>
                                 <h5>추천수</h5>
                             </label>
                         </div>
@@ -113,7 +128,7 @@
                 <c:set var="i" value="0"/>
                 <c:forEach var="tripPlan" items="${tripPlanList}">
                     <c:set var="i" value="${ i+1 }"/>
-                    <div class="item-list">
+                    <div class="item-list trip-plan-item-list">
                         <div class="col-sm-5">
                             <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
                                     type="hidden"
@@ -147,14 +162,13 @@
                                     </div>
                                     <div>
                                         <c:if test="${not empty sessionScope.user.userId}">
-                                            <c:if test="sessionScope.user.userId == user.userId">
-                                                <button class="btn-sm btn-info right" id="addChatRoom"
-                                                        value="${tripPlan.tripPlanNo}">채팅방 생성
-                                                </button>
+                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                                <a href="/chatRoom/addChatRoom?tripPlanNo=${tripPlan.tripPlanNo}&userId=${sessionScope.user.userId}" type="button"
+                                                   class="btn-sm btn-info right">채팅방 생성</a>
                                             </c:if>
                                         </c:if>
                                         <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
-                                            <c:if test="sessionScope.user.userId == user.userId">
+                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                                 <button class="btn-sm btn-info right" name="tripPlanNo"
                                                         value="${tripPlan.tripPlanNo}">여행완료
                                                 </button>
@@ -172,7 +186,7 @@
                                 </button>
 
                                 <c:if test="${not empty sessionScope.user.userId && !tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                    <c:if test="sessionScope.user.userId == user.userId">
+                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                         <button id="btnDelete" class="btn btn-sm btn-danger"
                                                 value="${tripPlan.tripPlanNo}">삭제<input type="hidden"
                                                                                         value="${tripPlan.tripPlanNo}"
@@ -182,7 +196,7 @@
                                 </c:if>
 
                                 <c:if test="${not empty sessionScope.user.userId && tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                    <c:if test="sessionScope.user.userId == user.userId">
+                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                         <button id="btnDelete" class="btn btn-sm btn-info"
                                                 value="${tripPlan.tripPlanNo}">복구<input type="hidden"
                                                                                         value="${tripPlan.tripPlanNo}"
@@ -207,26 +221,30 @@
                     <ul class="pagination justify-content-center">
 
                         <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="/tripPlan/tripPlanList?currentPage=${page.currentPage - 1}"
-                                   aria-label="Previous">
-                                    &laquo;
-                                </a>
+
+                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage - 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"
+                               aria-label="Previous">
+                                &laquo;
+                            </a>
+
                         </li>
 
                         <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
 
                             <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-                                    <a class="page-link" href="/tripPlan/tripPlanList?currentPage=${i}">${i}</a>
+
+                                <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}">${i}</a>
+
                             </li>
 
                         </c:forEach>
 
                         <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-                                <a class="page-link" href="/tripPlan/tripPlanList?currentPage=${page.currentPage + 1}"
-                                   aria-label="Next">
-                                    &raquo;
-                                </a>
+                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage + 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"
+                               aria-label="Next">
+                                &raquo;
+                            </a>
 
                         </li>
 
@@ -241,33 +259,12 @@
 
 </main>
 
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-
-<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-<script src="/vendor/retina.min.js"></script>
-<script src="/vendor/jquery.imageScroll.min.js"></script>
-<script src="/assets/js/min/responsivetable.min.js"></script>
-<script src="/assets/js/bootstrap-tabcollapse.js"></script>
-
-<script src="/assets/js/min/countnumbers.min.js"></script>
-<script src="/assets/js/main.js"></script>
-
 <!-- Current Page JS -->
 <script src="/assets/js/min/priceslider.min.js"></script>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
-
-        // 선택된 체크박스의 ID를 가져와서 정렬 순서 변경
-        $('input[name="options"]').on('click', function () {
-            var option = $(this).attr('id');
-            console.log(option);
-        });
 
         // 사진의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
         $(function () {

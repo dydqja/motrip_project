@@ -42,76 +42,37 @@ public class TripPlanServiceImpl implements TripPlanService {
 
     HttpSession httpSession;
 
-//    @Override // 여행플랜 목록(전체, 내목록 모두)
-//    public Map<String, Object> selectTripPlanList(Map<String, Object> paramaters) throws Exception {
-//
-//        Search search = (Search) paramaters.get("search");
-//        int offset = (search.getCurrentPage() - 1) * tripPlanPageSize;
-//        search.setTotalCount(tripPlanDao.selectTripPlanCount()); // 여행플랜 총 카운트
-//        search.setCurrentPage(search.getCurrentPage()); // 클라이언트에서 요청한 페이지 번호
-//        search.setLimit(tripPlanPageSize); // LIMIT 값은 페이지당 항목 수와 동일합니다.
-//        search.setOffset(offset); //
-//
-//        User dbUser = (User) paramaters.get("user");
-//        if(dbUser != null) { // 나의 여행플랜
-//            paramaters.put("tripPlanAuthor", dbUser.getUserId());
-//            paramaters.put("search", search);
-//            paramaters.put("tripPlanList", tripPlanDao.selectTripPlanList(paramaters));
-//        } else { // 전체 여행플랜
-//            List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(paramaters); // nickname 필드를 별도 만들지 않았지만 플랜 작성자 정보를 통해 가져와서 넣어준다.
-//            List<TripPlan> updatedTripPlanList = new ArrayList<>();
-//            for (TripPlan tripPlan : tripPlanList) {
-//                User user = userService.getUserById(tripPlan.getTripPlanAuthor());
-//                tripPlan.setTripPlanAuthor(user.getNickname());
-//                updatedTripPlanList.add(tripPlan);
-//            }
-//            paramaters.put("tripPlanList", updatedTripPlanList);
-//        }
-//
-//        return paramaters;
-//    }
-
     @Override
-    public Map<String , Object > selectTripPlanList(Search search) throws Exception {
+    public Map<String , Object > selectTripPlanList(Map<String, Object> parameters) throws Exception {
 
-        List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(search);
+        if(parameters.get("user") != null) {
+            User dbUser = (User) parameters.get("user");
+            parameters.put("tripPlanAuthor", dbUser.getUserId());
+            System.out.println(dbUser.getUserId());
+        } else {
+            parameters.put("tripPlanAuthor", null);
+        }
+        Search search = (Search) parameters.get("search");
+        System.out.println("서비스 임플로 들어왔을떄 : " + parameters);
+
+        List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(parameters);
         //for (TripPlan tp : tripPlanList) {
         //    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
             // 내거 날짜 바꾸기
         //}
-        System.out.println(tripPlanList);
         int totalCount = tripPlanDao.selectTripPlanTotalCount(search);
+        System.out.println("totalCount : " + totalCount);
 
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put("list", tripPlanList );
         map.put("totalCount", new Integer(totalCount));
-        return map;
-    }
-
-    @Override // 여행플랜 목록(전체, 내목록 모두)
-    public Map<String, Object> selectMyTripPlanList(Map<String, Object> parameters) throws Exception {
-
-        Search search = (Search) parameters.get("search");
-        int totalCount = tripPlanDao.selectTripPlanTotalCount(search);
-
-        User dbUser = (User) parameters.get("user");
-        if(dbUser != null) { // 나의 여행플랜
-            parameters.put("tripPlanAuthor", dbUser.getUserId());
-            parameters.put("search", search);
-            parameters.put("tripPlanList", tripPlanDao.selectMyTripPlanList(parameters));
-        } else { // 전체 여행플랜
-            List<TripPlan> tripPlanList = tripPlanDao.selectMyTripPlanList(parameters); // nickname 필드를 별도 만들지 않았지만 플랜 작성자 정보를 통해 가져와서 넣어준다.
-            List<TripPlan> updatedTripPlanList = new ArrayList<>();
-            for (TripPlan tripPlan : tripPlanList) {
-                User user = userService.getUserById(tripPlan.getTripPlanAuthor());
-                tripPlan.setTripPlanAuthor(user.getNickname());
-                updatedTripPlanList.add(tripPlan);
-            }
-            parameters.put("list", updatedTripPlanList);
+        if(parameters.get("user") != null) {
+            map.put("tripPlanAuthor", tripPlanList.get(0).getTripPlanAuthor());
+            System.out.println("map : " + map);
         }
-        parameters.put("totalCount", totalCount);
-        return parameters;
+
+        return map;
     }
 
     @Override // 여행플랜 저장
@@ -153,39 +114,69 @@ public class TripPlanServiceImpl implements TripPlanService {
         return tripPlan;
     }
 
-    @Override // 여행플랜 수정style="width: 100%; height: 300px;
+    @Override // 여행플랜 수정
     public TripPlan updateTripPlan(TripPlan tripPlan) throws Exception{
+
         if(!tripPlan.getisTripCompleted()){
             tripPlan.setTripPlanRegDate(new Date());
             tripPlanDao.updateTripPlan(tripPlan);
             List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
-            for(int i=0; i<dailyPlan.size(); i++){
-                dailyPlan.get(i).setDailyPlanNo(dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo()).get(i).getDailyPlanNo());
-                dailyPlanDao.updateDailyPlan(dailyPlan.get(i));
-                List<Place> place = dailyPlan.get(i).getPlaceResultMap();
-                List<Place> defaultPlaces = placeDao.selectPlace(dailyPlan.get(i).getDailyPlanNo()); // 업데이트전 place
-                System.out.println(place + "새로운값");
-                System.out.println(defaultPlaces + "기존값 확인");
-                for(int j=0; j<place.size(); j++){
-                    if(j < defaultPlaces.size()) {
-                        place.get(j).setPlaceNo(defaultPlaces.get(j).getPlaceNo());
-                        placeDao.updatePlace(place.get(j));
-                        if(j == (place.size()-1)) {
-                            int size = defaultPlaces.size() - place.size();
-                            if (defaultPlaces.size() > place.size()) {
-                                for (int p = 0; p <size; p++) {
-                                    placeDao.deletePlace(defaultPlaces.get(place.size() + p).getPlaceNo());
+            List<DailyPlan> defaultDailyPlan = dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo());
+
+            // 기존 플랜수와 새로운 플랜수 비교하여 같을 경우
+            if(defaultDailyPlan.size() == dailyPlan.size()) {
+                for(int i=0; i<dailyPlan.size(); i++){
+
+                    dailyPlan.get(i).setDailyPlanNo(dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo()).get(i).getDailyPlanNo());
+                    dailyPlanDao.updateDailyPlan(dailyPlan.get(i));
+                    List<Place> place = dailyPlan.get(i).getPlaceResultMap();
+                    List<Place> defaultPlaces = placeDao.selectPlace(dailyPlan.get(i).getDailyPlanNo()); // 업데이트전 place
+                    System.out.println(place + "새로운값");
+                    System.out.println(defaultPlaces + "기존값 확인");
+
+                    for(int j=0; j<place.size(); j++){
+
+                        if(j < defaultPlaces.size()) {
+                            place.get(j).setPlaceNo(defaultPlaces.get(j).getPlaceNo());
+                            placeDao.updatePlace(place.get(j));
+                            if(j == (place.size()-1)) {
+                                int size = defaultPlaces.size() - place.size();
+                                if (defaultPlaces.size() > place.size()) {
+                                    for (int p = 0; p <size; p++) {
+                                        placeDao.deletePlace(defaultPlaces.get(place.size() + p).getPlaceNo());
+                                    }
                                 }
                             }
+                        } else {
+                            place.get(j).setDailyPlanNo(dailyPlan.get(i).getDailyPlanNo());
+                            placeDao.addPlace(place.get(j));
                         }
-                    } else {
-                        place.get(j).setDailyPlanNo(dailyPlan.get(i).getDailyPlanNo());
+
+                    }
+                }
+                System.out.println(tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo()));
+                tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+                System.out.println("기존 플랜일수가 똑같습니다.");
+            } else if(defaultDailyPlan.size() < dailyPlan.size()){ // 기존 플랜수 보다 새로운 플랜수가 클경우
+                for(int i=defaultDailyPlan.size(); i<dailyPlan.size(); i++) {
+                    dailyPlan.get(i).setTripPlanNo(tripPlan.getTripPlanNo());
+                    dailyPlanDao.addDailyPlan(dailyPlan.get(i));
+                    int dailyPlanNo = dailyPlanDao.getDailyPlan();
+                    List<Place> place = dailyPlan.get(i).getPlaceResultMap();
+                    for(int j=0; j<place.size(); j++){
+                        place.get(j).setDailyPlanNo(dailyPlanNo);
                         placeDao.addPlace(place.get(j));
                     }
                 }
+                System.out.println("기존 플랜일수보다 많아서 새로 추가했습니다..");
+            } else if(defaultDailyPlan.size() > dailyPlan.size()) {
+                for(int i=dailyPlan.size(); i<defaultDailyPlan.size(); i++) {
+                    List<DailyPlan> delDailyPlan = dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo());
+                    dailyPlanDao.deleteDailyPlan(delDailyPlan.get(i).getDailyPlanNo());
+                }
+                System.out.println("기존 플랜일수보다 적어서 삭제했습니다...");
             }
-            System.out.println(tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo()));
-            tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+
         } else {
             System.out.println("여행이 완료된 플랜은 더이상 수정할수없습니다.");
         }

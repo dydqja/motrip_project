@@ -1,5 +1,5 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
-<%@ page pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
@@ -9,7 +9,7 @@
 <html lang="ko">
 
 <head>
-    <meta charset="EUC-KR">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -24,493 +24,37 @@
     <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-<%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">--%>
-<%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">--%>
+    <link rel="stylesheet" href="/css/user/getUser.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
+
+    <%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">--%>
+    <%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">--%>
 
     <script src="https://kit.fontawesome.com/b2ece947c7.js" crossorigin="anonymous"></script>
+    <%--<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>--%>
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/vendor/retina.min.js"></script>
+    <script src="/vendor/jquery.imageScroll.min.js"></script>
+    <script src="/assets/js/min/responsivetable.min.js"></script>
+    <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+    <script src="/assets/js/min/login.min.js"></script>
 
-
-
-
+<%--    <script src="/assets/js/min/countnumbers.min.js"></script>--%>
+    <%--<script src="/assets/js/main.js"></script>--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+    <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="/assets/js/min/priceslider.min.js"></script>
     <!--  ///////////////////////// CSS ////////////////////////// -->
-    <style>
-        body {
-            padding-top : 50px;
-        }
-        .fa-solid,
-        .fa-regular,
-        .icon-setting,
-        .icon-heart {
-            font-size: 20px;
-            margin-left: 1rem;
-        }
 
-        .btn:hover {
-            opacity: 1 !important;
-        }
-
-        #likeUser:disabled img,
-        #likeUserCancle:disabled img,
-        #disLikeUser:disabled img,
-        #disLikeUserCancle:disabled img {
-            background-color: transparent;
-        }
-
-        .box {
-            flex: 1;
-        }
-
-        .profile-bio p {
-            width: 33.33%; /* div ����� 1/3 ũ�� */
-        }
-
-        .update-user-icon {
-            font-size: 20px;
-            margin-left: 1rem;
-        }
-
-        :root {
-            font-size: 10px;
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: "Open Sans", Arial, sans-serif;
-            min-height: 100vh;
-            background-color: #fafafa;
-            color: #262626;
-            padding-bottom: 3rem;
-        }
-
-        img {
-            display: block;
-            opacity: 1;
-        }
-
-        .container {
-            max-width: 93.5rem;
-            margin-right: auto;
-            margin-left: 0;
-            padding: 0 2rem;
-        }
-
-        .container .container-left {
-            margin-left: 2rem;
-        }
-
-        .btn {
-            opacity: 1;
-            /*display: block; */
-            display: inline-block;
-            font: inherit;
-            background: none;
-            border: none;
-            color: inherit;
-            padding: 0;
-            cursor: pointer;
-        }
-
-        .btn:focus {
-            outline:0.5rem auto #000000;
-        }
-
-        .visually-hidden {
-            position: absolute !important;
-            height: 1px;
-            width: 1px;
-            overflow: hidden;
-            clip: rect(1px, 1px, 1px, 1px);
-        }
-
-        /* Profile Section */
-
-        .profile {
-            padding: 5rem 0;
-        }
-
-        .profile::after {
-            content: "";
-            display: block;
-            clear: both;
-        }
-
-        .profile-image {
-            float: left;
-            width: calc(33.333% - 1rem);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 3rem;
-        }
-
-        .profile-image img {
-            border-radius: 50%;
-        }
-
-        .profile-user-settings,
-        .profile-stats,
-        .profile-bio {
-            float: left;
-            width: calc(66.666% - 2rem);
-        }
-
-        .profile-user-settings {
-            margin-top: 1.1rem;
-        }
-
-        .profile-user-name {
-            display: inline-block;
-            /*font-size: 3.2rem;*/
-            font-weight: 300;
-        }
-
-        .nickname1,
-        .nickname2 {
-            font-size: 3.2rem;
-            font-weight: 300;
-        }
-
-        .welcome-msg {
-            font-size: 1.6rem;
-            font-weight: 300;
-        }
-
-        .profile-edit-btn {
-            font-size: 1.4rem;
-            line-height: 1.8;
-            border: 0.1rem solid #dbdbdb;
-            border-radius: 0.3rem;
-            padding: 0 2.4rem;
-            margin-left: 2rem;
-        }
-
-        .profile-settings-btn {
-            font-size: 2rem;
-            margin-left: 1rem;
-        }
-
-        .profile-stats {
-            margin-top: 2.3rem;
-        }
-
-        .profile-stats li {
-            display: inline-block;
-            font-size: 1.6rem;
-            line-height: 1.5;
-            margin-right: 4rem;
-            cursor: pointer;
-        }
-
-        .profile-stats li:last-of-type {
-            margin-right: 0;
-        }
-
-        /*.profile-bio {*/
-        /*    font-size: 1.6rem;*/
-        /*    font-weight: 400;*/
-        /*    line-height: 1.5;*/
-        /*    margin-top: 2.3rem;*/
-        /*    display: flex; !* ���ƿ� ���� �߰� *!*/
-        /*} ---- ���� css */
-
-        .profile-bio {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            grid-template-areas:
-                "box1 box2"
-                "box3 box3";
-            font-size: 1.6rem;
-            font-weight: 400;
-            line-height: 1.5;
-            margin-top: 2.3rem;
-        }
-
-
-        .profile-real-name,
-        .profile-stat-count,
-        .profile-edit-btn {
-            font-weight: 600;
-        }
-
-        /* Gallery Section */
-
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            margin: -1rem -1rem;
-            padding-bottom: 3rem;
-        }
-
-        .gallery-item {
-            position: relative;
-            flex: 1 0 22rem;
-            margin: 1rem;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .gallery-item:hover .gallery-item-info,
-        .gallery-item:focus .gallery-item-info {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-
-        .gallery-item-info {
-            display: none;
-        }
-
-        .gallery-item-info li {
-            display: inline-block;
-            font-size: 1.7rem;
-            font-weight: 600;
-        }
-
-        .gallery-item-likes {
-            margin-right: 2.2rem;
-        }
-
-        .gallery-item-type {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 2.5rem;
-            text-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
-        }
-
-        .fa-clone,
-        .fa-comment {
-            transform: rotateY(180deg);
-        }
-
-        .gallery-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Loader */
-
-        .loader {
-            width: 5rem;
-            height: 5rem;
-            border: 0.6rem solid #999;
-            border-bottom-color: transparent;
-            border-radius: 50%;
-            margin: 0 auto;
-            animation: loader 500ms linear infinite;
-        }
-
-        /* Media Query */
-
-        @media screen and (max-width: 40rem) {
-            .profile {
-                display: flex;
-                flex-wrap: wrap;
-                padding: 4rem 0;
-            }
-
-            .profile::after {
-                display: none;
-            }
-
-            .profile-image,
-            .profile-user-settings,
-            .profile-bio,
-            .profile-stats {
-                float: none;
-                width: auto;
-            }
-
-            .profile-image img {
-                width: 7.7rem;
-            }
-
-            .profile-user-settings {
-                flex-basis: calc(100% - 10.7rem);
-                display: flex;
-                flex-wrap: wrap;
-                margin-top: 1rem;
-            }
-
-            .profile-user-name {
-                font-size: 2.2rem;
-            }
-
-            .profile-edit-btn {
-                order: 1;
-                padding: 0;
-                text-align: center;
-                margin-top: 1rem;
-            }
-
-            .profile-edit-btn {
-                margin-left: 0;
-            }
-
-            .profile-bio {
-                font-size: 1.4rem;
-                margin-top: 1.5rem;
-            }
-
-            .profile-edit-btn,
-            .profile-bio,
-            .profile-stats {
-                flex-basis: 100%;
-            }
-
-            .profile-stats {
-                order: 1;
-                margin-top: 1.5rem;
-            }
-
-            .profile-stats ul {
-                display: flex;
-                text-align: center;
-                padding: 1.2rem 0;
-                border-top: 0.1rem solid #dadada;
-                border-bottom: 0.1rem solid #dadada;
-            }
-
-            .profile-stats li {
-                font-size: 1.4rem;
-                flex: 1;
-                margin: 0;
-            }
-
-            .profile-stat-count {
-                display: block;
-            }
-        }
-
-        /* Spinner Animation */
-
-        @keyframes loader {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /*
-
-        The following code will only run if your browser supports CSS grid.
-
-        Remove or comment-out the code block below to see how the browser will fall-back to flexbox & floated styling.
-
-        */
-
-        @supports (display: grid) {
-            .profile {
-                display: grid;
-                grid-template-columns: 1fr 2fr;
-                grid-template-rows: repeat(3, auto);
-                grid-column-gap: 3rem;
-                align-items: center;
-            }
-
-            .profile-image {
-                grid-row: 1 / 3;
-            }
-
-            .gallery {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
-                grid-gap: 2rem;
-            }
-
-            .profile-image,
-            .profile-user-settings,
-            .profile-stats,
-            .profile-bio,
-            .gallery-item,
-            .gallery {
-                width: auto;
-                margin: 0;
-            }
-
-            @media (max-width: 40rem) {
-                .profile {
-                    grid-template-columns: auto 1fr;
-                    grid-row-gap: 1.5rem;
-                }
-
-                .profile-image {
-                    grid-row: 1 / 2;
-                }
-
-                .profile-user-settings {
-                    display: grid;
-                    grid-template-columns: auto 1fr;
-                    grid-gap: 1rem;
-                }
-
-                .profile-edit-btn,
-                .profile-bio {
-                    grid-column: 1 / -1;
-                }
-                .with-icon,
-                .profile-stats {
-                    grid-row: 2 / 4;
-                }
-
-                .profile-user-settings,
-                .profile-edit-btn,
-                .profile-settings-btn,
-                .profile-bio,
-                .profile-stats {
-                    margin: 0;
-                }
-            }
-        }
-
-        @font-face {
-            font-family: 'Material Icons';
-            font-style: normal;
-            font-weight: 400;
-            src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
-            src: local('Material Icons'),
-            local('MaterialIcons-Regular'),
-            url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
-            url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
-            url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
-        }
-
-        .material-icons {
-            font-family: 'Material Icons';
-            font-weight: normal;
-            font-style: normal;
-            font-size: 24px;  /* Preferred icon size */
-            display: inline-block;
-            line-height: 1;
-            text-transform: none;
-            letter-spacing: normal;
-            word-wrap: normal;
-            white-space: nowrap;
-            direction: ltr;
-
-            /* Support for all WebKit browsers. */
-            -webkit-font-smoothing: antialiased;
-            /* Support for Safari and Chrome. */
-            text-rendering: optimizeLegibility;
-
-            /* Support for Firefox. */
-            -moz-osx-font-smoothing: grayscale;
-
-            /* Support for IE. */
-            font-feature-settings: 'liga';
-        }
-    </style>
 
 
 
@@ -520,74 +64,89 @@
 <body>
 
 
-<!--  ȭ�鱸�� div Start /////////////////////////////////////-->
+<%--    <%@ include file="/WEB-INF/views/layout/header.jsp" %>--%>
+
+
+<%--<div class="page-img" style="background-image: url('/images/user/getUserTop.jpg');">--%>
+
+<%--<header class="nav-menu fixed">--%>
+<%--<%@ include file="/WEB-INF/views/layout/header.jsp" %>--%>
+<%--</header>--%>
+
+
+<!--  화면구성 div Start /////////////////////////////////////-->
 <div class="container">
 
-
-
     <div class="page-header">
-        <h3 class=" text-info">profile</h3>
+        <h3  style="background-color: #558B2F; color: #F5F1E3;">MyPage</h3>
     </div>
-
-
-
 
     <div class="profile">
 
         <div class="profile-image">
 
-            <img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&amp;h=152&amp;fit=crop&amp;crop=faces" alt="">
-
-
-                <img class="text-right get-user-male" style="max-width: 25px; max-height: 25px;" src="/images/male.png">
-
-                <img class="text-right get-user-female" style="max-width: 25px; max-height: 25px;" src="/images/female.png">
-
+            <img src="/images/user/khunam.png" style="width: 200px; height: 200px;" alt="">
 
         </div>
 
-        <div class="profile-user-settings">
+        <div class="profile-user-settings" style="display: inline-block; align-items: center;">
 
-            <div class="profile-user-name">
+            <div class="welcome-row">
                 <c:if test="${sessionScope.user.userId eq getUser.userId}" >
                     <span class="nickname1" id="nickname1">${getUser.nickname}</span>
-                    <span class="welcome-msg">��, ȯ���մϴ�!</span>
+                    <span class="welcome-msg">님, 환영합니다!</span>
                 </c:if>
                 <c:if test="${sessionScope.user.userId ne getUser.userId}" >
                     <span class="nickname2" id="nickname2">${getUser.nickname}</span>
-                    <span class="welcome-msg">���� ȸ�������Դϴ�.</span>
+                    <span class="welcome-msg">님의 회원정보입니다.
+                        <c:if test="${getUser.gender eq 'M'}">
+                            <img class="text-right get-user-male" style="max-width: 25px; max-height: 25px; margin: 0;" src="/images/male.png">
+                        </c:if>
+                        <c:if test="${getUser.gender eq 'F'}">
+                            <img class="text-right get-user-female" style="max-width: 25px; max-height: 25px; margin: 0;" src="/images/female.png">
+                        </c:if>
+                    </span>
                 </c:if>
             </div>
 
-            <div style="opacity: 1; display: inline-block; font: inherit; background: none; border: none; color: inherit; padding: 0; cursor: pointer;">
-<%--                <span class="icon-heart" id="evaluateCount" style="opacity: 1;">${getUser.evaluateCount}</span>--%>
-                    <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px; cursor: default;" src="/images/redheart.png">
-                    <span style="cursor: default; font-size: 20px;" id="evaluateCount">${getUser.evaluateCount}</span>
+            <div id="imgs" style="opacity: 1; display: inline-block; font: inherit; background: none; border: none; color: inherit; padding: 0; cursor: pointer;">
+                <%--                <span class="icon-heart" id="evaluateCount" style="opacity: 1;">${getUser.evaluateCount}</span>--%>
+                <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px; cursor: default;" src="/images/redheart.png">
+                <span style="cursor: default; font-size: 20px;" id="evaluateCount">${getUser.evaluateCount}</span>
 
                 <c:if test="${sessionScope.user.userId eq getUser.userId}">
-                    <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px; cursor: default;" src="/images/gear.png">
-                </c:if>
-                <c:if test="${sessionScope.user.userId ne getUser.userId}">
-<%--                    <i class="fa-regular fa-circle-xmark" name="blacklist" id="blacklist" title="��������Ʈ ���" style="opacity: 1;"></i>--%>
-                    <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px;" src="/images/userban.png" name="blacklist" id="blacklist" title="��������Ʈ ���">
+                    <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px; cursor: pointer;" src="/images/gear.png">
                 </c:if>
 
-                <button type="button" class="btn btn-default" name="listBlack" id="listBlack">��������Ʈ��Ϻ���</button>
+                <c:if test="${sessionScope.user.userId ne getUser.userId}">
+                    <%--                    <i class="fa-regular fa-circle-xmark" name="blacklist" id="blacklist" title="블랙리스트 등록" style="opacity: 1;"></i>--%>
+                    <img  style="max-width: 25px; max-height: 25px; display: inline-block; margin-left: 10px;" src="/images/userban.png" name="blacklist" id="blacklist" title="블랙리스트 등록">
+                </c:if>
+
+                <c:if test="${sessionScope.user.userId eq getUser.userId}">
+                    <button type="button" class="blacklist-button" name="listBlack" id="listBlack">Blacklist</button>
+                    <button type="button" class="secession-button" name="secessionUser" id="secessionUser">회원탈퇴</button>
+                </c:if>
 
             </div>
 
         </div>
 
         <div class="profile-stats">
-            <blockquote class="with-icon">
-                <p>${getUser.selfIntro}</p>
+            <blockquote class="with-icon" style="background-color: #F5F1E3;">
+                <c:if test="${getUser.selfIntroPublic}">
+                    <h3 id="selfIntro">${getUser.selfIntro}</h3>
+                </c:if>
+                <c:if test="${!getUser.selfIntroPublic}">
+                    <h3 id="selfIntro">"비공개정보입니다."</h3>
+                </c:if>
             </blockquote>
         </div>
 
 
 
         <div class="profile-bio">
-<%--            //style="display: flex; justify-content: flex-end"--%>
+            <%--            //style="display: flex; justify-content: flex-end"--%>
             <div class="box" style="grid-area: box1; display: flex; justify-content: flex-end">
                 <c:if test="${sessionScope.user.userId ne getUser.userId}">
                     <button type="button" class="btn" name="likeUser" id="likeUser">
@@ -613,43 +172,304 @@
             <div class="box" style="grid-area: box3;">
 
             </div>
-
-
-
         </div>
-
     </div>
+<%--    프로필부분 끝/ 탭 시작 ###################################################################--%>
+    <div>
+        <!-- START Block Tabs Title -->
+        <div class="block full">
+            <ul class="nav nav-tabs" data-toggle="tabs">
+                <li class="active"><a href="#findId" data-toggle="tab" data-load="true" id="findIdTap">여행플랜목록</a></li>
+                <li><a href="#findPwd" data-toggle="tab" data-load="false" id="findPwdTap">채팅방 목록</a></li>
+            </ul>
+        </div>
+        <!-- END Block Tabs Title -->
+
+        <!-- Tabs Content -->
+        <div class="tab-content" >
+
+            <div class="tab-pane active" id="findId">
+                <!-- 여행플랜목록 부분 ################################################################################ -->
+                <main>
+                    <input type="hidden" name="userId" value="${sessionScope.user.userId}">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <c:set var="i" value="0"/>
+                                <c:forEach var="tripPlan" items="${tripPlanList}">
+                                    <c:set var="i" value="${ i+1 }"/>
+                                    <div class="item-list trip-plan-item-list">
+                                        <div class="col-sm-5">
+                                            <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
+                                                    type="hidden"
+                                                    value="${tripPlan.tripPlanNo}"
+                                                    class="tripPlanNo"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-7">
+                                            <div class="item-desc">
+                                                <div>
+                                                    <h6 class="right">${tripPlan.tripPlanRegDate}</h6>
+                                                    <h5 class="item-title">${tripPlan.tripPlanTitle} </h5>
+                                                    <div class="sub-title">
+                                                        <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
+                                                            <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                                                                <h6>#${place.placeTags}</h6>
+                                                            </c:forEach>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
+
+                                                <div class="right">
+                                                    <h4>${tripPlan.tripPlanAuthor}</h4>
+                                                    <div class="right"><span class="icon-date"></span>
+                                                        <c:if test="${tripPlan.tripDays == 1}">
+                                                            ${tripPlan.tripDays}일
+                                                        </c:if>
+                                                        <c:if test="${tripPlan.tripDays != 1}">
+                                                            ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일
+                                                        </c:if>
+                                                    </div>
+                                                    <div>
+                                                        <c:if test="${not empty sessionScope.user.userId}">
+                                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                                                <button class="btn-sm btn-info right" id="addChatRoom"
+                                                                        value="${tripPlan.tripPlanNo}">채팅방 생성
+                                                                </button>
+                                                            </c:if>
+                                                        </c:if>
+                                                        <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
+                                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                                                <button class="btn-sm btn-info right" name="tripPlanNo"
+                                                                        value="${tripPlan.tripPlanNo}">여행완료
+                                                                </button>
+                                                            </c:if>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="item-book">
+
+                                                <button class="btn btn-sm btn-success" name="tripPlanNo"
+                                                        value="${tripPlan.tripPlanNo}">조회<input type="hidden"
+                                                                                                value="${tripPlan.tripPlanNo}"
+                                                                                                class="tripPlanNo"/>
+                                                </button>
+
+                                                <c:if test="${not empty sessionScope.user.userId && !tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
+                                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                                        <button id="btnDelete" class="btn btn-sm btn-danger"
+                                                                value="${tripPlan.tripPlanNo}">삭제<input type="hidden"
+                                                                                                        value="${tripPlan.tripPlanNo}"
+                                                                                                        class="tripPlanNo"/>
+                                                        </button>
+                                                    </c:if>
+                                                </c:if>
+
+                                                <c:if test="${not empty sessionScope.user.userId && tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
+                                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                                        <button id="btnDelete" class="btn btn-sm btn-info"
+                                                                value="${tripPlan.tripPlanNo}">복구<input type="hidden"
+                                                                                                        value="${tripPlan.tripPlanNo}"
+                                                                                                        class="tripPlanNo"/>
+                                                        </button>
+                                                    </c:if>
+                                                </c:if>
+
+                                                <div class="price">
+                                                    <label class="icon-hand-like">${tripPlan.tripPlanLikes}</label>
+                                                    <label></label>
+                                                    <label class="icon-eye">${tripPlan.tripPlanViews}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+
+                                <nav aria-label="Page navigation example" class="text-center">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
+                                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage - 1}"
+                                               aria-label="Previous">
+                                                &laquo;
+                                            </a>
+                                        </li>
+                                        <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
+
+                                            <li class="page-item ${i == page.currentPage ? 'active' : ''}">
+                                                <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}">${i}</a>
+                                            </li>
+
+                                        </c:forEach>
+
+                                        <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
+                                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage + 1}"
+                                               aria-label="Next">
+                                                &raquo;
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div><!-- END Tabs findId -->
 
 
+            <!-- 채팅목록 부분 ################################################################################ -->
 
+            <div class="tab-pane" id="findPwd">
+                <main>
+                    <div class="container">
+                        <div class="col-sm-12">
+                            <c:set var="i" value="0" />
+                            <c:forEach var="chatRoom" items="${chatRoomList}">
+                                <c:set var="i" value="${ i+1 }" />
+                                <div class="item-list">
+                                    <div class="col-sm-5">
+                                        <div class="item-img row" style="background-image: url('http://placehold.it/320x250');">
+                                            <div class="item-overlay">
+                                                <a href="trip_detail.html"><span class="icon-binocular"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="item-desc">
+                                            <h5 class="item-title">${chatRoom.chatRoomTitle}</h5>
 
+                                            <div class="sub-title">
+                                                    ${chatRoom.tripPlanTitle}
+                                            </div>
+                                            <div class="left">
+                                                Age : ${chatRoom.minAge} ~ ${chatRoom.maxAge}
+                                            </div>
+                                            <div class="left">
+                                                Gender :
+                                                <c:if test="${chatRoom.gender == 'MF'}">
+                                                    <i class="fa fa-venus-mars"></i>
+                                                </c:if>
+                                                <c:if test="${chatRoom.gender == 'M'}">
+                                                    <i class="fa fa-mars"></i>
+                                                </c:if>
+                                                <c:if test="${chatRoom.gender == 'F'}">
+                                                    <i class="fa fa-venus"></i>
+                                                </c:if>
+                                            </div><br/>
+                                            <div class="left"><span class="icon-calendar"></span>   ${chatRoom.strDate} [${chatRoom.tripDays}일]</div>
 
+                                            <div class="right">
+                                                <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}" data-toggle="modal" ><span class="icon-plane"></span></a>
+                                                <a href="#modal-regular2" data-toggle="modal"><span class="icon-user" value="${chatRoom.chatRoomNo}"></span></a>
+                                                <input type="hidden" />
+                                                <div id="modal-regular2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h3 class="modal-title">Members</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item-book">
+                                            <button class="btn btn-primary hvr-fade go" name="chatRoomNo" value="${chatRoom.chatRoomNo}">Enter</button>
+                                            <c:if test="${chatRoom.currentPersons eq chatRoom.maxPersons}">
+                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
+                                                        style="margin-left: 10px; background-color: #ee3f00" disabled>Hottest</button>
+                                            </c:if>
+                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 0}">
+                                                <input type="hidden" class="roomGender" value="${chatRoom.gender}">
+                                                <input type="hidden" class="minAge" value="${chatRoom.minAge}">
+                                                <input type="hidden" class="maxAge" value="${chatRoom.maxAge}">
+                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Enroll</button>
+                                            </c:if>
+                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">
+                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
+                                                        style="margin-left: 10px; background-color: #66ffd6" disabled>Completed</button>
+                                            </c:if>
+                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 2}">
+                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
+                                                        style="margin-left: 10px; background-color: #f5ff66; color: red" disabled>Finished</button>
+                                            </c:if>
+                                            <div class="price">${chatRoom.currentPersons} / ${chatRoom.maxPersons}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+
+                            <nav aria-label="Page navigation example" class="text-center">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item ${chatRoomPage.currentPage == 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${chatRoomPage.currentPage - 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Previous">
+                                            &laquo;
+                                        </a>
+                                    </li>
+                                    <c:forEach var="i" begin="${chatRoomBeginUnitPage}" end="${chatRoomEndUnitPage}">
+                                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${i}&searchKeyword=${chatRoomSearch.searchKeyword}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+                                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
+
+                                        <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${chatRoomPage.currentPage + 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Next">
+                                            &raquo;
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </main>
+            </div><!-- END Tabs findPwd -->
+        </div><!-- END Tabs Content -->
+    </div>
 </div>
 
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-<script src="/vendor/retina.min.js"></script>
-<script src="/vendor/jquery.imageScroll.min.js"></script>
-<script src="/assets/js/min/responsivetable.min.js"></script>
-<script src="/assets/js/bootstrap-tabcollapse.js"></script>
-<%--<script src="/assets/js/min/countnumbers.min.js"></script>--%>
-<%--<script src="/assets/js/main.js"></script>--%>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
-<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>
+
+
 
 
 <script type="text/javascript">
 
+    $(document).ready(function() {
 
-    //�������� �ε�� �� ����Ǿ� ���ƿ�,�Ⱦ�� ��ư state ���� �����´�.
+        //tab이 선택될 때, 모든 tab에서 active요소를 제거하고 선택된 탭에 active 요소를 부여한다
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href"); // activated tab
+            $('.tab-pane').removeClass('active');
+            $(target).addClass('active');
+        });
+
+        $("#findIdTap").click(function () {
+
+            console.log("여행플랜목록 클릭됨. = 내용초기화");
+
+            $(this).addClass('active');
+            $('#findPwdTab').removeClass('active');
+        });
+
+        $("#findPwdTap").click(function () {
+
+            console.log("후기목록 클릭됨. = 내용초기화");
+
+            $(this).addClass('active');
+            $('#findIdTab').removeClass('active');
+        });
+    });
+
+
+    //페이지가 로드될 시 실행되어 좋아요,싫어요 버튼 state 값을 가져온다.
     $(document).ready(function(){
 
         evaluateButtonState();
@@ -657,7 +477,7 @@
         if("${getUser.gender eq 'M'}") {
             $(".get-user-male").show()
             $(".get-user-female").hide()
-        }else if("${getUser.gender eq 'M'}") {
+        }else if("${getUser.gender eq 'F'}") {
             $(".get-user-female").show()
             $(".get-user-male").hide()
         }
@@ -684,21 +504,21 @@
             success: function (response) {
 
                 if (response == "0" || response == "") {
-                    console.log("response �� 0�̰ų� null�� �� �����");
+                    console.log("response 값 0이거나 null일 때 실행됨");
                     $("#likeUserCancle").hide();
                     $("#disLikeUserCancle").hide();
                     $("#likeUser").show();
                     $("#dislikeUser").show();
 
                 } else if (response == "1") {
-                    console.log("response �� 1 �� �� �����");
+                    console.log("response 값 1 일 때 실행됨");
                     $("#likeUser").hide();
                     $("#disLikeUserCancle").hide();
                     $('#disLikeUser').prop('disabled', true);
                     $("#likeUserCancle").show();
 
                 } else {
-                    console.log("response �� -1 �� �� �����");
+                    console.log("response 값 -1 일 때 실행됨");
                     $("#likeUserCancle").hide();
                     $("#disLikeUser").hide();
                     $("#likeUser").prop('disabled', true);
@@ -706,7 +526,7 @@
                 }
             },
             error: function (error) {
-                alert("����");
+                alert("다시 시도해주세요.");
             }
         });
     }
@@ -730,18 +550,18 @@
                 success: function (response) {
 
                     if (response == "${getUser.userId}") {
-                        console.log("blacklist ���� ���� �� �����  " +response);
+                        console.log("blacklist 값이 있을 때 실행됨  " +response);
                         $("#blacklist").attr('src','/images/userbancancle.png');
-                        $("#blacklist").attr('title', '��������Ʈ ���');
+                        $("#blacklist").attr('title', '블랙리스트 취소');
 
                     } else {
-                        console.log("blacklist  ���� ���� �� �����  " +response);
+                        console.log("blacklist  값이 없을 때 실행됨  " +response);
                         $("#blacklist").attr('src', '/images/userban.png');
-                        $("#blacklist").attr('title', '��������Ʈ �߰�');
+                        $("#blacklist").attr('title', '블랙리스트 추가');
                     }
                 },
                 error: function (error) {
-                    alert("����");
+                    alert("다시 시도해주세요.");
                 }
             });
         }
@@ -749,7 +569,7 @@
 
     $(document).ready(function(){
 
-        //���ƿ���� Ŭ���̺�Ʈ
+        //좋아요취소 클릭이벤트
         $("#likeUserCancle").on("click" , function() {
 
             $.ajax({
@@ -774,12 +594,12 @@
 
                 },
                 error: function (error) {
-                    alert("����");
+                    alert("다시 시도해주세요.");
                 }
             });
         });
 
-        //���ƿ� Ŭ���̺�Ʈ
+        //좋아요 클릭이벤트
         $("#likeUser").on("click" , function() {
 
             $.ajax({
@@ -801,12 +621,12 @@
                     $("#evaluateCount").text(response);
                 },
                 error: function (error) {
-                    alert("����");
+                    alert("다시 시도해주세요");
                 }
             });
         });
 
-        //�Ⱦ�� Ŭ���̺�Ʈ
+        //싫어요 클릭이벤트
         $("#disLikeUser").on("click" , function() {
 
             $.ajax({
@@ -828,12 +648,12 @@
                     $("#evaluateCount").text(response);
                 },
                 error: function (error) {
-                    alert("����");
+                    alert("다시 시도해주세요.");
                 }
             });
         });
 
-        //�Ⱦ����� Ŭ���̺�Ʈ
+        //싫어요취소 클릭이벤트
         $("#disLikeUserCancle").on("click" , function() {
 
             $.ajax({
@@ -857,12 +677,12 @@
                     }
                 },
                 error: function (error) {
-                    alert("����");
+                    alert("다시 시도해주세요.");
                 }
             });
         });
 
-        //��������Ʈ �߰� Ŭ���̺�Ʈ
+        //블랙리스트 추가 클릭이벤트
         $("#blacklist").on("click" , function() {
             if($(this).attr('src') === '/images/userban.png') {
 
@@ -878,13 +698,22 @@
                     success: function (response) {
 
                         if(response == "") {
-                            $("#blacklist").attr('src', '/images/userbancancle.png');
-                            $("#blacklist").attr('title', '��������Ʈ ���');
 
+                            swal({
+
+                                title: "블랙리스트 등록이 완료되었습니다.",
+                                text: "이제 해당 회원과 소통이 불가능합니다.",
+                                icon: "success",
+                                button: "확인",
+                            }).then((value) => {
+
+                                $("#blacklist").attr('src', '/images/userbancancle.png');
+                                $("#blacklist").attr('title', '블랙리스트 취소');
+                            });
                         }
                     },
                     error: function (error) {
-                        alert("����");
+                        alert("다시 시도해주세요.");
                     }
                 });
             } else if($(this).attr('src') === '/images/userbancancle.png') {
@@ -900,11 +729,19 @@
                     dataType: "text",
                     success: function (response) {
 
-                        $("#blacklist").attr('src', '/images/userban.png');
-                        $("#blacklist").attr('title', '��������Ʈ ���');
+                        swal({
+                            title: "블랙리스트 해제가 완료되었습니다.",
+                            text: "이제 해당 회원과 소통이 가능합니다.",
+                            icon: "success",
+                            button: "확인",
+                        }).then((value) => {
+
+                            $("#blacklist").attr('src', '/images/userban.png');
+                            $("#blacklist").attr('title', '블랙리스트 등록');
+                        });
                     },
                     error: function (error) {
-                        alert("����");
+                        alert("다시 시도해주세요.");
                     }
                 });
 
@@ -912,46 +749,168 @@
         });
     });
 
-    //��������Ʈ����
+    //블랙리스트보기
     $( function() {
 
         $("#listBlack").on("click" , function() {
-            console.log("��������Ʈ��Ϻ��� Ŭ��");
+            console.log("블랙리스트목록보기 클릭");
 
             $('#listBlackModal').modal('show');
-            console.log("'#listBlackModal' ����� ǥ�õǾ���� �մϴ�.");
+            console.log("'#listBlackModal' 모달이 표시되었어야 합니다.");
         });
     });
 
-    //ȸ����������
+    //회원정보수정
     $( function() {
 
-        $("#updateUser").on("click" , function() {
+        $('#imgs img[src="/images/gear.png"]').on("click" , function() {
 
             $('#updateUserModal').modal('show');
         });
     });
 
-    //ȸ��Ż��Ȯ��
+    //회원탈퇴확인
     $( function() {
 
-        $("#secessionUser").on("click" , function() {
+        $("#secessionUser").on("click", function () {
 
-            $('#secessionUserModal').modal('show');
+            Swal.fire({
+                title: '정말 탈퇴하시겠습니까?',
+                text: "이 동작은 되돌릴 수 없습니다!",
+                icon: 'warning',
+                showCancelButton: true,  // 취소 버튼 활성화
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '네, 탈퇴하겠습니다.',
+                cancelButtonText: '아니오, 취소합니다.'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 사용자가 확인을 눌렀을 때의 동작
+                    console.log('탈퇴를 확인하였습니다.')
+                    self.location.href = "/user/secessionUser";
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // 사용자가 취소를 눌렀을 때의 동작
+                    console.log('탈퇴를 취소하였습니다.')
+                }
+            })
         });
     });
+
+
+//     여행플랜부분#####################################################################
+
+    $(document).ready(function () {
+
+        // 선택된 체크박스의 ID를 가져와서 정렬 순서 변경
+        $('input[name="options"]').on('click', function () {
+            var option = $(this).attr('id');
+            console.log(option);
+        });
+
+        // 사진의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
+        $(function () {
+            $(".item-img").on("click", function () {
+                var tripPlanNo = $(this).find(".tripPlanNo").val();
+                if (tripPlanNo == 0) {
+                    // 삭제된 플랜을 눌렀을 때 아무 작업도 하지 않음
+                } else {
+                    console.log(tripPlanNo);
+                    window.location.href = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
+                }
+            });
+        });
+
+        // 버튼의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
+        $(function () {
+            $(".btn.btn-sm.btn-success").on("click", function () {
+                var tripPlanNo = $(this).find(".tripPlanNo").val();
+                if (tripPlanNo == 0) {
+                    // 삭제된 플랜을 눌렀을 때 아무 작업도 하지 않음
+                } else {
+                    console.log(tripPlanNo);
+                    window.location.href = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
+                }
+            });
+        });
+
+        // 여행플랜 삭제하기 버튼
+        $(function () {
+            $("button[id='btnDelete']").on("click", function () {
+                var tripPlanNo = this.value;
+                var delTripPlan = $(this).closest("tr");
+
+                console.log(tripPlanNo);
+
+                $.ajax({
+                    url: "/tripPlan/tripPlanDeleted",
+                    type: "GET",
+                    data: {"tripPlanNo": tripPlanNo},
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    success: function (data) {
+                        if (data.isPlanDeleted) {
+                            delTripPlan.css("background-color", "gray");
+                            delTripPlan.class("btn btn-sm btn-info");
+                            delTripPlan.find(".btn btn-sm btn-info").val(0); // 숨겨진 요소의 값을 업데이트
+                            delTripPlan.find(".btnDelete").text("복구"); // 버튼 텍스트 업데이트
+                        } else {
+                            delTripPlan.css("background-color", "white");
+                            delTripPlan.class("btn btn-sm btn-danger");
+                            delTripPlan.find(".btn btn-sm btn-danger").val(data.tripPlanNo); // 숨겨진 요소의 값을 업데이트
+                            delTripPlan.find(".btnDelete").text("삭제"); // 버튼 텍스트 업데이트
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("여행플랜 삭제 실패");
+                    }
+                });
+            });
+        });
+
+        // AJAX 요청을 보내고 여행플랜의 수를 가져오는 함수
+        function listCounter() {
+            $.ajax({
+                url: "/tripPlan/tripPlanCount",
+                type: "POST",
+                dataType: "json",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                data: JSON.stringify({}),
+                success: function (data) {
+                    console.log(data);
+                    $("#tripPlanCounter").html(data); // 변경된 부분: data.count 값을 출력합니다.
+                    $(".total").text("Total : " + data);
+                    var t = $(".counter");
+                    t.countUp({delay: 30, time: 3e3})
+                },
+                error: function (xhr, status, error) {
+                    console.log("An error occurred: " + error);
+                }
+            });
+        }
+
+
+
+    });
+
+//     여행플랜부분 끝 ######################################################################
+
+//     채팅목록부분 시작#####################################################################
+
 
 
 
 </script>
 
-<!-- ȸ���������� ��� ��Ŭ��� -->
+<!-- 회원정보수정 모달 인클루드 -->
 <jsp:include page="updateUserModal.jsp"/>
 
-<!-- ��������Ʈ ��� ��Ŭ��� -->
+<!-- 블랙리스트 모달 인클루드 -->
 <jsp:include page="listBlackModal.jsp"/>
 
-<!-- ȸ��Ż��Ȯ�� ��� ��Ŭ��� -->
+<!-- 회원탈퇴확인 모달 인클루드 -->
 <jsp:include page="secessionUserModal.jsp"/>
 
 

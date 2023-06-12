@@ -23,69 +23,7 @@
         <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 
         <link rel="stylesheet" href="/css/notice/getNotice.css">
-    </head>
 
-    <body>
-
-    <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
-
-        <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-
-        <div class="container">
-            <h1 class="main-head text-center board-title noticeZooming">${noticeGetData.noticeTitle}</h1>
-        </div>
-    </div>
-
-    <div class="page-img" style="background-image: url('/images/board/noticeBack.jpg');">
-
-        <div class="container">
-
-            <form action="/notice/updateNoticeView" method="post">
-
-                <input type="hidden" name="noticeTitle" value="${noticeGetData.noticeTitle}" />
-                <input type="hidden" name="noticeNo" value="${noticeGetData.noticeNo}" />
-                <input type="hidden" name="noticeContents" value="${noticeGetData.noticeContents}" />
-
-                <div class="notice-content">
-                    ${noticeGetData.noticeContents}
-                </div>
-
-                <br>
-
-                <div class="text-right">
-                    <div class="d-inline-block">
-
-                        <c:if test="${sessionScope.user.userId eq 'admin'}">
-
-                            <div>
-                                <button id="updateNoticeView" class="btn btn-primary">내용 수정</button>
-                            </div>
-
-                            <br>
-
-                            <div>
-                                <button id="deleteNotice" class="btn btn-primary">삭제하기</button>
-                            </div>
-
-                        </c:if>
-
-                        <br>
-
-                        <div>
-                            <button id="getNoticeList" class="btn btn-primary">목록보기</button>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </div>
-
-        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
         <script src="/vendor/jquery/dist/jquery.min.js"></script>
         <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
@@ -126,6 +64,71 @@
             });
 
         </script>
+    </head>
+
+    <body>
+
+    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+    <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
+
+
+
+        <div class="container">
+            <h1 class="main-head text-center board-title noticeZooming">${noticeGetData.noticeTitle}</h1>
+        </div>
+    </div>
+
+    <div class="page-img" style="background-image: url('/images/board/noticeBack.jpg');">
+
+        <div class="container">
+
+            <form action="/notice/updateNoticeView" method="post">
+
+                <input type="hidden" name="noticeTitle" value="${noticeGetData.noticeTitle}" />
+                <input type="hidden" name="noticeNo" value="${noticeGetData.noticeNo}" />
+                <input type="hidden" name="noticeContents" value="${noticeGetData.noticeContents}" />
+
+                <div>
+                    <div class="col-md-8 notice-content">
+                        <div class="centered-content">
+                            ${noticeGetData.noticeContents}
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                        <div class="d-inline-block">
+
+                            <c:if test="${sessionScope.user.userId eq 'admin'}">
+
+                                <div>
+                                    <button id="updateNoticeView" class="btn btn-primary">내용 수정</button>
+                                </div>
+
+                                <br>
+
+                                <div>
+                                    <button id="deleteNotice" class="btn btn-primary">삭제하기</button>
+                                </div>
+
+                            </c:if>
+
+                            <br>
+
+                            <div>
+                                <button id="getNoticeList" class="btn btn-primary">목록보기</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
+
 
     </body>
 

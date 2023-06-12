@@ -62,6 +62,6 @@ public interface UserService {
     //비밀번호 찾기에서 변경한 비밀번호 등록
     public void updatePwd(User user) throws Exception;
 
-
+    public int userCount()throws Exception;
 
 }

@@ -33,4 +33,5 @@ public interface ReviewService {
     //후기 좋아요
     public int reviewLikes (Map<String, Object> tripPlanLikes) throws Exception;
 
+    public int reviewCount() throws Exception;
 }//end of ReviewService

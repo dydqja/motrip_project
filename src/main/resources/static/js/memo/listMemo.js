@@ -1,11 +1,11 @@
 //도큐먼트에 달 리스너
 $(document).ready(function () {
-    console.log("document ready");
+    //console.log("document ready");
 
     let userId = $("#memo-user-id").val();
-    console.log("userId : " + userId);
+    //console.log("userId : " + userId);
     if (!userId){
-        console.log("userId is undefined");
+        //console.log("userId is undefined");
         return;
     }
     //최초 1회, getMemoList 를 호출하여 myMemoList 를 가져온다.
@@ -42,7 +42,9 @@ $(document).on("click", "#my-memo-btn, #shared-memo-btn, #del-memo-btn", functio
     } else {
         searchCondition = 'deletedMemo';
     }
-    console.log("searchCondition : " + searchCondition);
+    //memo-search-condition 에 searchCondition 을 담는다.
+    $("#memo-search-condition").val(searchCondition);
+
     //해당 서치컨디션에 어울리는 currentPage 를 잡는다.
     let currentPage = 1;
     if(searchCondition == 'myMemo'){
@@ -64,10 +66,10 @@ function getMemoList(searchCondition,currentPage){
     if (currentPage == undefined){
         currentPage = 1;
     }
-    console.log("getMemoList on");
+/*    console.log("getMemoList on");
     console.log("searchCondition : " + searchCondition);
     console.log("currentPage : " + currentPage);
-    console.log("위의 조건으로 ajax를 날립니다.");
+    console.log("위의 조건으로 ajax를 날립니다.");*/
 
     //searchCondition 에 맞는 list-container 를 잡는다.
     let listContainer = $("#my-memo-list-container");
@@ -89,7 +91,7 @@ function getMemoList(searchCondition,currentPage){
         dataType: "json",
         success: function (response) {
             let memoDocList = response;
-            console.log("memoDocList : " + memoDocList);
+            //console.log("memoDocList : " + memoDocList);
             //각 memoDoc마다 썸네일을 만든다.
             memoDocList.forEach(memoDoc => {
                buildMemoListThumbnail(memoDoc,listContainer)
@@ -117,6 +119,8 @@ function buildMemoListThumbnail(memoDoc,listContainer){
         btnText = memoDoc.review.reviewTitle;
         btnValue = memoDoc.review.reviewNo;
     }
+
+    //눈물의 컷트
 
     //memoDoc를 담을 버튼을 만든다.
     let memoDocBtn = $('<div>').addClass('my-memo-thumbnail btn-group-justified').attr('role', 'group');

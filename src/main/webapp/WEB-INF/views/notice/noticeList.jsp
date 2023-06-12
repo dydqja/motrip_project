@@ -24,14 +24,59 @@
         <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 
         <link rel="stylesheet" href="/css/notice/noticeList.css">
+
+        <script src="/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+        <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+        <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+        <script src="/vendor/retina.min.js"></script>
+        <script src="/vendor/jquery.imageScroll.min.js"></script>
+        <script src="/assets/js/min/responsivetable.min.js"></script>
+        <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+        <script src="/assets/js/min/countnumbers.min.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/min/home.min.js"></script>
+
+        <script type="text/javascript">
+
+            function viewDetail(noticeNo) {
+
+                // 클릭한 공지 제목의 번호 파라미터를 컨트롤러로 전송하고 상세 조회 서비스 실행
+                window.location.href = "/notice/getNotice?noticeNo=" + noticeNo;
+            }
+
+            function goToPage(page) {
+
+                // 페이지 번호를 컨트롤러로 전송하여 해당 페이지로 이동
+                window.location.href = "/notice/noticeList?currentPage=" + page;
+            }
+
+            $(function() {
+
+                // 공지사항 등록 페이지 출력 서비스 실행
+                $("#addNoticeView").on("click" , function() {
+
+                    window.location.href = "/notice/addNoticeView";
+                });
+            });
+
+            $(function() {
+
+                // 처음으로 서비스 실행
+                $("#addNoticeList").on("click" , function() {
+
+                    window.location.href = "/notice/noticeList?currentPage=1";
+                });
+            });
+
+        </script>
     </head>
 
     <body>
-
+    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
     <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
-
-        <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-
         <div class="container">
             <h1 class="main-head text-center board-title noticeZooming">공지사항</h1>
         </div>
@@ -158,53 +203,7 @@
 
         <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
-        <script src="/vendor/jquery/dist/jquery.min.js"></script>
-        <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-        <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-        <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-        <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-        <script src="/vendor/retina.min.js"></script>
-        <script src="/vendor/jquery.imageScroll.min.js"></script>
-        <script src="/assets/js/min/responsivetable.min.js"></script>
-        <script src="/assets/js/bootstrap-tabcollapse.js"></script>
-        <script src="/assets/js/min/countnumbers.min.js"></script>
-        <script src="/assets/js/main.js"></script>
-        <script src="/assets/js/min/home.min.js"></script>
 
-        <script type="text/javascript">
-
-            function viewDetail(noticeNo) {
-
-                // 클릭한 공지 제목의 번호 파라미터를 컨트롤러로 전송하고 상세 조회 서비스 실행
-                window.location.href = "/notice/getNotice?noticeNo=" + noticeNo;
-            }
-
-            function goToPage(page) {
-
-                // 페이지 번호를 컨트롤러로 전송하여 해당 페이지로 이동
-                window.location.href = "/notice/noticeList?currentPage=" + page;
-            }
-
-            $(function() {
-
-                // 공지사항 등록 페이지 출력 서비스 실행
-                $("#addNoticeView").on("click" , function() {
-
-                    window.location.href = "/notice/addNoticeView";
-                });
-            });
-
-            $(function() {
-
-                // 처음으로 서비스 실행
-                $("#addNoticeList").on("click" , function() {
-
-                    window.location.href = "/notice/noticeList?currentPage=1";
-                });
-            });
-
-        </script>
 
     </body>
 

@@ -16,23 +16,26 @@
     $(document).ready(function(){
         $("#alarm-modal").modal('hide');
 
+
         let pollingCount = 0;
         //몇 초에 한번씩 폴링을 시도할지 결정한다.
         let pollingTime = $("#pollingTime").val();
-        console.log('서버로부터 받은 알람 폴링 시간은'+pollingTime+'초이다.');
-        //폴링 타임이 falsy일 경우 기본값 3초로 세팅한다.
+       // console.log('서버로부터 받은 알람 폴링 시간은'+pollingTime+'초이다.');
+        //폴링 타임이 falsy일 경우 기본값 30초로 세팅한다.
         if(!pollingTime){
-            pollingTime = 5;
-            console.log('서버로부터 알람 폴링 시간을 받지 못했으므로, 기본값 5초로 세팅한다.')
+            pollingTime = 30;
+         //   console.log('서버로부터 알람 폴링 시간을 받지 못했으므로, 기본값 30초로 세팅한다.')
         }
         //서버에 연락할 유저의 Id는
         let userId = $("#alarmUserId").val();
-        console.log('현재 로그인한 유저의 아이디는'+userId+'이다.');
+        //console.log('현재 로그인한 유저의 아이디는'+userId+'이다.');
         //유저 아이디가 없다면 폴링을 하지 않는다.
         if(!userId){
-            console.log('유저 아이디가 없으므로 폴링을 하지 않는다.');
+          //  console.log('유저 아이디가 없으므로 폴링을 하지 않는다.');
             return;
         }
+        //문서 로드후 최초 1회 폴링을 시도한다.
+        getUnreadAlarmCount(userId);
 
         //id 폴링타임의 값을 폴링타임으로 세팅한다.
         $("#pollingTime").val(pollingTime);
@@ -46,7 +49,7 @@
     //안 읽은 알람 갯수 파악. 폴링하는 부분에서 호출되면서 알람 카운터의 값들을 가져온다.
     function getUnreadAlarmCount(userId){
     //콘솔에 로그를 찍는다.
-    console.log('getUnreadAlarmCount on.');
+    //console.log('getUnreadAlarmCount on.');
     $.ajax({
         url: "/alarm/getUnreadAlarmCount",
         type: "POST",
@@ -54,25 +57,33 @@
         data: {userId: userId},
         success: function(data){
             //콘솔에 로그를 찍는다.
-            console.log('getUnreadAlarmCount success.');
+      //      console.log('getUnreadAlarmCount success.');
             //콘솔에 받은 데이터를 찍는다.
             let serverAlarmCount = data;
-            console.log('안 읽은 알람의 갯수는'+serverAlarmCount+'개이다.');
+        //    console.log('안 읽은 알람의 갯수는'+serverAlarmCount+'개이다.');
             //현재 알람 카운터의 값을 가져온다.
             let clientAlarmCount = $("#unreadAlarmCount").text().trim();
-            console.log('현재 클라이언트의 알람 카운터의 값은'+clientAlarmCount+'이다.');
+          //  console.log('현재 클라이언트의 알람 카운터의 값은'+clientAlarmCount+'이다.');
             if(clientAlarmCount<serverAlarmCount){
-                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 작다면, 알람 카운터를 업데이트한다.
+                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 작다면 새로운 알람이 있단 뜻이다.
+                $("#unreadAlarmCount").show();//빨간 뱃지를 보여준다.
+
+                // 알람 카운터를 업데이트하고 new 를 띄운다.
                 $("#unreadAlarmCount").text(serverAlarmCount);
                 let alarmCount = serverAlarmCount-clientAlarmCount;
                 let popover = $('#alarm-bell');
                 let userNickname = $("#alarmUserNickname").val();
-                popover.attr('data-content', alarmCount+' new')
+                popover.attr('data-content', 'new')
                 popover.popover('show');
             }
             if(clientAlarmCount>serverAlarmCount){
-                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 크다면, 알람 카운터를 업데이트한다.
+                //클라이언트의 알람 카운터가 서버의 알람 카운터보다 크다면, 알람이 읽혔단 뜻이다.
+                // 알람 카운터를 업데이트하고
                 $("#unreadAlarmCount").text(serverAlarmCount);
+                //만약 알람 카운터가 0이라면 카운터를 숨긴다.
+                if(serverAlarmCount==0){
+                    $("#unreadAlarmCount").hide();
+                }
             }
         }
     });
@@ -83,7 +94,7 @@
     //알람목록보기 호버 리스너
     $(document).on('mouseenter', '#alarm-set-area', function() {
     //콘솔에 로그를 찍는다.
-    console.log('getAlarmListBtn on.');
+//    console.log('getAlarmListBtn on.');
     //현재 페이지를 1로 세팅한다.
     $("#alarmCurrentPage").val(1);
     //서버와 통싱해서 알람의 정보를 가져온다.
@@ -112,7 +123,7 @@
     //보류알람목록보기 호버 리스너
     $(document).on('mouseenter', '#getHoldAlarmListBtn', function() {
     //콘솔에 로그를 찍는다.
-    console.log('getHoldAlarmListBtn on.');
+  //  console.log('getHoldAlarmListBtn on.');
     //현재 페이지를 1로 세팅한다.
     $("#alarmCurrentPage").val(1);
     //서버와 통싱해서 알람의 정보를 가져온다.
@@ -137,14 +148,14 @@
     //알람 목록 썸네일 형성
     function buildAlarmThumbnail(alarmList){
     //콘솔에 로그를 찍는다.
-    console.log('buildAlarmThumbnail on.');
+  //  console.log('buildAlarmThumbnail on.');
     //썸네일을 형성할 썸네일 에어리어를 객체로 잡는다.
     let alarmThumbnailArea = $("#alarm-thumbnail-area");
     //썸네일 에어리어 안의 모든 .alarm-thumbnail을 지운다.
     alarmThumbnailArea.children(".alarm-thumbnail").remove();
 
     //콘솔에 몇개의 알람을 받았는지 찍는다.
-    console.log('총 '+alarmList.length+'개의 알람을 받았다.');
+   // console.log('총 '+alarmList.length+'개의 알람을 받았다.');
 
     //알람 리스트를 순회하며 썸네일을 형성한다.
     for(let i=0; i<alarmList.length; i++){
@@ -164,7 +175,7 @@
         //알람 번호
         let alarmNo = $("<span></span>");
         //콘솔에 몇번 알람인지 찍는다.
-        console.log('알람 번호는 '+alarm.alarmNo+'번이다.');
+      //  console.log('알람 번호는 '+alarm.alarmNo+'번이다.');
         alarmNo.addClass("alarm-thumbnail-no");
         alarmNo.css("display", "none");
         alarmNo.text(alarm.alarmNo);
@@ -242,7 +253,7 @@
     //알람 썸네일 클릭 리스너
     $(document).on('click', 'li.alarm-thumbnail', function() {
     //콘솔에 로그를 찍는다.
-        console.log('alarm-thumbnail clicked.');
+//        console.log('alarm-thumbnail clicked.');
         //알람 썸네일의 정보를 가져온다.
         let alarmNo = $(this).find(".alarm-thumbnail-no").text();
         let sender = $(this).find(".alarm-thumbnail-sender").text();
@@ -265,7 +276,7 @@
     function buildAlarmModal(alarmNo,sender,receiver,alarmTitle,alarmContents,alarmRegDate,alarmReadDate,alarmHold,alarmLevel,alarmAcceptUrl,alarmRejectUrl,alarmHoldUrl,alarmNavigateUrl){
         event.preventDefault();
         //콘솔에 로그를 찍는다.
-        console.log('buildAlarmModal on.');
+        /*console.log('buildAlarmModal on.');
         //받은 변수들을 나열한다.
         console.log('alarmNo : ' + alarmNo);
         console.log('sender : ' + sender);
@@ -281,7 +292,7 @@
         console.log('alarmHoldUrl : ' + alarmHoldUrl);
         console.log('alarmNavigateUrl : ' + alarmNavigateUrl);
 
-        //모달 타이틀 영역
+        *///모달 타이틀 영역
         $("#alarm-modal-title").text(alarmTitle);
 
         //모달 내용 영역
@@ -348,10 +359,11 @@
             //알람의 번호의 값은 이 버튼의 형제인 alarm-confirm-btn 의 값이다.
             let alarmNo = $(this).siblings("#alarm-confirm-btn").val();
             //읽음처리한다.
-            console.log(alarmNo+"번 알람 읽음처리");
+            //console.log(alarmNo+"번 알람 읽음처리");
             readAlarm(alarmNo);
-            //수락 url로 이동한다.
-            window.location.href = alarmAcceptUrl;
+            //수락 url로 ajax요청을 보낸다.
+            acceptAlarmRequest(alarmAcceptUrl);
+
     });
         //거절 버튼
 
@@ -363,7 +375,7 @@
             //알람의 번호의 값은 이 버튼의 형제인 alarm-confirm-btn 의 값이다.
             let alarmNo = $(this).siblings("#alarm-confirm-btn").val();
             //읽음처리한다.
-            console.log(alarmNo+"번 알람 읽음처리");
+            //console.log(alarmNo+"번 알람 읽음처리");
             readAlarm(alarmNo);
             
             //거절 url로 이동한다.
@@ -376,7 +388,7 @@
             //이 버튼의 값은 알람의 번호이다.
             let alarmNo = $(this).val();
             //보류 처리한다.
-            console.log(alarmNo+"번 알람 보류처리");
+            //console.log(alarmNo+"번 알람 보류처리");
             holdAlarm(alarmNo);
     });
         //읽음 버튼
@@ -385,7 +397,7 @@
             //이 버튼의 값은 알람의 번호이다.
             let alarmNo = $(this).val();
             //읽음 처리한다.
-            console.log(alarmNo+"번 알람 읽음처리");
+            //console.log(alarmNo+"번 알람 읽음처리");
             readAlarm(alarmNo);
             //이후 이 모달을 닫는다.
             $("#alarm-modal").modal('hide');
@@ -422,7 +434,7 @@
         dataType: "json",
         data: {alarmNo: alarmNo},
         success: function(data){
-            console.log(alarmNo+"번 알람 읽음처리 완료");
+            //console.log(alarmNo+"번 알람 읽음처리 완료");
             //클라이언트의 알람 카운터를 갱신한다.
             let clientAlarmCount = $("#unreadAlarmCount").text().trim();
             clientAlarmCount--;
@@ -438,7 +450,7 @@
         dataType: "json",
         data: {alarmNo: alarmNo},
         success: function(data){
-            console.log(alarmNo+"번 알람 보류처리 완료");
+           // console.log(alarmNo+"번 알람 보류처리 완료");
 
         }
     });

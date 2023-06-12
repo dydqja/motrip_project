@@ -12,9 +12,10 @@
     color: #558B2F;
 }
 
-/*타이틀 제목*/
-.main-head {
-    text-align: center;
+.board-title {
+    cursor: default;
+    pointer-events: none;
+    user-select: none;
 }
 
 @keyframes noticeZooming {
@@ -57,12 +58,6 @@ td {
 
 .pagination .page-item .page-link {
     border-radius: 50%;
-}
-
-.board-title {
-    cursor: default;
-    pointer-events: none;
-    user-select: none;
 }
 
 /*페이지 내비게이션*/

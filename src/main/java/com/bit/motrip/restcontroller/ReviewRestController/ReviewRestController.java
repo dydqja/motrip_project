@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,6 +29,13 @@ public class ReviewRestController {
 
     @Value("c6ffa2721e097b8c38f9548c63f6e31a")
     private String kakaoApiKey;
+
+    @RequestMapping( value="getReviewCount", method= RequestMethod.POST  )
+    public int getListCount() throws Exception{
+        int count = reviewService.reviewCount();
+
+        return count;
+    }
 
 
 }

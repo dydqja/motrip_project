@@ -12,12 +12,14 @@
 
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
 
-    <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
     <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
 
 
 
@@ -35,6 +37,35 @@
         margin-bottom: 15px;
     }
 
+    .pwd-btn {
+        color: #fff;
+        background-color: #003049;
+        border: none;
+        padding: 10px 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .pwd-input {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: 2px solid #558B2F;
+    }
+
+    .pwd-textarea {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: 2px solid #558B2F;
+        height: 100px;  /* textarea의 경우 높이를 지정해줘야 합니다. 필요한 높이로 조정해주세요 */
+        resize: vertical; /* 사용자가 수직 방향으로만 크기를 조절할 수 있게 합니다. 필요하다면 이 속성을 삭제하거나 'both'로 변경할 수 있습니다. */
+    }
+
     .selfIntroText {
       width: 300px;
       height:100px;
@@ -45,16 +76,23 @@
     }
 
     #drop_zone {
-      width: 150px;
-      height: 100px;
-      padding: 10px;
-      border: 2px dashed #bbb;
-      border-radius: 20px;
+        border: 3px dashed #558B2F;
+        padding: 50px;
+        width: 200px;
+        height: 100px;
+        text-align: center;
+        font-size: 1.5em;
+        color: #558B2F;
+        margin: 0 10px 10px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #e8f5e9;
+        transition: background-color 0.3s;
     }
 
-    .previewImage {
-      width: 75px !important;
-      height: auto !important;
+    #drop_zone.dragover {
+        background-color: #c8e6c9;
     }
 
     .shake {
@@ -91,13 +129,12 @@
 
   <!-- 회원가입 모달 -->
   <!-- Modal -->
-  <div id="addUserModal" class="modal in" tabindex="-1" role="dialog" aria-hidden="true" style="display: none; padding-right: 17px;">
+  <div id="addUserModal" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true" style="display: none; padding-right: 17px;">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title" style="margin-right: 0;">MoTrip 회원가입
-              <button type="button" class="close hvr-grow" data-dismiss="modal" aria-hidden="true">×</button>
-          </h3>
+      <div class="modal-content" style="background-color: #F5F1E3;">
+        <div class="modal-header text-center" style="background-color: #558B2F;">
+          <h3 class="modal-title" style="margin-right: 0; color: white;">MoTrip 회원가입</h3>
+              <button type="button" class="close hvr-grow" data-dismiss="modal" aria-hidden="true" style="color: #8B2955;">×</button>
         </div>
         <div class="modal-body" style="display: flex; margin : 0% 15%;">
 
@@ -106,53 +143,53 @@
 
                     <div class="form-group" >
                         <label class="label label-primary">아이디<span style="color:red"> *</span></label>
-                        <input type="text" class="form-control" name="userId" id="modalUserId" aria-describedby="helpBlock2">
+                        <input type="text" class="pwd-input" name="userId" id="modalUserId" aria-describedby="helpBlock2">
                         <span id="checkId"></span>
                     </div>
 
                     <div class="form-group">
                         <label class="label label-primary">비밀번호<span style="color:red"> *</span></label>
-                        <input type="password" class="form-control" name="pwd" id="modalPwd" aria-describedby="helpBlock2">
+                        <input type="password" class="pwd-input" name="pwd" id="modalPwd" aria-describedby="helpBlock2">
                     </div>
 
                     <div class="form-group">
                         <label class="label label-primary">비밀번호확인<span style="color:red"> *</span></label>
-                        <input type="password" class="form-control" name="pwdConfrim" id="pwdConfirm" aria-describedby="helpBlock2">
+                        <input type="password" class="pwd-input" name="pwdConfrim" id="pwdConfirm" aria-describedby="helpBlock2">
                         <span id="checkPwd"></span>
                     </div>
 
                     <div class="form-group" >
                         <label class="label label-primary">닉네임<span style="color:red"> *</span></label>
-                        <input type="text" class="form-control" name="nickname" id="nickname" aria-describedby="helpBlock2">
+                        <input type="text" class="pwd-input" name="nickname" id="nickname" aria-describedby="helpBlock2">
                         <span id="checkNickname"></span>
                     </div>
 
                     <div class="form-group" >
                         <label class="label label-primary">이름<span style="color:red"> *</span></label>
-                        <input type="text" class="form-control" name="userName" id="userName" aria-describedby="helpBlock2">
+                        <input type="text" class="pwd-input" name="userName" id="userName" aria-describedby="helpBlock2">
                     </div>
 
-                    <div class="form-group" >
+                    <div class="form-group text-center" >
                         <label class="label label-primary">전화번호<span style="color:red"> *</span></label>
-                        <input type="text" class="form-control" name="phone" id="phone" placeholder="01012345678" aria-describedby="helpBlock2">
-                        <span id="checkPhone"></span>
-                        <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" id="sendSms">인증번호전송</button>
+                        <input type="text" class="pwd-input" name="phone" id="phone" placeholder="01012345678" aria-describedby="helpBlock2">
+                        <span id="checkPhone" style="white-space: nowrap; display: block;"></span>
+                        <button type="button" class="pwd-btn hvr-grow" id="sendSms">인증번호전송</button>
                     </div>
 
                     <!-- sms인증번호 입력폼 ==> 평상시 숨김 -->
                     <div class="form-group" id="PhCodeGroup" style="display: none;" >
                         <label class="label label-primary">전화번호 인증</label>
-                        <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirm" placeholder="발송된 인증번호 입력" aria-describedby="helpBlock2">
-                        <span id="checkPhCodeConfirm"></span>
-                        <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" id="confirmPhCode">확인</button>
-                        <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" id="resendPhCode">재전송</button>
+                        <input type="text" class="pwd-input" name="phCodeConfirm" id="phCodeConfirm" placeholder="발송된 인증번호 입력" aria-describedby="helpBlock2">
+                        <span id="checkPhCodeConfirm" style="white-space: nowrap; display: block;"></span>
+                        <button type="button" class="pwd-btn hvr-grow" id="confirmPhCode">확인</button>
+                        <button type="button" class="pwd-btn hvr-grow" id="resendPhCode" style="background-color: #8B2955;">재전송</button>
                     </div>
 
                     <div class="form-group" >
                         <label class="label label-primary">주소<span style="color:red"> *</span></label>
                         <div>
-                            <input type="text" class="form-control" id="sample3_address" name="addr" aria-describedby="helpBlock2">
-                            <input type="button" class="btn btn-line btn-sm btn-primary hvr-grow" onclick="sample3_execDaumPostcode()" value="주소 찾기">
+                            <input type="text" class="pwd-input" id="sample3_address" name="addr" aria-describedby="helpBlock2">
+                            <input type="button" class="pwd-btn hvr-grow" onclick="sample3_execDaumPostcode()" value="주소 찾기">
                         </div>
                     </div>
 
@@ -162,75 +199,95 @@
 
                     <div class="form-group">
                         <label for="sample3_detailAddress" class="label label-primary">상세주소<span style="color:red"> *</span></label>
-                        <input type="text" class="form-control" name="addrDetail" id="sample3_detailAddress" required>
+                        <input type="text" class="pwd-input" name="addrDetail" id="sample3_detailAddress" required>
                     </div>
 
                     <div class="form-group">
                         <label for="email" class="label label-primary">이메일</label>
-                        <input type="text" class="form-control" name="email" id="email" placeholder="bitcmap@motrip.com" aria-describedby="helpBlock2" required>
+                        <input type="text" class="pwd-input" name="email" id="email" placeholder="bitcmap@motrip.com" aria-describedby="helpBlock2" required>
                     </div>
 
                     <div class="form-group">
                         <label for="ssn1" class="label label-primary">주민등록번호<span style="color:red"> *</span></label>
-                        <div>
-                        <input type="text" name="ssn1" id="ssn1" style="width: 70px;" aria-describedby="helpBlock2" maxlength="6"> -
-                        <input type="text" name="ssn2" id="ssn2" style="width: 20px;" aria-describedby="helpBlock2" maxlength="1">******
+                        <div style="display: flex;">
+                        <input type="text" class="pwd-input" name="ssn1" id="ssn1" style="margin-right: 0; width: 100px;" aria-describedby="helpBlock2" maxlength="6">
+                            &nbsp;<img style="max-width: 25px; max-height: 25px; margin-top: 20px;" src="/images/user/minus.png">&nbsp;
+                        <input type="text" class="pwd-input" name="ssn2" id="ssn2" style="width: 40px;" aria-describedby="helpBlock2" maxlength="1">
+                            <img style="max-width: 20px; max-height: 20px; margin-top: 20px;" src="/images/user/asterisk.png">
+                            <img style="max-width: 20px; max-height: 20px; margin-top: 20px;" src="/images/user/asterisk.png">
+                            <img style="max-width: 20px; max-height: 20px; margin-top: 20px;" src="/images/user/asterisk.png">
+                            <img style="max-width: 20px; max-height: 20px; margin-top: 20px;" src="/images/user/asterisk.png">
+                            <img style="max-width: 20px; max-height: 20px; margin-top: 20px;" src="/images/user/asterisk.png">
+                            <img style="max-width: 20px; max-height: 20px; margin-top: 20px;" src="/images/user/asterisk.png">
                         </div>
                         <input type="hidden" name="ssn"  />
                     </div>
 
-                    <div class="form-group">
-                        <div>
+                    <div class="form-group text-left">
+                        <div style="margin-right: 20%; ">
                             <label for="selfIntro" class="label label-primary">자기소개</label>
-                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 
-                            <div class="form-check form-check-inline" style="margin-right: 0;">
-                                <input class="form-check-input" type="radio" name="selfIntroPublic" id="selfIntroPublic" value="true" style="margin-right: 0;">
-                                <label class="form-check-label" for="selfIntroPublic">공개</label>
-                            </div>
-                            <div class="form-check form-check-inline" >
-                                <input class="form-check-input" type="radio" name="selfIntroPublic" id="selfIntroPrivate" value="false" style="margin-right: 0;">
-                                <label class="form-check-label" for="selfIntroPrivate" >비공개</label>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" name="selfIntroPublic" id="selfIntroPublic" value="true" autocomplete="off" checked> 공개
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="selfIntroPublic" id="selfIntroPrivate" value="false" autocomplete="off"> 비공개
+                                </label>
                             </div>
                         </div>
-                        <textarea class="form-control" name="selfIntro" id="selfIntro" placeholder="300자 이내 자기소개" maxlength="300"></textarea>
+                        <div style="margin-right: 20%;" >
+                            <textarea class="pwd-textarea text-center" name="selfIntro" id="selfIntro" placeholder="300자 이내 자기소개" maxlength="300" >${getUser.selfIntro}</textarea>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <div>
-                            <label for="drop_zone" class="label label-primary">회원사진등록</label>
-                            <div class="form-check form-check-inline" style="margin-right: 0;">
-                                <input class="form-check-input" type="radio" name="userPhotoPublic" id="userPhotoPublic" value="true" style="margin-right: 0;">
-                                <label class="form-check-label" for="userPhotoPublic">공개</label>
-                            </div>
-                            <div class="form-check form-check-inline" >
-                                <input class="form-check-input" type="radio" name="userPhotoPublic" id="userPhotoPrivate" value="false" style="margin-right: 0;">
-                                <label class="form-check-label" for="userPhotoPrivate" >비공개</label>
-                            </div>
+                    <div class="form-group text-left">
+                        <label for="drop_zone" class="label label-primary">회원사진등록</label>
+
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="userPhotoPublic" id="userPhotoPublic" value="true" autocomplete="off" checked> 공개
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="userPhotoPublic" id="userPhotoPrivate" value="false" autocomplete="off"> 비공개
+                            </label>
                         </div>
-                        <div id="drop_zone" name="userPhoto">사진 파일을 올려주세요</div>
+
+                        <div id="drop_zone" name="userPhoto" style="margin-top: 10px; font-size: 16px;">사진 파일을 올려주세요</div>
                         <input type="hidden" name="userPhoto" id="userPhoto"  />
                         <!--
                         <img class="previewImage" id="imagePreview" src="" alt="Image preview">
                         -->
                     </div>
+
+
+
+
+
+
+
+
                 </form>
             </div>
         </div>
-        <div class="modal-footer" style="margin: 0 auto;">
+        <div class="modal-footer" style=" background-color: #003049;">
           <button type="button" class="btn btn-sm btn-default hvr-grow" id="addUserModalCancle" data-dismiss="modal">닫기</button>
-          <button type="button" class="btn btn-sm btn-primary hvr-grow" id="addUserModalCommit">가입</button>
+          <button type="button" class="btn btn-sm btn-primary hvr-grow" id="addUserModalCommit" style="background-color: #FFB347;">가입</button>
         </div>
       </div>
     </div>
   </div>
 
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="/vendor/jquery/dist/jquery.min.js"></script>
 <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
 <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 <script src="/vendor/retina.min.js"></script>
@@ -367,7 +424,15 @@
           }
           $('input[name="userPhoto"]').val(fileRoute);
 
-          $("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+          swal({
+              title: "회원 가입이 완료되었습니다.",
+              text: "여행을 떠나보세요",
+              icon: "success",
+              button: "확인",
+
+          }).then((value) => {
+              $("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+          });
       }
 
       //==>"이메일" 유효성Check  Event 처리 및 연결
@@ -794,6 +859,11 @@
           $('#addUserModal').on('hidden.bs.modal', function(e) {
               // 'addUserForm' 폼의 모든 입력 필드를 초기화
               $('#addUserForm')[0].reset();
+
+              $("#sendSms").text("인증번호전송").css({
+                  "color": "white"
+              });  // 텍스트 색상과 폰트 크기 변경
+              $("#sendSms").prop("disabled", false);
           });
       });
 

@@ -258,7 +258,7 @@
                                                data-index="${varStatus.index}"> [삭제]</label></div>
                                     <div class="card-body">
                                         <h6 class="card-title" name="placeTitle" id="${i-1}"
-                                            data-index="${varStatus.index}">#${place.placeTags}</h5>
+                                            data-index="${varStatus.index}">#${place.placeTags}</h6>
                                     </div>
                                 </div>
                                 <div class="card text-white mb-3 " name="tripTime" id="${i-1}"

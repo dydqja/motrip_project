@@ -5,7 +5,10 @@ import com.bit.motrip.common.Search;
 
 import com.bit.motrip.domain.EvaluateList;
 import com.bit.motrip.domain.User;
+import com.bit.motrip.service.chatroom.ChatRoomService;
 import com.bit.motrip.service.evaluateList.EvaluateListService;
+import com.bit.motrip.service.review.ReviewService;
+import com.bit.motrip.service.tripplan.TripPlanService;
 import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -27,6 +32,18 @@ public class UserController {
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
+    @Autowired
+    @Qualifier("tripPlanServiceImpl")
+    private TripPlanService tripPlanService;
+    @Autowired
+    @Qualifier("reviewServiceImpl")
+    private ReviewService reviewService;
+    @Autowired
+    @Qualifier("chatRoomServiceImpl")
+    private ChatRoomService chatRoomService;
+    @Autowired
+    @Qualifier("evaluateListServiceImpl")
+    private EvaluateListService evaluateListService;
 
     public UserController() {
         System.out.println(this.getClass());
@@ -54,9 +71,15 @@ public class UserController {
     }
 
     @RequestMapping( value="naverLoginSuccess", method=RequestMethod.GET)
-    public String naverLogin() throws Exception{
+    public String naverLogin(HttpSession session) throws Exception{
         System.out.println("/user/naverLoginSuccess : GET");
+        User user = (User) session.getAttribute("user");
 
+        System.out.println(user);
+
+        if(user.isSecession() == true) {
+            return "user/restoreUser.jsp";
+        }
         return "/index.jsp";
     }
 
@@ -107,7 +130,7 @@ public class UserController {
     }
 
     @RequestMapping( value="naverLogin", method=RequestMethod.GET )
-    public String checkUser(HttpSession session, User user) throws Exception {
+    public String checkUser() throws Exception {
         System.out.println("/user/naverLogin : GET");
 
         return "user/naverLoginCallback.jsp";
@@ -126,12 +149,12 @@ public class UserController {
     }
 
     @RequestMapping(value="listUser", method = RequestMethod.GET)
-    public String listUser(@RequestParam(defaultValue = "0", required = false) int currentPage, Model model) throws Exception{
+    public String listUser(@ModelAttribute("search") Search search, Model model) throws Exception{
 
-        System.out.println("/user/listUser : GET / POST");
+        System.out.println("/user/listUser : GET");
 
-        Search search = new Search();
-        search.setCurrentPage(currentPage);
+//        Search search = new Search();
+//        search.setCurrentPage(currentPage);
 
         if(search.getCurrentPage() == 0 ){
             search.setCurrentPage(1);
@@ -156,24 +179,108 @@ public class UserController {
 
     @RequestMapping( value="getUser", method=RequestMethod.GET )
     public String getUser( @RequestParam(value="userId", required=false) String userId,
-                            @RequestParam(value="nickname", required=false) String nickname, Model model ) throws Exception {
+                           @RequestParam(value="nickname", required=false) String nickname,
+                           @RequestParam(defaultValue = "1") int currentPage,
+                           @RequestParam(value = "type", defaultValue = "all") String type, Model model, HttpSession session ) throws Exception {
 
         System.out.println("/user/getUser : GET");
-        System.out.println("userId = ["+userId+"], nickname = ["+nickname+"]");
+        System.out.println("userId = [" + userId + "], nickname = [" + nickname + "]");
         //Business Logic
-        if(userId != null) {
+        if (userId != null) {
             User user = userService.getUserById(userId);
-            System.out.println(user);
+            System.out.println("getUserById로 가져온 user값은 ? " + user);
             // Model 과 View 연결
             model.addAttribute("getUser", user);
 
-        } else if(nickname != null) {
+        } else if (nickname != null) {
             User user = userService.getUserByNickname(nickname);
-            System.out.println("getUserByNickname으로 가져온 user값은 ? " +user);
+            System.out.println("getUserByNickname으로 가져온 user값은 ? " + user);
             // Model 과 View 연결
             model.addAttribute("getUser", user);
 
         }
+
+//        여행플랜 리스트 가져오는곳 #################################################################
+
+        System.out.println("GET : tripPlanList()");
+
+        Search search = new Search();
+        search.setCurrentPage(currentPage);
+
+        int pageSize = 5;
+        search.setPageSize(pageSize);
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("search", search);
+        if (type.equals("my")) {
+            User user = (User) session.getAttribute("user");
+            parameters.put("user", user);
+        }
+        System.out.println("처음 페이지 들어왔을떄 : " + parameters);
+
+        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(parameters);
+
+        int totalCount = (int) tripPlanList.get("totalCount");
+        int pageUnit = 3; // 화면 하단에 표시할 페이지 수
+
+        Page page = new Page(currentPage, totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
+        int maxPage = page.getMaxPage(); // 총 페이지 수
+        int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
+        int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
+        String tripPlanAuthor = (String) parameters.get("tripPlanAuthor");
+
+        model.addAttribute("tripPlanList", tripPlanList.get("list"));
+        model.addAttribute("page", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
+        model.addAttribute("tripPlanAuthor", tripPlanAuthor);
+        System.out.println(tripPlanAuthor);
+        if (tripPlanAuthor == null) {
+            model.addAttribute("condition", "all");
+        } else {
+            model.addAttribute("condition", "my");
+        }
+
+//      채팅방목록 가져오는곳 #################################################################
+
+        User sessionUser = (User) session.getAttribute("user");
+        System.out.println(sessionUser);
+
+        if (search.getCurrentPage() == 0) {
+
+            search.setCurrentPage(1);
+        }
+//        if(search.getSearchKeyword() == null){
+//            search.setSearchKeyword('');
+//        }
+        System.out.println(search);
+        System.out.println(search.getGender());
+        search.setPageSize(pageSize);
+
+        Map<String, Object> chatRoomListData = chatRoomService.myChatRoomListPage(search, sessionUser.getUserId());
+
+        int chatTotalCount = (int) chatRoomListData.get("totalCount");
+
+        // maxPage, beginUnitPage, endUnitPage 연산
+        Page chatPage = new Page(search.getCurrentPage(), chatTotalCount, pageUnit, pageSize);
+
+        // 총 페이지 수
+        int chatMaxPage = page.getMaxPage();
+
+        // 화면 하단에 표시할 페이지의 시작 번호
+        int chatBeginUnitPage = page.getBeginUnitPage();
+
+        // 화면 하단에 표시할 페이지의 끝 번호
+        int chatEndUnitPage = page.getEndUnitPage();
+
+        model.addAttribute("chatRoomList", chatRoomListData.get("list"));
+        model.addAttribute("chatRoomPage", chatPage);
+        model.addAttribute("chatRoomMaxPage", chatMaxPage);
+        model.addAttribute("chatRoomBeginUnitPage", chatBeginUnitPage);
+        model.addAttribute("chatRoomEndUnitPage", chatEndUnitPage);
+        model.addAttribute("chatRoomSearch", search);
+
 
         return "/user/getUser.jsp";
     }
@@ -190,6 +297,7 @@ public class UserController {
         System.out.println("/user/deleteUser : POST");
 
         User user = (User) session.getAttribute("user");
+        System.out.println("회원탈퇴진행할 유저는 :: "+user);
         userService.secessionAndRestoreUser(user);
 
         return "/user/login.jsp";
@@ -205,4 +313,11 @@ public class UserController {
         return "/user/login.jsp";
     }
 
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    public String logout(HttpSession session) throws Exception {
+        System.out.println("/user/logout : GET");
+
+        session.invalidate();
+        return "redirect:/";  // 매인페이지로 리다이렉트
+    }
 }

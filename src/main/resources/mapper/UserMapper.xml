@@ -50,7 +50,7 @@
 
     <select 	id="getUserById"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
         SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.phone, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
-               u.is_self_intro_public, u.is_user_photo_public, u.is_secession, u.is_suspension, u.role, u.gender,
+               u.is_self_intro_public, u.is_user_photo_public, u.is_secession, u.is_suspension, u.role, u.gender,u.age,
                u.secession_Date, u.suspension_date, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
         FROM users u
         LEFT JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
@@ -170,6 +170,7 @@
         WHERE user_id = #{userId}
     </update>
 
-
-
+    <select id="userCount" resultType="int">
+        select count(user_id) from users;
+    </select>
 </mapper>

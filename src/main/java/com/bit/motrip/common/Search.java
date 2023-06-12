@@ -1,5 +1,7 @@
 package com.bit.motrip.common;
 
+import java.util.Arrays;
+
 public class Search {
 
     //Field
@@ -17,10 +19,65 @@ public class Search {
     private int offset; // 리스트 어디부터 보여줄지
     private int totalCount; // 리스트 총 갯수
 
+    private String gender;
+
+    private String planCondition;
+    private int minAge;
+    private int maxAge;
+    private int startDate;
+    private int duration;
 
     //Constructor
     public Search() {
 
+    }
+
+    public String getPlanCondition() {
+        return planCondition;
+    }
+
+    public void setPlanCondition(String planCondition) {
+        this.planCondition = planCondition;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public int getMinAge() {
+        return minAge;
+    }
+
+    public void setMinAge(int minAge) {
+        this.minAge = minAge;
+    }
+
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
+    }
+
+    public int getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(int startDate) {
+        this.startDate = startDate;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public int getLimit() {
@@ -109,10 +166,22 @@ public class Search {
         return "Search{" +
                 "currentPage=" + currentPage +
                 ", searchCondition='" + searchCondition + '\'' +
+                ", searchConditions=" + Arrays.toString(searchConditions) +
+                ", loginConditions='" + loginConditions + '\'' +
                 ", searchKeyword='" + searchKeyword + '\'' +
                 ", pageSize=" + pageSize +
                 ", endRowNum=" + endRowNum +
                 ", startRowNum=" + startRowNum +
+                ", mysqlStartRowNum=" + mysqlStartRowNum +
+                ", limit=" + limit +
+                ", offset=" + offset +
+                ", totalCount=" + totalCount +
+                ", gender='" + gender + '\'' +
+                ", minAge=" + minAge +
+                ", maxAge=" + maxAge +
+                ", planCondition=" + planCondition +
+                ", startDate=" + startDate +
+                ", duration=" + duration +
                 '}';
     }
 }

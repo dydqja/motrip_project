@@ -39,4 +39,8 @@ public interface UserDao {
 
     public void updatePwd(User user) throws Exception;
 
+    public int userCount() throws Exception;
+
+
+
 }

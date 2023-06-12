@@ -3,6 +3,7 @@ package com.bit.motrip.restcontroller.memo;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.*;
 import com.bit.motrip.service.memo.MemoService;
+import com.bit.motrip.service.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +19,16 @@ import java.util.List;
 public class MemoRestController {
 
     //Constructor wiring
-    public MemoRestController(MemoService memoService) {
+    public MemoRestController(MemoService memoService, UserService userService) {
         this.memoService = memoService;
+        this.userService = userService;
     }
     //Field
     private final MemoService memoService;
     private final String successJson = "{\"status\": \"success\", \"key2\": \"value2\", \"key3\": \"value3\"}";
     private final String failJson = "{\"status\": \"fail\", \"key2\": \"value2\", \"key3\": \"value3\"}";
+
+    private final UserService userService;
 
     @PostMapping("getMemoList")
     public String getMemoList(HttpSession session,
@@ -227,11 +231,11 @@ public class MemoRestController {
 
         try {
             memo = memoService.addMemo(memo);
-            System.out.println("레스트컨트롤러 addMemo 동작 완료");
+            /*System.out.println("레스트컨트롤러 addMemo 동작 완료");
             System.out.println("메모번호는 "+memo.getMemoNo()+"입니다.");
             System.out.println("메모제목은 "+memo.getMemoTitle()+"입니다.");
             System.out.println("메모내용은 "+memo.getMemoContents()+"입니다.");
-            System.out.println("메모색상은 "+memo.getMemoColor()+"입니다.");
+            System.out.println("메모색상은 "+memo.getMemoColor()+"입니다.");*/
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -291,9 +295,16 @@ public class MemoRestController {
     @PostMapping("addMemoAccess")
     public String addMemoAccess(
             @RequestParam("memoNo") String memoNo,
-            @RequestParam("userId") String userId)  {
+            @RequestParam("nickname") String nickname)  {
 
         int memoNoInt = Integer.parseInt(memoNo);
+        String userId = "";
+        try {
+            userId = userService.getUserByNickname(nickname).getUserId();
+        } catch (Exception e) {
+            System.out.println("failJson");
+            return failJson;
+        }
 
         int isSuccess = 0;
         try {
@@ -305,5 +316,69 @@ public class MemoRestController {
             return null;
         }
         return successJson;
+    }
+    @PostMapping("attachMemoToTripPlan")
+    public String attachMemoToTripPlan(
+            @RequestParam("memoNo") String memoNo,
+            @RequestParam("tripPlanNo") String tripPlanNo)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+        int tripPlanNoInt = Integer.parseInt(tripPlanNo);
+
+        int isSuccess = 1;
+        try {
+            memoService.updateMemoAttach(0,tripPlanNoInt,memoNoInt);
+        } catch (Exception e) {
+            isSuccess = 0;
+        }
+        if (isSuccess == 0) {
+            System.out.println("null 을 보내겠다.");
+            return null;
+        }else {
+            System.out.println("successJson 을 보내겠다.");
+            return successJson;
+        }
+    }
+    @PostMapping("detachMemo")
+    public String detachMemo(
+            @RequestParam("memoNo") String memoNo)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+
+        int isSuccess = 1;
+        try {
+            memoService.updateMemoAttach(99,0,memoNoInt);
+        } catch (Exception e) {
+            isSuccess = 0;
+        }
+        if (isSuccess == 0) {
+            System.out.println("null 을 보내겠다.");
+            return null;
+        }else {
+            System.out.println("successJson 을 보내겠다.");
+            return successJson;
+        }
+    }
+    @PostMapping("attachMemoToChatRoom")
+    public String attachMemoToChatRoom(
+            @RequestParam("memoNo") String memoNo,
+            @RequestParam("chatRoomNo") String chatRoomNo)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+        int chatRoomNoInt = Integer.parseInt(chatRoomNo);
+
+        int isSuccess = 1;
+        try {
+            memoService.updateMemoAttach(2,chatRoomNoInt,memoNoInt);
+        } catch (Exception e) {
+            isSuccess = 0;
+        }
+        if (isSuccess == 0) {
+            System.out.println("null 을 보내겠다.");
+            return null;
+        }else {
+            System.out.println("successJson 을 보내겠다.");
+            return successJson;
+        }
     }
 }

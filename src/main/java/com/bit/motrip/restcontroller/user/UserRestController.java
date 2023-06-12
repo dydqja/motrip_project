@@ -164,6 +164,10 @@ public class UserRestController {
             return "/user/addNaverUser";
 
         } else {
+
+            System.out.println("DB에 있는 네이버유저 로그인체크 :: "+ dbUser);
+
+            session.setAttribute("user", dbUser);
             //DB에 있는 회원이면 바로 로그인
             return "/user/naverLoginSuccess";
         }
@@ -262,17 +266,19 @@ public class UserRestController {
         System.out.println(user);
 
         if (user.getPhone() == null || user.getPhone() == "" || user.getPhone().equals("") || user.getPhone().equals(null)) {
-
+            System.out.println("updateUser() getPhone == null 실행됨.");
             User getUser = userService.getUserById(user.getUserId());
             user.setPhone(getUser.getPhone());
+            System.out.println("저장된 user정보");
 
         }else if (user.getPwd() == null || user.getPwd() == "" || user.getPwd().equals("") || user.getPwd().equals(null)) {
-
+            System.out.println("updateUser() getPwd == null 실행됨.");
             User getUser = userService.getUserById(user.getUserId());
             user.setPwd(getUser.getPwd());
         }else {
-            userService.updateUser(user);
+
         }
+        userService.updateUser(user);
 
         return user;
     }
@@ -280,6 +286,7 @@ public class UserRestController {
     @RequestMapping(value = "getBlacklist", method = RequestMethod.POST)
     public List<String> getBlacklist(@RequestBody Map<String, Object> evaluaterId) throws Exception {
         System.out.println("/user/getBlacklist : POST");
+        System.out.println(evaluaterId);
 
         List<EvaluateList> getBlacklist = evaluateListService.getEvaluation(evaluaterId);
 
@@ -328,7 +335,28 @@ public class UserRestController {
         return "";
     }
 
+    @RequestMapping(value = "nicknameToUserId", method = RequestMethod.POST)
+    public String nicknameToUserId(@RequestBody User user) throws Exception {
+        System.out.println("/user/nicknameToUserId : POST");
 
+        String userNickname = user.getNickname();
+
+        User nickname = userService.getUserByNickname(userNickname);
+        System.out.println("nicknameToUserId() 결과는 :: "+nickname);
+
+        return nickname.getUserId();
+    }
+
+    @RequestMapping(value = "getBlacklistAll", method = RequestMethod.POST)
+    public List<String> getBlacklistAll(@RequestBody Map<String, Object> evaluaterId) throws Exception {
+        System.out.println("/user/getBlacklistAll : POST");
+        System.out.println("listUser에서 보낸 evaluaterId는? :: "+evaluaterId);
+
+        List<String> getBlacklistAll = evaluateListService.getBlacklistAll(evaluaterId);
+        System.out.println("나를블랙한사람 + 내가블랙한사람 값은? :: " + getBlacklistAll);
+
+        return getBlacklistAll;
+    }
 }
 
 
