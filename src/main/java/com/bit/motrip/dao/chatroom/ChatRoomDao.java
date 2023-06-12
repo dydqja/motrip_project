@@ -18,4 +18,5 @@ public interface ChatRoomDao { //채팅방 DAO
 
     public int chatRoomCount() throws Exception;
     public int getChatRoomTotalCount(Search search) throws Exception;
+    public List<ChatRoom> myChatRoomListPage(Search search) throws Exception;
 } //end of interface
