@@ -20,6 +20,8 @@ public class Search {
     private int totalCount; // 리스트 총 갯수
 
     private String gender;
+
+    private String planCondition;
     private int minAge;
     private int maxAge;
     private int startDate;
@@ -28,6 +30,14 @@ public class Search {
     //Constructor
     public Search() {
 
+    }
+
+    public String getPlanCondition() {
+        return planCondition;
+    }
+
+    public void setPlanCondition(String planCondition) {
+        this.planCondition = planCondition;
     }
 
     public String getGender() {
@@ -169,6 +179,7 @@ public class Search {
                 ", gender='" + gender + '\'' +
                 ", minAge=" + minAge +
                 ", maxAge=" + maxAge +
+                ", planCondition=" + planCondition +
                 ", startDate=" + startDate +
                 ", duration=" + duration +
                 '}';

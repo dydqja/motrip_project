@@ -62,9 +62,9 @@ public class ChatMemberController {
             //알람 제목
             String title = chatRoom.getChatRoomTitle()+"에 참가 신청이 있습니다.";
             //acceptUrl
-            String acceptUrl = "/chatMember/acceptMember/"+chatRoomNo+"/"+sender.getUserId()+"/"+tripPlanNo;
+            String acceptUrl = "/alarm/acceptChatRoomMember/"+chatRoomNo+"/"+sender.getUserId()+"/"+tripPlanNo;
             //rejectUrl
-            String rejectUrl = "/미구현";
+            String rejectUrl = "/alarm/rejectChatRoomMember/"+chatRoomNo+"/"+sender.getUserId()+"/"+tripPlanNo;
             alarmService.addAcceptableAlarm(sender,receiver, content, title, acceptUrl, rejectUrl);
 
         System.out.println(chatMember); //
@@ -72,26 +72,7 @@ public class ChatMemberController {
         return "redirect:/chatRoom/chatRoomList";
     }
 
-    @GetMapping(value = "acceptMember/{chatRoomNo}/{userId}/{tripPlanNo}")
-    public String acceptMember(
-            @PathVariable int chatRoomNo,
-            @PathVariable String userId,
-            @PathVariable int tripPlanNo
-            ) throws Exception {
-        System.out.println("GET : acceptMember");
-        System.out.println("받은 방번호"+chatRoomNo);
-        System.out.println("받은 아이디"+userId);
-        System.out.println("받은 트립플랜번호"+tripPlanNo);
 
-        ChatMember chatMember = new ChatMember();
-        chatMember.setChatRoomNo(chatRoomNo);
-        chatMember.setUserId(userId);
-        chatMember.setTripPlanNo(tripPlanNo);
-
-        chatMemberService.addChatMember(chatMember);
-
-        return "redirect:/chatRoom/chatRoomList";
-    }
 
 
 

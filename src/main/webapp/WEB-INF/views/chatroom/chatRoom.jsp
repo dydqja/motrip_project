@@ -581,7 +581,6 @@
 
         //delete
         function fncDeleteChatroom(){
-
             $("#chat-room").attr("method","get").attr("action","/chatRoom/deleteChatRoom?userId="+username+"&chatRoomNo="+chatRoomNo).submit();
         }
         $(function() {$("#delete").on("click", function() {fncDeleteChatroom();});});
@@ -635,6 +634,26 @@
             });
         });
     </script>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/vendor/retina.min.js"></script>
+    <script src="/vendor/jquery.imageScroll.min.js"></script>
+    <script src="/assets/js/min/responsivetable.min.js"></script>
+    <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+
+    <script src="/assets/js/min/countnumbers.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+
+    <!-- Current Page JS -->
+    <script src="/assets/js/min/priceslider.min.js"></script>
+
     <title>Motrip</title>
 
 </head>
@@ -644,7 +663,7 @@
 
 <%--onsubmit="return false;"--%>
 <div class="chat-container" >
-    <form id="chat-room"  >
+    <form id="chat-room">
         <input type="hidden" name="chatRoomNo" value="${chatRoom.chatRoomNo}"/>
         <input type="hidden" name="userId" value="${username}"/>
         <input type="hidden" name="chatRoomStatus" value="${chatRoom.chatRoomStatus}"/>
@@ -652,16 +671,17 @@
         <main class="chat-main">
             <div class="chat-sidebar" >
                 <div class="chat-title" style="text-align: center"><h3 id="chatRoomTitle">${chatRoom.chatRoomTitle}</h3></div>
+                <audio id="myFace" autoplay></audio>
             <div class="chatButton" align="center">
                 <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"
                    data-toggle="modal" type="button" class="btn btn-primary" style="background-color: #66ffff">TripPlan</a>
+                <div type="button" class="btn btn-primary" id="mute" style="background-color: #75ff66">Mute</div>
                 <button class="btn btn-primary" id="videoRoom" style="background-color: #e366ff">Video</button>
             </div>
                 <div></div>
-                <div class="users" style="text-align: center"><h3>현재 참여 목록</h3></div>
-
+                <div class="users" style="text-align: left; border-bottom: #00b3ee"><h3>현재 참여 목록</h3></div>
                 <ul id="users"></ul><td/>
-                <div class="dbUsers" style="text-align: center"><h3>채팅방 멤버</h3></div>
+                <div class="dbUsers" style="text-align: left"><h3>채팅방 멤버</h3></div>
                 <ul id="chatUsers">
                 </ul>
             </div>
@@ -700,9 +720,9 @@
       integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
       crossorigin="anonymous"
     ></script> -->
-<script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
-<script src="/js/main.js"></script>
-<%--<script src="/vendor/jquery/dist/jquery.min.js"></script>--%>
+
+<%--    <script src="/js/imagepreview.js"></script>--%>
+    <%--<script src="/vendor/jquery/dist/jquery.min.js"></script>--%>
 
 
 <%--<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>--%>
@@ -718,23 +738,6 @@
 <%--    const realUpload = document.querySelector('#uploadFile');--%>
 <%--    const upload = document.querySelector('#upload');--%>
 <%--   // upload.addEventListener('click', () => realUpload.click());--%>
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-
-<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-<script src="/vendor/retina.min.js"></script>
-<script src="/vendor/jquery.imageScroll.min.js"></script>
-<script src="/assets/js/min/responsivetable.min.js"></script>
-<script src="/assets/js/bootstrap-tabcollapse.js"></script>
-
-<script src="/assets/js/min/countnumbers.min.js"></script>
-<script src="/assets/js/main.js"></script>
-
-<!-- Current Page JS -->
-<script src="/assets/js/min/priceslider.min.js"></script>
 
 <%--</script>--%>
 

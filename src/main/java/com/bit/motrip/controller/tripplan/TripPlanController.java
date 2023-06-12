@@ -4,7 +4,6 @@ import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.TripPlan;
 import com.bit.motrip.domain.User;
-import com.bit.motrip.service.evaluateList.EvaluateListService;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/tripPlan/*")
@@ -26,11 +28,6 @@ public class TripPlanController {
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
-//    용범 추가부분 시작###############################################################
-    @Autowired
-    @Qualifier("evaluateListServiceImpl")
-    private EvaluateListService evaluateListService;
-//    용범 추가부분 끝 ################################################################
 
     public TripPlanController(){
         System.out.println(this.getClass());
@@ -142,7 +139,7 @@ public class TripPlanController {
         int totalCount = (int) newTripPlanList.get("totalCount");
         int pageUnit = 3; // 화면 하단에 표시할 페이지 수
 
-        Page page = new Page(currentPage, totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
+        Page page = new Page(search.getCurrentPage(), totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
         int maxPage = page.getMaxPage(); // 총 페이지 수
         int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
         int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
@@ -154,6 +151,8 @@ public class TripPlanController {
         model.addAttribute("beginUnitPage", beginUnitPage);
         model.addAttribute("endUnitPage", endUnitPage);
         model.addAttribute("tripPlanAuthor", tripPlanAuthor);
+        model.addAttribute("search",search);
+
         System.out.println(tripPlanAuthor);
         if(tripPlanAuthor == null) {
             model.addAttribute("condition", "all");

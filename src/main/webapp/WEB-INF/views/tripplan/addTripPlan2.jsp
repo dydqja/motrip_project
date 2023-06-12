@@ -205,6 +205,16 @@
         .place-info {
             text-align: left;
         }
+
+        .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+        .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
+        [id^="menu_wrap"] {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+        .bg_white {background:#fff;}
+        [id^="menu_wrap"] hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
+        [id^="menu_wrap"] .option{text-align: center;}
+        [id^="menu_wrap"] .option p {margin:10px 0;}
+        [id^="menu_wrap"] .option button {margin-left:5px;}
+
     </style>
 
     <c:if test="${empty sessionScope.user.userId}">
@@ -246,7 +256,7 @@
     <main class="white">
         <div class="container">
             <div >
-                <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목" style="color: black; width: 57%; height: 40px; opacity: 0.5;"></h4></span>
+                <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목" style="color: black; width: 70%; height: 40px; opacity: 0.5;"></h4></span>
                 <h5>
                     공개<input type="checkbox" id="chbispublic" class="round" value="true"/>&nbsp;&nbsp;
                     비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true" disabled/>
@@ -262,35 +272,40 @@
         </div>
 
         <div class="container" id="container0">
-            <div class="day"> 1일차 여행플랜 </div>
+            <div display="flex;">
+                <div class="day"> 1일차 여행플랜 <button class="icon-locate-map right" id="reset0" onclick="reset(event, 0)"></button></div>
+            </div>
+
+
             <div class="row">
-                <div class="col-sm-7">
+                <div class="col-sm-12">
+                    <div id="map0" style="width: 100%; height: 300px; border-radius: 15px;"></div>
+                    <div id="menu_wrap0" class="bg_white" style="height:90%; overflow:auto; margin: 0%;">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="placeName0"
+                                   onkeypress="handleKeyPress(event, 0)" placeholder="명소 검색" style="width: 60%; font-size: 11px">
+                            <button class="btn btn-primary" id="placeSearch0" style="width: 30%; font-size: 9px;"
+                                        onclick="handleKeyPress(event, 0)">Search
+                            </button>
+                        </div>
+                        <ul id="placesList0"></ul>
+                        <div id="pagination" ></div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 3%"></div>
+
+            <div class="row">
+
+                <div class="col-sm-9">
                     <textarea id="dailyPlanContents0" name="dailyPlanContents" required style="width: 100%;"></textarea>
                 </div>
 
-                <div class="col-sm-5">
+                <div class="col-sm-3">
                     <div class="sidebar">
-                        <div class="border-box">
-                            <div id="menu_wrap0"></div>
-                            <div class="box-title">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="placeName0"
-                                           onkeypress="handleKeyPress(event, 0)" placeholder="명소 검색">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-primary" id="placeSearch0"
-                                                onclick="handleKeyPress(event, 0)">Search
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="icon-locate-map" id="reset0" onclick="reset(event, 0)"></button>
-                            <div id="map0" style="width: 100%; height: 300px;"></div>
-                            <ul id="placesList0"></ul>
-                            <div id="pagination"></div>
-                        </div>
 
-                        <div class="border-box">
-                            <div class="box-title" >명소리스트
+                        <div class="border-box" style="height: 400px; overflow: auto;" >
+                            <div class="box-title " >명소리스트
                                 <div id="totalTripTime0"></div>
                             </div>
                             <ul class="list0" style="text-align: center;">
@@ -390,7 +405,7 @@
             ],
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
             fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
-            height: 620,
+            height: 370,
             disableResizeEditor: true
         });
     });
@@ -418,7 +433,7 @@
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
             fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
             focus: true,
-            height: 620,
+            height: 370,
             disableResizeEditor: true
         });
     }
@@ -675,7 +690,7 @@
                 }
                 // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
                 listEl.appendChild(fragment);
-                menuEl.scrollTop = 0;
+                //menuEl.scrollTop = 0;
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
                 maps[indexCheck].setBounds(bounds);
             }
@@ -738,84 +753,84 @@
                 return marker;
             }
 
-            // $(function () { // 오버레이 표시
-            //     var overlays = [];
-            //     for (var i = 0; i < markers.length; i++) { // 각 지도에 맞춰서 마커들을 표시
-            //         var mapId = markers[i].mapId;
-            //         var mapIndex = parseInt(mapId.replace("map", ""));
-            //         var markerOptions = {
-            //             position: markers[i].position,
-            //             map: maps[mapIndex]
-            //         };
-            //         var marker = new kakao.maps.Marker(markerOptions);
-            //         marker.setMap(markerOptions.map);
-            //
-            //         var category = '';
-            //         if (markers[i].placeCategory == 0) {
-            //             category = '여행지';
-            //         } else if (markers[i].placeCategory == 1) {
-            //             category = '식당';
-            //         } else if (markers[i].placeCategory == 2) {
-            //             category = '숙소';
-            //         }
-            //
-            //         // 오버레이 정보창
-            //         var content = '<div class="wrap">' +
-            //             '    <div class="info">' +
-            //             '        <div class="title">' +
-            //             '            ' + markers[i].placeTags +
-            //             '            <div class="close" data-index="' + i + '" title="닫기"></div>' +
-            //             '        </div>' +
-            //             '        <div class="body">' +
-            //             '            <div class="img">' +
-            //             '                <img src="' + markers[i].placeImage + '" width="73" height="70">' +
-            //             '           </div>' +
-            //             '            <div class="desc">' +
-            //             '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
-            //             '                <div class="category">(카테고리) ' + category + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
-            //             '    </div></div></div></div>';
-            //
-            //         var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
-            //             content: content,
-            //             map: maps[mapIndex],
-            //             position: marker.getPosition(),
-            //             yAnchor: 1
-            //         });
-            //
-            //         overlay.setMap(null); // 오버레이 초기 상태는 숨김으로 설정
-            //         overlays.push(overlay);
-            //
-            //         (function (marker, overlay, mapIndex) {
-            //
-            //             // 마커를 클릭했을 때 오버레이 표시
-            //             kakao.maps.event.addListener(marker, 'click', function () {
-            //                 maps[mapIndex].setLevel(3); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
-            //                 maps[mapIndex].panTo(marker.getPosition()); // 해당 마커 위치로 지도 이동
-            //                 overlay.setMap(maps[mapIndex]);
-            //             });
-            //
-            //             // 지도상 어디든 클릭했을 때 오버레이 숨김
-            //             kakao.maps.event.addListener(maps[mapIndex], 'click', function () {
-            //                 overlay.setMap(null);
-            //             });
-            //
-            //             // 화면 초기화
-            //             $('#reset' + mapIndex).click(function () {
-            //                 overlay.setMap(null);
-            //                 var mapIndex = parseInt(this.id.replace("reset", ""));
-            //                 var bounds = new kakao.maps.LatLngBounds();
-            //
-            //                 for (var j = 0; j < markers.length; j++) {
-            //                     if (markers[j].mapId === "map" + mapIndex) {
-            //                         bounds.extend(markers[j].position);
-            //                     }
-            //                 }
-            //                 maps[mapIndex].setBounds(bounds);
-            //             });
-            //
-            //         })(marker, overlay, mapIndex);
-            //     }
-            // });
+            function overlays(place) { // 오버레이 표시
+                var overlays = [];
+                for (var i = 0; i < markers.length; i++) { // 각 지도에 맞춰서 마커들을 표시
+                    var mapId = markers[i].mapId;
+                    var mapIndex = parseInt(mapId.replace("map", ""));
+                    var markerOptions = {
+                        position: markers[i].position,
+                        map: maps[mapIndex]
+                    };
+                    var marker = new kakao.maps.Marker(markerOptions);
+                    marker.setMap(markerOptions.map);
+
+                    var category = '';
+                    if (markers[i].placeCategory == 0) {
+                        category = '여행지';
+                    } else if (markers[i].placeCategory == 1) {
+                        category = '식당';
+                    } else if (markers[i].placeCategory == 2) {
+                        category = '숙소';
+                    }
+
+                    // 오버레이 정보창
+                    var content = '<div class="wrap">' +
+                        '    <div class="info">' +
+                        '        <div class="title">' +
+                        '            ' + markers[i].placeTags +
+                        '            <div class="close" data-index="' + i + '" title="닫기"></div>' +
+                        '        </div>' +
+                        '        <div class="body">' +
+                        '            <div class="img">' +
+                        '                <img src="' + markers[i].placeImage + '" width="73" height="70">' +
+                        '           </div>' +
+                        '            <div class="desc">' +
+                        '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
+                        '                <div class="category">(카테고리) ' + category + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
+                        '    </div></div></div></div>';
+
+                    var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
+                        content: content,
+                        map: maps[mapIndex],
+                        position: marker.getPosition(),
+                        yAnchor: 1
+                    });
+
+                    overlay.setMap(null); // 오버레이 초기 상태는 숨김으로 설정
+                    overlays.push(overlay);
+
+                    (function (marker, overlay, mapIndex) {
+
+                        // 마커를 클릭했을 때 오버레이 표시
+                        kakao.maps.event.addListener(marker, 'click', function () {
+                            maps[mapIndex].setLevel(3); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
+                            maps[mapIndex].panTo(marker.getPosition()); // 해당 마커 위치로 지도 이동
+                            overlay.setMap(maps[mapIndex]);
+                        });
+
+                        // 지도상 어디든 클릭했을 때 오버레이 숨김
+                        kakao.maps.event.addListener(maps[mapIndex], 'click', function () {
+                            overlay.setMap(null);
+                        });
+
+                        // 화면 초기화
+                        $('#reset' + mapIndex).click(function () {
+                            overlay.setMap(null);
+                            var mapIndex = parseInt(this.id.replace("reset", ""));
+                            var bounds = new kakao.maps.LatLngBounds();
+
+                            for (var j = 0; j < markers.length; j++) {
+                                if (markers[j].mapId === "map" + mapIndex) {
+                                    bounds.extend(markers[j].position);
+                                }
+                            }
+                            maps[mapIndex].setBounds(bounds);
+                        });
+
+                    })(marker, overlay, mapIndex);
+                }
+            };
 
             function getListItem(indexCheck, places) {  // 검색결과 항목을 Element로 반환하는 함수입니다
                 var el = document.createElement('li'),
@@ -859,21 +874,7 @@
 
             // 명소리스트 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
             function displayInfowindow(marker, title, indexCheck) {
-                var overlayContent = '<div class="wrap">' +
-                    '    <div class="info">' +
-                    '        <div class="title">' +
-                    '            ' + title +
-                    '            <div class="close" data-index="' + indexCheck + '" title="닫기"></div>' +
-                    '        </div>' +
-                    '        <div class="body">' +
-                    '            <div class="img">' +
-                    '                <img src= width="73" height="70">' +
-                    '           </div>' +
-                    '            <div class="desc">' +
-                    '                <div class="ellipsis"></div>' +
-                    '                <div class="category">(카테고리) (전화번호) </div>' +
-                    '    </div></div></div></div>';
-
+                var overlayContent = '<div style="padding:5px; display: inline-block;">' + title + '</div>';
                 infowindow.setContent(overlayContent); // 오버레이에 내용 설정
                 infowindow.open(maps[indexCheck], marker); // 오버레이 표시
             }
@@ -1002,26 +1003,28 @@
             $("#btnAddTripDay").prop('disabled', false);
         }, 500); // 0.5초 후에 버튼 활성화
 
-        // if(($('#dailyPlanContents' + (idCheck-1)).val() == "" || $('#dailyPlanContents' + (idCheck-1)).val() == null) || (allPlaces['map' + (idCheck-1)] == undefined || allPlaces['map' + (idCheck-1)] == null || allPlaces['map' + (idCheck-1)].length == 0)) {
-        //     alert("이전 여행플랜에 내용이 없다면 새로운 여행플랜을 작성할 수 없습니다.")
-        //     return;
-        // }
+        if(($('#dailyPlanContents' + (idCheck-1)).val() == "" || $('#dailyPlanContents' + (idCheck-1)).val() == null) || (allPlaces['map' + (idCheck-1)] == undefined || allPlaces['map' + (idCheck-1)] == null || allPlaces['map' + (idCheck-1)].length == 0)) {
+            alert("이전 여행플랜에 내용이 없다면 새로운 여행플랜을 작성할 수 없습니다.")
+            return;
+        }
 
+        console.log(idCheck);
         // 새로운 요소를 생성
         if (idCheck < 10) {
 
-            var dynamicHTML = '<hr></hr>' +
-                '<div class="container" id="container'+ idCheck + '"><div class="day">' + (idCheck+1)  + '일차 여행플랜 </div>' + '<div class="row">' + '<div class="col-sm-7">' +
+            var dynamicHTML = '<hr></hr><div style="margin-top: 3%"></div><div class="container" id="container' + idCheck +'">' +
+                '<div display="flex;">' + '<div class="day">' + (idCheck+1)  + '일차 여행플랜 <button class="icon-locate-map right" id="reset' + idCheck + '" onclick="reset(event, ' + idCheck + ')"></button></div>' +
+                '</div>' + '<div class="row">' + '<div class="col-sm-12">' + '<div id="map' + idCheck + '" style="width: 100%; height: 300px; border-radius: 15px;"></div>' +
+                '<div id="menu_wrap' + idCheck + '" class="bg_white" style="height:90%; overflow:auto; margin: 0%;">' + '<div class="input-group">' +
+                '<input type="text" class="form-control" id="placeName' + idCheck + '" onkeypress="handleKeyPress(event, ' + idCheck + ')" placeholder="명소 검색" style="width: 60%; font-size: 11px">' +
+                '<button class="btn btn-primary" id="placeSearch' + idCheck + '" style="width: 30%; font-size: 9px;" onclick="handleKeyPress(event, ' + idCheck + ')">Search</button>' +
+                '</div>' + '<ul id="placesList' + idCheck + '"></ul>' + '<div id="pagination"></div>' + '</div>' + '</div>' + '</div>' +
+                '<div style="margin-top: 3%"></div>' + '<div class="row">' + '<div class="col-sm-9">' +
                 '<textarea id="dailyPlanContents' + idCheck + '" name="dailyPlanContents" required style="width: 100%;"></textarea>' +
-                '</div>' + '<div class="col-sm-5">' + '<div class="sidebar">' +
-                '<div class="border-box">' + '<div id="menu_wrap' + idCheck + '"></div>' + '<div class="box-title">' + '<div class="input-group">' +
-                '<input type="text" class="form-control" id="placeName' + idCheck + '" onkeypress="handleKeyPress(event, ' + idCheck + ')" placeholder="명소 검색">' +
-                '<div class="input-group-btn">' +
-                '<button class="btn btn-primary" id="placeSearch' + idCheck + '" onclick="handleKeyPress(event, ' + idCheck + ')">Search</button>' +
-                '</div>' + '</div>' + '</div><button class="icon-locate-map" id="reset' + idCheck + '" onclick="reset(event, ' + idCheck + ')"></button>' +
-                '<div id="map' + idCheck + '" style="width: 100%; height: 300px;"></div>' + '<ul id="placesList' + idCheck + '"></ul>' + '<div id="pagination"></div>' +
-                '</div>' + '<div class="border-box">' + '<div class="box-title">명소리스트 <div class="tag-link" style="text-align: right;" id="totalTripTime' + idCheck + '"></div></div>' +
-                '<ul class="list' + idCheck + '">' + '</ul>' + '</div>' + '</div>' + '</div>' + '</div>' + '</div>' + '</main>';
+                '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' + '<div class="border-box" style="height: 400px; overflow: auto;">' +
+                '<div class="box-title">명소리스트' + '<div id="totalTripTime' + idCheck +'"></div>' + '</div>' + '<ul class="list' + idCheck + '" style="text-align: center;"></ul>' +
+                '</div>' + '</div>' + '</div>' + '</div>' + '<div class="addDaily" id="addDaily" style="text-align: right;">' +
+                '</div></div>';
 
             // 동적으로 생성한 요소들을 DOM에 추가
             var newElement = document.createElement('div');
