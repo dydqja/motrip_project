@@ -1,6 +1,7 @@
 package com.bit.motrip.controller.review;
 
 
+import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.chatroom.ChatRoomDao;
 import com.bit.motrip.domain.*;
@@ -65,9 +66,9 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    // 회원이 속한 채팅방으로 완료된 플랜목록 가져옴(ajax)
+    // 여행완료된 플랜목록 가져옴(ajax)
 
-    @RequestMapping("getCompletedTripPlan")
+  /*  @RequestMapping("getCompletedTripPlan")
     @ResponseBody
     public ResponseEntity<List<TripPlan>> getCompletedTripPlan(@RequestParam(required = false) Integer chatRoomNo, HttpSession session) {
         try {
@@ -97,73 +98,125 @@ public class ReviewController {
             // 예외 처리 로직 추가
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }*/
+
+    //1.입력폼에 앞서 모달로 '완료된 여행플랜리스트' 띄워서 다음jsp에 Post
+    @GetMapping("getCompletedTripPlanList")
+    public String getCompletedTripPlanList(@RequestParam(defaultValue = "1") int currentPage, Model model, HttpSession session) throws Exception {
+        System.out.println("getCompletedTripPlanList() : GET");
+
+        Search search = new Search();
+        search.setCurrentPage(currentPage);
+        int pageSize = 5;
+        search.setPageSize(pageSize);
+
+        User dbUser = (User) session.getAttribute("user");
+        if (dbUser == null) {
+            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
+            return "redirect:/user/login.jsp";
+        }
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("search", search);
+        parameters.put("user", dbUser);
+
+        Map<String, Object> tripPlanList = reviewService.getCompletedTripPlanList(parameters);
+        List<TripPlan> tripPlanList1 = (List<TripPlan>) tripPlanList.get("tripPlanList");
+        //System.out.println("깐쮸롤러 tripPlanList11111>>>>>>>"+tripPlanList);
+        int totalCount = (int) tripPlanList.get("totalCount");
+        int pageUnit = 10; // 화면 하단에 표시할 페이지 수
+
+        Page page = new Page(currentPage, totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
+        int maxPage = page.getMaxPage(); // 총 페이지 수
+        int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
+        int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
+
+        System.out.println("깐쮸롤러 tripPlanList2222>>>>>>>"+tripPlanList);
+
+        model.addAttribute("tripPlanList", tripPlanList1);
+        System.out.println("tripPlanList@@@@@@@@@@ : " + model.getAttribute("tripPlanList"));
+        model.addAttribute("user", dbUser);
+        model.addAttribute("page", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
+        System.out.println("깐쮸롤러1111111 parameters>>>>>>"+parameters);
+
+
+        return "/review/getCompletedTripPlanList.jsp";
     }
 
-    @RequestMapping(value = "addReviewView", method = {RequestMethod.GET, RequestMethod.POST}) // 후기 작성
-    public String addReviewView(Search search, Model model, HttpSession session) throws Exception {
+    //2.단순 입력폼에서 정보 입력받음 Get
+    @GetMapping(value = "addReviewView")
+    public String addReviewView(@RequestParam("tripPlanNo") int tripPlanNo,Review review,
+                                @RequestParam("tripPlanTitle") String tripPlanTitle,
+                                Model model,HttpSession session) throws Exception {
         System.out.println("/review/addReviewView: GET");
 
-        if (search.getPageSize() == 0) {
-            search.setCurrentPage(1);
-        } else {
-            search.setCurrentPage(search.getCurrentPage());
-        }
+        // 세션에서 로그인된 사용자 정보를 가져옴
+        User user = (User) session.getAttribute("user");
+        System.out.println("userId>>>"+user.getUserId());
+        String reviewAuthor = user.getUserId();
 
-        // 로그인된 유저 정보 가져오기
-        User loggedInUser = (User) session.getAttribute("user");
-        System.out.println("loggedInUser는>>>>" + loggedInUser);
-        if (loggedInUser == null) {
-            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
-            return "user/login.jsp";
-        }
+        // 가져온 userId 값을 review 객체의 reviewAuthor에 설정
+        review.setReviewAuthor(reviewAuthor);
+        System.out.println("reviewAuthor>>>"+reviewAuthor);
 
-        // 로그인되지 않은 경우 로그인 페이지로 이동
-        if (loggedInUser == null) {
-            return "redirect:/user/login"; // 로그인 페이지 경로로 수정해야 함
-        }
+        TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
+        System.out.println("여기는 컨트롤러 addReviewView>>>>>>>>>"+tripPlan);
 
-        model.addAttribute("loggedInUser", loggedInUser);
-
-        String reviewAuthor = loggedInUser.getUserId();
-        session.setAttribute("reviewAuthor", reviewAuthor);
-        System.out.println("reviewAuthor>>>>>>>"+reviewAuthor);
+        model.addAttribute("tripPlan", tripPlan);
+        model.addAttribute("reviewAuthor", reviewAuthor);
+        model.addAttribute("tripPlanNo", tripPlanNo);
+        System.out.println("2.tripPlanNo>>>>"+model.addAttribute("tripPlanNo", tripPlanNo));
+        model.addAttribute("tripPlanTitle", tripPlanTitle);
+        System.out.println("2.tripPlanTitle>>>>"+model.addAttribute("tripPlanTitle", tripPlanTitle));
 
         return "review/addReviewView.jsp";
     }
 
-    @RequestMapping(value = "addReview", method = {RequestMethod.GET, RequestMethod.POST}) // 등록된 후기 보기
-    public String addReview(@ModelAttribute("review") Review review, @RequestParam("tripPlanNo") int tripPlanNo, Model model, HttpSession session) throws Exception {
+    //3.입력폼에서 입력받은 모든 값들을 Post
+    @PostMapping(value = "addReview")
+    public String addReview(@ModelAttribute("review") Review review,
+                            @RequestParam("tripPlanNo") int tripPlanNo,
+                            @RequestParam("tripPlanTitle") String tripPlanTitle,
+                            Model model, HttpSession session) throws Exception {
         System.out.println("/review/addReview : POST");
-        // addReviewView.jsp에서 reviewAuthor 값을 세션에서 읽어옴
-        String reviewAuthor = (String) session.getAttribute("reviewAuthor");
-        model.addAttribute("reviewAuthor", reviewAuthor);
+        // 세션에서 로그인된 userId 값을 가져옴
+        String userId = (String) session.getAttribute("userId");
+        String reviewAuthor = userId;
 
-        // 세션에서 선택한 tripPlanNo 가져오기
-        int selectedTripPlanNo = (int) session.getAttribute("selectedTripPlanNo");
-        // 선택한 tripPlanNo를 review 객체에 설정
-        review.setTripPlanNo(selectedTripPlanNo);
+        // Review 객체 생성 및 review_author 값 설정
+        Review newReview = new Review();
+        newReview.setReviewAuthor(review.getReviewAuthor());
+        newReview.setReviewTitle(review.getReviewTitle());
+        newReview.setReviewContents(review.getReviewContents());
+        newReview.setReviewThumbnail(review.getReviewThumbnail());
+        newReview.setisReviewPublic(review.getisReviewPublic());
+        newReview.setReviewLikes(review.getReviewLikes());
+        newReview.setViewCount(review.getViewCount());
+        newReview.setReviewRegDate(new Date()); // CURRENT_TIMESTAMP 대신에 현재 날짜와 시간 설정
+        newReview.setisReviewDeleted(review.getisReviewDeleted());
+        newReview.setReviewDelDate(review.getReviewDelDate());
 
-        // Debug: Print review object
-        System.out.println("Review data: " + review.toString());
-
-        // tripPlanNo를 review 객체에 설정
-        review.setTripPlanNo(tripPlanNo);
-
-        // 선택한 여행 계획 ID 설정
+        // tripPlanNo 설정
+        newReview.setTripPlanNo(tripPlanNo);
+        // tripPlan 객체 조회
         TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
-        reviewService.addReview(review);
-        System.out.println("addReview 컨트롤러는 들어오니?" + tripPlanNo);
-        // review 객체를 모델에 추가
-        model.addAttribute("review", review);
-        System.out.println("review: " + review);
-
-        // tripPlan 객체를 모델에 추가
+        // 모델에 tripPlan 추가
         model.addAttribute("tripPlan", tripPlan);
-        model.addAttribute("selectedTripPlanNo", selectedTripPlanNo);
+        System.out.println("여기는 컨트롤러 addReview>>>>>>>>>"+tripPlan);
+        reviewService.addReview(newReview);
 
-        System.out.println("addReview가 될 tripPlanNo는??>>>>>" + tripPlanNo);
-        return "review/addReview.jsp";
+        model.addAttribute("reviewAuthor", reviewAuthor);
+        model.addAttribute("review", newReview);
+        System.out.println("컨트롤러 review>>>>" + newReview);
+        model.addAttribute("tripPlanTitle", tripPlanTitle);
+        System.out.println("3.tripPlanTitle>>>>" + model.addAttribute("tripPlanTitle", tripPlanTitle));
+
+        return "review/addReview.jsp"; // 등록된 후기 jsp
     }
+
 
 
 

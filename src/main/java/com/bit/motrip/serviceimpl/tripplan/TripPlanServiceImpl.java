@@ -111,7 +111,6 @@ public class TripPlanServiceImpl implements TripPlanService {
             parameters.put("list", updatedTripPlanList);
         }
         parameters.put("totalCount", totalCount);
-
         return parameters;
     }
 
@@ -154,7 +153,7 @@ public class TripPlanServiceImpl implements TripPlanService {
         return tripPlan;
     }
 
-    @Override // 여행플랜 수정
+    @Override // 여행플랜 수정style="width: 100%; height: 300px;
     public TripPlan updateTripPlan(TripPlan tripPlan) throws Exception{
         if(!tripPlan.getisTripCompleted()){
             tripPlan.setTripPlanRegDate(new Date());

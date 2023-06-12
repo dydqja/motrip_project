@@ -10,20 +10,16 @@ import java.util.Map;
 @Mapper
 public interface ReviewDao {
     //후기 부분 CRUD
-    // chatRoomNo가 제공되지 않은 경우 여행플랜들 가져오기
-    public List<TripPlan> getPublicNonDeletedTripPlans() throws Exception;
+    // 완료된 여행플랜 목록 가져오기
+    public List<TripPlan> getCompletedTripPlanList(Map<String, Object> parameters) throws Exception ;
+
+
     //INSERT C 후기 작성
     public void addReview(Review review)throws Exception ;
 
     public int selectReviewCount() throws Exception;
 
     public List<Review> selectReviewList(Map<String, Object> parameters) throws Exception;
-
-    //SELECT All Public ReviewList 공개된 후기 목록 조회
-    //public List<Review> getPublicReviewList(Search search) throws Exception;
-
-    //SELECT All My ReviewList 나의 후기 목록 조회
-    //public List<Review> getMyReviewList(Map<String, Object> parameterMap) throws Exception;
 
     //SELECT ONE R 특정 후기 조회
     public Review getReview(int reviewNo)throws Exception;
