@@ -193,10 +193,12 @@ public class MemoServiceImpl implements MemoService {
                 //review
                 attachingMemo.setAttachedReviewNo(attachedNo);
                 break;
-            default:
+            case 2:
                 //chatRoom
                 attachingMemo.setAttachedChatRoomNo(attachedNo);
                 break;
+            default:
+                System.out.println("메모를 탈착합니다.");
         }
 
         //컨트롤러로부터 memo의 정보를 받는다.

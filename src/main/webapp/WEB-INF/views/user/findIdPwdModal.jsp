@@ -18,6 +18,7 @@
 
     <title>아이디&비밀번호 찾기</title>
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
     <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
@@ -28,14 +29,28 @@
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
 <%--    내가 추가한것--%>
 
+    <style>
 
+        .pwd-btn {
+            color: #fff;
+            background-color: #003049;
+            border: none;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
 
+        .pwd-input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 2px solid #558B2F;
+        }
 
-
-
-
-
-
+    </style>
 
 </head>
 
@@ -45,21 +60,13 @@
 <div id="findIdPwdModal" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true" style="display: none; padding-right: 17px;">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #558B2F;">
                 &nbsp
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #8B2955;">×</button>
             </div>
             <div class="modal-body" style="display: flex; padding: 0;">
 
-
-
-
-
-
-
-
-
-                <div class="container">
+                <div class="container" style="background-color: #F5F1E3">
 
                     <div class="main-title">
                         <h3>아이디&비밀번호 찾기</h3>
@@ -74,24 +81,24 @@
                         <!-- END Block Tabs Title -->
 
                         <!-- Tabs Content -->
-                    <div class="tab-content">
+                    <div class="tab-content" >
 
                         <div class="tab-pane active" id="findId">
                             <!-- 아이디찾기 부분 ################################################################################ -->
                             <div class="form-group" id="idModal">
                                 <label for="phoneByFindId" class="label label-primary">전화번호</label>
-                                <input type="text" class="form-control" name="phone" id="phoneByFindId" placeholder="01012345678" required maxlength="11" aria-describedby="helpBlock2" style="width: 200px;">
+                                <input type="text" class="pwd-input" name="phone" id="phoneByFindId" placeholder="01012345678" required maxlength="11" aria-describedby="helpBlock2" style="width: 200px;">
                                 <span id="checkPhoneByFindId" style= "white-space: nowrap; display: block;"></span>
-                                <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" id="sendSmsByFindId">인증번호전송</button>
+                                <button type="button" class="pwd-btn hvr-grow" id="sendSmsByFindId">인증번호전송</button>
                             </div>
 
                             <!-- sms인증번호 입력폼 ==> 평상시 숨김 -->
                             <div class="form-group" id="PhCodeGroupByFindId" style="display: none;">
                                 <label for="phCodeConfirmByFindId" class="label label-primary">전화번호 인증</label>
-                                <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirmByFindId" placeholder="발송된 인증번호 입력" aria-describedby="helpBlock2" style="width: 200px;">
+                                <input type="text" class="pwd-input" name="phCodeConfirm" id="phCodeConfirmByFindId" placeholder="발송된 인증번호 입력" aria-describedby="helpBlock2" style="width: 200px;">
                                 <span id="checkPhCodeConfirmByFindId" style= "white-space: nowrap; display: block;"></span>
-                                <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" style="text-align: left;" id="confirmPhCodeByFindId">확인</button>
-                                <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" style="text-align: left;" id="resendPhCodeByFindId">재전송</button>
+                                <button type="button" class="pwd-btn hvr-grow" style="text-align: left;" id="confirmPhCodeByFindId">확인</button>
+                                <button type="button" class="pwd-btn hvr-grow" style="text-align: left; background-color: #8B2955;" id="resendPhCodeByFindId">재전송</button>
                             </div>
                         </div>
 
@@ -104,33 +111,33 @@
                         <!-- 비밀번호찾기 부분 ################################################################################ -->
                         <div class="tab-pane" id="findPwd">
                             <label for="UserIdByFindPwd" class="label label-primary">아 이 디</label>
-                            <input type="text" class="form-control" name="userId" id="userIdByFindPwd"  placeholder="아이디" style="width: 200px;" required>
+                            <input type="text" class="pwd-input" name="userId" id="userIdByFindPwd"  placeholder="아이디" style="width: 200px;" required>
                             <span id="checkIdByFindPwd" style= "white-space: nowrap; display: block;"></span>
 
                             <br/>
 
                             <label for="phoneByFindId" class="label label-primary">전화번호</label>
-                            <input type="text" class="form-control" name="phone" id="phoneByFindPwd" placeholder="01012345678" required maxlength="11" style="width: 200px;">
+                            <input type="text" class="pwd-input" name="phone" id="phoneByFindPwd" placeholder="01012345678" required maxlength="11" style="width: 200px;">
                             <span id="checkPhoneByFindPwd" style= "white-space: nowrap; display: block;"></span>
-                            <button type="button" class="btn btn-line btn-sm btn-primary hvr-grow" id="sendSmsByFindPwd">인증번호전송</button>
+                            <button type="button" class="pwd-btn hvr-grow" id="sendSmsByFindPwd">인증번호전송</button>
 
                             <!-- sms인증번호 입력폼 ==> 평상시 숨김 -->
-                            <div class="form-group" id="PhCodeGroupByFindPwd" style="display: none;">
+                            <div class="form-group" id="PhCodeGroupByFindPwd" style="display: none; margin-top: 10px;">
                                 <label for="phCodeConfirmByFindId" class="label label-primary">전화번호 인증</label>
-                                <input type="text" class="form-control" name="phCodeConfirm" id="phCodeConfirmByFindPwd" placeholder="발송된 인증번호 입력" style="width: 200px;">
+                                <input type="text" class="pwd-input" name="phCodeConfirm" id="phCodeConfirmByFindPwd" placeholder="발송된 인증번호 입력" style="width: 200px;">
                                 <span id="checkPhCodeConfirmByFindPwd" style= "white-space: nowrap; display: block;"></span>
-                                <button type="button" class="btn btn-primary hvr-grow" id="confirmPhCodeByFindPwd">확인</button>
-                                <button type="button" class="btn btn-primary hvr-grow" id="resendPhCodeByFindPwd">재전송</button>
+                                <button type="button" class="pwd-btn hvr-grow" id="confirmPhCodeByFindPwd">확인</button>
+                                <button type="button" class="pwd-btn hvr-grow" id="resendPhCodeByFindPwd" style="background-color: #8B2955;">재전송</button>
                             </div>
 
                             <!-- 비밀번호 변경 입력폼 #################################################### -->
                             <div class="form-group" id="changePwd" style="display: none;">
                                 <label for="updatePwd" class="label label-primary">비밀번호 변경</label>
-                                <input type="password" class="form-control" name="updatePwd" id="updatePwd" placeholder="변경 비밀번호" style="width: 200px;">
+                                <input type="password" class="pwd-input" name="updatePwd" id="updatePwd" placeholder="변경 비밀번호" style="width: 200px;">
                                 <span id="updatePwdCheck" style= "white-space: nowrap; display: block;"></span>
-                                <input type="password" class="form-control" name="pwd" id="updatePwdConfirm" placeholder="변경 비밀번호 확인" style="width: 200px;">
+                                <input type="password" class="pwd-input" name="pwd" id="updatePwdConfirm" placeholder="변경 비밀번호 확인" style="width: 200px;">
                                 <span id="updatePwdConfirmCheck" style= "white-space: nowrap; display: block;"></span>
-                                <button type="button" class="btn btn-primary hvr-grow" id="changePwdCommit">확인</button>
+                                <button type="button" class="pwd-btn hvr-grow" id="changePwdCommit">확인</button>
 
                             </div>
 
@@ -142,8 +149,8 @@
                 </div>
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default hvr-grow" data-dismiss="modal">Close</button>
+            <div class="modal-footer" style="background-color: #003049;">
+                <button type="button" class="btn btn-default hvr-grow" data-dismiss="modal" style="background-color: #FFB347;">Close</button>
             </div>
         </div>
     </div>
@@ -165,21 +172,29 @@
 <script src="/assets/js/min/countnumbers.min.js"></script>
 <script src="/assets/js/main.js"></script>
 
+<%--<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>--%>
+<%--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>--%>
+<%--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>--%>
+
 <!-- Current Page JS -->
 <script src="/assets/js/min/login.min.js"></script>
 
 <script type="text/javascript">
 
-
-
-
-
-
     $(document).ready(function() {
+
+        //tab이 선택될 때, 모든 tab에서 active요소를 제거하고 선택된 탭에 active 요소를 부여한다
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href"); // activated tab
+            $('.tab-pane').removeClass('active');
+            $(target).addClass('active');
+        });
+
         // 모달 창이 숨겨질 때 실행될 이벤트를 설정합니다.
         $('#findIdPwdModal').on('hidden.bs.modal', function () {
             // 모달 내의 모든 입력 필드를 초기화합니다.
             $(this).find('input').val('');
+
         });
     });
 

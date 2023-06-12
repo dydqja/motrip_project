@@ -1,11 +1,11 @@
 //도큐먼트에 달 리스너
 $(document).ready(function () {
-    console.log("document ready");
+    //console.log("document ready");
 
     let userId = $("#memo-user-id").val();
-    console.log("userId : " + userId);
+    //console.log("userId : " + userId);
     if (!userId){
-        console.log("userId is undefined");
+        //console.log("userId is undefined");
         return;
     }
     //최초 1회, getMemoList 를 호출하여 myMemoList 를 가져온다.
@@ -91,7 +91,7 @@ function getMemoList(searchCondition,currentPage){
         dataType: "json",
         success: function (response) {
             let memoDocList = response;
-            console.log("memoDocList : " + memoDocList);
+            //console.log("memoDocList : " + memoDocList);
             //각 memoDoc마다 썸네일을 만든다.
             memoDocList.forEach(memoDoc => {
                buildMemoListThumbnail(memoDoc,listContainer)
@@ -119,6 +119,8 @@ function buildMemoListThumbnail(memoDoc,listContainer){
         btnText = memoDoc.review.reviewTitle;
         btnValue = memoDoc.review.reviewNo;
     }
+
+    //눈물의 컷트
 
     //memoDoc를 담을 버튼을 만든다.
     let memoDocBtn = $('<div>').addClass('my-memo-thumbnail btn-group-justified').attr('role', 'group');

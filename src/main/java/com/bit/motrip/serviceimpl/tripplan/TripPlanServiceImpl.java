@@ -43,11 +43,11 @@ public class TripPlanServiceImpl implements TripPlanService {
     HttpSession httpSession;
 
 //    @Override // 여행플랜 목록(전체, 내목록 모두)
-//    public Map<String, Object> selectTripPlanList(Map<String, Object> paramaters) throws Exception {
+//    public Map<String, Object> selectMyTripPlanList(Map<String, Object> paramaters) throws Exception {
 //
 //        Search search = (Search) paramaters.get("search");
 //        int offset = (search.getCurrentPage() - 1) * tripPlanPageSize;
-//        search.setTotalCount(tripPlanDao.selectTripPlanCount()); // 여행플랜 총 카운트
+//        search.setTotalCount(tripPlanDao.selectTripPlanTotalCount(search)); // 여행플랜 총 카운트
 //        search.setCurrentPage(search.getCurrentPage()); // 클라이언트에서 요청한 페이지 번호
 //        search.setLimit(tripPlanPageSize); // LIMIT 값은 페이지당 항목 수와 동일합니다.
 //        search.setOffset(offset); //
@@ -56,9 +56,9 @@ public class TripPlanServiceImpl implements TripPlanService {
 //        if(dbUser != null) { // 나의 여행플랜
 //            paramaters.put("tripPlanAuthor", dbUser.getUserId());
 //            paramaters.put("search", search);
-//            paramaters.put("tripPlanList", tripPlanDao.selectTripPlanList(paramaters));
+//            paramaters.put("tripPlanList", tripPlanDao.selectMyTripPlanList(paramaters));
 //        } else { // 전체 여행플랜
-//            List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(paramaters); // nickname 필드를 별도 만들지 않았지만 플랜 작성자 정보를 통해 가져와서 넣어준다.
+//            List<TripPlan> tripPlanList = tripPlanDao.selectMyTripPlanList(paramaters); // nickname 필드를 별도 만들지 않았지만 플랜 작성자 정보를 통해 가져와서 넣어준다.
 //            List<TripPlan> updatedTripPlanList = new ArrayList<>();
 //            for (TripPlan tripPlan : tripPlanList) {
 //                User user = userService.getUserById(tripPlan.getTripPlanAuthor());
@@ -72,9 +72,19 @@ public class TripPlanServiceImpl implements TripPlanService {
 //    }
 
     @Override
-    public Map<String , Object > selectTripPlanList(Search search) throws Exception {
+    public Map<String , Object > selectTripPlanList(Map<String, Object> parameters) throws Exception {
 
-        List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(search);
+        if(parameters.get("user") != null) {
+            User dbUser = (User) parameters.get("user");
+            parameters.put("tripPlanAuthor", dbUser.getUserId());
+            System.out.println(dbUser.getUserId());
+        } else {
+            parameters.put("tripPlanAuthor", null);
+        }
+        Search search = (Search) parameters.get("search");
+        System.out.println(parameters);
+
+        List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(parameters);
         //for (TripPlan tp : tripPlanList) {
         //    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
             // 내거 날짜 바꾸기
@@ -86,34 +96,39 @@ public class TripPlanServiceImpl implements TripPlanService {
 
         map.put("list", tripPlanList );
         map.put("totalCount", new Integer(totalCount));
+        if(parameters.get("user") != null) {
+            map.put("tripPlanAuthor", tripPlanList.get(0).getTripPlanAuthor());
+            System.out.println("map : " + map);
+        }
+
         return map;
     }
 
-    @Override // 여행플랜 목록(전체, 내목록 모두)
-    public Map<String, Object> selectMyTripPlanList(Map<String, Object> parameters) throws Exception {
-
-        Search search = (Search) parameters.get("search");
-        int totalCount = tripPlanDao.selectTripPlanTotalCount(search);
-
-        User dbUser = (User) parameters.get("user");
-        if(dbUser != null) { // 나의 여행플랜
-            parameters.put("tripPlanAuthor", dbUser.getUserId());
-            parameters.put("search", search);
-            parameters.put("tripPlanList", tripPlanDao.selectMyTripPlanList(parameters));
-        } else { // 전체 여행플랜
-            List<TripPlan> tripPlanList = tripPlanDao.selectMyTripPlanList(parameters); // nickname 필드를 별도 만들지 않았지만 플랜 작성자 정보를 통해 가져와서 넣어준다.
-            List<TripPlan> updatedTripPlanList = new ArrayList<>();
-            for (TripPlan tripPlan : tripPlanList) {
-                User user = userService.getUserById(tripPlan.getTripPlanAuthor());
-                tripPlan.setTripPlanAuthor(user.getNickname());
-                updatedTripPlanList.add(tripPlan);
-            }
-            parameters.put("list", updatedTripPlanList);
-        }
-        parameters.put("totalCount", totalCount);
-
-        return parameters;
-    }
+//    @Override // 여행플랜 목록(전체, 내목록 모두)
+//    public Map<String, Object> selectMyTripPlanList(Map<String, Object> parameters) throws Exception {
+//
+//        Search search = (Search) parameters.get("search");
+//        int totalCount = tripPlanDao.selectTripPlanTotalCount(search);
+//
+//        User dbUser = (User) parameters.get("user");
+//        if(dbUser != null) { // 나의 여행플랜
+//            parameters.put("tripPlanAuthor", dbUser.getUserId());
+//            parameters.put("search", search);
+//            parameters.put("tripPlanList", tripPlanDao.selectTripPlanList(parameters));
+//        } else { // 전체 여행플랜
+//            List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(parameters); // nickname 필드를 별도 만들지 않았지만 플랜 작성자 정보를 통해 가져와서 넣어준다.
+//            List<TripPlan> updatedTripPlanList = new ArrayList<>();
+//            for (TripPlan tripPlan : tripPlanList) {
+//                User user = userService.getUserById(tripPlan.getTripPlanAuthor());
+//                tripPlan.setTripPlanAuthor(user.getNickname());
+//                updatedTripPlanList.add(tripPlan);
+//            }
+//            parameters.put("list", updatedTripPlanList);
+//        }
+//        parameters.put("totalCount", totalCount);
+//
+//        return parameters;
+//    }
 
     @Override // 여행플랜 저장
     public void addTripPlan(TripPlan tripPlan) throws Exception {

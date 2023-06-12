@@ -14,10 +14,11 @@
     <!-- 구분선 -->
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
-    <link rel="stylesheet" href="/css/tripplan/tripplan.css">
-    <link rel="stylesheet" href="/css/tripplan/overlay.css">
+<%--    <link rel="stylesheet" href="/css/tripplan/tripplan.css">--%>
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <link rel="stylesheet" href="/summernote/summernote.css">
+    <script src="/summernote/summernote.js"></script>
     <!-- 구분선 -->
 
     <link rel="icon" type="image/png" href="/assets/img/favicon.png"/>
@@ -32,6 +33,21 @@
         let markers = []; // 마커 배열
         let maps = []; // 지도 배열
     </script>
+
+    <style>
+        .post {
+            width: 100%; /* 원하는 너비 설정 */
+            height: 620px; /* 원하는 높이 설정 */
+            overflow: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+            border: 1px solid #ccc; /* 테두리 스타일 지정 */
+            padding: 10px; /* 내용과 테두리 사이 간격 */
+        }
+        .day {
+            font-size: 30px; /* 원하는 크기로 설정 */
+            font-weight: bold; /* 굵은 글씨체 설정 */
+        }
+    </style>
+
 </head>
 
 <body>
@@ -84,20 +100,14 @@
     <c:set var="i" value="${ i+1 }"/>
     <main class="white">
         <div class="container">
+            <div class="day">${i}일차 여행플랜</div>
             <div class="row">
                 <div class="col-sm-7">
-                    <div class="post">
-                            ${dailyPlan.dailyPlanContents}
+                    <div class="post" >
+                        <div>${dailyPlan.dailyPlanContents}</div>
                     </div>
-
-                    <div class="tag-wrap">
-                        <a href="#" rel="tag">여행</a>
-                        <a href="#" rel="tag">3일</a>
-                        <a href="#" rel="tag">2박3일</a>
-                        <a href="#" rel="tag">관광지</a>
-                    </div>
-
                 </div>
+
 
                 <div class="col-sm-5">
 
@@ -143,6 +153,7 @@
                                 </div>
 
                                 <!-- place 반복문이 내부에있어서 해당 장소에 선언하였으며 마커와 오버레이를 보여주기 위한 스크립트 -->
+
                                 <script type="text/javascript">
                                     var placeTags = "${place.placeTags}";
                                     var placePhoneNumber = "${place.placePhoneNumber}";
@@ -154,6 +165,19 @@
                                     var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
                                     var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
 
+                                        <%--var tripPath = ${place.tripPath};--%>
+
+                                        <%--var polyline = new kakao.maps.Polyline({--%>
+                                        <%--    path: tripPath,--%>
+                                        <%--    strokeWeight: 3, // 폴리라인의 두께--%>
+                                        <%--    strokeColor: '#FF0000', // 폴리라인의 색상--%>
+                                        <%--    strokeOpacity: 0.7 // 폴리라인의 투명도--%>
+                                        <%--});--%>
+
+                                        <%--// 폴리라인을 지도에 표시--%>
+                                        <%--polyline.setMap(map);--%>
+
+
                                     // markers 배열에 좌표 및 맵 ID 정보 추가
                                     markers.push({
                                         position: markerPosition,
@@ -164,6 +188,8 @@
                                         placeCategory: placeCategory,
                                         placeImage: placeImage
                                     });
+
+
                                 </script>
 
                             </c:forEach> <!-- place for end -->
@@ -255,6 +281,7 @@
                 level: 3
             };
             var map = new kakao.maps.Map(mapContainer, mapOptions);
+
             maps.push(map);
         }
         $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성

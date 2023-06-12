@@ -164,6 +164,10 @@ public class UserRestController {
             return "/user/addNaverUser";
 
         } else {
+
+            System.out.println("DB에 있는 네이버유저 로그인체크 :: "+ dbUser);
+
+            session.setAttribute("user", dbUser);
             //DB에 있는 회원이면 바로 로그인
             return "/user/naverLoginSuccess";
         }
