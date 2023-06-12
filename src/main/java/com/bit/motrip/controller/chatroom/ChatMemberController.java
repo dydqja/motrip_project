@@ -90,6 +90,22 @@ public class ChatMemberController {
 
         chatMemberService.addChatMember(chatMember);
 
+        /*수락한 뒤 신청자에게 알람을 보내는 로직 추가*/
+
+        //알람을 받을 사람.
+        User receiver = userService.getUserById(userId);
+        //채팅방 이름
+        ChatRoom chatRoom = chatRoomService.getChatRoom(chatRoomNo);
+        String chatRoomTitle = chatRoom.getChatRoomTitle();
+
+        //알람 내용
+        String contents = chatRoomTitle + "에 참가 신청이 수락되었습니다. 지금 바로 이동하시겠습니까?";
+        //알람 제목
+        String title = chatRoomTitle+"에 참가 신청이 수락되었습니다.";
+        //naviUrl
+        String naviUrl = "/chatRoom/getChat?chatRoomNo="+chatRoomNo+"&userId="+userId;
+
+
         return "redirect:/chatRoom/chatRoomList";
     }
 
