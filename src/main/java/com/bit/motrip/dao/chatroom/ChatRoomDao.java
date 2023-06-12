@@ -1,5 +1,6 @@
 package com.bit.motrip.dao.chatroom;
 import java.util.List; // chatRoomList에서 사용
+import java.util.Map;
 
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.ChatRoom;; //ChatRoom 도메인
@@ -18,5 +19,5 @@ public interface ChatRoomDao { //채팅방 DAO
 
     public int chatRoomCount() throws Exception;
     public int getChatRoomTotalCount(Search search) throws Exception;
-    public List<ChatRoom> myChatRoomListPage(Search search) throws Exception;
+    public List<ChatRoom> myChatRoomListPage(Map map) throws Exception;
 } //end of interface

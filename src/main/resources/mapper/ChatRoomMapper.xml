@@ -152,10 +152,10 @@
 		</if>
 	</select>
 
-	<select id="myChatRoomListPage" parameterType="com.bit.motrip.domain.User" resultMap="chatRoomResultMap">
-		SELECT cr.*, tp.trip_plan_no, tp.trip_days, tp.trip_plan_title
+	<select id="myChatRoomListPage" parameterType="Map" resultMap="chatRoomResultMap">
+		SELECT * FROM (
+		SELECT cr.*, tp.trip_plan_no, tp.trip_days, tp.trip_plan_title, ROW_NUMBER() OVER (ORDER BY cr.chat_room_no) AS row_seq
 		FROM chat_rooms cr
-
 		RIGHT JOIN (
 		SELECT crm.chat_room_no, crm.trip_plan_no
 		FROM chat_room_members crm where user_id = #{userId}
@@ -163,6 +163,7 @@
 		) crm ON cr.chat_room_no = crm.chat_room_no
 		LEFT JOIN trip_plan tp ON crm.trip_plan_no = tp.trip_plan_no
 		ORDER BY cr.chat_room_no
-
+			) AS temp
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
 	</select>
 </mapper>
