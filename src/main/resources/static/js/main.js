@@ -9,11 +9,11 @@ const fileInput = document.getElementById('uploadFile');
 // const username = params.get("username");
 // const room = params.get("chatRoomNo");
 
-console.log(username,room);
+//console.log(username,room);
 
 //cors 에러 해결
-const socket = io.connect("http://192.168.0.28:3000", {
-  cors:{origin:"http://192.168.0.28:3000"}//"http://192.168.0.28:3000" "http://localhost:3000"}
+const socket = io.connect("http://223.130.128.204:3000", {
+  cors:{origin:"http://223.130.128.204:3000"}//"http://192.168.0.28:3000" "http://localhost:3000"}
 });
 //join chatroom
 socket.emit('joinRoom',{username,room});
@@ -43,26 +43,7 @@ socket.on('message',message => {
 
 //사진 업로드 방법 구상!!
 //1. 자바스크립트에서 사진을 받아서 저장 2.이름을 소켓아이오로 전송 후 저장 3. 사진 필드가 널이 아니면 사진 출력 4. 사진 이름으로 경로에서 이미지 출력
-// fileInput.addEventListener('change', (event) => {
-//
-//   const file = event.target.files[0];
-//   console.log(file);
-//   // Create a new FileReader object
-//   const reader = new FileReader();
-//
-//   // Read the file data
-//   reader.onload = (event) => {
-//     // Create a new file object from the file data
-//     const fileData = event.target.result;
-//
-//     // Send the file to the server
-//     socket.emit('upload', fileData);
-//   };
-//
-//   // Read the file data
-//   reader.readAsArrayBuffer(file);
-// });
-//message submit
+
 chatForm.addEventListener('submit', (e) => {
   e.preventDefault();
   //get message text
@@ -70,9 +51,7 @@ chatForm.addEventListener('submit', (e) => {
 
   let photo = e.target.elements.uploadFile.value;
   console.log(photo);
-  //Emit message to server
-  // console.log(msg);
-  // console.log(photo);
+
   const uploadFilePromise = new Promise((resolve, reject) => {
     if (photo) {
       let file = e.target.elements.uploadFile.files[0];
@@ -106,8 +85,6 @@ chatForm.addEventListener('submit', (e) => {
   });
 });
 //이미지 넣기
-
-
 function outputMessage(message){
   const div = document.createElement('div');
   div.classList.add('message');

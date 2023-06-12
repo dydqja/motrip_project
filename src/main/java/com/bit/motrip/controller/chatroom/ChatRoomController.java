@@ -190,6 +190,25 @@ public class ChatRoomController {
         return "redirect:/chatRoom/chatRoomList";
     }
 
+    @GetMapping("video")
+    public String video(@ModelAttribute("chatRoom") ChatRoom chatRoom,
+                      // @RequestParam("userId") String userId,
+                        Model model) throws Exception{
+//        ChatRoom ch2 = chatRoomService.getChatRoom(chatRoom.getChatRoomNo());
+//        System.out.println(ch2);
+//        ChatMember author = chatMemberService.getChatMemberAuthor(chatRoom.getChatRoomNo());
+//        List<ChatMember> chatMemberList = chatMemberService.chatMemberList(chatRoom.getChatRoomNo());
+//        model.addAttribute("username",userId); //유저 name으로 userId 전송
+//        model.addAttribute("chatRoom",ch2); //채팅방 객체 전송
+//        model.addAttribute("chatMembers",chatMemberList);
+//        model.addAttribute("author",author);
+//        System.out.println("chatRoomNo"+chatRoom.getChatRoomNo());
+//        System.out.println("chatuserId : "+userId);
+//        System.out.println(author.getUserId());
+
+        return "chatroom/videoRoom.jsp";
+
+    } // 채팅방
 
     // 완료 -> delete 완성 : 채팅방에 옮기기
     // 할 일--------------금----------------------------
