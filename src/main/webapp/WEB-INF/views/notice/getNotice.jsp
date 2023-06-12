@@ -68,9 +68,9 @@
 
     <body>
 
+    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
     <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
 
-            <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
 
         <div class="container">
