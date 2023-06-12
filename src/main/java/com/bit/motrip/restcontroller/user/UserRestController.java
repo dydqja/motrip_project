@@ -346,8 +346,16 @@ public class UserRestController {
         return nickname.getUserId();
     }
 
+    @RequestMapping(value = "getBlacklistAll", method = RequestMethod.POST)
+    public List<String> getBlacklistAll(@RequestBody Map<String, Object> evaluaterId) throws Exception {
+        System.out.println("/user/getBlacklistAll : POST");
+        System.out.println("listUser에서 보낸 evaluaterId는? :: "+evaluaterId);
 
+        List<String> getBlacklistAll = evaluateListService.getBlacklistAll(evaluaterId);
+        System.out.println("나를블랙한사람 + 내가블랙한사람 값은? :: " + getBlacklistAll);
 
+        return getBlacklistAll;
+    }
 }
 
 

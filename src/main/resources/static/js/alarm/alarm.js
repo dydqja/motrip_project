@@ -361,8 +361,9 @@
             //읽음처리한다.
             //console.log(alarmNo+"번 알람 읽음처리");
             readAlarm(alarmNo);
-            //수락 url로 이동한다.
-            window.location.href = alarmAcceptUrl;
+            //수락 url로 ajax요청을 보낸다.
+            acceptAlarmRequest(alarmAcceptUrl);
+
     });
         //거절 버튼
 

@@ -30,6 +30,7 @@
 
 
 
+
   <style>
 
     .form-group {
@@ -286,6 +287,7 @@
 <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 <script src="/vendor/retina.min.js"></script>
@@ -422,7 +424,15 @@
           }
           $('input[name="userPhoto"]').val(fileRoute);
 
-          $("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+          swal({
+              title: "회원 가입이 완료되었습니다.",
+              text: "여행을 떠나보세요",
+              icon: "success",
+              button: "확인",
+
+          }).then((value) => {
+              $("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+          });
       }
 
       //==>"이메일" 유효성Check  Event 처리 및 연결
@@ -849,6 +859,11 @@
           $('#addUserModal').on('hidden.bs.modal', function(e) {
               // 'addUserForm' 폼의 모든 입력 필드를 초기화
               $('#addUserForm')[0].reset();
+
+              $("#sendSms").text("인증번호전송").css({
+                  "color": "white"
+              });  // 텍스트 색상과 폰트 크기 변경
+              $("#sendSms").prop("disabled", false);
           });
       });
 
