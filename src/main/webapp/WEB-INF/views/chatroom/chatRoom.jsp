@@ -650,19 +650,22 @@
         <input type="hidden" name="chatRoomStatus" value="${chatRoom.chatRoomStatus}"/>
         <input type="hidden" id="room-name"/>
         <main class="chat-main">
-            <div class="chat-sidebar" ">
+            <div class="chat-sidebar" >
                 <div class="chat-title" style="text-align: center"><h3 id="chatRoomTitle">${chatRoom.chatRoomTitle}</h3></div>
-                <button class="btn btn-primary" >Menu</button>
-                <button class="btn btn-primary" >TripPlan</button>
-                <button class="btn btn-primary" >Video</button>
+                <button class="btn btn-primary"style="background-color: #87ff66" >Menu</button>
+
+<%--                <button class="btn btn-primary" >TripPlan</button>--%>
+                <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"
+                   data-toggle="modal" type="button" class="btn btn-primary" style="background-color: #66ffff">TripPlan</a>
+                <button class="btn btn-primary" id="videoRoom" style="background-color: #e366ff">Video</button>
 
                 <div></div>
                 <div class="users" style="text-align: center"><h3>현재 참여 목록</h3></div>
 
                 <ul id="users"></ul><td/>
-<%--                <h2>참여 유저</h2>--%>
-<%--                <ul id="chatUsers">--%>
-<%--                </ul>--%>
+                <div class="dbUsers" style="text-align: center"><h3>채팅방 멤버</h3></div>
+                <ul id="chatUsers">
+                </ul>
             </div>
             <div class="chat-messages">
             </div>
@@ -735,7 +738,48 @@
 <!-- Current Page JS -->
 <script src="/assets/js/min/priceslider.min.js"></script>
 
+<script>
+    window.addEventListener('DOMContentLoaded',()=>{
+        var dropdownMenu = document.querySelector('.nav');
+        var newMenuItem = document.createElement('li');
+        newMenuItem.innerHTML =
+            `<li class="dropdown">
+                <a href="#">채팅방 Menu <i class="fa fa-chevron-down nav-arrow"></i></a>
+                <ul class="dropdown-menu">
+                    <c:if test="${author.userId eq username}">
+                            <li><a id="updateChat
+                        /li>
 
+
+                                ete">채팅방 삭제</a></li>
+
+                        </c:if>
+                    <c:if test="${author.userId ne username}">
+
+                        ">채팅방 나가기</a></li>
+
+                        </c:if>
+                    <li><a id="roomPhotos">채팅방 사진첩</a></li>
+                    <c:if test="${chatRoom.chatRoomStatus eq 0 and chatRoom.chatRoomStatus ne 3}">
+
+                        updateStatus">모집 완료</a></li>
+
+                        </c:if>
+                    <c:if test="${chatRoom.chatRoomStatus eq 1 and chatRoom.chatRoomStatus ne 3}">
+
+                        updateStatus">모집 하기</a></li>
+
+                        </c:if>
+                    <c:if test="${chatRoom.chatRoomStatus eq 0 or chatRoom.chatRoomStatus eq 1}">
+
+                        ishChatRoom">여행 완료</a></li>
+
+                        </c:if>
+                    <li><a id="videoRoom">videoTest</a></li>
+                </ul>
+            </li>`;
+    })
+</script>
 <%--</script>--%>
 
 </body>

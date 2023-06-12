@@ -162,9 +162,8 @@
                                     <div>
                                         <c:if test="${not empty sessionScope.user.userId}">
                                             <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                <button class="btn-sm btn-info right" id="addChatRoom"
-                                                        value="${tripPlan.tripPlanNo}">채팅방 생성
-                                                </button>
+                                                <a href="/chatRoom/addChatRoom?tripPlanNo=${tripPlan.tripPlanNo}&userId=${sessionScope.user.userId}" type="button"
+                                                   class="btn-sm btn-info right">채팅방 생성</a>
                                             </c:if>
                                         </c:if>
                                         <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
@@ -265,7 +264,6 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-
         // 선택된 체크박스의 ID를 가져와서 정렬 순서 변경
         $('input[name="options"]').on('click', function () {
             var option = $(this).attr('id');
@@ -332,32 +330,6 @@
             });
         });
 
-        // AJAX 요청을 보내고 여행플랜의 수를 가져오는 함수
-        function listCounter() {
-            $.ajax({
-                url: "/tripPlan/tripPlanCount",
-                type: "POST",
-                dataType: "json",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                data: JSON.stringify({}),
-                success: function (data) {
-                    console.log(data);
-                    $("#tripPlanCounter").html(data); // 변경된 부분: data.count 값을 출력합니다.
-                    $(".total").text("Total : " + data);
-                    var t = $(".counter");
-                    t.countUp({delay: 30, time: 3e3})
-                },
-                error: function (xhr, status, error) {
-                    console.log("An error occurred: " + error);
-                }
-            });
-        }
-
-        // 페이지가 열리면 함수 실행
-        listCounter();
     });
 
 </script>
