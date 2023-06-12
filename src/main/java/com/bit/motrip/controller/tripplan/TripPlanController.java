@@ -189,7 +189,7 @@ public class TripPlanController {
         model.addAttribute("tripPlan", tripPlan);
         model.addAttribute("nickName", dbUser.getNickname()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
 
-        return "tripplan/updateTripPlan.jsp";
+        return "tripplan/updateTripPlan2.jsp";
     }
 
 

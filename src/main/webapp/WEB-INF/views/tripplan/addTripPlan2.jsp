@@ -13,14 +13,18 @@
     <!-- 구분선 -->
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
-<%--    <link rel="stylesheet" href="/css/tripplan/tripplan.css">--%>
+    <link rel="stylesheet" href="/css/tripplan/tripplan.css">
+    <!-- jqurey -->
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <!-- 서머노트 CDN 링크 -->
     <link rel="stylesheet" href="/summernote/summernote.css">
     <script src="/summernote/summernote.js"></script>
+    <!-- alert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <!-- 구분선 -->
+
     <link rel="icon" type="image/png" href="assets/img/favicon.png"/>
     <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
@@ -79,6 +83,128 @@
         .card:not(.no-move) .card-header {
             cursor: pointer;
         }
+
+        .wrap {
+            position: absolute;
+            left: 0;
+            bottom: 40px;
+            width: 288px;
+            height: 132px;
+            margin-left: -144px;
+            text-align: left;
+            overflow: hidden;
+            font-size: 12px;
+            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+            line-height: 1.5;
+        }
+
+        .wrap * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .wrap .info {
+            width: 286px;
+            height: 120px;
+            border-radius: 5px;
+            border-bottom: 2px solid #ccc;
+            border-right: 1px solid #ccc;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .wrap .info:nth-child(1) {
+            border: 0;
+            box-shadow: 0px 1px 2px #888;
+        }
+
+        .info .title {
+            padding: 5px 0 0 10px;
+            height: 30px;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .info .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #888;
+            width: 17px;
+            height: 17px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+        }
+
+        .info .close:hover {
+            cursor: pointer;
+        }
+
+        .info .body {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info .desc {
+            position: relative;
+            margin: 13px 0 0 90px;
+            height: 75px;
+        }
+
+        .desc .ellipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .desc .category {
+            font-size: 11px;
+            color: #888;
+            margin-top: -2px;
+        }
+
+        .info .img {
+            position: absolute;
+            top: 6px;
+            left: 5px;
+            width: 73px;
+            height: 71px;
+            border: 1px solid #ddd;
+            color: #888;
+            overflow: hidden;
+        }
+
+        .info:after {
+            content: '';
+            position: absolute;
+            margin-left: -12px;
+            left: 50%;
+            bottom: 0;
+            width: 22px;
+            height: 12px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+        }
+
+        .info .link {
+            color: #5085BB;
+        }
+
+        .custom-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .plan-contents {
+            text-align: left;
+            margin-right: 20px;
+        }
+
+        .place-info {
+            text-align: left;
+        }
     </style>
 
     <c:if test="${empty sessionScope.user.userId}">
@@ -126,16 +252,16 @@
                     비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true" disabled/>
                 </h5>
                 <div style="text-align: right;">
-                    <div class="tag-link">여행일수</div>
-                    <button class="icon-triangle-up" id="btnAddTripDay"
+                    <div class="btn btn-sm btn-success btn-default">여행일수</div>
+                    <button class="btn btn-sm btn-success icon-triangle-up" id="btnAddTripDay"
                             style="background-color: #558B2F;"></button>
-                    <button class="icon-triangle-down" id="btnRemoveTripDay"
+                    <button class="btn btn-sm btn-success icon-triangle-down" id="btnRemoveTripDay"
                             style="background-color: #558B2F;"></button>
                 </div>
             </div>
         </div>
 
-        <div class="container">
+        <div class="container" id="container0">
             <div class="day"> 1일차 여행플랜 </div>
             <div class="row">
                 <div class="col-sm-7">
@@ -144,7 +270,6 @@
 
                 <div class="col-sm-5">
                     <div class="sidebar">
-
                         <div class="border-box">
                             <div id="menu_wrap0"></div>
                             <div class="box-title">
@@ -165,10 +290,10 @@
                         </div>
 
                         <div class="border-box">
-                            <div class="box-title">명소리스트
-                                <div class="tag-link" style="text-align: right;" id="totalTripTime0"></div>
+                            <div class="box-title" >명소리스트
+                                <div id="totalTripTime0"></div>
                             </div>
-                            <ul class="list0">
+                            <ul class="list0" style="text-align: center;">
 
                             </ul>
                         </div>
@@ -176,7 +301,10 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary" id="btnAddTripPlan">저장</button>
+            <div class="addDaily" id="addDaily" style="text-align: right;">
+                <button class="btn btn-primary" id="btnAddTripPlan" style="text-align: right;">저장</button>
+                <button class="btn btn-primary" id="history" style="text-align: right;">이전</button>
+            </div>
 
         </div>
     </main>
@@ -384,7 +512,7 @@
                 for (var i = 0; i < places.length; i++) {
                     // 마커를 생성하고 지도에 표시
                     var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-                        marker = addMarker(placePosition, i),
+                        marker = addMarker(placePosition),
                         itemEl = getListItem(i, places[i]);
 
                     positions.push({coordinates: placePosition.La + "," + placePosition.Ma}); // 반복문에 출력되는 위도+경도 저장
@@ -535,6 +663,7 @@
                             for (var i = 0; i < markers[indexCheck].length; i++) {
                                 bounds.extend(markers[indexCheck][i].getPosition());
                             }
+
                             // 마커들 중앙값 저장 해놓은 배열
                             markersBound[indexCheck] = bounds;
                             // 입력후 저장된 마커들의 중앙으로 화면 이동
@@ -602,21 +731,91 @@
                 });
             }
 
-            function addMarker(position, idx) {  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-                var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
-                    imageSize = new kakao.maps.Size(36, 37),
-                    imgOptions = {
-                        spriteSize: new kakao.maps.Size(36, 691),
-                        spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10),
-                        offset: new kakao.maps.Point(13, 37)
-                    },
-                    markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+            function addMarker(position) {  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
                     marker = new kakao.maps.Marker({
                         position: position,
-                        image: markerImage
                     });
                 return marker;
             }
+
+            // $(function () { // 오버레이 표시
+            //     var overlays = [];
+            //     for (var i = 0; i < markers.length; i++) { // 각 지도에 맞춰서 마커들을 표시
+            //         var mapId = markers[i].mapId;
+            //         var mapIndex = parseInt(mapId.replace("map", ""));
+            //         var markerOptions = {
+            //             position: markers[i].position,
+            //             map: maps[mapIndex]
+            //         };
+            //         var marker = new kakao.maps.Marker(markerOptions);
+            //         marker.setMap(markerOptions.map);
+            //
+            //         var category = '';
+            //         if (markers[i].placeCategory == 0) {
+            //             category = '여행지';
+            //         } else if (markers[i].placeCategory == 1) {
+            //             category = '식당';
+            //         } else if (markers[i].placeCategory == 2) {
+            //             category = '숙소';
+            //         }
+            //
+            //         // 오버레이 정보창
+            //         var content = '<div class="wrap">' +
+            //             '    <div class="info">' +
+            //             '        <div class="title">' +
+            //             '            ' + markers[i].placeTags +
+            //             '            <div class="close" data-index="' + i + '" title="닫기"></div>' +
+            //             '        </div>' +
+            //             '        <div class="body">' +
+            //             '            <div class="img">' +
+            //             '                <img src="' + markers[i].placeImage + '" width="73" height="70">' +
+            //             '           </div>' +
+            //             '            <div class="desc">' +
+            //             '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
+            //             '                <div class="category">(카테고리) ' + category + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
+            //             '    </div></div></div></div>';
+            //
+            //         var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
+            //             content: content,
+            //             map: maps[mapIndex],
+            //             position: marker.getPosition(),
+            //             yAnchor: 1
+            //         });
+            //
+            //         overlay.setMap(null); // 오버레이 초기 상태는 숨김으로 설정
+            //         overlays.push(overlay);
+            //
+            //         (function (marker, overlay, mapIndex) {
+            //
+            //             // 마커를 클릭했을 때 오버레이 표시
+            //             kakao.maps.event.addListener(marker, 'click', function () {
+            //                 maps[mapIndex].setLevel(3); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
+            //                 maps[mapIndex].panTo(marker.getPosition()); // 해당 마커 위치로 지도 이동
+            //                 overlay.setMap(maps[mapIndex]);
+            //             });
+            //
+            //             // 지도상 어디든 클릭했을 때 오버레이 숨김
+            //             kakao.maps.event.addListener(maps[mapIndex], 'click', function () {
+            //                 overlay.setMap(null);
+            //             });
+            //
+            //             // 화면 초기화
+            //             $('#reset' + mapIndex).click(function () {
+            //                 overlay.setMap(null);
+            //                 var mapIndex = parseInt(this.id.replace("reset", ""));
+            //                 var bounds = new kakao.maps.LatLngBounds();
+            //
+            //                 for (var j = 0; j < markers.length; j++) {
+            //                     if (markers[j].mapId === "map" + mapIndex) {
+            //                         bounds.extend(markers[j].position);
+            //                     }
+            //                 }
+            //                 maps[mapIndex].setBounds(bounds);
+            //             });
+            //
+            //         })(marker, overlay, mapIndex);
+            //     }
+            // });
 
             function getListItem(indexCheck, places) {  // 검색결과 항목을 Element로 반환하는 함수입니다
                 var el = document.createElement('li'),
@@ -660,9 +859,23 @@
 
             // 명소리스트 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
             function displayInfowindow(marker, title, indexCheck) {
-                var content = '<div class="icon-locate-map" style="padding:5px;z-indexCheck:1;">' + title + '</div>';
-                infowindow.setContent(content); // 설명창 내부에 표시될 글
-                infowindow.open(maps[indexCheck], marker); // 설명창 띄움
+                var overlayContent = '<div class="wrap">' +
+                    '    <div class="info">' +
+                    '        <div class="title">' +
+                    '            ' + title +
+                    '            <div class="close" data-index="' + indexCheck + '" title="닫기"></div>' +
+                    '        </div>' +
+                    '        <div class="body">' +
+                    '            <div class="img">' +
+                    '                <img src= width="73" height="70">' +
+                    '           </div>' +
+                    '            <div class="desc">' +
+                    '                <div class="ellipsis"></div>' +
+                    '                <div class="category">(카테고리) (전화번호) </div>' +
+                    '    </div></div></div></div>';
+
+                infowindow.setContent(overlayContent); // 오버레이에 내용 설정
+                infowindow.open(maps[indexCheck], marker); // 오버레이 표시
             }
 
             // 검색결과 목록의 자식 Element를 제거하는 함수입니다
@@ -774,6 +987,11 @@
 
     });
 
+    $(function () { // 이전으로 돌아가기
+        $("#history").on("click", function () {
+            window.history.back();
+        });
+    });
 
     $("#btnAddTripDay").click(function () { // 추가 지도 생성 최대 10개까지
         // 버튼 비활성화
@@ -792,8 +1010,8 @@
         // 새로운 요소를 생성
         if (idCheck < 10) {
 
-            var dynamicHTML = '<hr></hr><main class="white">' +
-                '<div class="day">' + (idCheck+1)  + '일차 여행플랜 </div><div class="container">' + '<div class="row">' + '<div class="col-sm-7">' +
+            var dynamicHTML = '<hr></hr>' +
+                '<div class="container" id="container'+ idCheck + '"><div class="day">' + (idCheck+1)  + '일차 여행플랜 </div>' + '<div class="row">' + '<div class="col-sm-7">' +
                 '<textarea id="dailyPlanContents' + idCheck + '" name="dailyPlanContents" required style="width: 100%;"></textarea>' +
                 '</div>' + '<div class="col-sm-5">' + '<div class="sidebar">' +
                 '<div class="border-box">' + '<div id="menu_wrap' + idCheck + '"></div>' + '<div class="box-title">' + '<div class="input-group">' +
@@ -807,10 +1025,11 @@
 
             // 동적으로 생성한 요소들을 DOM에 추가
             var newElement = document.createElement('div');
+            newElement.setAttribute('class', 'row');
             newElement.setAttribute('id', 'newElement' + idCheck);
             newElement.innerHTML = dynamicHTML;
 
-            var btnElement = document.getElementById('btnAddTripPlan');
+            var btnElement = document.getElementById('addDaily');
 
             btnElement.parentNode.insertBefore(newElement, btnElement);
 
@@ -848,7 +1067,7 @@
         }, 500); // 0.5초 후에 버튼 활성화
 
         if (idCheck > 1) {
-            var elementToRemove = document.getElementById('newElement' + (idCheck - 1));
+            var elementToRemove = document.getElementById('container' + (idCheck - 1));
             if (elementToRemove) {
                 // 내용이 있는지 확인
                 var dailyPlanContents = elementToRemove.querySelector('textarea[name="dailyPlanContents"]');
@@ -861,7 +1080,7 @@
                     if (confirm("작성중인 내용이 있습니다 삭제하시겠습니까?")) {
                         elementToRemove.parentNode.removeChild(elementToRemove);
                         delDailyPlan((idCheck - 1))
-                        idCheck = idCheck --; // idCheck 감소
+                        idCheck --; // idCheck 감소
                         console.log("idCheck 감소하였음");
                     }
                 } else {

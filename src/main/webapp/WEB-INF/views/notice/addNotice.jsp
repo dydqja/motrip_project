@@ -25,66 +25,7 @@
         <link rel="stylesheet" href="/css/notice/addNotice.css">
         <!-- 썸머노트 스타일시트 -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
-    </head>
 
-    <body>
-
-        <header class="nav-menu fixed">
-            <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-        </header>
-
-        <div class="page-img">
-            <div class="container">
-                <h1 class="main-head text-center board-title">${noticeTitle}</h1>
-            </div>
-        </div>
-
-        <c:set var="formAction" value="${(noticeTitle == null && noticeContents == null) ? '/notice/addNotice' : '/notice/updateNotice'}" />
-
-        <form action="${formAction}" method="post">
-
-            <input type="hidden" name="noticeAuthor" value="${sessionScope.user.userId}" />
-
-            <c:if test="${noticeNo != null}">
-
-                <input type="hidden" name="noticeNo" value="${noticeNo}" />
-
-            </c:if>
-
-            <div>
-
-                <input type="text" name="noticeTitle" id="noticeTitle" value="${noticeTitle}">
-
-            </div>
-
-            <br>
-
-            <div>
-                <!-- 썸머노트 입력란 -->
-                <textarea name="noticeContents" id="summernote">${noticeContents}</textarea>
-            </div>
-
-            <br>
-
-            <div>
-                <button id="addNotice" type="submit">등록하기</button>
-            </div>
-
-            <br>
-
-            <div>
-                <button type="reset">초기화</button>
-            </div>
-
-            <br>
-
-            <div>
-                <button id="getNoticeList" type="button">목록보기</button>
-            </div>
-
-        </form>
-
-        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
         <script src="/vendor/jquery/dist/jquery.min.js"></script>
         <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
@@ -162,6 +103,67 @@
             });
 
         </script>
+    </head>
+
+    <body>
+
+
+            <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+
+
+        <div class="page-img">
+            <div class="container">
+                <h1 class="main-head text-center board-title">${noticeTitle}</h1>
+            </div>
+        </div>
+
+        <c:set var="formAction" value="${(noticeTitle == null && noticeContents == null) ? '/notice/addNotice' : '/notice/updateNotice'}" />
+
+        <form action="${formAction}" method="post">
+
+            <input type="hidden" name="noticeAuthor" value="${sessionScope.user.userId}" />
+
+            <c:if test="${noticeNo != null}">
+
+                <input type="hidden" name="noticeNo" value="${noticeNo}" />
+
+            </c:if>
+
+            <div>
+
+                <input type="text" name="noticeTitle" id="noticeTitle" value="${noticeTitle}">
+
+            </div>
+
+            <br>
+
+            <div>
+                <!-- 썸머노트 입력란 -->
+                <textarea name="noticeContents" id="summernote">${noticeContents}</textarea>
+            </div>
+
+            <br>
+
+            <div>
+                <button id="addNotice" type="submit">등록하기</button>
+            </div>
+
+            <br>
+
+            <div>
+                <button type="reset">초기화</button>
+            </div>
+
+            <br>
+
+            <div>
+                <button id="getNoticeList" type="button">목록보기</button>
+            </div>
+
+        </form>
+
+        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
+
 
     </body>
 

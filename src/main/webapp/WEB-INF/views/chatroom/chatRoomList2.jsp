@@ -65,9 +65,9 @@
 </head>
 
 <body>
-<%--<header class="nav-menu fixed">--%>
+
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-<%--</header>--%>
+
 <div class="page-img" style="background-image: url('/images/chatRoomImage.jpg');">
     <div class="container">
         <div class="col-sm-8">
@@ -168,8 +168,7 @@
                 <c:set var="i" value="0" />
                 <c:forEach var="chatRoom" items="${list}">
                 <c:set var="i" value="${ i+1 }" />
-                <div class="item-list chat-room-item-list">
-                    <input type="hidden" class="chat-room-no-hidden-input" value="${chatRoom.chatRoomNo}">
+                <div class="item-list">
                     <div class="col-sm-5">
                         <div class="item-img row" style="background-image: url('http://placehold.it/320x250');">
                             <div class="item-overlay">
@@ -226,21 +225,21 @@
                         <div class="item-book">
                             <button class="btn btn-primary hvr-fade go" name="chatRoomNo" value="${chatRoom.chatRoomNo}">Enter</button>
                             <c:if test="${chatRoom.currentPersons eq chatRoom.maxPersons}">
-                                <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}"
+                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
                                         style="margin-left: 10px; background-color: #ee3f00" disabled>Hottest</button>
                             </c:if>
                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 0}">
                                 <input type="hidden" class="roomGender" value="${chatRoom.gender}">
                                 <input type="hidden" class="minAge" value="${chatRoom.minAge}">
                                 <input type="hidden" class="maxAge" value="${chatRoom.maxAge}">
-                                <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Enroll</button>
+                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Enroll</button>
                             </c:if>
                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">
-                                <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}"
+                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
                                         style="margin-left: 10px; background-color: #66ffd6" disabled>Completed</button>
                             </c:if>
                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 2}">
-                                <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}"
+                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
                                         style="margin-left: 10px; background-color: #f5ff66; color: red" disabled>Finished</button>
                             </c:if>
                             <div class="price">${chatRoom.currentPersons} / ${chatRoom.maxPersons}</div>
@@ -290,8 +289,8 @@
         $("form").attr("method","POST").attr("action","/chatRoom/chat").submit();
     }
 
-    function fncJoinChatroom(){
-        $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
+    function fncJoinChatroom(chatRoomNo){
+        $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").append('<input type="hidden" name="chatRoomNo" value="' + chatRoomNo + '">').submit();
     }
 
     function fncAddChatroom(){
@@ -307,10 +306,11 @@
             const minAge = $(this).siblings('.minAge').val();
             const maxAge = $(this).siblings('.maxAge').val();
             const age = calculateAge($("#birthYear").attr('value'));
-
+            const chatRoomNo = $(this).val();
+            alert(chatRoomNo);
             if(userId !== '') {
                 const value = $(this).attr('value');
-                alert("join-chatroom");
+
                 $.ajax({
                     url: '/chatMember/json/fetchChatMembers/' + value,
                     type: 'GET',
@@ -322,11 +322,12 @@
                     success: function (members) {
                         const matchingMember = members.find(member => member.userId === userId);
                         if (matchingMember) {
-                            alert("이미가입했던 채팅방입니다.")
+                            alert("이미가입했던 채팅방입니다.");
                         } else {
+
                             if ((roomGender === gender || roomGender === "MF") && age >= minAge && age <= maxAge) {
                                 alert("신청완료 방장의 허락을 기다려 주세요");
-                                fncJoinChatroom();
+                                fncJoinChatroom(chatRoomNo);
                             } else {
                                 alert("조건에 부합하지 않습니다.");
                             }
@@ -398,6 +399,7 @@
             });
         });
     });
+
     $(function() {
         $(".go").on("click", function() {
             let value = $(this).attr('value');

@@ -171,37 +171,67 @@ public class TripPlanServiceImpl implements TripPlanService {
 
     @Override // 여행플랜 수정
     public TripPlan updateTripPlan(TripPlan tripPlan) throws Exception{
+
         if(!tripPlan.getisTripCompleted()){
             tripPlan.setTripPlanRegDate(new Date());
             tripPlanDao.updateTripPlan(tripPlan);
             List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
-            for(int i=0; i<dailyPlan.size(); i++){
-                dailyPlan.get(i).setDailyPlanNo(dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo()).get(i).getDailyPlanNo());
-                dailyPlanDao.updateDailyPlan(dailyPlan.get(i));
-                List<Place> place = dailyPlan.get(i).getPlaceResultMap();
-                List<Place> defaultPlaces = placeDao.selectPlace(dailyPlan.get(i).getDailyPlanNo()); // 업데이트전 place
-                System.out.println(place + "새로운값");
-                System.out.println(defaultPlaces + "기존값 확인");
-                for(int j=0; j<place.size(); j++){
-                    if(j < defaultPlaces.size()) {
-                        place.get(j).setPlaceNo(defaultPlaces.get(j).getPlaceNo());
-                        placeDao.updatePlace(place.get(j));
-                        if(j == (place.size()-1)) {
-                            int size = defaultPlaces.size() - place.size();
-                            if (defaultPlaces.size() > place.size()) {
-                                for (int p = 0; p <size; p++) {
-                                    placeDao.deletePlace(defaultPlaces.get(place.size() + p).getPlaceNo());
+            List<DailyPlan> defaultDailyPlan = dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo());
+
+            // 기존 플랜수와 새로운 플랜수 비교하여 같을 경우
+            if(defaultDailyPlan.size() == dailyPlan.size()) {
+                for(int i=0; i<dailyPlan.size(); i++){
+
+                    dailyPlan.get(i).setDailyPlanNo(dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo()).get(i).getDailyPlanNo());
+                    dailyPlanDao.updateDailyPlan(dailyPlan.get(i));
+                    List<Place> place = dailyPlan.get(i).getPlaceResultMap();
+                    List<Place> defaultPlaces = placeDao.selectPlace(dailyPlan.get(i).getDailyPlanNo()); // 업데이트전 place
+                    System.out.println(place + "새로운값");
+                    System.out.println(defaultPlaces + "기존값 확인");
+
+                    for(int j=0; j<place.size(); j++){
+
+                        if(j < defaultPlaces.size()) {
+                            place.get(j).setPlaceNo(defaultPlaces.get(j).getPlaceNo());
+                            placeDao.updatePlace(place.get(j));
+                            if(j == (place.size()-1)) {
+                                int size = defaultPlaces.size() - place.size();
+                                if (defaultPlaces.size() > place.size()) {
+                                    for (int p = 0; p <size; p++) {
+                                        placeDao.deletePlace(defaultPlaces.get(place.size() + p).getPlaceNo());
+                                    }
                                 }
                             }
+                        } else {
+                            place.get(j).setDailyPlanNo(dailyPlan.get(i).getDailyPlanNo());
+                            placeDao.addPlace(place.get(j));
                         }
-                    } else {
-                        place.get(j).setDailyPlanNo(dailyPlan.get(i).getDailyPlanNo());
+
+                    }
+                }
+                System.out.println(tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo()));
+                tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+                System.out.println("기존 플랜일수가 똑같습니다.");
+            } else if(defaultDailyPlan.size() < dailyPlan.size()){ // 기존 플랜수 보다 새로운 플랜수가 클경우
+                for(int i=defaultDailyPlan.size(); i<dailyPlan.size(); i++) {
+                    dailyPlan.get(i).setTripPlanNo(tripPlan.getTripPlanNo());
+                    dailyPlanDao.addDailyPlan(dailyPlan.get(i));
+                    int dailyPlanNo = dailyPlanDao.getDailyPlan();
+                    List<Place> place = dailyPlan.get(i).getPlaceResultMap();
+                    for(int j=0; j<place.size(); j++){
+                        place.get(j).setDailyPlanNo(dailyPlanNo);
                         placeDao.addPlace(place.get(j));
                     }
                 }
+                System.out.println("기존 플랜일수보다 많아서 새로 추가했습니다..");
+            } else if(defaultDailyPlan.size() > dailyPlan.size()) {
+                for(int i=dailyPlan.size(); i<defaultDailyPlan.size(); i++) {
+                    List<DailyPlan> delDailyPlan = dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo());
+                    dailyPlanDao.deleteDailyPlan(delDailyPlan.get(i).getDailyPlanNo());
+                }
+                System.out.println("기존 플랜일수보다 적어서 삭제했습니다...");
             }
-            System.out.println(tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo()));
-            tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+
         } else {
             System.out.println("여행이 완료된 플랜은 더이상 수정할수없습니다.");
         }

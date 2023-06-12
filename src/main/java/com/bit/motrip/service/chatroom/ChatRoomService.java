@@ -15,6 +15,7 @@ public interface ChatRoomService { //service
     public Map<String , Object > chatRoomListPage(Search search) throws Exception; // 채팅방 리스트 조회
     //chage room_status
     public int changeRoomStatus(int chatRoomStatus,int chatRoomNo) throws Exception;
+    public Map<String , Object > myChatRoomListPage(Search search,String userId) throws Exception;
 
     public int chatRoomCount() throws Exception;
 } //end of interface
