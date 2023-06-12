@@ -32,7 +32,7 @@ public class BotRestController {
         StringBuffer response = new StringBuffer();
 
         // NAVER Cloud API 인증 정보 불러오기
-        FileInputStream fis = new FileInputStream("src/main/resources/properties/application-secret.properties");
+        FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
 
         Properties config = new Properties();
         config.load(fis);
@@ -123,7 +123,7 @@ public class BotRestController {
         String chatbotMessage = "";
 
         // NAVER Cloud API 인증 정보 불러오기
-        FileInputStream fis = new FileInputStream("src/main/resources/properties/application-secret.properties");
+        FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
 
         Properties config = new Properties();
         config.load(fis);
@@ -282,7 +282,7 @@ public class BotRestController {
     public static ResponseEntity<byte[]> TextToSpeech(@RequestBody String tts) throws Exception {
 
         // NAVER Cloud API 인증 정보 불러오기
-        FileInputStream fis = new FileInputStream("src/main/resources/properties/application-secret.properties");
+        FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
 
         Properties config = new Properties();
         config.load(fis);
