@@ -31,4 +31,6 @@ public interface EvaluateListDao {
 
     public String blacklistState(String sessionUserId,String getUserId) throws Exception;
 
+    public List<EvaluateList> getEvaluaterId(Map evaluaterId) throws Exception;
+
 }

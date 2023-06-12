@@ -640,7 +640,7 @@
 </head>
 <body>
 
-    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+    <%@ include file="/WEB-INF/views/layout/chatRoomHeader.jsp" %>
 
 <%--onsubmit="return false;"--%>
 <div class="chat-container" >
@@ -650,19 +650,20 @@
         <input type="hidden" name="chatRoomStatus" value="${chatRoom.chatRoomStatus}"/>
         <input type="hidden" id="room-name"/>
         <main class="chat-main">
-            <div class="chat-sidebar" ">
+            <div class="chat-sidebar" >
                 <div class="chat-title" style="text-align: center"><h3 id="chatRoomTitle">${chatRoom.chatRoomTitle}</h3></div>
-                <button class="btn btn-primary" >Menu</button>
-                <button class="btn btn-primary" >TripPlan</button>
-                <button class="btn btn-primary" >Video</button>
-
+            <div class="chatButton" align="center">
+                <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"
+                   data-toggle="modal" type="button" class="btn btn-primary" style="background-color: #66ffff">TripPlan</a>
+                <button class="btn btn-primary" id="videoRoom" style="background-color: #e366ff">Video</button>
+            </div>
                 <div></div>
                 <div class="users" style="text-align: center"><h3>현재 참여 목록</h3></div>
 
                 <ul id="users"></ul><td/>
-<%--                <h2>참여 유저</h2>--%>
-<%--                <ul id="chatUsers">--%>
-<%--                </ul>--%>
+                <div class="dbUsers" style="text-align: center"><h3>채팅방 멤버</h3></div>
+                <ul id="chatUsers">
+                </ul>
             </div>
             <div class="chat-messages">
             </div>
@@ -734,7 +735,6 @@
 
 <!-- Current Page JS -->
 <script src="/assets/js/min/priceslider.min.js"></script>
-
 
 <%--</script>--%>
 

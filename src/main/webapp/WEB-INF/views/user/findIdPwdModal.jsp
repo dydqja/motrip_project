@@ -203,6 +203,9 @@
 
             console.log("아이디찾기 클릭됨 = 내용초기화");
 
+            $(this).addClass('active');
+            $('#findPwdTab').removeClass('active');
+
             // '비밀번호 찾기' 부분 초기화
             $('#pwdModal').find('input').val('');
             $('#pwdModal').hide();
@@ -223,6 +226,9 @@
         $("#findPwdTap").click(function() {
 
             console.log("비밀번호찾기 클릭됨 = 내용초기화");
+
+            $(this).addClass('active');
+            $('#findIdTab').removeClass('active');
 
             // '아이디 찾기' 부분 초기화
             $('#idModal').find('input').val('');
@@ -436,13 +442,10 @@
                 }),
                 dataType: "text",
                 success: function (response) {
-                    alert(response);
-                    alert($('#userIdByFindPwd').val());
                     userId = response;
 
                 },
                 error: function (error) {
-                    alert("실패");
                 }
             });
 
@@ -607,8 +610,6 @@
 
         var userId = $('#userIdByFindPwd').val()
         var updatePwdConfirm = $('#updatePwdConfirm').val()
-        alert(userId);
-        alert(updatePwdConfirm);
 
         //변경했다면, 새로운비밀번호 유효성 체크
         if (updatePwdConfirm == null || updatePwdConfirmChecked == false) {
@@ -633,13 +634,21 @@
             dataType: "text",
             success: function (response) {
 
-                $('#findIdPwdModal').modal('hide');
+                swal({
 
-                // 페이지를 새로고침합니다.
-                location.reload();
+                    title: "비밀번호 변경이 완료되었습니다.",
+                    text: "새로운 비밀번호로 로그인 해주세요.",
+                    icon: "success",
+                    button: "확인",
+                }).then((value) => {
+
+                    $('#findIdPwdModal').modal('hide');
+                    // 페이지를 새로고침합니다.
+                    location.reload();
+                });
             },
             error: function (error) {
-                alert("실패");
+                alert("다시 시도해주세요.");
             }
         });	//ajax close
     }

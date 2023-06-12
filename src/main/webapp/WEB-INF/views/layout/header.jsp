@@ -197,7 +197,8 @@
                                     <li><a href="/user/listUser">회원목록</a>
                                     </li>
                                 </c:if>
-                                <li><a href="#">로그아웃</a>
+                                <li><a href="/user/logout">로그아웃</a>
+
                                 </li>
                             </ul>
                         </li>
