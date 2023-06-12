@@ -259,12 +259,12 @@ public class ChatRoomController {
         // 화면 하단에 표시할 페이지의 끝 번호
         int endUnitPage = page.getEndUnitPage();
 
-        model.addAttribute("list",chatRoomListData.get("list"));
-        model.addAttribute("page", page);
-        model.addAttribute("maxPage", maxPage);
-        model.addAttribute("beginUnitPage", beginUnitPage);
-        model.addAttribute("endUnitPage", endUnitPage);
-        model.addAttribute("search",search);
+        model.addAttribute("chatRoomList",chatRoomListData.get("list"));
+        model.addAttribute("chatRoomPage", page);
+        model.addAttribute("chatRoomMaxPage", maxPage);
+        model.addAttribute("chatRoomBeginUnitPage", beginUnitPage);
+        model.addAttribute("chatRoomEndUnitPage", endUnitPage);
+        model.addAttribute("chatRoomSearch",search);
         //model.addAttribute("user",user);
         System.out.println(page);
         System.out.println(maxPage);
@@ -272,6 +272,6 @@ public class ChatRoomController {
         System.out.println(endUnitPage);
         System.out.println(totalCount);
         System.out.println(search);
-        return "chatroom/chatRoomList2.jsp";
+        return "user/getUser.jsp";
     }
 }// ChatRoomController 종료

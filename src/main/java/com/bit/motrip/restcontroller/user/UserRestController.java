@@ -286,6 +286,7 @@ public class UserRestController {
     @RequestMapping(value = "getBlacklist", method = RequestMethod.POST)
     public List<String> getBlacklist(@RequestBody Map<String, Object> evaluaterId) throws Exception {
         System.out.println("/user/getBlacklist : POST");
+        System.out.println(evaluaterId);
 
         List<EvaluateList> getBlacklist = evaluateListService.getEvaluation(evaluaterId);
 
