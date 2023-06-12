@@ -106,7 +106,6 @@
               }),
               dataType: "json",
               success: function (response) {
-                  alert(response);
                   var $blacklistBody = $('#blacklistBody');
                   $blacklistBody.empty();
 
@@ -121,7 +120,7 @@
                   }
               },
               error: function (error) {
-                  alert("실패");
+                  alert("다시 시도해주세요.");
               }
           });
       }
@@ -170,12 +169,12 @@
                               });
                           },
                           error: function (error) {
-                              alert("실패");
+                              alert("다시 시도해주세요.");
                           }
                       });
                   },
                   error: function (error) {
-                      alert("실패");
+                      alert("다시 시도해주세요.");
                   }
               })
           })

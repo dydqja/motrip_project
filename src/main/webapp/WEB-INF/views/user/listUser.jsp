@@ -43,7 +43,7 @@
   </div>
 </div>
 
-<div class="page-img" style="background-image: url('/images/user/userListPage.jpg');">
+<%--<div class="page-img" style="background-image: url('/images/user/userListPage.jpg');">--%>
 
 
   <div class="row">
@@ -190,6 +190,27 @@
       //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
       $( ".getUser" ).on("click" , function() {
         console.log("회원ID 클릭됨"+$(this).text().trim());
+        var evaluaterId = "${sessionScope.user.userId}"
+
+        //내가 블랙한사람 + 나를 블랙한사람 목록 가져오는 함수(목록들 막을때 필요함 써먹으려고 냉겨둠)
+        // $.ajax({
+        //
+        //   url: "/user/getBlacklistAll",
+        //   type: "POST",
+        //   contentType: "application/json; charset=utf-8",
+        //   data: JSON.stringify({
+        //     evaluaterId: evaluaterId
+        //   }),
+        //   dataType: "text",
+        // }).done(function (response) {
+        //
+        //   alert("내가블랙+나블랙한 유저Id = :: " + response);
+        //
+        // }).fail(function (error) {
+        //
+        //   alert("낄낄");
+        //
+        // });
         self.location ="/user/getUser?userId="+$(this).text().trim();
       });
 

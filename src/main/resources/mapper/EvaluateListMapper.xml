@@ -91,4 +91,10 @@
         WHERE evaluater_id = #{sessionUserId} and blacklisted_user_id = #{getUserId};
     </select>
 
+    <select id="getEvaluaterId"	parameterType="Map"	resultMap="evaluateListSelectMap">
+        SELECT evaluater_id
+        FROM evaluate_list
+        WHERE blacklisted_user_id = #{evaluaterId}
+    </select>
+
 </mapper>
