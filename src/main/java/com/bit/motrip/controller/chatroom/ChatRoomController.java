@@ -127,7 +127,46 @@ public class ChatRoomController {
         }else {
             return "redirect:/chatRoom/chatRoomList";
         }
+    }
+
+    //chatRoom/getChat?chatRoomNo=1&userId=1
+    @GetMapping("getChat")
+    public String getChat(@RequestParam("chatRoomNo") String chatRoomNo,
+                       @RequestParam("userId") String userId, Model model) throws Exception{
+        System.out.println("getChat이 돌았습니다.");
+
+        int chatRoomNoInt = Integer.parseInt(chatRoomNo);
+        ChatRoom ch = chatRoomService.getChatRoom(chatRoomNoInt);
+        ChatMember author = chatMemberService.getChatMemberAuthor(chatRoomNoInt);
+        List<ChatMember> chatMemberList = chatMemberService.chatMemberList(chatRoomNoInt);
+        model.addAttribute("username",userId); //유저 name으로 userId 전송
+        model.addAttribute("chatRoom",ch); //채팅방 객체 전송
+        model.addAttribute("chatMembers",chatMemberList);
+        model.addAttribute("author",author);
+        System.out.println("chatRoomNo"+chatRoomNoInt);
+        System.out.println("chatuserId : "+userId);
+        System.out.println(author.getUserId());
+        int flag = 0;
+        //chatMemberService.getChatMember()
+        for (ChatMember chm:chatMemberList) {
+            if(chm.getUserId().equals(userId)){
+                flag = 1;
+                if(chm.getStatus() == 1 ){
+                    flag = 2;
+                }
+            }
+        }
+        if(flag == 0){
+            return "redirect:/chatRoom/chatRoomList";
+        } else if (flag == 1) {
+            return "chatroom/chatRoom.jsp";
+        }else {
+            return "redirect:/chatRoom/chatRoomList";
+        }
     } // 채팅방
+
+
+    // 채팅방
     //chatRoom/addChatRoom
     @GetMapping("addChatRoom")
     public String addChatRoom(@RequestParam("userId") String userId,
