@@ -17,6 +17,7 @@ public class Review {
     private boolean isReviewPublic;
     private int reviewLikes;
     private int viewCount;
+    @DateTimeFormat(pattern = "yyyyMMdd")
     private Date reviewRegDate;
 
     private boolean isReviewDeleted;

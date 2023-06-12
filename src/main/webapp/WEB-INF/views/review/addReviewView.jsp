@@ -1,95 +1,97 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page pageEncoding="UTF-8"%>
+<%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
-<html>
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✈️Motrip🚤</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Mold Discover . HTML Template</title>
 
-    <!-- Bootstrap, jQuery CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"><!--모달창-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script><!--모달창-->
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
+    <!-- 구분선 -->
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
+    <%--    <link rel="stylesheet" href="/css/tripplan/tripplan.css">--%>
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="/summernote/summernote.css">
+    <script src="/summernote/summernote.js"></script>
+    <!-- 구분선 -->
 
-    <!-- Summernote CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-    <!-- Summernote CSS 파일 추가 -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/img/favicon.png"/>
+    <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
+    <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
+    <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
+    <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
+    <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
+    <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+
+    <script type="text/javascript">
+
+        <!-- 서머노트기본생성 -->
+        $(document).ready(function () {
+            $('#reviewContents').summernote({
+                callbacks: {
+                    onImageUpload: function (files) {
+                        // 이미지 업로드 후, 이미지 태그에 contenteditable 속성을 false로 설정
+                        var img = $('<img>').attr('src', URL.createObjectURL(files[0]));
+                        img.attr('contenteditable', false);
+                        $(this).summernote('insertNode', img[0]);
+                    }
+                },
+                toolbar: [
+                    ['fontname', ['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['color', ['forecolor', 'color']],
+                    ['table', ['table']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['picture']],
+                ],
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+                fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+                height: 470,
+                width: 800,
+                disableResizeEditor: true
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        let markers = []; // 마커 배열
+        let maps = []; // 지도 배열
+    </script>
 
     <style>
-        /* 모달 스타일 */
-        .modal {
-            display: none; /* 기본적으로 숨겨진 상태로 시작 */
-            position: fixed; /* 고정 위치 */
-            z-index: 9999; /* 다른 요소보다 위에 표시 */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto; /* 스크롤 가능하도록 설정 */
-            background-color: rgba(0, 0, 0, 0.6); /* 배경색 및 투명도 설정 */
-        }
-
-        .modal-content {
-            background-color: #fff; /* 모달 내용 배경색 */
-            margin: 10% auto; /* 모달을 수직 및 수평 가운데로 위치 */
-            padding: 20px;
-            width: 500px; /* 모달 너비 */
-            max-width: 90%; /* 최대 너비 */
-            max-height: 80vh; /* 최대 높이 */
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
-            overflow: auto; /* 내용이 넘칠 경우 스크롤 가능하도록 설정 */
-        }
-
-        .modal-content table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .modal-content th,
-        .modal-content td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .modal-content th {
-            background-color: #f2f2f2; /* 헤더 배경색 */
-        }
-
-        .modal-content .trip-plan-item:hover {
-            background-color: #f2f2f2; /* 아이템 호버 시 배경색 */
-            cursor: pointer;
+        #reviewContents {
+            display: none;/*텍스트에리아 안보이게 */
         }
     </style>
 
-    <style>/* 모달 작성취소버튼 */
-    .cancel-button-container {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 10px;
-    }
 
-    .cancel-button-container button {
-        padding: 5px 10px;
-    }
-    </style>
-    <style>
-        /* 에디터의 높이를 500px로 설정*/
-        .note-editor .note-editing-area .note-editable {
-            height: 500px;
+
+        <style>
+        .post {
+            width: 100%; /* 원하는 너비 설정 */
+            height: 620px; /* 원하는 높이 설정 */
+            overflow: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+            border: 1px solid #ccc; /* 테두리 스타일 지정 */
+            padding: 10px; /* 내용과 테두리 사이 간격 */
+        }
+        .day {
+            font-size: 30px; /* 원하는 크기로 설정 */
+            font-weight: bold; /* 굵은 글씨체 설정 */
         }
     </style>
-    <style>️
-        /* 토글스위치 CSS */
+
+
+    <style>️ /* 토글스위치 CSS */
     label {
         display: inline-flex;
         align-items: center;
@@ -163,46 +165,26 @@
         background-color: gray;
         transition: left 250ms linear;
     }
-    /* 토글스위치 CSS */
-    </style>
-    <style>
-        .overlaybox {position:relative;width:360px;height:350px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/box_movie.png') no-repeat;padding:15px 10px;}
-        .overlaybox div, ul {overflow:hidden;margin:0;padding:0;}
-        .overlaybox li {list-style: none;}
-        .overlaybox .boxtitle {color:#fff;font-size:16px;font-weight:bold;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png') no-repeat right 120px center;margin-bottom:8px;}
-        .overlaybox .first {position:relative;width:247px;height:136px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumb.png') no-repeat;margin-bottom:8px;}
-        .first .text {color:#fff;font-weight:bold;}
-        .first .triangle {position:absolute;width:48px;height:48px;top:0;left:0;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/triangle.png') no-repeat; padding:6px;font-size:18px;}
-        .first .movietitle {position:absolute;width:100%;bottom:0;background:rgba(0,0,0,0.4);padding:7px 15px;font-size:14px;}
-        .overlaybox ul {width:247px;}
-        .overlaybox li {position:relative;margin-bottom:2px;background:#2b2d36;padding:5px 10px;color:#aaabaf;line-height: 1;}
-        .overlaybox li span {display:inline-block;}
-        .overlaybox li .number {font-size:16px;font-weight:bold;}
-        .overlaybox li .title {font-size:13px;}
-        .overlaybox ul .arrow {position:absolute;margin-top:8px;right:25px;width:5px;height:3px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/updown.png') no-repeat;}
-        .overlaybox li .up {background-position:0 -40px;}
-        .overlaybox li .down {background-position:0 -60px;}
-        .overlaybox li .count {position:absolute;margin-top:5px;right:15px;font-size:10px;}
-        .overlaybox li:hover {color:#fff;background:#d24545;}
-        .overlaybox li:hover .up {background-position:0 0px;}
-        .overlaybox li:hover .down {background-position:0 -20px;}
+
+    /* 토글스위치 CSS 끝*/
     </style>
 
-    <script>
-        $(document).ready(function() {
-            $('#reviewContents').summernote();
-        });
-    </script>
 
 </head>
-<body>
+
+
+
+<header class="nav-menu fixed">
+    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+</header>
+
 
 <script type="text/javascript">
     function fncAddReview() {
         var reviewTitle = $("input[name='reviewTitle']").val();
         var reviewContents = $("textarea[name='reviewContents']").val();
-        var tripPlanNo = parseInt($("input[name='tripPlanNo']").val());
-        console.log("tripPlanNo: >>>>",tripPlanNo);
+        var tripPlanNo = "<c:out value='${tripPlanNo}' />";
+
 
         if (reviewTitle == null || reviewTitle.length < 1) {
             alert("후기 제목을 반드시 입력하여야 합니다.");
@@ -214,13 +196,14 @@
         }
         $("form")
             .attr("method", "post")
-            .attr("action", "/review/addReview?tripPlanNo=" + tripPlanNo) // tripPlanNo를 URL의 쿼리 파라미터로 전달
+            .attr("action", "/review/addReview?tripPlanNo=" + tripPlanNo +
+                "&tripPlanTitle=" + encodeURIComponent("${tripPlanTitle}"))
             .submit();
     }
 
     $(function () {
-        $("button.btn.btn-primary").on("click", function () {
-            console.log("작성완료버튼을 눌렀습니다.")
+        $("#btnAddReview").on("click", function () {
+            console.log("작성완료버튼을 눌렀습니다.");
             fncAddReview();
         });
 
@@ -230,350 +213,544 @@
     });
 </script>
 
-
-<script>
-    $(function () {
-        $("#checkStatusBtn").on("click", function (event) {
-            event.preventDefault(); // 폼 제출 기본 동작 막기
-
-            var isPublic = $(".reviewPublic").prop("checked");
-            var status = isPublic ? "True" : "False";
-            alert("현재 공개여부: " + status);
-        });
+<script>//토글 스위치 작동 함수
+$(document).ready(function () {
+    $(".isReviewPublic").change(function () {
+        var isChecked = $(this).prop("checked");
+        if (isChecked) {
+            $("#isReviewPublicInput").val("True");
+        } else {
+            $("#isReviewPublicInput").val("False");
+        }
     });
 
+});
+//토글 스위치 작동 함수
 </script>
 
 
-<script>
-    $(document).ready(function() {
-        $(".isReviewPublic").change(function() {
-            var isChecked = $(this).prop("checked");
-            if (isChecked) {
-                $("#isReviewPublicInput").val("True");
-            } else {
-                $("#isReviewPublicInput").val("False");
-            }
-        });
+<body>
+<header class="nav-menu fixed">
+    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+</header>
 
-        $("#checkStatusBtn").click(function() {
-            var isChecked = $(".isReviewPublic").prop("checked");
-            if (isChecked) {
-                console.log("공개여부: True");
-            } else {
-                console.log("공개여부: False");
-            }
-        });
-    });
-</script>
+<div class="post-single left">
+    <div class="page-img" style="background-image: url('http://placehold.it/1200x400');">
+        <div class="page-img-txt container">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h1 class="main-head">후기 작성</h1>
+                    <p class="sub-head">다녀온 여행을 기록하세요.</p>
+                    <form action="/review/addReview" method="post">
 
-<!-- 화면구성 div Start -->
-<!-- 모달 창 내용 -->
-<script>
-    // 모달 창이 열릴 때 자동으로 실행되는 함수
-    $(document).ready(function() {
-        // 모달 창 열기
-        $("#myModal").modal({
-            backdrop: "static",
-            keyboard: false
-        });
+                        <div class="author-img">
+                            <img src="http://placehold.it/70x70" alt="">
+                        </div>
+                        <div class="tripPlanTitle">
+                            <p>TripPlan No. ${tripPlanNo}</p>
+                            <span style="font-size: 24px;">'</span>
+                            <span id="displayTripPlanTitle" style="font-size: 24px;">${tripPlanTitle}</span>
+                            <span style="font-size: 24px;">'</span>
+                            <span>&nbsp;&nbsp;에 대한 후기를 작성합니다. </span>
+                        </div>
 
-        // 모달 창 외부 클릭 시 경고창 띄우기
-        $(document).on("click", ".modal-backdrop", function() {
-            alert("여행플랜을 반드시 선택해야 합니다.");
-        });
+                        <div class="author">
+                            <c:set var="nickname" value="${user.nickname}"/>
+                            <span>By</span><a href="#"><span id="nickname">
+                            <c:out value="${nickname}"/></span></a>
+                        </div>
 
-        // 모달 창에서 tripPlanTitle 클릭 시 처리
-        $(document).ready(function() {
-            // 모달 창에서 tripPlanTitle 클릭 시 처리
-            $("#tripPlansTableBody").on("click", ".tripPlanTitle", function() {
-                // 선택한 tripPlan의 정보 가져오기
-                var tripPlanNo = $(this).closest("tr").find(".tripPlanNo").text();
-                var tripPlanTitle = $(this).text();
+                        <p class="byline">
+                            <span id="currentDate">${date}</span>
 
-                // addReviewView.jsp에 tripPlan 정보 전달
-                $("#tripPlanNo").val(tripPlanNo);
-                $("#tripPlanTitle").val(tripPlanTitle);
+                            <!--<a href="#">Adventure</a>, <a href="#">Asia</a>
+                            <span class="dot">·</span>
+                            <a href="#">4 Comments</a>-->
+                        </p>
 
-                // 콘솔에 선택한 값 출력
-                console.log("선택한 Trip Plan No:",tripPlanNo);
-                console.log("선택한 Trip Plan 제목:", tripPlanTitle);
-
-                // 선택한 tripPlanTitle을 표시
-                $("#displaySelectedTripPlanTitle").text(tripPlanTitle);
-
-                // 선택한 tripPlanTitle을 표시
-                $("#displayTripPlanNo").text(tripPlanNo);
-
-                // 모달 창 닫기
-                $("#myModal").modal("hide");
-            });
-        });
-
-        // 작성 취소 버튼 클릭 시 뒤로 가기
-        $("#cancelButton").click(function() {
-            history.back();
-        });
-    });
-</script>
-
-
-
-</script>
-<!-- 모달 창 내용 붛러오기 시작 -->
-<script>
-    $(document).ready(function () {
-        // AJAX 요청을 통해 tripPlans 목록을 가져옴
-        $.ajax({
-            url: "/review/getCompletedTripPlan",
-            method: "GET",
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            headers: { "Accept": "application/json" },
-            success: function (data, textStatus, jqXHR)  {
-
-                console.log("상태 코드: ", jqXHR.status);
-                console.log("상태 메시지: ", textStatus);
-
-                // 테이블에 동적으로 표시할 tbody
-                var tbody = $("#tripPlansTableBody");
-                // tbody 내용 비우기
-                tbody.empty();
-                // tripPlans 목록을 받아와 테이블에 동적으로 표시
-                for (var i = 0; i < data.length; i++) {
-                    var tripPlan = data[i];
-                    var tripPlanNo = tripPlan.tripPlanNo;
-                    var tripPlanTitle = tripPlan.tripPlanTitle;
-
-                    // 테이블에 동적으로 추가
-                    var tripPlanItem = "<tr class='trip-plan-item'><td class='tripPlanNo'>" + tripPlanNo + "</td><td class='tripPlanTitle' data-tripPlanNo='" + tripPlanNo + "'>" + tripPlanTitle + "</td></tr>";
-
-
-                    tbody.append(tripPlanItem);
-                }
-
-                // tripPlan 선택 시 이벤트 처리
-                $(".trip-plan-item").click(function() {
-                    var tripPlanNo = $(this).find(".tripPlanTitle").data("tripPlanNo");
-                    var tripPlanTitle = $(this).find(".tripPlanTitle").text();
-
-                    // 선택한 tripPlanNo와 tripPlanTitle을 숨겨진 입력 폼에 설정
-                    $("#tripPlanNo").val(tripPlanNo);
-                    $("#tripPlanTitle").val(tripPlanTitle);
-                });
-
-                // 모달 창 보이기
-                $("#myModal").modal({
-                    backdrop: "static",
-                    keyboard: false
-                });
-            },
-            error: function (xhr, status, error) {
-                console.log("AJAX Error: " + error);
-                console.log("상태 코드: ", jqXHR.status);
-                console.log("상태 메시지: ", textStatus);
-                console.log("AJAX 에러: ", errorThrown);
-            }
-        });
-    });
-
-
-</script>
-<!-- 모달 창 내용 붛러오기 끝 -->
-<!-- 모달 창 내용 -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-guide">후기를 작성할 여행플랜을 선택하세요.</div>
-        <table>
-            <thead>
-            <tr>
-                <th>Trip Plan No</th>
-                <th>Trip Plan 제목</th>
-            </tr>
-            </thead>
-            <tbody id="tripPlansTableBody">
-            <!-- 각 여행 계획 목록 항목을 출력 -->
-            </tbody>
-        </table>
-        <div class="cancel-button-container">
-            <button id="cancelButton">작성취소</button>
+                        <div class="col-sm-4"></div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+
+
+
+    <main class="white">
+        <form action="/review/addReview" method="post">
+            <div class="container">
+                <div class="form-group">
+                <span>
+                    <h4>
+                        <input type="text" id="reviewTitle" name="reviewTitle" placeholder="제목을 입력하세요."
+                               style="color: black; width: 57%; height: 40px; opacity: 0.5;">
+                    </h4>
+                </span>
+                </div>
+
+                <h5>
+                    <label class="switch">
+                        <input class="isReviewPublic" type="checkbox" name="isReviewPublic" checked="checked" />
+                        <span class="switch-label" data-on="True" data-off="False"></span>
+                        <span>공개여부</span>
+                        <span class="switch-handle"></span>
+                    </label>
+                    <!--<button type="button" class="btn btn-primary" id="checkStatusBtn">상태 확인</button>-->
+                </h5>
+
+
+                <c:set var="i" value="0"/>
+                <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
+                    <c:set var="i" value="0"/>
+                <main class="white">
+                    <div class="container">
+
+                        <div class="row" >
+                            <div class="col-sm-12">
+                                <div id="map0" style="width: 100%; height: 400px; border-radius: 15px;" ></div>
+                            </div>
+                        </div>
+
+                        <div style="margin: 5%"></div>
+
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div>
+                                    <textarea id="reviewContents" name="reviewContents" required></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-3">
+
+
+
+                            <div class="sidebar">
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                        </div>
+                                    </div>
+
+
+                                <div class="border-box">
+                                    <div class="box-title">후기 검색</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search Site">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-primary">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="border-box">
+                                    <div class="box-title">최근 등록된 후기</div>
+                                    <div class="recent-post-list">
+                                        <div class="recent-post">
+                                            <div class="author-img">
+                                                <img src="http://placehold.it/50x50" class="media-object" alt="">
+                                            </div>
+                                            <div class="post-summary">
+                                                <p>Lorem ipsum dolor sit amet, cons adipisicing elit.</p>
+                                                <div class="byline">
+                                                    <span class="updated">Aug 24, 2015</span>
+                                                    <span class="dot">·</span>
+                                                    <span class="italic">By</span>&nbsp;
+                                                    <a href="#" rel="author" class="fn">Aaron D. Cullen</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="recent-post">
+                                            <div class="author-img">
+                                                <img src="http://placehold.it/50x50" class="media-object" alt="">
+                                            </div>
+                                            <div class="post-summary">
+                                                <p>Lorem ipsum dolor sit amet, cons adipisicing elit.</p>
+                                                <div class="byline">
+                                                    <span class="updated">Jan 24, 2015</span>
+                                                    <span class="dot">·</span>
+                                                    <span class="italic">By</span>&nbsp;
+                                                    <a href="#" rel="author" class="fn">Keira Hopman</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+
+                                    <div class="border-box">
+                                        <div class="box-title">명소리스트
+                                            <div class="tag-link" style="text-align: right;">총 이동시간
+                                                : ${dailyPlan.totalTripTime}</div>
+                                        </div>
+                                        <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                                            <div class="col-12 column">
+                                                <div class="card text-white mb-3"
+                                                     style="background-color: rgb(80, 250, 120); width: auto; height: auto;">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title" name="placeTitle">
+                                                            <div style="text-align: center;"><span class="icon-locate"
+                                                                                                   value="${place.placeCategory}"></span>&nbsp;&nbsp;&nbsp;#${place.placeTags}
+                                                            </div>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                                <div class="card text-white mb-3" name="tripTime"
+                                                     style="background-color: rgb(132, 200, 224); width: auto; height: auto;">
+                                                    <c:if test="${place.tripTime != null}">
+                                                        <div style="text-align: center;">이동시간: ${place.tripTime}</div>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+
+                                            <!-- place 반복문이 내부에있어서 해당 장소에 선언하였으며 마커와 오버레이를 보여주기 위한 스크립트 -->
+                                            <script type="text/javascript">
+                                                var placeTags = "${place.placeTags}";
+                                                var placePhoneNumber = "${place.placePhoneNumber}";
+                                                var placeAddress = "${place.placeAddress}";
+                                                var placeCategory = "${place.placeCategory}";
+                                                var placeImage = "${place.placeImage}";
+                                                var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
+                                                var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
+                                                var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
+                                                var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
+
+                                                // markers 배열에 좌표 및 맵 ID 정보 추가
+                                                markers.push({
+                                                    position: markerPosition,
+                                                    mapId: mapId,
+                                                    placeTags: placeTags,
+                                                    placePhoneNumber: placePhoneNumber,
+                                                    placeAddress: placeAddress,
+                                                    placeCategory: placeCategory,
+                                                    placeImage: placeImage
+                                                });
+                                            </script>
+
+                                        </c:forEach> <!-- place for end -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </c:forEach> <!-- dailyPlan for end -->
+
+                <div class="form-group"><!--서버에서 처리하는 로직 구현해야 함-->
+                    <div class="col-sm-4 col-sm-offset-1">
+                        <div class="sidebar">
+                            <div class="border-box">
+                                <div class="box-title">후기 검색</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search Site">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border-box">
+                                <div class="box-title">최근 등록된 후기</div>
+                                <div class="recent-post-list">
+                                    <div class="recent-post">
+                                        <div class="author-img">
+                                            <img src="http://placehold.it/50x50" class="media-object" alt="">
+                                        </div>
+                                        <div class="post-summary">
+                                            <p>Lorem ipsum dolor sit amet, cons adipisicing elit.</p>
+                                            <div class="byline">
+                                                <span class="updated">Aug 24, 2015</span>
+                                                <span class="dot">·</span>
+                                                <span class="italic">By</span>&nbsp;
+                                                <a href="#" rel="author" class="fn">Aaron D. Cullen</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="recent-post">
+                                        <div class="author-img">
+                                            <img src="http://placehold.it/50x50" class="media-object" alt="">
+                                        </div>
+                                        <div class="post-summary">
+                                            <p>Lorem ipsum dolor sit amet, cons adipisicing elit.</p>
+                                            <div class="byline">
+                                                <span class="updated">Jan 24, 2015</span>
+                                                <span class="dot">·</span>
+                                                <span class="italic">By</span>&nbsp;
+                                                <a href="#" rel="author" class="fn">Keira Hopman</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group" style="display: none;">
+                    <label for="reviewLikes">Review Likes:</label>
+                    <input type="number" id="reviewLikes" name="reviewLikes" value="0"><br><br>
+                </div>
+
+                <div class="form-group" style="display: none;">
+                    <label for="viewCount">View Count:</label>
+                    <input type="number" id="viewCount" name="viewCount" value="0"><br><br>
+                </div>
+
+                <!-- tripPlanTitle 숨겨진 입력 필드 -->
+                <input type="hidden" name="tripPlanTitle" id="tripPlanTitleInput" value="${tripPlanTitle}">
+                <input type="hidden" name="reviewAuthor" id="reviewAuthor" value="${reviewAuthor}">
+                <!-- JavaScript를 사용하여 tripPlanTitle 값을 설정 -->
+                <script>
+                    document.getElementById("tripPlanTitleInput").value = document.getElementById("displayTripPlanTitle").innerText;
+                </script>
+
+                <div class="form-group" style="display: none;">
+                    <label class="switch">
+                        <input class="isReviewDeleted" type="checkbox" name="isReviewDeleted" />
+                        <span class="switch-label" data-on="True" data-off="False"></span>
+                        <span>isReviewDeleted</span>
+                        <span class="switch-handle"></span>
+                    </label>
+                    <!--<button class="btn btn-primary" id="reviewDeleted">상태 확인</button>-->
+                </div>
+
+                <div class="form-group" style="display: none;">
+                    <label for="reviewDelDate">Review Delete Date:</label>
+                    <input type="date" id="reviewDelDate" name="reviewDelDate"><br><br>
+                </div>
+                <div class="col-sm-offset-4 col-sm-4 text-center">
+                    <button type="submit" class="btnAddReview" onclick="fncAddReview()">작성완료</button>
+                </div>
+        </form>
+    </main>
 </div>
-<script>
-    // 모달 창에서 전달받은 tripPlanNo와 tripPlanTitle 가져오는 함수 정의
-    function getSelectedTripPlanInfo() {
-        var tripPlanNo = $("#tripPlanNo").val();
-        var tripPlanTitle = $("#tripPlanTitle").val();
 
-        // 가져온 값 확인
-        console.log("선택한 Trip Plan No:", tripPlanNo);
-        console.log("선택한 Trip Plan 제목:", tripPlanTitle);
-        // 선택된 Trip Plan 제목을 출력
-        $("#displayTripPlanNo").text(tripPlanNo);
-        $("#displaySelectedTripPlanTitle").text(tripPlanTitle);
-    }
 
-    // 문서가 로드된 후 실행
-    $(document).ready(function() {
-        getSelectedTripPlanInfo();
-    });
-</script>
 
-<div class="container">
-    <h1>후기 작성</h1>
-    <!-- form Start -->
-    <form action="/review/addReview" method="post">
-        <div class="row">
-            <div class="col-xs-4 col-md-2">
-                <strong>TripPlanNo:</strong>
-            </div>
-            <div class="col-xs-8 col-md-4">
-                <span id="displayTripPlanNo"></span>
-                <input type="hidden" name="tripPlanNo" value="${selectedTripPlanNo}" />
-                <input type="hidden" name="reviewAuthor" value="${loggedInUser.userId}" />
-            </div>
-            <!-- addReviewView.jsp에서 표시할 tripPlanTitle -->
-            <div class="col-xs-4 col-md-2">
-                <strong>TripPlanTitle:</strong>
-            </div>
-            <div class="col-xs-8 col-md-4">
-                <span id="displaySelectedTripPlanTitle"></span>
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-7 col-md-3">
+                    <h3>Mold Discover</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quia, architecto? A,
+                        reiciendis eveniet! Esse est eaque adipisci natus rerum laudantium accusamus magni.</p>
+                </div>
+                <div class="col-sm-5 col-md-2">
+                    <h3>Quick Link</h3>
+                    <ul>
+                        <li>Holiday Package</li>
+                        <li>Summer Adventure</li>
+                        <li>Bus and Trasnportation</li>
+                        <li>Ticket and Hotel Booking</li>
+                        <li>Trek and Hikings</li>
+                    </ul>
+                </div>
+                <div class="col-sm-7 col-md-4">
+                    <h3>Newsletter Signup</h3>
+                    <p>Subscribe to our weekly newsletter to get news and update</p>
+                    <br>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Your Email">
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5 col-md-2">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li>Mold Discover</li>
+                        <li>info@moldthemes.com</li>
+                    </ul>
+                    <div class="clearfix">
+                        <div class="social-icon-list">
+                            <ul>
+                                <li>
+                                    <a href="https://twitter.com/moldthemes" class="icon-twitter"></a>
+                                </li>
+                                <li>
+                                    <a href="mailto:info@moldthemes.com" class="icon-mail"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <hr/>
-        <c:set var="nickname" value="${user.nickname}"/>
-        <div class="form-group">
-            <label for="nickname">ReviewAuthor's nickname:</label>
-            <span id="nickname"><c:out value="${nickname}" /></span>
-        </div>
+        <div class="copy"><span>&copy;</span> Copyright Mold Discover, 2017</div>
+    </footer>
+<!-- 아래는 설정용 스크립트입니다. -->
 
+<script type="text/javascript">
 
-        <hr/>
+    let tripDays = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
+    $(function () { // 저장되었던 맵의 갯수 만큼 출력하고 세팅
+        for (var i = 0; i < tripDays; i++) { // map의 아이디를 동적으로 할당하여 생성
+            var mapContainer = document.getElementById('map' + i);
+            var mapOptions = {
+                center: new kakao.maps.LatLng(37.566826, 126.9786567),
+                level: 3
+            };
+            var map = new kakao.maps.Map(mapContainer, mapOptions);
 
-        <div class="form-group">
-            <label for="reviewTitle">제목:</label>
-            <input type="text" id="reviewTitle" name="reviewTitle" required /><br><br>
-        </div>
-
-        <!-- 지도를 표시할 div 입니다 -->
-        <div id="map" style="width:100%;height:350px;"></div>
-        <script>
-            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-                mapOption = {
-                    center: new kakao.maps.LatLng(37.502, 127.026581), // 지도의 중심좌표
-                    level: 4 // 지도의 확대 레벨
+            maps.push(map);
+        }
+        $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
+            var bounds = new kakao.maps.LatLngBounds();
+            var mapId = 'map' + index;
+            var mapMarkers = markers.filter(function (marker) {
+                return marker.mapId === mapId;
+            });
+            $(mapMarkers).each(function (index, marker) {
+                var markerOptions = {
+                    position: marker.position,
+                    map: map
                 };
+                var marker = new kakao.maps.Marker(markerOptions);
+                marker.setMap(map);
+                bounds.extend(markerOptions.position);
+            });
+            map.setBounds(bounds);
+        });
+    });
 
-            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-            // 커스텀 오버레이에 표시할 내용입니다
-            // HTML 문자열 또는 Dom Element 입니다
-            var content = '<div class="overlaybox">' +
-                '    <div class="boxtitle">금주 영화순위</div>' +
-                '    <div class="first">' +
-                '        <div class="triangle text">1</div>' +
-                '        <div class="movietitle text">드래곤 길들이기2</div>' +
-                '    </div>' +
-                '    <ul>' +
-                '        <li class="up">' +
-                '            <span class="number">2</span>' +
-                '            <span class="title">명량</span>' +
-                '            <span class="arrow up"></span>' +
-                '            <span class="count">2</span>' +
-                '        </li>' +
-                '        <li>' +
-                '            <span class="number">3</span>' +
-                '            <span class="title">해적(바다로 간 산적)</span>' +
-                '            <span class="arrow up"></span>' +
-                '            <span class="count">6</span>' +
-                '        </li>' +
-                '        <li>' +
-                '            <span class="number">4</span>' +
-                '            <span class="title">해무</span>' +
-                '            <span class="arrow up"></span>' +
-                '            <span class="count">3</span>' +
-                '        </li>' +
-                '        <li>' +
-                '            <span class="number">5</span>' +
-                '            <span class="title">안녕, 헤이즐</span>' +
-                '            <span class="arrow down"></span>' +
-                '            <span class="count">1</span>' +
-                '        </li>' +
-                '    </ul>' +
-                '</div>';
+    $(function () { // 오버레이 표시
+        var overlays = [];
+        for (var i = 0; i < markers.length; i++) { // 각 지도에 맞춰서 마커들을 표시
+            var mapId = markers[i].mapId;
+            var mapIndex = parseInt(mapId.replace("map", ""));
+            var markerOptions = {
+                position: markers[i].position,
+                map: maps[mapIndex]
+            };
+            var marker = new kakao.maps.Marker(markerOptions);
+            marker.setMap(markerOptions.map);
 
-            // 커스텀 오버레이가 표시될 위치입니다
-            var position = new kakao.maps.LatLng(37.49887, 127.026581);
+            // 오버레이 정보창
+            var content = '<div class="wrap">' +
+                '    <div class="info">' +
+                '        <div class="title">' +
+                '            ' + markers[i].placeTags +
+                '            <div class="close" data-index="' + i + '" title="닫기"></div>' +
+                '        </div>' +
+                '        <div class="body">' +
+                '            <div class="img">' +
+                '                <img src="' + markers[i].placeImage + '" width="73" height="70">' +
+                '           </div>' +
+                '            <div class="desc">' +
+                '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
+                '                <div class="category">(카테고리) ' + markers[i].placeCategory + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
+                '    </div></div></div></div>';
 
-            // 커스텀 오버레이를 생성합니다
-            var customOverlay = new kakao.maps.CustomOverlay({
-                position: position,
+            var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
                 content: content,
-                xAnchor: 0.3,
-                yAnchor: 0.91
+                map: maps[mapIndex],
+                position: marker.getPosition(),
+                yAnchor: 1
             });
 
-            // 커스텀 오버레이를 지도에 표시합니다
-            customOverlay.setMap(map);
-        </script>
+            overlay.setMap(null); // 오버레이 초기 상태는 숨김으로 설정
+            overlays.push(overlay);
 
-        <div class="form-group">
-            <label for="reviewContents">내용:</label><br>
-            <textarea id="reviewContents" name="reviewContents" required></textarea><br><br>
-        </div>
-        <div class="form-group">
-            <label for="reviewThumbnail">썸네일:</label>
-            <input type="text" id="reviewThumbnail" name="reviewThumbnail"  /><br><br>
-        </div>
-        <div class="form-group">
-            <label for="instaPostLink">인스타그램 링크:</label>
-            <input type="text" id="instaPostLink" name="instaPostLink"  /><br><br>
-        </div>
+            (function (marker, overlay, mapIndex) {
 
-        <div class="form-group">
-            <label class="switch">
-                <input class="reviewPublic" type="checkbox" name="reviewPublic"/>
-                <span class="switch-label" data-on="True" data-off="False"></span>
-                <span>공개여부</span>
-                <span class="switch-handle"></span>
-            </label>
-            <button type="button" class="btn btn-primary" id="checkStatusBtn">상태 확인</button>
+                // 마커를 클릭했을 때 오버레이 표시
+                kakao.maps.event.addListener(marker, 'click', function () {
+                    maps[mapIndex].setLevel(3); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
+                    maps[mapIndex].panTo(marker.getPosition()); // 해당 마커 위치로 지도 이동
+                    overlay.setMap(maps[mapIndex]);
+                });
 
-        </div>
-        <div class="form-group">
-            <label for="reviewLikes">Review Likes:</label>
-            <input type="number" id="reviewLikes" name="reviewLikes" value="0"  ><br><br>
-        </div>
-        <div class="form-group">
-            <label for="viewCount">View Count:</label>
-            <input type="number" id="viewCount" name="viewCount"  value="0" ><br><br>
-        </div>
+                // 지도상 어디든 클릭했을 때 오버레이 숨김
+                kakao.maps.event.addListener(maps[mapIndex], 'click', function () {
+                    overlay.setMap(null);
+                });
+
+                // 화면 초기화
+                $('#reset' + mapIndex).click(function () {
+                    overlay.setMap(null);
+                    var mapIndex = parseInt(this.id.replace("reset", ""));
+                    var bounds = new kakao.maps.LatLngBounds();
+
+                    for (var j = 0; j < markers.length; j++) {
+                        if (markers[j].mapId === "map" + mapIndex) {
+                            bounds.extend(markers[j].position);
+                        }
+                    }
+                    maps[mapIndex].setBounds(bounds);
+                });
+
+            })(marker, overlay, mapIndex);
+        }
+    });
+
+    <!-- 아래는 버튼클릭시 동작되는 부분입니다 -->
+
+    $(function () {
+        $("button[id='reviewLikes']").on("click", function () {
+            var reviewNo = "${review.reviewNo}";
+            $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
+                url: "/review/reviewLikes",
+                type: "GET",
+                data: {"reviewLikes": reviewNo},
+                success: function (data) {
+                    console.log(data);
+                    if (data == -1) {
+                        alert("이미 추천한 후기입니다.");
+                    } else if (data == 0) {
+                        alert("비회원은 추천을 할수없습니다.");
+                    } else {
+                        alert("추천 완료");
+                        $("#likes").text(data);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+
+    $(function () { // 업데이트 하러가기
+        $("button[id='updateTripPlan']").on("click", function () {
+            var tripPlanNo = "${tripPlan.tripPlanNo}";
+            window.location.href = "/tripPlan/updateTripPlanView?tripPlanNo=" + tripPlanNo;
+        });
+    });
+
+    $(function () { // 이전으로 돌아가기
+        $("#history").on("click", function () {
+            window.history.back();
+        });
+    });
+
+</script>
+
+<!-- 아래는 템플릿용 스크립트입니다. -->
+
+    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/vendor/retina.min.js"></script>
+    <script src="/vendor/jquery.imageScroll.min.js"></script>
+    <script src="/assets/js/min/responsivetable.min.js"></script>
+    <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+
+    <script src="/assets/js/min/countnumbers.min.js"></script>
+    <script src="/assets/js/main.js"></script>
 
 
-        <div class="form-group">
-            <label class="switch">
-                <input class="reviewDeleted" type="checkbox" name="reviewDeleted"/>
-                <span class="switch-label" data-on="True" data-off="False"></span>
-                <span>isReviewDeleted</span>
-                <span class="switch-handle"></span>
-            </label>
-            <button class="btn btn-primary" id="reviewDeleted">상태 확인</button>
-        </div>
 
-        <div class="form-group">
-            <label for="reviewDelDate">Review Delete Date:</label>
-            <input type="date" id="reviewDelDate" name="reviewDelDate"><br><br>
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-4 text-center">
-                <button type="submit" class="btn btn-primary mr-2">작성완료</button>
-                <a class="btn btn-primary" href="#" role="button">취소</a>
-            </div>
-        </div>
-    </form>
-    <!-- form End -->
-</div>
-<!-- 화면구성 div End -->
 </body>
+</html>

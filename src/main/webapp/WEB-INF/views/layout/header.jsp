@@ -91,7 +91,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">후기</a>
                         <ul class="dropdown-menu">
-                            <li><a href="/review/addReviewView">후기 작성</a>
+                            <li><a href="/review/getCompletedTripPlanList">후기 작성</a>
                             </li>
                             <li><a href="/review/getReviewList">모든 후기</a>
                             </li>
