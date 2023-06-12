@@ -82,18 +82,19 @@
                     <div class="center-div" style="width: 100%; height: 100%;">
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="newDate">
-                                <h4><span class="icon-calendar"></span>&nbsp<input type="radio" name="options"
-                                                                                   id="newDate" checked></h4>
+                                <h4><span class="icon-calendar"></span>&nbsp
+                                    <input type="radio" name="options" id="newDate"
+                                           value="newDate" OnClick="window.location.href='/tripPlan/tripPlanList?type=${condition}&planCondition=newDate'"></h4>
                                 <h5>최신날짜순</h5>
                             </label>
                             <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="views">
                                 <h4><span class="icon-eye"></span>&nbsp<input type="radio" name="options"
-                                                                              id="views"></h4>
+                                                                              id="views" value="views" OnClick="window.location.href='/tripPlan/tripPlanList?type=${condition}&planCondition=views'"></h4>
                                 <h5>조회수</h5>
                             </label>
                             <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="likes">
                                 <h4><span class="icon-hand-like"></span>&nbsp<input type="radio" name="options"
-                                                                                    id="likes"></h4>
+                                                                                    id="likes" value="likes" OnClick="window.location.href='/tripPlan/tripPlanList?type=${condition}&planCondition=likes'"></h4>
                                 <h5>추천수</h5>
                             </label>
                         </div>
@@ -162,9 +163,8 @@
                                     <div>
                                         <c:if test="${not empty sessionScope.user.userId}">
                                             <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                <button class="btn-sm btn-info right" id="addChatRoom"
-                                                        value="${tripPlan.tripPlanNo}">채팅방 생성
-                                                </button>
+                                                <a href="/chatRoom/addChatRoom?tripPlanNo=${tripPlan.tripPlanNo}&userId=${sessionScope.user.userId}" type="button"
+                                                   class="btn-sm btn-info right">채팅방 생성</a>
                                             </c:if>
                                         </c:if>
                                         <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
@@ -222,7 +222,7 @@
 
                         <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
 
-                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage - 1}"
+                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage - 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"
                                aria-label="Previous">
                                 &laquo;
                             </a>
@@ -233,7 +233,7 @@
 
                             <li class="page-item ${i == page.currentPage ? 'active' : ''}">
 
-                                <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}">${i}</a>
+                                <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}">${i}</a>
 
                             </li>
 
@@ -241,7 +241,7 @@
 
                         <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage + 1}"
+                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage + 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"
                                aria-label="Next">
                                 &raquo;
                             </a>
@@ -265,12 +265,6 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-
-        // 선택된 체크박스의 ID를 가져와서 정렬 순서 변경
-        $('input[name="options"]').on('click', function () {
-            var option = $(this).attr('id');
-            console.log(option);
-        });
 
         // 사진의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
         $(function () {

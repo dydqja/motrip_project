@@ -311,7 +311,6 @@
                                         placeImage: placeImage
                                     });
 
-
                                 </script>
 
                             </c:forEach> <!-- place for end -->
