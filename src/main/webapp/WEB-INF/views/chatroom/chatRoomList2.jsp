@@ -65,9 +65,9 @@
 </head>
 
 <body>
-<header class="nav-menu fixed">
+<%--<header class="nav-menu fixed">--%>
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
+<%--</header>--%>
 <div class="page-img" style="background-image: url('/images/chatRoomImage.jpg');">
     <div class="container">
         <div class="col-sm-8">
@@ -88,6 +88,9 @@
 <main>
     <form>
         <input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}" >
+        <input type="hidden" id="birthYear" value="${sessionScope.user.age}" >
+        <input type="hidden" id="gender" value="${sessionScope.user.gender}" >
+
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
@@ -165,7 +168,8 @@
                 <c:set var="i" value="0" />
                 <c:forEach var="chatRoom" items="${list}">
                 <c:set var="i" value="${ i+1 }" />
-                <div class="item-list">
+                <div class="item-list chat-room-item-list">
+                    <input type="hidden" class="chat-room-no-hidden-input" value="${chatRoom.chatRoomNo}">
                     <div class="col-sm-5">
                         <div class="item-img row" style="background-image: url('http://placehold.it/320x250');">
                             <div class="item-overlay">
@@ -226,6 +230,9 @@
                                         style="margin-left: 10px; background-color: #ee3f00" disabled>Hottest</button>
                             </c:if>
                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 0}">
+                                <input type="hidden" class="roomGender" value="${chatRoom.gender}">
+                                <input type="hidden" class="minAge" value="${chatRoom.minAge}">
+                                <input type="hidden" class="maxAge" value="${chatRoom.maxAge}">
                                 <button class="btn btn-primary hvr-fade join-chatRoom" name="chatRoomNo" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Enroll</button>
                             </c:if>
                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">
@@ -284,50 +291,57 @@
     }
 
     function fncJoinChatroom(){
-        // $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
+        $("form").attr("method","POST").attr("action","/chatMember/joinChatRoom").submit();
     }
 
     function fncAddChatroom(){
         $("form").attr("method","get").attr("action","/chatRoom/addChatRoom").submit();
     }
 
-    // //참여된 채팅방 들어가기
-    // $(function() {
-    //     $(".go").on("click", function() {
-    //         fncGoChatroom();
-    //     });
-    // });
-    //참여안된 채팅방 조인하기
     $(function() {
         $(".join-chatRoom").on("click", function(event) {
-            let userId = $("#userId").attr('value')
-            event.preventDefault()
-            const value = $(this).attr('value');
-            alert("join-chatroom");
-            $.ajax({
-                url: '/chatMember/json/fetchChatMembers/'+value,
-                type: 'GET',
-                dataType: 'json',
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                success: function(members) {
-                    console.log(userId);
-                    const matchingMember = members.find(member => member.userId === userId);
-                    if(matchingMember){
-                        alert("이미가입했던 채팅방입니다.")
-                    }else{
+            event.preventDefault();
+            const userId = $("#userId").attr('value');
+            const gender = $("#gender").attr('value');
+            const roomGender = $(this).siblings('.roomGender').val();
+            const minAge = $(this).siblings('.minAge').val();
+            const maxAge = $(this).siblings('.maxAge').val();
+            const age = calculateAge($("#birthYear").attr('value'));
 
+            if(userId !== '') {
+                const value = $(this).attr('value');
+                alert("join-chatroom");
+                $.ajax({
+                    url: '/chatMember/json/fetchChatMembers/' + value,
+                    type: 'GET',
+                    dataType: 'json',
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    success: function (members) {
+                        const matchingMember = members.find(member => member.userId === userId);
+                        if (matchingMember) {
+                            alert("이미가입했던 채팅방입니다.")
+                        } else {
+                            if ((roomGender === gender || roomGender === "MF") && age >= minAge && age <= maxAge) {
+                                alert("신청완료 방장의 허락을 기다려 주세요");
+                                fncJoinChatroom();
+                            } else {
+                                alert("조건에 부합하지 않습니다.");
+                            }
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("fail");
+                        console.log('AJAX Error:', error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    alert("fail");
-                    console.log('AJAX Error:', error);
-                }
-            });
-        // fncJoinChatroom();
-        });});
+                });
+            }else{
+                alert("로그인하세요");
+            }
+        });
+    });
 
     $(function() {$("#addChatRoom").on("click", function() {fncAddChatroom();});});
 
@@ -346,31 +360,6 @@
     //             console.log(data);
     //         }
     //     });
-    // });
-    // $(document).ready(function() {
-    //     // AJAX 요청을 보내고 채팅방의 수를 가져오는 함수
-    //     function chatList() {
-    //         $.ajax({
-    //             url: "/chatRoom/json/chatList",
-    //             type: "POST",
-    //             dataType: "json",
-    //             headers: {
-    //                 "Accept": "application/json",
-    //                 "Content-Type": "application/json"
-    //             },
-    //             data: JSON.stringify({}),
-    //             success: function (data) {
-    //                 console.log(data);
-    //
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 console.log("An error occurred: " + error);
-    //             }
-    //         });
-    //     }
-    //
-    //     // 페이지가 열리면 함수 실행
-    //     chatList();
     // });
 
     $(function() {
@@ -468,6 +457,13 @@
         });
     })
 
+    //생년월일 구하기
+    function calculateAge(birthYear) {
+        let currentDate = new Date();
+        let currentYear = currentDate.getFullYear();
+        let age = currentYear - birthYear;
+        return age;
+    }
 
 
 </script>

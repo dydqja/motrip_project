@@ -59,5 +59,5 @@
 </footer>
 
 <div id="root"></div>
-<script src="/js/bot/bot.js"></script>
-<link href="/css/bot/bot.css" rel="stylesheet">
+<script src="/js/bot.js"></script>
+<link href="/css/bot.css" rel="stylesheet">

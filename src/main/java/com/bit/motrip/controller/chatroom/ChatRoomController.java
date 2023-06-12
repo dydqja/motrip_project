@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -42,9 +43,12 @@ public class ChatRoomController {
         System.out.println("==> ChatRoomController default Constructor call....");
     }//chatroom 생성자
     @GetMapping("chatRoomList")
-    public String chatRoomList( @ModelAttribute("search") Search search,
-            @RequestParam("userId") String userId
+    public String chatRoomList( @ModelAttribute("search") Search search
+//                                HttpSession session
             ,Model model) throws Exception{
+//        User sessionUser = (User) session.getAttribute("user");
+//        System.out.println(sessionUser);
+
         if(search.getCurrentPage() == 0){
 
             search.setCurrentPage(1);
@@ -82,7 +86,7 @@ public class ChatRoomController {
         model.addAttribute("beginUnitPage", beginUnitPage);
         model.addAttribute("endUnitPage", endUnitPage);
         model.addAttribute("search",search);
-        model.addAttribute("user",userService.getUserById(userId));
+        //model.addAttribute("user",user);
         System.out.println(page);
         System.out.println(maxPage);
         System.out.println(beginUnitPage);
@@ -91,6 +95,7 @@ public class ChatRoomController {
         System.out.println(search);
         return "chatroom/chatRoomList2.jsp";
     }
+
     @PostMapping("chat")
     public String chat(@ModelAttribute("chatRoom") ChatRoom chatRoom,
                        @RequestParam("userId") String userId, Model model) throws Exception{

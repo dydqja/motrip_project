@@ -9,7 +9,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-
 <link rel="stylesheet" href="/css/alarm/alarm.css" media="all">
 <link rel="stylesheet" href="/css/memo/memo.css" media="all">
 <link rel="stylesheet" href="/summernote/summernote.css" media="all">
@@ -22,6 +21,7 @@
 <script src="/js/memo/memoBtnCtrl.js"></script>
 <script src="/js/memo/memoFunction.js"></script>
 <script src="/js/memo/ajaxMemo.js"></script>
+<script src="/js/memo/memoAttach.js"></script>
 <%--
 <script src="/js/alarm/alarm.js"></script>
 --%>
@@ -36,7 +36,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
-                    <img src="/images/motrip-logo.gif" alt="">
+                    <img src="/images/motrip-logo.gif" alt="" style="height: 120%;">
                 </a>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -67,11 +67,10 @@
                     <li class="dropdown">
                         <a href="#">여행플랜</a>
                         <ul class="dropdown-menu">
-                            <li><a href="/tripPlan/tripPlanList">여행플랜 목록</a>
+                            <li><a href="/tripPlan/tripPlanList?type=all">여행플랜 목록</a>
                             </li>
-                            <li><a href="/tripPlan/myTripPlanList">나의 여행플랜</a>
-                            </li>
-                            <li><a href="/tripPlan/myTripPlanList">나의 여행플랜</a>
+                            <c:if test="${not empty sessionScope.user}">
+                                <li><a href="/tripPlan/tripPlanList?type=my">나의 여행플랜</a></c:if>
                             </li>
                             <li><a href="/tripPlan/addTripPlanView">여행플랜 작성</a>
                             </li>
@@ -80,7 +79,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">채팅</a>
                         <ul class="dropdown-menu">
-                            <li><a href="/chatRoom/chatRoomList">채팅 리스트</a>
+                            <li><a href="/chatRoom/chatRoomList">채팅방 목록</a>
                             </li>
                         </ul>
                     </li>
@@ -298,4 +297,7 @@
             </div>
         </div>
     </div>
+</div>
+<div id="mini-memo-container">
+
 </div>

@@ -54,6 +54,7 @@
 
 </head>
 	<body>
+
 		<div class="join-container">
 			<header class="join-header">
 			<h1><i class="fas fa-smile">

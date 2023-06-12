@@ -11,9 +11,6 @@
     <meta name="author" content="">
     <title>Mold Discover . HTML Template</title>
 
-    <script src="/vendor/jquery/dist/jquery.min.js"></script>
-    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-
     <link rel="icon" type="image/png" href="/assets/img/favicon.png"/>
     <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
@@ -21,6 +18,22 @@
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/vendor/retina.min.js"></script>
+    <script src="/vendor/jquery.imageScroll.min.js"></script>
+    <script src="/assets/js/min/responsivetable.min.js"></script>
+    <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+
+    <script src="/assets/js/min/countnumbers.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+
 
     <style>
         .center-div {
@@ -35,16 +48,18 @@
         }
 
     </style>
+
 </head>
 
 <body>
 
+<%--<header class="nav-menu fixed">--%>
     <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<%--</header>--%>
 
 <div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
     <div class="container">
         <div class="col-sm-8">
-            <br><br><br><br><br>
             <h1 class="main-head">여행플랜</h1>
         </div>
     </div>
@@ -112,7 +127,7 @@
                 <c:set var="i" value="0"/>
                 <c:forEach var="tripPlan" items="${tripPlanList}">
                     <c:set var="i" value="${ i+1 }"/>
-                    <div class="item-list">
+                    <div class="item-list trip-plan-item-list">
                         <div class="col-sm-5">
                             <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
                                     type="hidden"
@@ -146,14 +161,14 @@
                                     </div>
                                     <div>
                                         <c:if test="${not empty sessionScope.user.userId}">
-<%--                                            <c:if test="sessionScope.user.userId == user.userId">--%>
-                                                <a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=${tripPlan.tripPlanNo}"  class="btn-sm btn-info right" id="addChatRoom"
-                                                   >채팅방 생성
-                                                </a>
-<%--                                            </c:if>--%>
+                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                                <button class="btn-sm btn-info right" id="addChatRoom"
+                                                        value="${tripPlan.tripPlanNo}">채팅방 생성
+                                                </button>
+                                            </c:if>
                                         </c:if>
                                         <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
-                                            <c:if test="sessionScope.user.userId == user.userId">
+                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                                 <button class="btn-sm btn-info right" name="tripPlanNo"
                                                         value="${tripPlan.tripPlanNo}">여행완료
                                                 </button>
@@ -171,7 +186,7 @@
                                 </button>
 
                                 <c:if test="${not empty sessionScope.user.userId && !tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                    <c:if test="sessionScope.user.userId == user.userId">
+                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                         <button id="btnDelete" class="btn btn-sm btn-danger"
                                                 value="${tripPlan.tripPlanNo}">삭제<input type="hidden"
                                                                                         value="${tripPlan.tripPlanNo}"
@@ -181,7 +196,7 @@
                                 </c:if>
 
                                 <c:if test="${not empty sessionScope.user.userId && tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                    <c:if test="sessionScope.user.userId == user.userId">
+                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                         <button id="btnDelete" class="btn btn-sm btn-info"
                                                 value="${tripPlan.tripPlanNo}">복구<input type="hidden"
                                                                                         value="${tripPlan.tripPlanNo}"
@@ -206,26 +221,30 @@
                     <ul class="pagination justify-content-center">
 
                         <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="/tripPlan/tripPlanList?currentPage=${page.currentPage - 1}"
-                                   aria-label="Previous">
-                                    &laquo;
-                                </a>
+
+                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage - 1}"
+                               aria-label="Previous">
+                                &laquo;
+                            </a>
+
                         </li>
 
                         <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
 
                             <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-                                    <a class="page-link" href="/tripPlan/tripPlanList?currentPage=${i}">${i}</a>
+
+                                <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}">${i}</a>
+
                             </li>
 
                         </c:forEach>
 
                         <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-                                <a class="page-link" href="/tripPlan/tripPlanList?currentPage=${page.currentPage + 1}"
-                                   aria-label="Next">
-                                    &raquo;
-                                </a>
+                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage + 1}"
+                               aria-label="Next">
+                                &raquo;
+                            </a>
 
                         </li>
 
@@ -239,21 +258,6 @@
     </div>
 
 </main>
-
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-
-<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-<script src="/vendor/retina.min.js"></script>
-<script src="/vendor/jquery.imageScroll.min.js"></script>
-<script src="/assets/js/min/responsivetable.min.js"></script>
-<script src="/assets/js/bootstrap-tabcollapse.js"></script>
-
-<script src="/assets/js/min/countnumbers.min.js"></script>
-<script src="/assets/js/main.js"></script>
 
 <!-- Current Page JS -->
 <script src="/assets/js/min/priceslider.min.js"></script>
@@ -355,7 +359,6 @@
         // 페이지가 열리면 함수 실행
         listCounter();
     });
-
 
 </script>
 

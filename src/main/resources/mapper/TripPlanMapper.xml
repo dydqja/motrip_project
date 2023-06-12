@@ -36,12 +36,13 @@
                 <result column="place_address" property="placeAddress" jdbcType="VARCHAR"/>
                 <result column="place_category" property="placeCategory" jdbcType="INTEGER"/>
                 <result column="trip_time" property="tripTime" jdbcType="VARCHAR"/>
+                <result column="trip_path" property="tripPath" jdbcType="VARCHAR"/>
             </collection>
         </collection>
     </resultMap>
 
     <!-- 여행플랜 목록 조회 -->
-    <select id="selectTripPlanList" parameterType="com.bit.motrip.common.Search" resultMap="tripPlanResultMap">
+    <select id="selectTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
         SELECT *
         FROM (
                  SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail, tp.trip_days, tp.trip_plan_reg_date,
@@ -53,40 +54,36 @@
                         GROUP_CONCAT(DISTINCT p.place_coordinates) AS place_coordinates, GROUP_CONCAT(DISTINCT p.place_image) AS place_images,
                         GROUP_CONCAT(DISTINCT p.place_phone_number) AS place_phone_numbers, GROUP_CONCAT(DISTINCT p.place_address) AS place_addresses,
                         GROUP_CONCAT(DISTINCT p.place_category) AS place_categories, GROUP_CONCAT(DISTINCT p.trip_time) AS trip_times,
-                        ROW_NUMBER() OVER (ORDER BY tp.trip_plan_reg_date DESC, tp.trip_plan_no DESC) AS row_seq
+                        GROUP_CONCAT(DISTINCT p.trip_path) AS trip_paths,
+                        ROW_NUMBER() OVER (
+                            ORDER BY
+                            <choose>
+                                <when test="'trip_plan_views' == search.searchCondition">
+                                    tp.trip_plan_views DESC, tp.trip_plan_no DESC
+                                </when>
+                                <when test="'trip_plan_likes' == search.searchCondition">
+                                    tp.trip_plan_likes DESC, tp.trip_plan_no DESC
+                                </when>
+                                <otherwise>
+                                    tp.trip_plan_reg_date DESC, tp.trip_plan_no DESC
+                                </otherwise>
+                            </choose>
+                        ) AS row_seq
                  FROM trip_plan tp
                           LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
                           LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
-                 WHERE tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
+                 WHERE
+                <choose>
+                    <when test="tripPlanAuthor != null">
+                        tp.trip_plan_author = #{tripPlanAuthor}
+                    </when>
+                    <otherwise>
+                        tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
+                    </otherwise>
+                </choose>
                  GROUP BY tp.trip_plan_no
-             ) AS subquery
-        WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
-    </select>
-
-    <select id="selectMyTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
-        SELECT *
-        FROM (
-        SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail, tp.trip_days, tp.trip_plan_reg_date,
-        tp.trip_plan_del_date, tp.is_plan_deleted, tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed,
-        tp.trip_plan_likes, tp.trip_plan_views,
-        GROUP_CONCAT(DISTINCT dp.daily_plan_no) AS daily_plan_nos, GROUP_CONCAT(DISTINCT dp.daily_plan_contents) AS daily_plan_contents,
-        GROUP_CONCAT(DISTINCT dp.total_trip_time) AS total_trip_times,
-        GROUP_CONCAT(DISTINCT p.place_no) AS place_nos, GROUP_CONCAT(DISTINCT p.place_tags) AS place_tags,
-        GROUP_CONCAT(DISTINCT p.place_coordinates) AS place_coordinates, GROUP_CONCAT(DISTINCT p.place_image) AS place_images,
-        GROUP_CONCAT(DISTINCT p.place_phone_number) AS place_phone_numbers, GROUP_CONCAT(DISTINCT p.place_address) AS place_addresses,
-        GROUP_CONCAT(DISTINCT p.place_category) AS place_categories, GROUP_CONCAT(DISTINCT p.trip_time) AS trip_times,
-        ROW_NUMBER() OVER (ORDER BY tp.trip_plan_reg_date DESC, tp.trip_plan_no DESC) AS row_seq
-        FROM trip_plan tp
-        LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no
-        LEFT JOIN place p ON dp.daily_plan_no = p.daily_plan_no
-        WHERE
-        <choose>
-            <when test="tripPlanAuthor != null">
-                tp.trip_plan_author = #{tripPlanAuthor}
-            </when>
-        </choose>
-        GROUP BY tp.trip_plan_no) AS subquery
-        WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+             ) subquery
+        WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum};
     </select>
 
     <!-- 서치 쿼리문 추가해야함 -->
@@ -114,7 +111,7 @@
         tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed, tp.trip_plan_likes, tp.trip_plan_views,
         dp.daily_plan_no, dp.trip_plan_no, dp.daily_plan_contents, dp.total_trip_time,
         p.place_no, p.daily_plan_no, p.place_tags, p.place_coordinates, p.place_image,
-        p.place_phone_number, p.place_address, p.place_category, p.trip_time
+        p.place_phone_number, p.place_address, p.place_category, p.trip_time, p.trip_path
         FROM
         trip_plan tp
         LEFT JOIN daily_plan dp ON tp.trip_plan_no = dp.trip_plan_no

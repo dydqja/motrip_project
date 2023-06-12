@@ -4,6 +4,12 @@ import com.bit.motrip.domain.TripPlan;
 import com.bit.motrip.domain.User;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import com.bit.motrip.service.user.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +21,11 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -107,24 +117,43 @@ public class TripPlanRestController {
 
         JSONObject response = new JSONObject(responseEntity.getBody());
         JSONArray routes = response.getJSONArray("routes");
-        JSONObject Jsonobj = routes.getJSONObject(0);
-        JSONObject summary = Jsonobj.getJSONObject("summary");
-        System.out.println(summary);
-        int distance = summary.getInt("distance");
-        int duration = summary.getInt("duration");
+        JSONObject route = routes.getJSONObject(0);
+        JSONObject summary = route.getJSONObject("summary");
+        JSONArray sections = route.getJSONArray("sections");
 
-        // 거리를 km 단위로 변환하고 소수점 둘째 자리까지 출력
+        List<Map<String, Double>> polylineCoordinates = new ArrayList<>();
+
+        for (int i = 0; i < sections.length(); i++) {
+            JSONObject section = sections.getJSONObject(i);
+            JSONArray guides = section.getJSONArray("guides");
+
+            for (int j = 0; j < guides.length(); j++) {
+                JSONObject guide = guides.getJSONObject(j);
+                double lat = guide.getDouble("y");
+                double lng = guide.getDouble("x");
+
+                Map<String, Double> coordinate = new HashMap<>();
+                coordinate.put("lat", lat);
+                coordinate.put("lng", lng);
+                polylineCoordinates.add(coordinate);
+            }
+        }
+
+        int duration = summary.getInt("duration");
+        int distance = summary.getInt("distance");
+
         double distanceKm = (double) distance / 1000;
         String distanceStr = String.format("%.2f", distanceKm);
 
-        // 시간을 분으로 변환하여 60분 이상인 경우 시간과 분으로 나누어 출력
         int hour = duration / 3600;
         int minute = (duration % 3600) / 60;
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("distance", distanceStr + "km");
-        responseBody.put("minute", minute);
+        responseBody.put("duration", duration);
         responseBody.put("hour", hour);
+        responseBody.put("minute", minute);
+        responseBody.put("polylineCoordinates", polylineCoordinates);
 
         System.out.println(responseBody);
 

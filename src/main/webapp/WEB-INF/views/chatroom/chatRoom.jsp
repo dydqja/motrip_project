@@ -677,7 +677,7 @@
 
                             </ul>
                         </li>
-                        <li class="dropdown">
+                        <li class="dropdown">ㄴ
                             <a href="#">모두의 여행 <i class="fa fa-chevron-down nav-arrow"></i></a>
                             <ul class="dropdown-menu">
                                 <li><a href="home_default.html">모두의 여행이란</a></li>

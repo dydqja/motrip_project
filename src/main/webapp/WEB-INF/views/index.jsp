@@ -194,8 +194,8 @@
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-deer"></span></span>
         <div class="desc">
-          <h5>Closer To Wildlife</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam illo sit accusamus vel similique id quisquam, dolor maiores.</p>
+          <h5>멸종 위기의 노루</h5>
+          <p>노루와 함께하는 한국여행을 즐기세요</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
