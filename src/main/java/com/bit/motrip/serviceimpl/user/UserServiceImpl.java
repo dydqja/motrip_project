@@ -183,6 +183,8 @@ public class UserServiceImpl implements UserService{
 
         if(user.isSecession() == false) {
 
+            System.out.println(":: 회원탈퇴 진행중 ::");
+
             Timestamp timestamp = Timestamp.from(Instant.now());
             user.setSecession(true);
             user.setSecessionDate(timestamp);
@@ -190,6 +192,8 @@ public class UserServiceImpl implements UserService{
             userDao.secessionAndRestoreUser(user);
 
         }else if(user.isSecession() == true) {
+
+            System.out.println(":: 회원복구 진행중 ::");
 
             user.setSecessionDate(null);
             user.setSecession(false);

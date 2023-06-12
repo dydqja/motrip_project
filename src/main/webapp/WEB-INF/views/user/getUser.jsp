@@ -660,7 +660,7 @@
         </div>
 
         <div class="profile-stats">
-            <blockquote class="with-icon">
+            <blockquote class="with-icon" style="background-color: #F5F1E3;">
                 <c:if test="${getUser.selfIntroPublic}">
                     <h3 id="selfIntro">${getUser.selfIntro}</h3>
                 </c:if>
@@ -967,9 +967,18 @@
                     success: function (response) {
 
                         if(response == "") {
-                            $("#blacklist").attr('src', '/images/userbancancle.png');
-                            $("#blacklist").attr('title', '블랙리스트 취소');
 
+                            swal({
+
+                                title: "블랙리스트 등록이 완료되었습니다.",
+                                text: "이제 해당 회원과 소통이 불가능합니다.",
+                                icon: "success",
+                                button: "확인",
+                            }).then((value) => {
+
+                                $("#blacklist").attr('src', '/images/userbancancle.png');
+                                $("#blacklist").attr('title', '블랙리스트 취소');
+                            });
                         }
                     },
                     error: function (error) {
@@ -989,8 +998,16 @@
                     dataType: "text",
                     success: function (response) {
 
-                        $("#blacklist").attr('src', '/images/userban.png');
-                        $("#blacklist").attr('title', '블랙리스트 등록');
+                        swal({
+                            title: "블랙리스트 해제가 완료되었습니다.",
+                            text: "이제 해당 회원과 소통이 가능합니다.",
+                            icon: "success",
+                            button: "확인",
+                        }).then((value) => {
+
+                            $("#blacklist").attr('src', '/images/userban.png');
+                            $("#blacklist").attr('title', '블랙리스트 등록');
+                        });
                     },
                     error: function (error) {
                         alert("실패");
