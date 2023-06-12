@@ -55,16 +55,16 @@
     margin-left: 5px;
 }
 
-#dailyPlanContents {
+#dailyPlanContents0 {
     width: 600px;
     height: 400px;
 }
 
-#placesList li {
+#placesList0 li {
     list-style: none;
 }
 
-#placesList .item {
+#placesList0 .item {
     position: relative;
     border-bottom: 1px solid #888;
     overflow: hidden;
@@ -72,35 +72,35 @@
     min-height: 65px;
 }
 
-#placesList .item span {
+#placesList0 .item span {
     display: block;
     margin-top: 4px;
 }
 
-#placesList .item h5, #placesList .item .info {
+#placesList0 .item h5, #placesList .item .info {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
 
-#placesList .item .info {
+#placesList0 .item .info {
     padding: 10px 0 10px 55px;
 }
 
-#placesList .info .gray {
+#placesList0 .info .gray {
     color: #8a8a8a;
 }
 
-#placesList .info .jibun {
+#placesList0 .info .jibun {
     padding-left: 26px;
     background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;
 }
 
-#placesList .info .tel {
+#placesList0 .info .tel {
     color: #009900;
 }
 
-#placesList .item .markerbg {
+#placesList0 .item .markerbg {
     float: left;
     position: absolute;
     width: 36px;
@@ -109,63 +109,63 @@
     background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
 }
 
-#placesList .item .marker_1 {
+#placesList0 .item .marker_1 {
     background-position: 0 -10px;
 }
 
-#placesList .item .marker_2 {
+#placesList0 .item .marker_2 {
     background-position: 0 -56px;
 }
 
-#placesList .item .marker_3 {
+#placesList0 .item .marker_3 {
     background-position: 0 -102px
 }
 
-#placesList .item .marker_4 {
+#placesList0 .item .marker_4 {
     background-position: 0 -148px;
 }
 
-#placesList .item .marker_5 {
+#placesList0 .item .marker_5 {
     background-position: 0 -194px;
 }
 
-#placesList .item .marker_6 {
+#placesList0 .item .marker_6 {
     background-position: 0 -240px;
 }
 
-#placesList .item .marker_7 {
+#placesList0 .item .marker_7 {
     background-position: 0 -286px;
 }
 
-#placesList .item .marker_8 {
+#placesList0 .item .marker_8 {
     background-position: 0 -332px;
 }
 
-#placesList .item .marker_9 {
+#placesList0 .item .marker_9 {
     background-position: 0 -378px;
 }
 
-#placesList .item .marker_10 {
+#placesList0 .item .marker_10 {
     background-position: 0 -423px;
 }
 
-#placesList .item .marker_11 {
+#placesList0 .item .marker_11 {
     background-position: 0 -470px;
 }
 
-#placesList .item .marker_12 {
+#placesList0 .item .marker_12 {
     background-position: 0 -516px;
 }
 
-#placesList .item .marker_13 {
+#placesList0 .item .marker_13 {
     background-position: 0 -562px;
 }
 
-#placesList .item .marker_14 {
+#placesList0 .item .marker_14 {
     background-position: 0 -608px;
 }
 
-#placesList .item .marker_15 {
+#placesList0 .item .marker_15 {
     background-position: 0 -654px;
 }
 
@@ -184,4 +184,3 @@
     cursor: default;
     color: #777;
 }
-

@@ -61,7 +61,7 @@ a {
 }
 
 .chat-main {
-	height: 80%;
+	height: 78vh;
 	display: grid;
 	grid-template-columns: 1fr 6fr;
 }

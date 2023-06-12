@@ -186,16 +186,16 @@
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-map"></span></span>
         <div class="desc">
-          <h5>Organize with Profestional</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia blanditiis, deleniti necessitatibus doloribus vel.</p>
+          <h5>나의 여행플랜 작성</h5>
+          <p>지도에 경로를 그리며 여행플랜을 작성하세요, 동선을 확인하고 완벽한 일정을 만드십시오</p>
         </div>
       </div>
 
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-deer"></span></span>
         <div class="desc">
-          <h5>멸종 위기의 노루</h5>
-          <p>노루와 함께하는 한국여행을 즐기세요</p>
+          <h5>멸종 위기의 고라니</h5>
+          <p>고라니와 함께하는 한국여행을 즐기세요</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
