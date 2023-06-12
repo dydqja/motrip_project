@@ -4,7 +4,7 @@ let memoNo = 0;
 let tripPlanNo = 0;
 let tripPlanTitle = '';
 let memoTitle = '';
-let chatRoomNo = 0;
+let memChatRoomNo = 0;
 let chatRoomTitle = '';
 
 $(document).on('click', '.memo-dialog-attach-btn', function(event) {
@@ -67,7 +67,7 @@ $(document).on('click', '.trip-plan-item-list', function() {
 //채팅방 리스너
 $(document).on('mouseenter', '.chat-room-item-list', function() {
 if(isCellMode){
-        chatRoomNo = $(this).find('.chat-room-no-hidden-input').val();
+        memChatRoomNo = $(this).find('.chat-room-no-hidden-input').val();
         chatRoomTitle = $(this).find('.item-title').text().trim();
     }
 });
@@ -75,7 +75,7 @@ $(document).on('click', '.chat-room-item-list', function() {
     if(isCellMode){
         disableCellMode();
         isInfoMessageDisplayed = false;
-        attachMemoToChatRoomRequest(memoNo,chatRoomNo);
+        attachMemoToChatRoomRequest(memoNo,memChatRoomNo);
     }
 });
 
@@ -115,14 +115,14 @@ function attachMemoToTripPlanRequest(memoNo,tripPlanNo){
     });
 }
 
-function attachMemoToChatRoomRequest(memoNo,chatRoomNo){
+function attachMemoToChatRoomRequest(memoNo,memChatRoomNo){
     $.ajax({
         type: 'post',
         url: '/memo/attachMemoToChatRoom',
         dataType: 'json',
         data: {
             memoNo: memoNo,
-            chatRoomNo: chatRoomNo
+            chatRoomNo: memChatRoomNo
         },
         success: function (result) {
             if (result.status === 'success') {
