@@ -58,10 +58,10 @@
                         ROW_NUMBER() OVER (
                             ORDER BY
                             <choose>
-                                <when test="'trip_plan_views' == search.searchCondition">
+                                <when test="'views' == search.planCondition">
                                     tp.trip_plan_views DESC, tp.trip_plan_no DESC
                                 </when>
-                                <when test="'trip_plan_likes' == search.searchCondition">
+                                <when test="'likes' == search.planCondition">
                                     tp.trip_plan_likes DESC, tp.trip_plan_no DESC
                                 </when>
                                 <otherwise>
@@ -192,21 +192,21 @@
     <!-- 조건으로 찾은 여행플랜 수 -->
     <select id="selectTripPlanTotalCount" parameterType="com.bit.motrip.common.Search"	resultType="int">
         SELECT COUNT(*)
-        FROM(	SELECT *
+        FROM(
+        SELECT *
         FROM trip_plan
-        <!--		<if test="searchCondition != null">-->
-        <!--			<where>-->
-        <!--				<if test="searchCondition == 0 and searchKeyword !='' ">-->
-        <!--					prod_no = #{searchKeyword}-->
-        <!--				</if>-->
-        <!--				<if test="searchCondition == 1 and searchKeyword !='' ">-->
-        <!--					prod_name = #{searchKeyword}-->
-        <!--				</if>-->
-        <!--				<if test="searchCondition == 2 and searchKeyword !='' ">-->
-        <!--					price = #{searchKeyword}-->
-        <!--				</if>-->
-        <!--			</where>-->
-        <!--		</if> ) countTable-->
+        WHERE 1=1 AND is_plan_public = TRUE AND is_plan_deleted = FALSE
+<!--        <choose>-->
+<!--            <when test="planCondition == 'likes' and searchKeyword != null">-->
+<!--                AND trip_plan_likes = #{searchKeyword}-->
+<!--            </when>-->
+<!--            <when test="planCondition == 'views' and searchKeyword != null">-->
+<!--                AND trip_plan_views = #{searchKeyword}-->
+<!--            </when>-->
+<!--            <when test="planCondition == 'newDate' and searchKeyword != null">-->
+<!--                AND trip_plan_reg_date = #{searchKeyword}-->
+<!--            </when>-->
+<!--        </choose>-->
         ) countTable
     </select>
 

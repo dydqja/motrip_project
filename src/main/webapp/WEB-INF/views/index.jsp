@@ -109,7 +109,7 @@
             console.log("An error occurred: " + error);
           }
         });
-      }
+      } // 덮어씌우면서 지워짐
       function listReviewCounter() {
         $.ajax({
           url: "/review/getReviewCount",

@@ -10,6 +10,7 @@ import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,37 @@ public class EvaluateListServiceImpl implements EvaluateListService {
 
     public String blacklistState(String sessionUserId,String getUserId) throws Exception {
         return evaluateListDao.blacklistState(sessionUserId,getUserId);
+    }
+
+    public List<String> getBlacklistAll(Map evaluaterId) throws Exception {
+
+        List<EvaluateList> myIdEvaluaterId = evaluateListDao.getEvaluation(evaluaterId);
+
+        List<String> getBlacklistedList = new ArrayList<>();
+        for (EvaluateList evaluateList1 : myIdEvaluaterId) {
+            if (evaluateList1.getBlacklistedUserId() != null) {
+                getBlacklistedList.add(evaluateList1.getBlacklistedUserId());
+            }
+        }
+        System.out.println("내가 블랙 등록한 사람들은 :: " +getBlacklistedList);
+
+        List<EvaluateList> myIdEvaluatedId = evaluateListDao.getEvaluaterId(evaluaterId);
+
+        List<String> getBlacklisterList = new ArrayList<>();
+        for (EvaluateList evaluateList2 : myIdEvaluatedId) {
+            if (evaluateList2.getEvaluaterId() != null) {
+                getBlacklisterList.add(evaluateList2.getEvaluaterId());
+            }
+        }
+        System.out.println(("나를 블랙 등록한 사람들은 :: " +getBlacklisterList));
+
+        List<String> getBlacklistAll = new ArrayList<>();
+        getBlacklistAll.addAll(getBlacklistedList);
+        getBlacklistAll.addAll(getBlacklisterList);
+
+
+        return getBlacklistAll;
+
     }
 
 }

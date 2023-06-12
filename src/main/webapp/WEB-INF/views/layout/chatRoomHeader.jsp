@@ -54,20 +54,21 @@
               <c:if test="${author.userId eq username}">
                 <li><a id="updateChatRoom">채팅창 수정</a></li>
                 <li><a id="delete">채팅방 삭제</a></li>
+                <c:if test="${chatRoom.chatRoomStatus eq 0 and chatRoom.chatRoomStatus ne 3}">
+                  <li><a class="updateStatus">모집 완료</a></li>
+                </c:if>
+                <c:if test="${chatRoom.chatRoomStatus eq 1 and chatRoom.chatRoomStatus ne 3}">
+                  <li><a class="updateStatus">모집 하기</a></li>
+                </c:if>
+                <c:if test="${chatRoom.chatRoomStatus eq 0 or chatRoom.chatRoomStatus eq 1}">
+                  <li><a id="finishChatRoom">여행 완료</a></li>
+                </c:if>
               </c:if>
               <c:if test="${author.userId ne username}">
                 <li><a id="out">채팅방 나가기</a></li>
               </c:if>
               <li><a id="roomPhotos">채팅방 사진첩</a></li>
-              <c:if test="${chatRoom.chatRoomStatus eq 0 and chatRoom.chatRoomStatus ne 3}">
-                <li><a class="updateStatus">모집 완료</a></li>
-              </c:if>
-              <c:if test="${chatRoom.chatRoomStatus eq 1 and chatRoom.chatRoomStatus ne 3}">
-                <li><a class="updateStatus">모집 하기</a></li>
-              </c:if>
-              <c:if test="${chatRoom.chatRoomStatus eq 0 or chatRoom.chatRoomStatus eq 1}">
-                <li><a id="finishChatRoom">여행 완료</a></li>
-              </c:if>
+
               <li><a id="videoRoom">videoTest</a></li>
             </ul>
           </li>

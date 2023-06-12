@@ -119,6 +119,22 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
+    public Map<String , Object > myChatRoomListPage(Search search,String userId) throws Exception {
+        Map<String,Object> map = new HashMap<>();
+        map.put("search",search);
+        map.put("userId",userId);
+        List<ChatRoom> chatRoomList = chatRoomDao.myChatRoomListPage(map);
+
+        int totalCount = chatRoomDao.getChatRoomTotalCount(search); //토탈 카운트
+        System.out.println("totalcount in servicelayer : "+totalCount);
+        Map<String, Object> map2 = new HashMap<String, Object>();
+
+        map2.put("list", chatRoomList );
+        map2.put("totalCount", new Integer(totalCount));
+        return map2;
+    }
+
+    @Override
     public int chatRoomCount() throws Exception {
         return chatRoomDao.chatRoomCount();
     }

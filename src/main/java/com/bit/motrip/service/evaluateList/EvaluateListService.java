@@ -32,4 +32,8 @@ public interface EvaluateListService {
     //select
     public String blacklistState(String sessionUserId, String getUserId) throws Exception;
 
+    public List<String> getBlacklistAll(Map evaluaterId) throws Exception;
+
+
+
 }

@@ -261,5 +261,56 @@ public class ChatRoomController {
     // 현재 참여 유저 표시
     // 추가 기능 -> vision api 이용해서 검열하기
 
+    @GetMapping("myChatRoomList")
+    public String myChatRoomList( @ModelAttribute("search") Search search, HttpSession session
+                                    ,Model model) throws Exception{
+        User sessionUser = (User) session.getAttribute("user");
+        System.out.println(sessionUser);
 
+        if(search.getCurrentPage() == 0){
+
+            search.setCurrentPage(1);
+        }
+//        if(search.getSearchKeyword() == null){
+//            search.setSearchKeyword('');
+//        }
+        System.out.println(search);
+        System.out.println(search.getGender());
+        int pageSize = 3;
+        search.setPageSize(pageSize);
+
+        Map<String, Object> chatRoomListData = chatRoomService.myChatRoomListPage(search,sessionUser.getUserId());
+
+        int totalCount = (int) chatRoomListData.get("totalCount");
+
+        // 화면 하단에 표시할 페이지 수
+        int pageUnit = 3;
+
+        // maxPage, beginUnitPage, endUnitPage 연산
+        Page page = new Page(search.getCurrentPage(), totalCount, pageUnit, pageSize);
+
+        // 총 페이지 수
+        int maxPage = page.getMaxPage();
+
+        // 화면 하단에 표시할 페이지의 시작 번호
+        int beginUnitPage = page.getBeginUnitPage();
+
+        // 화면 하단에 표시할 페이지의 끝 번호
+        int endUnitPage = page.getEndUnitPage();
+
+        model.addAttribute("list",chatRoomListData.get("list"));
+        model.addAttribute("page", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
+        model.addAttribute("search",search);
+        //model.addAttribute("user",user);
+        System.out.println(page);
+        System.out.println(maxPage);
+        System.out.println(beginUnitPage);
+        System.out.println(endUnitPage);
+        System.out.println(totalCount);
+        System.out.println(search);
+        return "chatroom/chatRoomList2.jsp";
+    }
 }// ChatRoomController 종료

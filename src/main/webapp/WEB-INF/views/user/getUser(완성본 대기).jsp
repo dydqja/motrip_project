@@ -24,9 +24,6 @@
     <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-    <link rel="stylesheet" href="/css/user/getUser.css">
-    <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
-
     <%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">--%>
     <%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">--%>
 
@@ -42,9 +39,7 @@
     <script src="/vendor/jquery.imageScroll.min.js"></script>
     <script src="/assets/js/min/responsivetable.min.js"></script>
     <script src="/assets/js/bootstrap-tabcollapse.js"></script>
-    <script src="/assets/js/min/login.min.js"></script>
-
-<%--    <script src="/assets/js/min/countnumbers.min.js"></script>--%>
+    <%--<script src="/assets/js/min/countnumbers.min.js"></script>--%>
     <%--<script src="/assets/js/main.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
@@ -52,9 +47,555 @@
     <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="/assets/js/min/priceslider.min.js"></script>
-    <!--  ///////////////////////// CSS ////////////////////////// -->
 
+
+
+
+
+
+    <!--  ///////////////////////// CSS ////////////////////////// -->
+    <style>
+        body {
+            padding-top : 50px;
+        }
+        .fa-solid,
+        .fa-regular,
+        .icon-setting,
+        .icon-heart {
+            font-size: 20px;
+            margin-left: 1rem;
+        }
+
+        .blacklist-button {
+            /* 버튼의 너비와 높이 설정 */
+            width: 50px;
+            height: 25px;
+            /* 버튼 배경색을 검정색으로 설정 */
+            background-color: black;
+            /* 버튼의 글자 색상을 흰색으로 설정 */
+            color: white;
+            /* 글자 크기를 조절 */
+            font-size: 10px;
+            /* 버튼의 패딩 (내부 여백)을 설정 */
+            padding: 2px 4px;
+            /* 버튼의 테두리를 둥글게 만듭니다 */
+            border-radius: 5px;
+            /* 버튼 테두리 색상 */
+            border: 1px solid white;
+            /* 커서를 올렸을 때의 스타일 */
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .secession-button {
+            /* 버튼의 너비와 높이 설정 */
+            width: 50px;
+            height: 25px;
+            /* 버튼 배경색을 검정색으로 설정 */
+            background-color: #ff4444;
+            /* 버튼의 글자 색상을 흰색으로 설정 */
+            color: white;
+            /* 글자 크기를 조절 */
+            font-size: 10px;
+            /* 버튼의 패딩 (내부 여백)을 설정 */
+            padding: 2px 4px;
+            /* 버튼의 테두리를 둥글게 만듭니다 */
+            border-radius: 5px;
+            /* 버튼 테두리 색상 */
+            border: 1px solid white;
+            /* 커서를 올렸을 때의 스타일 */
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .blacklist-button:hover {
+            /* 커서를 올렸을 때 배경색과 글자색을 바꾸어 주는 부분 */
+            background-color: white;
+            color: black;
+        }
+
+        .secession-button:hover {
+            /* 커서를 올렸을 때 배경색과 글자색을 바꾸어 주는 부분 */
+            background-color: #cc0000;
+        }
+
+        .btn:hover {
+            opacity: 1 !important;
+        }
+
+        #likeUser:disabled img,
+        #likeUserCancle:disabled img,
+        #disLikeUser:disabled img,
+        #disLikeUserCancle:disabled img {
+            background-color: transparent;
+        }
+
+        .box {
+            flex: 1;
+        }
+
+        .profile-bio p {
+            width: 33.33%; /* div 요소의 1/3 크기 */
+        }
+
+        .update-user-icon {
+            font-size: 20px;
+            margin-left: 1rem;
+        }
+
+        :root {
+            font-size: 10px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Open Sans", Arial, sans-serif;
+            min-height: 100vh;
+            background-color: #fafafa;
+            color: #262626;
+            padding-bottom: 3rem;
+        }
+
+        img {
+            display: block;
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 93.5rem;
+            margin-right: auto;
+            margin-left: 0;
+            padding: 0 2rem;
+        }
+
+        .container .container-left {
+            margin-left: 2rem;
+        }
+
+        .btn {
+            opacity: 1;
+            /*display: block; */
+            display: inline-block;
+            font: inherit;
+            background: none;
+            border: none;
+            color: inherit;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .btn:focus {
+            outline:0.5rem auto #000000;
+        }
+
+        .visually-hidden {
+            position: absolute !important;
+            height: 1px;
+            width: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+        }
+
+        /* Profile Section */
+
+        .profile {
+            padding: 5rem 0;
+        }
+
+        .profile::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .profile-image {
+            float: left;
+            width: calc(33.333% - 1rem);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 3rem;
+        }
+
+        .profile-image img {
+            border-radius: 50%;
+        }
+
+        .profile-user-settings,
+        .profile-stats,
+        .profile-bio {
+            float: left;
+            width: calc(66.666% - 2rem);
+        }
+
+        .profile-user-settings {
+            margin-top: 1.1rem;
+        }
+
+        .profile-user-name {
+            display: inline-block;
+            /*font-size: 3.2rem;*/
+            font-weight: 300;
+        }
+
+        .nickname1,
+        .nickname2 {
+            font-size: 3.2rem;
+            font-weight: 300;
+        }
+
+        .welcome-msg {
+            font-size: 1.6rem;
+            display: flex;
+        }
+
+        .profile-edit-btn {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            border: 0.1rem solid #dbdbdb;
+            border-radius: 0.3rem;
+            padding: 0 2.4rem;
+            margin-left: 2rem;
+        }
+
+        .profile-settings-btn {
+            font-size: 2rem;
+            margin-left: 1rem;
+        }
+
+        .profile-stats {
+            margin-top: 2.3rem;
+        }
+
+        .profile-stats li {
+            display: inline-block;
+            font-size: 1.6rem;
+            line-height: 1.5;
+            margin-right: 4rem;
+            cursor: pointer;
+        }
+
+        .profile-stats li:last-of-type {
+            margin-right: 0;
+        }
+
+        /*.profile-bio {*/
+        /*    font-size: 1.6rem;*/
+        /*    font-weight: 400;*/
+        /*    line-height: 1.5;*/
+        /*    margin-top: 2.3rem;*/
+        /*    display: flex; !* 좋아요 영역 추가 *!*/
+        /*} ---- 원래 css */
+
+        .profile-bio {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            grid-template-areas:
+                "box1 box2"
+                "box3 box3";
+            font-size: 1.6rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-top: 2.3rem;
+        }
+
+
+        .profile-real-name,
+        .profile-stat-count,
+        .profile-edit-btn {
+            font-weight: 600;
+        }
+
+        /* Gallery Section */
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -1rem -1rem;
+            padding-bottom: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            flex: 1 0 22rem;
+            margin: 1rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover .gallery-item-info,
+        .gallery-item:focus .gallery-item-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-item-info {
+            display: none;
+        }
+
+        .gallery-item-info li {
+            display: inline-block;
+            font-size: 1.7rem;
+            font-weight: 600;
+        }
+
+        .gallery-item-likes {
+            margin-right: 2.2rem;
+        }
+
+        .gallery-item-type {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2.5rem;
+            text-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+        }
+
+        .fa-clone,
+        .fa-comment {
+            transform: rotateY(180deg);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Loader */
+
+        .loader {
+            width: 5rem;
+            height: 5rem;
+            border: 0.6rem solid #999;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: loader 500ms linear infinite;
+        }
+
+        /* Media Query */
+
+        @media screen and (max-width: 40rem) {
+            .profile {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 4rem 0;
+            }
+
+            .profile::after {
+                display: none;
+            }
+
+            .profile-image,
+            .profile-user-settings,
+            .profile-bio,
+            .profile-stats {
+                float: none;
+                width: auto;
+            }
+
+            .profile-image img {
+                width: 7.7rem;
+            }
+
+            .profile-user-settings {
+                flex-basis: calc(100% - 10.7rem);
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 1rem;
+            }
+
+            .profile-user-name {
+                font-size: 2.2rem;
+            }
+
+            .profile-edit-btn {
+                order: 1;
+                padding: 0;
+                text-align: center;
+                margin-top: 1rem;
+            }
+
+            .profile-edit-btn {
+                margin-left: 0;
+            }
+
+            .profile-bio {
+                font-size: 1.4rem;
+                margin-top: 1.5rem;
+            }
+
+            .profile-edit-btn,
+            .profile-bio,
+            .profile-stats {
+                flex-basis: 100%;
+            }
+
+            .profile-stats {
+                order: 1;
+                margin-top: 1.5rem;
+            }
+
+            .profile-stats ul {
+                display: flex;
+                text-align: center;
+                padding: 1.2rem 0;
+                border-top: 0.1rem solid #dadada;
+                border-bottom: 0.1rem solid #dadada;
+            }
+
+            .profile-stats li {
+                font-size: 1.4rem;
+                flex: 1;
+                margin: 0;
+            }
+
+            .profile-stat-count {
+                display: block;
+            }
+        }
+
+        /* Spinner Animation */
+
+        @keyframes loader {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /*
+
+        The following code will only run if your browser supports CSS grid.
+
+        Remove or comment-out the code block below to see how the browser will fall-back to flexbox & floated styling.
+
+        */
+
+        @supports (display: grid) {
+            .profile {
+                display: grid;
+                grid-template-columns: 1fr 2fr;
+                grid-template-rows: repeat(3, auto);
+                grid-column-gap: 3rem;
+                align-items: center;
+            }
+
+            .profile-image {
+                grid-row: 1 / 3;
+            }
+
+            .gallery {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+                grid-gap: 2rem;
+            }
+
+            .profile-image,
+            .profile-user-settings,
+            .profile-stats,
+            .profile-bio,
+            .gallery-item,
+            .gallery {
+                width: auto;
+                margin: 0;
+            }
+
+            @media (max-width: 40rem) {
+                .profile {
+                    grid-template-columns: auto 1fr;
+                    grid-row-gap: 1.5rem;
+                }
+
+                .profile-image {
+                    grid-row: 1 / 2;
+                }
+
+                .profile-user-settings {
+                    display: grid;
+                    grid-template-columns: auto 1fr;
+                    grid-gap: 1rem;
+                }
+
+                .profile-edit-btn,
+                .profile-bio {
+                    grid-column: 1 / -1;
+                }
+                .with-icon,
+                .profile-stats {
+                    grid-row: 2 / 4;
+
+                }
+
+                blockquote.with-icon::after {
+                    content: url("/images/male.png"); /* 반드시 content 속성이 지정되어야 합니다. */
+                    /* 이후에 원하는 스타일을 추가 */
+                }
+
+                .profile-user-settings,
+                .profile-edit-btn,
+                .profile-settings-btn,
+                .profile-bio,
+                .profile-stats {
+                    margin: 0;
+                }
+            }
+        }
+
+        @font-face {
+            font-family: 'Material Icons';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+            src: local('Material Icons'),
+            local('MaterialIcons-Regular'),
+            url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+            url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+            url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+        }
+
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;  /* Preferred icon size */
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+
+            /* Support for all WebKit browsers. */
+            -webkit-font-smoothing: antialiased;
+            /* Support for Safari and Chrome. */
+            text-rendering: optimizeLegibility;
+
+            /* Support for Firefox. */
+            -moz-osx-font-smoothing: grayscale;
+
+            /* Support for IE. */
+            font-feature-settings: 'liga';
+        }
+
+        .welcome-row {
+            display: flex;
+            align-items: center; /* 이미지와 텍스트를 중앙정렬합니다. */
+            gap: 10px; /* 요소들 사이에 간격을 줍니다. */
+        }
+
+    </style>
 
 
 
@@ -77,15 +618,23 @@
 <!--  화면구성 div Start /////////////////////////////////////-->
 <div class="container">
 
+
+
     <div class="page-header">
-        <h3  style="background-color: #558B2F; color: #F5F1E3;">MyPage</h3>
+        <h3  style="background-color: #558B2F; color: #F5F1E3;">profile</h3>
     </div>
+
+
+
 
     <div class="profile">
 
         <div class="profile-image">
 
             <img src="/images/user/khunam.png" style="width: 200px; height: 200px;" alt="">
+
+
+
 
         </div>
 
@@ -172,156 +721,17 @@
             <div class="box" style="grid-area: box3;">
 
             </div>
+
+
+
         </div>
+
     </div>
-<%--    프로필부분 끝/ 탭 시작 ###################################################################--%>
-    <div>
-        <!-- START Block Tabs Title -->
-        <div class="block full">
-            <ul class="nav nav-tabs" data-toggle="tabs">
-                <li class="active"><a href="#findId" data-toggle="tab" data-load="true" id="findIdTap">여행플랜목록</a></li>
-                <li><a href="#findPwd" data-toggle="tab" data-load="false" id="findPwdTap">후기 목록</a></li>
-            </ul>
-        </div>
-        <!-- END Block Tabs Title -->
-
-        <!-- Tabs Content -->
-        <div class="tab-content" >
-
-            <div class="tab-pane active" id="findId">
-                <!-- 여행플랜목록 부분 ################################################################################ -->
-                <main>
-                    <input type="hidden" name="userId" value="${sessionScope.user.userId}">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <c:set var="i" value="0"/>
-                                <c:forEach var="tripPlan" items="${tripPlanList}">
-                                    <c:set var="i" value="${ i+1 }"/>
-                                    <div class="item-list trip-plan-item-list">
-                                        <div class="col-sm-5">
-                                            <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
-                                                    type="hidden"
-                                                    value="${tripPlan.tripPlanNo}"
-                                                    class="tripPlanNo"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-7">
-                                            <div class="item-desc">
-                                                <div>
-                                                    <h6 class="right">${tripPlan.tripPlanRegDate}</h6>
-                                                    <h5 class="item-title">${tripPlan.tripPlanTitle} </h5>
-                                                    <div class="sub-title">
-                                                        <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
-                                                            <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                                                                <h6>#${place.placeTags}</h6>
-                                                            </c:forEach>
-                                                        </c:forEach>
-                                                    </div>
-                                                </div>
-
-                                                <div class="right">
-                                                    <h4>${tripPlan.tripPlanAuthor}</h4>
-                                                    <div class="right"><span class="icon-date"></span>
-                                                        <c:if test="${tripPlan.tripDays == 1}">
-                                                            ${tripPlan.tripDays}일
-                                                        </c:if>
-                                                        <c:if test="${tripPlan.tripDays != 1}">
-                                                            ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일
-                                                        </c:if>
-                                                    </div>
-                                                    <div>
-                                                        <c:if test="${not empty sessionScope.user.userId}">
-                                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                                <button class="btn-sm btn-info right" id="addChatRoom"
-                                                                        value="${tripPlan.tripPlanNo}">채팅방 생성
-                                                                </button>
-                                                            </c:if>
-                                                        </c:if>
-                                                        <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
-                                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                                <button class="btn-sm btn-info right" name="tripPlanNo"
-                                                                        value="${tripPlan.tripPlanNo}">여행완료
-                                                                </button>
-                                                            </c:if>
-                                                        </c:if>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="item-book">
-
-                                                <button class="btn btn-sm btn-success" name="tripPlanNo"
-                                                        value="${tripPlan.tripPlanNo}">조회<input type="hidden"
-                                                                                                value="${tripPlan.tripPlanNo}"
-                                                                                                class="tripPlanNo"/>
-                                                </button>
-
-                                                <c:if test="${not empty sessionScope.user.userId && !tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                        <button id="btnDelete" class="btn btn-sm btn-danger"
-                                                                value="${tripPlan.tripPlanNo}">삭제<input type="hidden"
-                                                                                                        value="${tripPlan.tripPlanNo}"
-                                                                                                        class="tripPlanNo"/>
-                                                        </button>
-                                                    </c:if>
-                                                </c:if>
-
-                                                <c:if test="${not empty sessionScope.user.userId && tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                        <button id="btnDelete" class="btn btn-sm btn-info"
-                                                                value="${tripPlan.tripPlanNo}">복구<input type="hidden"
-                                                                                                        value="${tripPlan.tripPlanNo}"
-                                                                                                        class="tripPlanNo"/>
-                                                        </button>
-                                                    </c:if>
-                                                </c:if>
-
-                                                <div class="price">
-                                                    <label class="icon-hand-like">${tripPlan.tripPlanLikes}</label>
-                                                    <label></label>
-                                                    <label class="icon-eye">${tripPlan.tripPlanViews}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </c:forEach>
-
-                                <nav aria-label="Page navigation example" class="text-center">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
-                                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage - 1}"
-                                               aria-label="Previous">
-                                                &laquo;
-                                            </a>
-                                        </li>
-                                        <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
-
-                                            <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-                                                <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}">${i}</a>
-                                            </li>
-
-                                        </c:forEach>
-
-                                        <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
-                                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage + 1}"
-                                               aria-label="Next">
-                                                &raquo;
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-
-            <!-- 채팅목록 부분 ################################################################################ -->
 
 
 
-        </div><!-- END Tabs Content -->
-    </div>
+
+
 </div>
 
 
@@ -330,32 +740,6 @@
 
 
 <script type="text/javascript">
-
-    $(document).ready(function() {
-
-        //tab이 선택될 때, 모든 tab에서 active요소를 제거하고 선택된 탭에 active 요소를 부여한다
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var target = $(e.target).attr("href"); // activated tab
-            $('.tab-pane').removeClass('active');
-            $(target).addClass('active');
-        });
-
-        $("#findIdTap").click(function () {
-
-            console.log("여행플랜목록 클릭됨. = 내용초기화");
-
-            $(this).addClass('active');
-            $('#findPwdTab').removeClass('active');
-        });
-
-        $("#findPwdTap").click(function () {
-
-            console.log("후기목록 클릭됨. = 내용초기화");
-
-            $(this).addClass('active');
-            $('#findIdTab').removeClass('active');
-        });
-    });
 
 
     //페이지가 로드될 시 실행되어 좋아요,싫어요 버튼 state 값을 가져온다.
@@ -684,108 +1068,6 @@
             })
         });
     });
-
-
-//     여행플랜부분#####################################################################
-
-    $(document).ready(function () {
-
-        // 선택된 체크박스의 ID를 가져와서 정렬 순서 변경
-        $('input[name="options"]').on('click', function () {
-            var option = $(this).attr('id');
-            console.log(option);
-        });
-
-        // 사진의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
-        $(function () {
-            $(".item-img").on("click", function () {
-                var tripPlanNo = $(this).find(".tripPlanNo").val();
-                if (tripPlanNo == 0) {
-                    // 삭제된 플랜을 눌렀을 때 아무 작업도 하지 않음
-                } else {
-                    console.log(tripPlanNo);
-                    window.location.href = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
-                }
-            });
-        });
-
-        // 버튼의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
-        $(function () {
-            $(".btn.btn-sm.btn-success").on("click", function () {
-                var tripPlanNo = $(this).find(".tripPlanNo").val();
-                if (tripPlanNo == 0) {
-                    // 삭제된 플랜을 눌렀을 때 아무 작업도 하지 않음
-                } else {
-                    console.log(tripPlanNo);
-                    window.location.href = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
-                }
-            });
-        });
-
-        // 여행플랜 삭제하기 버튼
-        $(function () {
-            $("button[id='btnDelete']").on("click", function () {
-                var tripPlanNo = this.value;
-                var delTripPlan = $(this).closest("tr");
-
-                console.log(tripPlanNo);
-
-                $.ajax({
-                    url: "/tripPlan/tripPlanDeleted",
-                    type: "GET",
-                    data: {"tripPlanNo": tripPlanNo},
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        if (data.isPlanDeleted) {
-                            delTripPlan.css("background-color", "gray");
-                            delTripPlan.class("btn btn-sm btn-info");
-                            delTripPlan.find(".btn btn-sm btn-info").val(0); // 숨겨진 요소의 값을 업데이트
-                            delTripPlan.find(".btnDelete").text("복구"); // 버튼 텍스트 업데이트
-                        } else {
-                            delTripPlan.css("background-color", "white");
-                            delTripPlan.class("btn btn-sm btn-danger");
-                            delTripPlan.find(".btn btn-sm btn-danger").val(data.tripPlanNo); // 숨겨진 요소의 값을 업데이트
-                            delTripPlan.find(".btnDelete").text("삭제"); // 버튼 텍스트 업데이트
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("여행플랜 삭제 실패");
-                    }
-                });
-            });
-        });
-
-        // AJAX 요청을 보내고 여행플랜의 수를 가져오는 함수
-        function listCounter() {
-            $.ajax({
-                url: "/tripPlan/tripPlanCount",
-                type: "POST",
-                dataType: "json",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                data: JSON.stringify({}),
-                success: function (data) {
-                    console.log(data);
-                    $("#tripPlanCounter").html(data); // 변경된 부분: data.count 값을 출력합니다.
-                    $(".total").text("Total : " + data);
-                    var t = $(".counter");
-                    t.countUp({delay: 30, time: 3e3})
-                },
-                error: function (xhr, status, error) {
-                    console.log("An error occurred: " + error);
-                }
-            });
-        }
-
-
-
-    });
-
-//     여행플랜부분 끝 ######################################################################
-
 
 
 
