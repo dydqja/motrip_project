@@ -129,9 +129,12 @@ public class ChatRoomController {
         }
     }
 
+    //chatRoom/getChat?chatRoomNo=1&userId=1
     @GetMapping("getChat")
     public String getChat(@RequestParam("chatRoomNo") String chatRoomNo,
                        @RequestParam("userId") String userId, Model model) throws Exception{
+        System.out.println("getChat이 돌았습니다.");
+
         int chatRoomNoInt = Integer.parseInt(chatRoomNo);
         ChatRoom ch = chatRoomService.getChatRoom(chatRoomNoInt);
         ChatMember author = chatMemberService.getChatMemberAuthor(chatRoomNoInt);
@@ -156,7 +159,7 @@ public class ChatRoomController {
         if(flag == 0){
             return "redirect:/chatRoom/chatRoomList";
         } else if (flag == 1) {
-            return "redirect:/chatroom/chatRoom.jsp";
+            return "chatroom/chatRoom.jsp";
         }else {
             return "redirect:/chatRoom/chatRoomList";
         }

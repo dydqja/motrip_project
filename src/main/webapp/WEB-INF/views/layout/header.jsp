@@ -16,6 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/summernote/summernote.js"></script>
 <script src="/js/alarm/alarm.js"></script>
+<script src="/js/alarm/ajaxAlarm.js"></script>
 <script src="/js/memo/listMemo.js"></script>
 <script src="/js/memo/buildMemo.js"></script>
 <script src="/js/memo/memoBtnCtrl.js"></script>

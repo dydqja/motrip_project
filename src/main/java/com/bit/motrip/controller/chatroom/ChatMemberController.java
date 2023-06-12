@@ -62,9 +62,9 @@ public class ChatMemberController {
             //알람 제목
             String title = chatRoom.getChatRoomTitle()+"에 참가 신청이 있습니다.";
             //acceptUrl
-            String acceptUrl = "/chatMember/acceptMember/"+chatRoomNo+"/"+sender.getUserId()+"/"+tripPlanNo;
+            String acceptUrl = "/alarm/acceptChatRoomMember/"+chatRoomNo+"/"+sender.getUserId()+"/"+tripPlanNo;
             //rejectUrl
-            String rejectUrl = "/미구현";
+            String rejectUrl = "/alarm/rejectChatRoomMember/"+chatRoomNo+"/"+sender.getUserId()+"/"+tripPlanNo;
             alarmService.addAcceptableAlarm(sender,receiver, content, title, acceptUrl, rejectUrl);
 
         System.out.println(chatMember); //
@@ -72,43 +72,7 @@ public class ChatMemberController {
         return "redirect:/chatRoom/chatRoomList";
     }
 
-    @GetMapping(value = "acceptMember/{chatRoomNo}/{userId}/{tripPlanNo}")
-    public String acceptMember(
-            @PathVariable int chatRoomNo,
-            @PathVariable String userId,
-            @PathVariable int tripPlanNo
-            ) throws Exception {
-        System.out.println("GET : acceptMember");
-        System.out.println("받은 방번호"+chatRoomNo);
-        System.out.println("받은 아이디"+userId);
-        System.out.println("받은 트립플랜번호"+tripPlanNo);
 
-        ChatMember chatMember = new ChatMember();
-        chatMember.setChatRoomNo(chatRoomNo);
-        chatMember.setUserId(userId);
-        chatMember.setTripPlanNo(tripPlanNo);
-
-        chatMemberService.addChatMember(chatMember);
-
-        /*수락한 뒤 신청자에게 알람을 보내는 로직 추가*/
-
-        //알람을 받을 사람.
-        User receiver = userService.getUserById(userId);
-        //채팅방 이름
-        ChatRoom chatRoom = chatRoomService.getChatRoom(chatRoomNo);
-        String chatRoomTitle = chatRoom.getChatRoomTitle();
-
-        //알람 내용
-        String contents = chatRoomTitle + "에 참가 신청이 수락되었습니다. 지금 바로 이동하시겠습니까?";
-        //알람 제목
-        String title = chatRoomTitle+"에 참가 신청이 수락되었습니다.";
-        //naviUrl
-        String naviUrl = "/chatRoom/getChat?chatRoomNo="+chatRoomNo+"&userId="+userId;
-        //alarmService.addNavigateAlarm(receiver, contents, title, naviUrl);
-
-
-        return "redirect:/chatRoom/chatRoomList";
-    }
 
 
 
