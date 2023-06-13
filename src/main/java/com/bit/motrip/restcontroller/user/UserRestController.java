@@ -66,7 +66,7 @@ public class UserRestController {
 
         System.out.println("ServiceImpl에서 리턴한 fileName => : " + fileName);
 
-        return ResponseEntity.ok().body("/imagepath/" + fileName);
+        return ResponseEntity.ok().body("/imagePath/" + fileName);
     }
 
     @RequestMapping(value = "sendSms", method = RequestMethod.POST)
