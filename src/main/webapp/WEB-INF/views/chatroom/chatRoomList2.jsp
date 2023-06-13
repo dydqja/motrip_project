@@ -144,19 +144,20 @@
                         <div class="box-title">StartDate</div>
 
                         <div class="input-group">
-                            <input type="text" class="form-control" id="datepicker" placeholder="StartDate">
+                            <input type="text" class="form-control" id="datepicker" name="searchTravelStartDate" placeholder="StartDate">
                             <div class="input-group-btn">
                                 Days
                             </div>
                         </div>
                     </div>
 
-                    <div class="border-box">
-                        <div class="box-title">DURATION</div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Days">
-                        </div>
-                    </div>
+<%--                    <div class="border-box">--%>
+<%--                        <div class="box-title">DURATION</div>--%>
+<%--                        <div class="input-group">--%>
+<%--                            <input type="text" class="form-control" name="searchDuration" placeholder="Days">--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+
                 </div>
             </div>
 
@@ -443,6 +444,7 @@
             });
         });
     });
+
     $(window).on('beforeunload', function() {
         $('input[name="chatRoomNo"]').remove();
     });
