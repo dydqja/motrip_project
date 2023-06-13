@@ -267,43 +267,6 @@ public class UserServiceImpl implements UserService{
 
         return uniqueFileName;
     }
-//    //파일업로드 방법 2
-//    public String fileUpload(MultipartFile file) {
-//        // 업로드할 파일을 임시 파일로 저장
-//        File tempFile;
-//        try {
-//            tempFile = File.createTempFile("temp", null);
-//            FileOutputStream fos = new FileOutputStream(tempFile);
-//            fos.write(file.getBytes());
-//            fos.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//
-//        // 도커 클라이언트 초기화
-//        DockerClient dockerClient = DockerClientBuilder.getInstance().build();
-//
-//        // 도커 컨테이너에 파일 복사
-//        String containerId = "YOUR_CONTAINER_ID"; // 도커 컨테이너 ID 입력
-//        String targetPath = "/path/to/destination"; // 도커 컨테이너 내의 대상 경로 입력
-//
-//        try {
-//            CopyArchiveToContainerCmd copyCmd = dockerClient.copyArchiveToContainerCmd(containerId)
-//                    .withHostResource(tempFile.getAbsolutePath())
-//                    .withRemotePath(targetPath)
-//                    .withFollowLinks(true)
-//                    .withPrivileges(true)
-//                    .withAllowOverwriteDirWithFile(true);
-//            copyCmd.exec();
-//        } catch (DockerException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//
-//        // 업로드한 파일명 리턴
-//        return file.getOriginalFilename();
-//    }
 
     //회원가입시 전화번호 sms인증
     public SmsResponse sendSms(SmsMessage smsMessage) throws Exception{
