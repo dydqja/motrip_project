@@ -7,7 +7,6 @@ import com.bit.motrip.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -29,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -62,8 +63,6 @@ public class UserServiceImpl implements UserService{
         this.userDao = userDao;
     }
 
-    private Path fileStorageLocation = Paths.get("C:\\Projects\\motrip_main_project\\src\\main\\resources\\static\\images");
-
     @Value(value = "#{user['naver-cloud-sms.accessKey']}")
     private String accessKey;
 
@@ -84,6 +83,9 @@ public class UserServiceImpl implements UserService{
 
     @Value(value = "#{user['naver.redirect.url']}")
     private String REDIRECT_URI;
+
+    @Value(value = "${filePath}")
+    private Path fileStorageLocation;
 
     // naverLogin 프로필 조회 API URL
     private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
@@ -234,9 +236,9 @@ public class UserServiceImpl implements UserService{
     public String fileUpload(MultipartFile file) throws Exception {
 
         System.out.println("UserServiceImpl 에서 fileUpload() 실행됨.");
-
+        // 파일이 비어있는지 체크
         if (file.isEmpty()) {
-            throw new Exception("Failed to store empty file");
+            throw new IllegalArgumentException("파일이 없습니다.");
         }
 
         System.out.println("받은 파일의 경로는 => : " + file.getOriginalFilename());
@@ -257,9 +259,10 @@ public class UserServiceImpl implements UserService{
         /*업로드된 파일의 데이터 스트림을 가져오고(file.getInputStream()) 이 데이터 스트림을 지정된 경로(targetLocation)로 복사(Files.copy)한다.
         복사한 위치에 동일한 이름의 파일이 있다면 기존 파일을 새 파일로 대체(StandardCopyOption.REPLACE_EXISTING)한다. */
         try (InputStream is = file.getInputStream()) {
-        Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(is, targetLocation, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
-            throw new Exception("Failed to store file " + fileName, e);
+            e.printStackTrace();
+            throw new IOException("파일 저장에 실패했습니다. 파일 이름: " + fileName, e);
         }
 
         return uniqueFileName;
@@ -269,9 +272,9 @@ public class UserServiceImpl implements UserService{
     public SmsResponse sendSms(SmsMessage smsMessage) throws Exception{
 
         System.out.println("UserServiceImpl에서 sendSms 실행됨.===========");
-
+        //현재 시각을 생성한다.
         String time = Long.toString(System.currentTimeMillis());
-
+        //현재 시각을 기준으로 유효한 signature 를 생성하고, http header에 그것을 넣는다.
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("x-ncp-apigw-timestamp", time);

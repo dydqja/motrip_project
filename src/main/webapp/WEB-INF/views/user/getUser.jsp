@@ -85,7 +85,7 @@
 
         <div class="profile-image">
 
-            <img src="/images/user/khunam.png" style="width: 200px; height: 200px;" alt="">
+            <img src="${getUser.userPhoto}" style="width: 200px; height: 200px;" alt="">
 
         </div>
 
@@ -180,7 +180,7 @@
         <div class="block full">
             <ul class="nav nav-tabs" data-toggle="tabs">
                 <li class="active"><a href="#findId" data-toggle="tab" data-load="true" id="findIdTap">여행플랜목록</a></li>
-                <li><a href="#findPwd" data-toggle="tab" data-load="false" id="findPwdTap">후기 목록</a></li>
+                <li><a href="#findPwd" data-toggle="tab" data-load="false" id="findPwdTap">채팅방 목록</a></li>
             </ul>
         </div>
         <!-- END Block Tabs Title -->
@@ -315,11 +315,121 @@
                         </div>
                     </div>
                 </main>
+            </div><!-- END Tabs findId -->
+
 
             <!-- 채팅목록 부분 ################################################################################ -->
 
+            <div class="tab-pane" id="findPwd">
+                <main>
+                    <div class="container">
+                        <div class="col-sm-12">
+                            <c:set var="i" value="0" />
+                            <c:forEach var="chatRoom" items="${chatRoomList}">
+                                <c:set var="i" value="${ i+1 }" />
+                                <div class="item-list">
+                                    <div class="col-sm-5">
+                                        <div class="item-img row" style="background-image: url('http://placehold.it/320x250');">
+                                            <div class="item-overlay">
+                                                <a href="trip_detail.html"><span class="icon-binocular"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="item-desc">
+                                            <h5 class="item-title">${chatRoom.chatRoomTitle}</h5>
 
+                                            <div class="sub-title">
+                                                    ${chatRoom.tripPlanTitle}
+                                            </div>
+                                            <div class="left">
+                                                Age : ${chatRoom.minAge} ~ ${chatRoom.maxAge}
+                                            </div>
+                                            <div class="left">
+                                                Gender :
+                                                <c:if test="${chatRoom.gender == 'MF'}">
+                                                    <i class="fa fa-venus-mars"></i>
+                                                </c:if>
+                                                <c:if test="${chatRoom.gender == 'M'}">
+                                                    <i class="fa fa-mars"></i>
+                                                </c:if>
+                                                <c:if test="${chatRoom.gender == 'F'}">
+                                                    <i class="fa fa-venus"></i>
+                                                </c:if>
+                                            </div><br/>
+                                            <div class="left"><span class="icon-calendar"></span>   ${chatRoom.strDate} [${chatRoom.tripDays}일]</div>
 
+                                            <div class="right">
+                                                <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}" data-toggle="modal" ><span class="icon-plane"></span></a>
+                                                <a href="#modal-regular2" data-toggle="modal"><span class="icon-user" value="${chatRoom.chatRoomNo}"></span></a>
+                                                <input type="hidden" />
+                                                <div id="modal-regular2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h3 class="modal-title">Members</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item-book">
+                                            <button class="btn btn-primary hvr-fade go" name="chatRoomNo" value="${chatRoom.chatRoomNo}">Enter</button>
+                                            <c:if test="${chatRoom.currentPersons eq chatRoom.maxPersons}">
+                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
+                                                        style="margin-left: 10px; background-color: #ee3f00" disabled>Hottest</button>
+                                            </c:if>
+                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 0}">
+                                                <input type="hidden" class="roomGender" value="${chatRoom.gender}">
+                                                <input type="hidden" class="minAge" value="${chatRoom.minAge}">
+                                                <input type="hidden" class="maxAge" value="${chatRoom.maxAge}">
+                                            </c:if>
+                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">
+                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
+                                                        style="margin-left: 10px; background-color: #66ffd6" disabled>Completed</button>
+                                            </c:if>
+                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 2}">
+                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
+                                                        style="margin-left: 10px; background-color: #f5ff66; color: red" disabled>Finished</button>
+                                            </c:if>
+                                            <div class="price">${chatRoom.currentPersons} / ${chatRoom.maxPersons}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+
+                            <nav aria-label="Page navigation example" class="text-center">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item ${chatRoomPage.currentPage == 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${chatRoomPage.currentPage - 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Previous">
+                                            &laquo;
+                                        </a>
+                                    </li>
+                                    <c:forEach var="i" begin="${chatRoomBeginUnitPage}" end="${chatRoomEndUnitPage}">
+                                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${i}&searchKeyword=${chatRoomSearch.searchKeyword}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+                                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
+
+                                        <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${chatRoomPage.currentPage + 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Next">
+                                            &raquo;
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </main>
+            </div><!-- END Tabs findPwd -->
         </div><!-- END Tabs Content -->
     </div>
 </div>
@@ -785,6 +895,8 @@
     });
 
 //     여행플랜부분 끝 ######################################################################
+
+//     채팅목록부분 시작#####################################################################
 
 
 

@@ -131,7 +131,7 @@ public class AlarmRestController {
         String chatRoomTitle = chatRoom.getChatRoomTitle();
 
         //알람 내용
-        String contents = chatRoomTitle + "에 참가 신청이 수락되었습니다. 지금 바로 이동하시겠습니까?";
+        String contents = receiver.getNickname()+"님, "+chatRoomTitle + "에 참가 신청이 수락되었습니다. 지금 바로 참가하실 수 있습니다.";
         //알람 제목
         String title = chatRoomTitle+"에 참가 신청이 수락되었습니다.";
         //naviUrl

@@ -19,6 +19,7 @@
 </head>
 
 <body class="login" style="background-image: url('/images/user/login.jpg'); opacity: 1;">
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
 <div class="pre-loader">
     <div class="loading-img"></div>
 </div>
@@ -61,6 +62,9 @@
                     <a href="#" data-toggle="modal" data-target="#findIdPwdModal">아이디&비밀번호 찾기</a>
                 </div>
 
+                <input type="hidden" id="idCheck" value="${requestScope.idCheck}"/>
+                <input type="hidden" id="pwdCheck" value="${requestScope.pwdCheck}"/>
+
 
 
             </form>
@@ -85,6 +89,33 @@
 <script src="/assets/js/min/login.min.js"></script>
 
 <script type="text/javascript">
+
+    $(document).ready(function() {
+        let idStatus = $("#idCheck").val();
+        let pwdStatus = $("#pwdCheck").val();
+
+        if(!idStatus) {
+
+        }else{
+            swal({
+                title: "아이디를 확인해주세요",
+                icon: "error",
+                button: "확인"
+            });
+        }
+        if(!pwdStatus) {
+
+        }else{
+            swal({
+                title: "비밀번호를 확인해주세요",
+                icon: "error",
+                button: "확인"
+            });
+        }
+    });
+
+
+
 
     //로그인
     $( function() {
@@ -150,9 +181,9 @@
 </script>
 
 <!-- 회원가입 모달 인클루드 -->
-<jsp:include page="addUserModal.jsp"/>
+<%--<jsp:include page="addUserModal.jsp"/>--%>
 <!-- 아이디&비밀번호찾기 모달 인클루드 -->
-<jsp:include page="findIdPwdModal.jsp"/>
+<%--<jsp:include page="findIdPwdModal.jsp"/>--%>
 
 
 </body>

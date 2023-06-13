@@ -76,5 +76,4 @@ public interface MemoService {
     //탈착시에는 모든 메모의 attached_XXX_no 를 null로 업데이트한다.
 
 
-
 }

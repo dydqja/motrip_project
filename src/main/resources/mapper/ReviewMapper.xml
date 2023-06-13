@@ -105,23 +105,18 @@
         <result property="isListingSharedMemo"      column="is_listing_Shared_memo"     jdbcType="TINYINT"/>
         <result property="evaluateCount"            column="evaluate_count"             jdbcType="INTEGER"/>
     </resultMap>
-    <!-- ReviewDao.xml -->
-    <select id="getPublicNonDeletedTripPlans" parameterType="Map" resultMap="tripPlanResultMap">
+
+
+    <select id="getCompletedTripPlanList"  parameterType="Map" resultMap="tripPlanResultMap">
         SELECT *
-        FROM trip_plan
-        WHERE is_plan_public = true
-          AND is_plan_deleted = false
-          AND is_trip_completed = true
-    </select>
-    <select id="getCompletedTripPlan"  parameterType="Map" resultMap="tripPlanResultMap">
-        SELECT *
-        FROM trip_plan
-        WHERE (is_plan_public = true AND is_plan_deleted = false)
-           OR (trip_plan_no IN (
-            SELECT trip_plan_no
-            FROM member_no
-            WHERE chat_room_no = #{chatRoomNo}
-        ) AND is_trip_completed = true)
+        FROM trip_plan tp
+                 JOIN chat_room_members cm ON tp.trip_plan_no = cm.trip_plan_no
+        WHERE tp.is_trip_completed = true
+          AND (
+                (tp.is_plan_public = true AND tp.is_plan_deleted = false AND tp.trip_plan_author = #{tripPlanAuthor})
+
+            )
+            LIMIT 0, 10;
     </select>
     <select id="selectTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
         SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail, tp.trip_days, tp.trip_plan_reg_date,
@@ -169,7 +164,6 @@
         review_title,
         review_contents,
         review_thumbnail,
-        insta_post_link,
         is_review_public,
         review_likes,
         view_count,
@@ -183,7 +177,6 @@
         #{reviewTitle},
         #{reviewContents},
         #{reviewThumbnail},
-        #{instaPostLink},
         #{isReviewPublic},
         #{reviewLikes},
         #{viewCount},

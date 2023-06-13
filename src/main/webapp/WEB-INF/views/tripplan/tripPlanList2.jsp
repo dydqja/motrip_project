@@ -139,7 +139,7 @@
                         <div class="col-sm-7">
                             <div class="item-desc">
                                 <div>
-                                    <h6 class="right">${tripPlan.tripPlanRegDate}</h6>
+                                    <h6 class="right">${tripPlan.strDate}</h6>
                                     <h5 class="item-title">${tripPlan.tripPlanTitle} </h5>
                                     <div class="sub-title">
                                         <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
@@ -151,7 +151,7 @@
                                 </div>
 
                                 <div class="right">
-                                    <h4>${tripPlan.tripPlanAuthor}</h4>
+                                    <h4>${tripPlan.tripPlanNickName}</h4>
                                     <div class="right"><span class="icon-date"></span>
                                         <c:if test="${tripPlan.tripDays == 1}">
                                             ${tripPlan.tripDays}일
@@ -161,30 +161,32 @@
                                         </c:if>
                                     </div>
                                     <div>
-                                        <c:if test="${not empty sessionScope.user.userId}">
-                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                <a href="/chatRoom/addChatRoom?tripPlanNo=${tripPlan.tripPlanNo}&userId=${sessionScope.user.userId}" type="button"
-                                                   class="btn-sm btn-info right">채팅방 생성</a>
+                                        <c:if test="${!tripPlan.isPlanDeleted}">
+                                            <c:if test="${not empty sessionScope.user.userId}">
+                                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                                    <a href="/chatRoom/addChatRoom?tripPlanNo=${tripPlan.tripPlanNo}&userId=${sessionScope.user.userId}" type="button"
+                                                       class="btn-sm btn-info right">채팅방 생성</a>
+                                                </c:if>
                                             </c:if>
-                                        </c:if>
-                                        <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
-                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                <button class="btn-sm btn-info right" name="tripPlanNo"
-                                                        value="${tripPlan.tripPlanNo}">여행완료
-                                                </button>
+                                            <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
+                                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                                    <button class="btn-sm btn-info right" name="tripPlanNo"
+                                                            value="${tripPlan.tripPlanNo}">여행완료
+                                                    </button>
+                                                </c:if>
                                             </c:if>
                                         </c:if>
                                     </div>
                                 </div>
                             </div>
                             <div class="item-book">
-
+                                <c:if test="${!tripPlan.isPlanDeleted}">
                                 <button class="btn btn-sm btn-success" name="tripPlanNo"
                                         value="${tripPlan.tripPlanNo}">조회<input type="hidden"
                                                                                 value="${tripPlan.tripPlanNo}"
                                                                                 class="tripPlanNo"/>
                                 </button>
-
+                                </c:if>
                                 <c:if test="${not empty sessionScope.user.userId && !tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
                                     <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                         <button id="btnDelete" class="btn btn-sm btn-danger"
@@ -307,17 +309,7 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "JSON",
                     success: function (data) {
-                        if (data.isPlanDeleted) {
-                            delTripPlan.css("background-color", "gray");
-                            delTripPlan.class("btn btn-sm btn-info");
-                            delTripPlan.find(".btn btn-sm btn-info").val(0); // 숨겨진 요소의 값을 업데이트
-                            delTripPlan.find(".btnDelete").text("복구"); // 버튼 텍스트 업데이트
-                        } else {
-                            delTripPlan.css("background-color", "white");
-                            delTripPlan.class("btn btn-sm btn-danger");
-                            delTripPlan.find(".btn btn-sm btn-danger").val(data.tripPlanNo); // 숨겨진 요소의 값을 업데이트
-                            delTripPlan.find(".btnDelete").text("삭제"); // 버튼 텍스트 업데이트
-                        }
+
                     },
                     error: function (xhr, status, error) {
                         console.log("여행플랜 삭제 실패");
