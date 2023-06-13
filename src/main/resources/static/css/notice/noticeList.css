@@ -21,16 +21,16 @@
     user-select: none;
 }
 
-@keyframes noticeZooming {
+@keyframes Zooming {
     0%, 100% {
-        transform: scale(1);
+        transform: scale(0.8);
     }
     50% {
-        transform: scale(1.2);
+        transform: scale(1);
     }
 }
 
-.noticeZooming {
+.Zooming {
     position: absolute;
     top: 0;
     left: 0;

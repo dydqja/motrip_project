@@ -45,7 +45,7 @@
 
             <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
                 <div class="container">
-                    <h1 class="main-head text-center board-title noticeZooming">공지사항</h1>
+                    <h1 class="main-head text-center board-title Zooming">공지사항</h1>
                 </div>
             </div>
 
@@ -185,7 +185,7 @@
                                 </c:if>
 
                                 <!-- 목록보기 버튼 -->
-                                <button id="getNoticeList" class="btn btn-primary">목록보기</button>
+                                <button id="getNoticeList" class="btn btn-primary" type="button">목록보기</button>
                             </div>
                         </div>
                     </div>

@@ -48,7 +48,7 @@
             <%@ include file="/WEB-INF/views/layout/header.jsp" %>
             <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
                 <div class="container">
-                    <h1 class="main-head text-center board-title noticeZooming">${noticeGetData.noticeTitle}</h1>
+                    <h1 class="main-head text-center board-title Zooming">${noticeGetData.noticeTitle}</h1>
                 </div>
             </div>
 

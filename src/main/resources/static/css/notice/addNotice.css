@@ -12,16 +12,16 @@
     user-select: none;
 }
 
-@keyframes noticeZooming {
+@keyframes Zooming {
     0%, 100% {
-        transform: scale(1);
+        transform: scale(0.8);
     }
     50% {
-        transform: scale(1.4);
+        transform: scale(1);
     }
 }
 
-.noticeZooming {
+.Zooming {
     position: absolute;
     top: 0;
     left: 0;
@@ -41,7 +41,7 @@ select {
     height: 40px;
 }
 
-.noticeTitle {
+#noticeTitle {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     color:black;
     width: 89%;

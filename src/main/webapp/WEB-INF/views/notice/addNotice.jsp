@@ -60,7 +60,7 @@
 
             <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
                 <div class="container">
-                    <h1 class="main-head text-center board-title noticeZooming">공지 등록</h1>
+                    <h1 class="main-head text-center board-title Zooming">공지 등록</h1>
                 </div>
             </div>
 
@@ -72,7 +72,8 @@
                             <option value="0" ${isNoticeImportant == 0 ? 'selected' : ''}>일반</option>
                             <option value="1" ${isNoticeImportant == 1 ? 'selected' : ''}>중요</option>
                         </select>
-                        <input type="text" name="noticeTitle" id="noticeTitle" placeholder="제목을 입력해주세요" value="${noticeTitle}" style="color: black; width: 89%; height: 40px;">
+
+                        <input type="text" name="noticeTitle" id="noticeTitle" placeholder="제목을 입력해주세요" value="${noticeTitle}">
                     </div>
 
                     <br>
@@ -90,8 +91,8 @@
 
                         <div class="text-right">
                             <div class="d-inline-block">
-                                <!-- 공지 등록 버튼 -->
 
+                                <!-- 공지 등록 버튼 -->
                                 <button id="addNotice" class="btn btn-primary" type="button">
                                     <span></span>
                                     <span></span>

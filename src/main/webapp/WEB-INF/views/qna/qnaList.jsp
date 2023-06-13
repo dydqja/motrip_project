@@ -46,7 +46,7 @@
 
             <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
                 <div class="container">
-                    <h1 class="main-head text-center board-title noticeZooming">질의응답</h1>
+                    <h1 class="main-head text-center board-title Zooming">질의응답</h1>
                 </div>
             </div>
 
@@ -166,7 +166,7 @@
 
                                 <!-- 질의 등록 버튼 -->
                                 <c:if test="${sessionScope.user.userId != 'admin' && not empty sessionScope.user.userId}">
-                                    <button id="addQnaView" class="btn btn-primary">
+                                    <button id="addQnaView" class="btn btn-primary" type="button">
                                         <span></span>
                                         <span></span>
                                         <span></span>
@@ -176,7 +176,7 @@
                                 </c:if>
 
                                 <!-- 목록보기 버튼 -->
-                                <button id="addQnaList" class="btn btn-primary">목록보기</button>
+                                <button id="getQnaList" class="btn btn-primary" type="button">목록보기</button>
                             </div>
                         </div>
                     </div>
@@ -210,9 +210,9 @@
             $(function() {
 
                 // 질의 목록 보기 서비스 실행
-                $("#addQnaList").on("click" , function() {
+                $("#getQnaList").on("click" , function() {
 
-                    window.location.href = "/qna/qnaList?currentPage=1";
+                    window.location.href = "/qna/qnaList";
                 });
             });
 
