@@ -109,24 +109,30 @@ public class ReviewServiceImpl implements ReviewService {
     public Map<String, Object> selectReviewList(Map<String, Object> parameters) throws Exception {
 
         Search search = (Search) parameters.get("search");
-        int offset = (search.getCurrentPage() - 1) * reviewPageSize;
-        search.setTotalCount(tripPlanDao.selectTripPlanTotalCount(search)); // 여행플랜 총 카운트
-        search.setCurrentPage(search.getCurrentPage()); // 클라이언트에서 요청한 페이지 번호
-        search.setLimit(reviewPageSize); // LIMIT 값은 페이지당 항목 수와 동일합니다.
-        search.setOffset(offset);
-
         String condition = (String) parameters.get("condition");
-
         User dbUser = (User) parameters.get("user");
+
+        List<Review> reviewList = reviewDao.selectReviewList(parameters);
+
+
+        System.out.println("임쁠 search?>>>>"+search);
+        System.out.println("임쁠 condition?>>>>"+condition);
+        System.out.println("임쁠 dbUser?>>>>"+dbUser);
+
         if ("myReviewList".equals(condition)) { // 나의 후기
+            System.out.println("myReviewList임쁠 if문안에 들어오나요");
             parameters.put("reviewAuthor", dbUser.getUserId());
             parameters.put("search", search);
             parameters.put("reviewList", reviewDao.selectReviewList(parameters));
-            System.out.println("여기는 서비스임쁠parameters>>>>" + parameters);
-        } else if("publicReviewList".equals(condition)) { //전체 공개 후기
-            List<Review> reviewList = reviewDao.selectReviewList(parameters);//후기목록조회
-            System.out.println("서비스임쁠 reviewList>>>>>>" + reviewList);
-            List<Review> updatedReviewList = new ArrayList<>();//후기 목록을 조회하여 reviewList에 저장
+            System.out.println("여기는myReviewList 서비스임쁠parameters>>>>" + parameters);
+
+        } else { //전체 공개 후기
+            System.out.println("publicReviewList임쁠 if문안에 들어오나요");
+             // 후기 목록 조회
+            parameters.put("reviewList", reviewDao.selectReviewList(parameters));
+            System.out.println("publicReviewList서비스임쁠 reviewList>>>>>>" + reviewList);
+            System.out.println("임쁠 reviewList?>>>>" + reviewList);
+            List<Review> updatedReviewList = new ArrayList<>(); // 후기 목록을 조회하여 reviewList에 저장
 
             for (Review review : reviewList) {
                 User user = userService.getUserById(review.getReviewAuthor());
@@ -134,9 +140,18 @@ public class ReviewServiceImpl implements ReviewService {
                 updatedReviewList.add(review);
             }
 
-            parameters.put("reviewList", updatedReviewList);
+            int totalCount = reviewDao.selectReviewTotalCount(search);
+            System.out.println("totalCount : " + totalCount);
 
+            parameters.put("reviewList", updatedReviewList); // 수정된 부분: reviewList를 parameters에 추가
+            parameters.put("totalCount", totalCount);
         }
+        System.out.println("임쁠 if문 밖>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        int totalCount = reviewDao.selectReviewTotalCount(search);
+        System.out.println("totalCount : " + totalCount);
+        parameters.put("totalCount", totalCount);
+
+        System.out.println("임쁠 parameters>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+parameters);
         return parameters;
     }
 

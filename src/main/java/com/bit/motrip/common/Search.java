@@ -22,6 +22,7 @@ public class Search {
     private String gender;
 
     private String planCondition;
+    private String reviewCondition;
     private int minAge;
     private int maxAge;
     private int startDate;
@@ -38,6 +39,12 @@ public class Search {
 
     public void setPlanCondition(String planCondition) {
         this.planCondition = planCondition;
+    }
+
+    public String getReviewCondition() {return reviewCondition;}
+
+    public void setReviewCondition(String reviewCondition) {
+        this.reviewCondition = reviewCondition;
     }
 
     public String getGender() {
@@ -180,6 +187,7 @@ public class Search {
                 ", minAge=" + minAge +
                 ", maxAge=" + maxAge +
                 ", planCondition=" + planCondition +
+                ", reviewCondition=" + reviewCondition +
                 ", startDate=" + startDate +
                 ", duration=" + duration +
                 '}';
