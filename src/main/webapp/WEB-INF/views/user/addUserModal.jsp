@@ -255,7 +255,7 @@
 
                         <div id="drop_zone" name="userPhoto" style="margin-top: 10px; font-size: 16px;">사진 파일을 올려주세요</div>
                         <input type="hidden" name="userPhoto" id="userPhoto"  />
-                        <img class="previewImage" id="imagePreview" src="" alt="Image preview">
+<%--                        <img class="previewImage" id="imagePreview" src="" alt="Image preview" style="width: 50px; height: 50px;">--%>
 
                     </div>
 
@@ -845,7 +845,8 @@
                   console.log(result);
                   $('#userPhoto').val(result);
 
-                   document.querySelector('#imagePreview').src = result;
+                  document.querySelector('#drop_zone').innerHTML = '<img src="'+result+'" style="width:200px; height:100px;">';
+
               }
           });
       }
