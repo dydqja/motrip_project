@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.motrip.dao.cron.CronDao">
+
+    <!--int cronDel(String targetTable, String targetColumn, String gracePeriodDays) throws Exception;-->
+    <delete id="cronDel" parameterType="java.util.Map">
+        DELETE from ${targetTable}
+        WHERE ${targetColumn} IS NOT NULL
+          AND ${targetColumn} &lt;= DATE_SUB(NOW(), INTERVAL ${gracePeriodMinute} MINUTE);
+    </delete>
+
+
+
+
+    <!--
+DELETE FROM memo
+WHERE memo_del_date IS NOT NULL
+  AND memo_del_date <= DATE_SUB(NOW(), INTERVAL 3 DAY);
+  -->
+
+</mapper>
