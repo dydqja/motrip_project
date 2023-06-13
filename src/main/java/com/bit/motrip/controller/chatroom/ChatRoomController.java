@@ -48,7 +48,7 @@ public class ChatRoomController {
             ,Model model) throws Exception{
 //        User sessionUser = (User) session.getAttribute("user");
 //        System.out.println(sessionUser);
-
+        System.out.println("searchTravelStartDate ::::: "+search.getSearchTravelStartDate());
         if(search.getCurrentPage() == 0){
 
             search.setCurrentPage(1);

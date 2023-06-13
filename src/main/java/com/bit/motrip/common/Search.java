@@ -2,6 +2,7 @@ package com.bit.motrip.common;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 
 public class Search {
 
@@ -25,7 +26,7 @@ public class Search {
     private String planCondition;
     private int minAge;
     private int maxAge;
-    private Date searchTravelStartDate;
+    private String searchTravelStartDate;
     private int searchDuration;
 
     //Constructor
@@ -146,11 +147,11 @@ public class Search {
         this.searchConditions = searchConditions;
     }
 
-    public Date getSearchTravelStartDate() {
+    public String getSearchTravelStartDate() {
         return searchTravelStartDate;
     }
 
-    public void setSearchTravelStartDate(Date searchTravelStartDate) {
+    public void setSearchTravelStartDate(String searchTravelStartDate) {
         this.searchTravelStartDate = searchTravelStartDate;
     }
 
