@@ -192,9 +192,9 @@
                     </h2>
                     <p class="byline">
                     <h4>
-                        <span class="italic">${tripPlan.tripPlanAuthor}</span>
+                        <span class="italic">${tripPlan.tripPlanNickName}</span>
                         <span class="dot">·</span>
-                        <span>${tripPlan.tripPlanRegDate}</span>
+                        <span>${tripPlan.strDate}</span>
                         <span class="dot">·</span>
                         <span>${tripPlan.tripPlanLikes}</span>
                         <span class="dot">·</span>

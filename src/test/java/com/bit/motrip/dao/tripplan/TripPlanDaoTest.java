@@ -84,7 +84,7 @@ class TripPlanDaoTest {
         tripPlan.setTripPlanTitle("모여행 추가 테스트 입니다.");
         tripPlan.setTripPlanThumbnail("532434234.jpg");
         tripPlan.setTripDays(tripDays);
-        tripPlan.setTripPlanRegDate(new Date());
+        //tripPlan.setTripPlanRegDate(new Date());
         tripPlan.setTripPlanDelDate(null);
         tripPlan.setisPlanDeleted(false);
         tripPlan.setisPlanPublic(true);

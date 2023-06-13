@@ -20,8 +20,26 @@ public class TripPlan {
     private int tripPlanLikes;
     private int tripPlanViews;
     private List<DailyPlan> dailyplanResultMap;
+    private String strDate;
+    private String tripPlanNickName;
 
     public TripPlan() {
+    }
+
+    public String getTripPlanNickName() {
+        return tripPlanNickName;
+    }
+
+    public void setTripPlanNickName(String tripPlanNickName) {
+        this.tripPlanNickName = tripPlanNickName;
+    }
+
+    public String getStrDate() {
+        return strDate;
+    }
+
+    public void setStrDate(String strDate) {
+        this.strDate = strDate;
     }
 
     public int getTripPlanNo() {
