@@ -27,10 +27,13 @@
     <link rel="stylesheet" href="/css/user/getUser.css">
     <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
 
-    <%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">--%>
+
+
+
+<%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">--%>
     <%--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">--%>
 
-    <script src="https://kit.fontawesome.com/b2ece947c7.js" crossorigin="anonymous"></script>
+<%--    <script src="https://kit.fontawesome.com/b2ece947c7.js" crossorigin="anonymous"></script>--%>
     <%--<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>--%>
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
@@ -43,16 +46,18 @@
     <script src="/assets/js/min/responsivetable.min.js"></script>
     <script src="/assets/js/bootstrap-tabcollapse.js"></script>
     <script src="/assets/js/min/login.min.js"></script>
+    <script src="/assets/js/min/priceslider.min.js"></script>
 
 <%--    <script src="/assets/js/min/countnumbers.min.js"></script>--%>
     <%--<script src="/assets/js/main.js"></script>--%>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<%--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>--%>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
-    <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>
+<%--    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>--%>
+<%--    <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>--%>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="/assets/js/min/priceslider.min.js"></script>
+
+<%--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--%>
     <!--  ///////////////////////// CSS ////////////////////////// -->
 
 
