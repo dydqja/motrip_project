@@ -48,7 +48,8 @@
         let totalTripTimes = []; // 총 이동시간들의 배열
         let polylineArray = []; // 명소간 이동경로를 보여주기 위한 경로
         let pathArray = []; // 디비에 저장할 이동경로 패스값
-        //let overlays = []; // 기존 저장되어있던 마커
+
+        let placeData = [];
 
         let mapOption = {
             center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
@@ -541,6 +542,7 @@
                         });
                         itemEl.onmouseover = function () {
                             displayInfowindow(marker, title, indexCheck);
+                            marker.setMap(maps[indexCheck]);
                             maps[indexCheck].panTo(marker.getPosition()); // 마우스를 올린 위치로 자연스럽게 이동
                         };
                         itemEl.onmouseout = function () {
@@ -567,6 +569,9 @@
                             }
                             if (!pathArray[indexCheck]) {
                                 pathArray[indexCheck] = [];
+                            }
+                            if(!placeData[indexCheck]) {
+                                placeData[indexCheck] = [];
                             }
 
                             marker.setMap(maps[indexCheck]); // 해당 지도에 마커를 표출합니다
@@ -611,9 +616,13 @@
                                                 placeImage: placeImage,
                                                 placeCategory: 0,
                                                 placePhoneNumber: doc.querySelector('.info .tel').textContent.trim(),
+                                                tripPath: null,
                                                 tripTime: null
                                             };
                                             allPlaces['map' + indexCheck].push(place);
+                                            placeData[indexCheck].push(place);
+                                            console.log("1번 저장 확인")
+                                            console.log(placeData[indexCheck]);
                                         }, 1500); // 1.5초 지연 후에 다음 작업을 수행합니다.
                                     } else {
                                         console.log('검색 결과가 없습니다.');
@@ -629,10 +638,13 @@
                                         placeImage: placeImage,
                                         placeCategory: 0,
                                         placePhoneNumber: doc.querySelector('.info .tel').textContent.trim(),
-                                        tripTime: null,
-                                        tripPath: pathArray[indexCheck][varStatusIndex]
+                                        tripPath: null,
+                                        tripTime: null
                                     };
                                     allPlaces['map' + indexCheck].push(place);
+                                    placeData[indexCheck].push(place);
+                                    console.log("2번 저장 확인")
+                                    console.log(placeData[indexCheck]);
                                 }
                             });
 
@@ -706,6 +718,10 @@
                             return new kakao.maps.LatLng(coordinate.lat, coordinate.lng);
                         });
                         pathArray[indexCheck].push(path);
+                        console.log("여기가 문제여 문제~~~~")
+                        placeData[indexCheck][varStatusIndex-1].tripPath = JSON.stringify(path);
+                        console.log("세번째확인");
+                        console.log(placeData[indexCheck]);
 
                         var polyline = new kakao.maps.Polyline({
                             map: maps[indexCheck],
@@ -722,10 +738,12 @@
                         var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (varStatusIndex - 1) + '"]');
                         if (hour == 0) {
                             tripTimeEl.textContent = minute + "분";
+                            placeData[indexCheck][varStatusIndex-1].tripTime = minute;
                             placeTripTimes['map' + indexCheck].push(minute);
                             totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
                         } else {
-                            tripTimeEl.textContent = (hour * 60) + "시간" + minute + "분";
+                            tripTimeEl.textContent = (hour * 60) + minute;
+                            placeData[indexCheck][varStatusIndex-1].tripTime = ((hour * 60) + minute);
                             placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
                             totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
                         }
@@ -914,12 +932,12 @@
                 totalTripTime = totalTripTimes[i];
                 placeSum = allPlaces['map' + i].length;
                 for (var j = 0; j < placeSum; j++) {
-                    var placeText = allPlaces['map' + i][j];
-                    var tripTimeText = placeTripTimes['map' + i][j];
-                    var place = placeText;
-                    place.tripTime = tripTimeText; // 시간 값을 할당
-                    placeInfo.push(JSON.stringify(placeText));
+                    placeInfo.push(JSON.stringify(placeData[i][j]));
                 }
+                console.log("값을 찾아라!!!")
+                console.log(placeData);
+                console.log(placeData[i][j]);
+                console.log("값을 찾아라!!!")
 
                 dailyPlanContents.push({
                     dailyPlanContents: dailyPlanContent,
@@ -954,16 +972,13 @@
                 return {
                     dailyPlanContents: dailyPlan.dailyPlanContents,
                     totalTripTime: dailyPlan.totalTripTime,
-                    placeResultMap: dailyPlan.placesInfo.map(function (place) {
-                        return JSON.parse(place); // JSON 문자열을 객체로 변환
-                    }),
+                    placeResultMap: dailyPlan.placesInfo.map(place => JSON.parse(place)), // JSON 문자열을 객체로 변환
                 };
             }),
         };
 
         console.log("저장전 확인");
         console.log(tripPlan);
-
 
         $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
             url: "/tripPlan/addTripPlan",
@@ -1103,6 +1118,7 @@
         console.log(markers[indexCheck]);
         console.log(markersBound[indexCheck]);
         console.log(maps[indexCheck]);
+        console.log(placeData[indexCheck]);
 
         delete placeTripTimes['map' + indexCheck];
         totalTripTimes.splice(indexCheck, 1);
@@ -1110,7 +1126,9 @@
         delete allPlaces['map' + indexCheck];
         delete markers[indexCheck];
         delete markersBound[indexCheck];
+        delete placeData[indexCheck];
         maps.splice(indexCheck, 1);
+
         console.log(maps);
     }
 
@@ -1148,8 +1166,14 @@
             markers[indexCheck].splice(index, index + 1); // 마커 삭제
 
             var polyline = polylineArray[indexCheck][index]
-            polyline.setMap(null);
+            if(polyline != null) {
+                polyline.setMap(null);
+            }
             polylineArray[indexCheck].splice(index, index + 1); // 폴리라인 삭제
+
+            console.log("지웠을때 어디인지 확인해야하고 고치자")
+            placeData[indexCheck].splice(index , index+1); // 최종 데이터값인데 처음부터 이걸로할걸...
+            console.log(placeData[indexCheck]);
 
             // 이후 남아있는 리스트박스들의 id 값을 업데이트
             var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
@@ -1162,14 +1186,6 @@
                 elTripTimes.textContent = "";
                 return
             } else {
-                // console.log("예상대로 라면 이게 실행 ")
-                //
-                // console.log("여기가 가장 중요한 값입니다")
-                // console.log(placeTripTimes['map' + indexCheck])
-                // console.log(placeTripPositions[indexCheck])
-                // console.log(allPlaces['map' + indexCheck])
-                // console.log(markers[indexCheck])
-                // console.log("여기가 가장 중요한 값입니다")
 
                 for (var i = index; i < elTripTimes.length; i++) {
                     elTripTimes[i].setAttribute('data-index', i);
@@ -1232,18 +1248,15 @@
 
             polylineArray[indexCheck].splice(index-1 , index + 1); // 폴리라인 삭제
 
+            console.log("지웠을때 어디인지 확인해야하고 고치자")
+            placeData[indexCheck].splice(index, index); // 최종 데이터값인데 처음부터 이걸로할걸...
+            console.log(placeData[indexCheck]);
+
             // 이후 남아있는 리스트박스들의 id 값을 업데이트
             var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
             console.log(elTripTimes)
             console.log(elTripTimes.length)
             console.log("위에가 남아있는 리스트 크기임")
-
-            // console.log("여기가 가장 중요한 값입니다")
-            // console.log(placeTripTimes['map' + indexCheck])
-            // console.log(placeTripPositions[indexCheck])
-            // console.log(allPlaces['map' + indexCheck])
-            // console.log(markers[indexCheck])
-            // console.log("여기가 가장 중요한 값입니다")
 
             for (var i = index; i < elTripTimes.length; i++) {
                 elTripTimes[i].setAttribute('data-index', i);
@@ -1279,7 +1292,8 @@
             console.log(end)
         }
 
-        if (end != null || start != null || start != end || end != undefined || start != undefined ) { // 마지막 값이 없거나 명소가 같을 경우에는 찾지않음
+
+        if (end !== null && start !== null && start !== end && end !== undefined && start !== undefined && end !== 'undefined' && start !== 'undefined') { // 마지막 값이 없거나 명소가 같을 경우에는 찾지않음
             $.ajax({ // 명소간 이동시간 구하기(길찾기 API)
                 url: "/tripPlan/tripTime",
                 type: "GET",
@@ -1295,6 +1309,9 @@
                         return new kakao.maps.LatLng(coordinate.lat, coordinate.lng);
                     });
                     pathArray[indexCheck].push(path);
+                    console.log("여기가 문제여 문제~~~~")
+                    placeData[indexCheck][index-1].tripPath = JSON.stringify(path);
+
 
                     var polyline = new kakao.maps.Polyline({
                         map: maps[indexCheck],
@@ -1312,14 +1329,19 @@
                     console.log(tripTimeEl);
                     if (hour == 0) {
                         tripTimeEl.textContent = minute;
+                        placeData[indexCheck][index-1].tripTime = minute;
                         placeTripTimes['map' + indexCheck].push(minute);
                         totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
                     } else {
                         tripTimeEl.textContent = (hour * 60) + minute;
+                        placeData[indexCheck][index-1].tripTime = ((hour * 60) + minute);
                         placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
                         totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
                     }
                     $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
+
+                    console.log("가운데 값 지우니까 난리나네 하")
+                    console.log(placeData[indexCheck]);
                 },
                 error: function (xhr, status, error) {
                     console.log(error);

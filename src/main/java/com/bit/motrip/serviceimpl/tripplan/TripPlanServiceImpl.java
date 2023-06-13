@@ -36,12 +36,6 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Qualifier("userServiceImpl")
     private UserService userService;
 
-    //화면에 보여줄 리스트의 수
-    @Value("${tripPlanPageSize}")
-    private int tripPlanPageSize;
-
-    HttpSession httpSession;
-
     @Override
     public Map<String , Object > selectTripPlanList(Map<String, Object> parameters) throws Exception {
 
