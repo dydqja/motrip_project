@@ -38,7 +38,7 @@ function addMemoRequest(userId, memoTitle, memoContents,memoColor,memoDialog){
             let summernote = memoDialog.find('.summernote-contents');
             summernote.summernote('reset');
             let changedMemoContents = htmlChanger(addedMemo.memoContents)
-            summernote.summernote('pasteHTML', changedMemoContents);
+            summernote.summernote('pasteHTML', addedMemo.memoContents);
             //unEditMemo()를 호출한다.
             unEditMemo(memoDialog);
         })
@@ -95,8 +95,8 @@ function updateMemoRequest(userId, memoTitle, memoContents,memoColor,memoDialog)
             //summernote를 수정한다.
             let summernote = memoDialog.find('.summernote-contents');
             summernote.summernote('reset');
-            let changedMemoContents = htmlChanger(updatedMemo.memoContents)
-            summernote.summernote('pasteHTML', changedMemoContents);
+//            let changedMemoContents = htmlChanger(updatedMemo.memoContents)
+            summernote.summernote('pasteHTML', updatedMemo.memoContents);
             //unEditMemo()를 호출한다.
             unEditMemo(memoDialog);
         })
