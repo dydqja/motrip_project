@@ -206,6 +206,7 @@
             text-align: left;
         }
 
+
         .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
         .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
         [id^="menu_wrap"] {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
@@ -216,14 +217,6 @@
         [id^="menu_wrap"] .option button {margin-left:5px;}
 
     </style>
-
-    <c:if test="${empty sessionScope.user.userId}">
-        <script>
-            // 유저가 로그인되어 있지 않은 경우
-            alert("비회원은 여행플랜을 작성할수 없습니다.")
-            history.back();
-        </script>
-    </c:if>
 
 </head>
 
@@ -245,7 +238,6 @@
                         <h4>
                             <span class="italic">${user.userId}</span>
                             <span class="dot">·</span>
-                            <span id="currentDate">${date}</span>
                         </h4>
                     </div>
                 </div>
@@ -285,7 +277,7 @@
                             <input type="text" class="form-control" id="placeName0"
                                    onkeypress="handleKeyPress(event, 0)" placeholder="명소 검색" style="width: 60%; font-size: 11px">
                             <button class="btn btn-primary" id="placeSearch0" style="width: 30%; font-size: 9px;"
-                                        onclick="handleKeyPress(event, 0)">Search
+                                    onclick="handleKeyPress(event, 0)">Search
                             </button>
                         </div>
                         <ul id="placesList0"></ul>
@@ -718,9 +710,9 @@
                         var polyline = new kakao.maps.Polyline({
                             map: maps[indexCheck],
                             path: path,
-                            strokeWeight: 4,
-                            strokeColor: '#2116fa',
-                            strokeOpacity: 0.7,
+                            strokeWeight: 5,
+                            strokeColor: '#e11f1f',
+                            strokeOpacity: 0.8,
                             strokeStyle: 'shortdash'
                         });
                         polylineArray[indexCheck].push(polyline);
@@ -747,9 +739,9 @@
             }
 
             function addMarker(position) {  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-                    marker = new kakao.maps.Marker({
-                        position: position,
-                    });
+                marker = new kakao.maps.Marker({
+                    position: position,
+                });
                 return marker;
             }
 
@@ -1307,9 +1299,9 @@
                     var polyline = new kakao.maps.Polyline({
                         map: maps[indexCheck],
                         path: path,
-                        strokeWeight: 4,
-                        strokeColor: '#2116fa',
-                        strokeOpacity: 0.7,
+                        strokeWeight: 5,
+                        strokeColor: '#e11f1f',
+                        strokeOpacity: 0.8,
                         strokeStyle: 'shortdash'
                     });
                     polylineArray[indexCheck].push(polyline);

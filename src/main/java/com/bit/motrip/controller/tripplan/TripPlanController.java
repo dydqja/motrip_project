@@ -184,10 +184,14 @@ public class TripPlanController {
 //    }
 
     @GetMapping("addTripPlanView") // addTripPlanView 일반 네비게이션
-    public String addTripPlanView(Model model) {
+    public String addTripPlanView(Model model, HttpSession session) {
         System.out.println("GET : addTripPlanView()");
 
-        model.addAttribute("date", new Date());
+        if (session.getAttribute("user") == null) {
+            return "user/login.jsp";
+        }
+
+        //model.addAttribute("date", new Date());
         return "tripplan/addTripPlan2.jsp";
     }
 
@@ -207,6 +211,10 @@ public class TripPlanController {
     @GetMapping("updateTripPlanView")
     public String updateTripPlanView(@RequestParam("tripPlanNo") int tripPlanNo, Model model, HttpSession session) throws Exception {
         System.out.println("GET : updateTripPlanView()");
+
+        if (session.getAttribute("user") == null) {
+            return "user/login.jsp";
+        }
 
         TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo); // 해당 여행플랜에 대한 정보를 가져옴
         User dbUser = userService.getUserById(tripPlan.getTripPlanAuthor()); // 해당 여행플랜에 작성자 닉네임을 위해 정보를 가져옴
