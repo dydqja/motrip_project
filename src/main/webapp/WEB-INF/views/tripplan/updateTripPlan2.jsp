@@ -518,6 +518,7 @@
               });
               itemEl.onmouseover = function () {
                 displayInfowindow(marker, title, indexCheck);
+                marker.setMap(maps[indexCheck]);
                 maps[indexCheck].panTo(marker.getPosition()); // 마우스를 올린 위치로 자연스럽게 이동
               };
               itemEl.onmouseout = function () {
