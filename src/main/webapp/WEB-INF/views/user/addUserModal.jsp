@@ -255,16 +255,20 @@
 
                         <div id="drop_zone" name="userPhoto" style="margin-top: 10px; font-size: 16px;">사진 파일을 올려주세요</div>
                         <input type="hidden" name="userPhoto" id="userPhoto"  />
-<%--                        <img class="previewImage" id="imagePreview" src="" alt="Image preview" style="width: 50px; height: 50px;">--%>
-
                     </div>
 
+                    <div class="form-group text-left">
+                        <label for="drop_zone" class="label label-primary">SMS수신동의</label>
 
-
-
-
-
-
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="gettingSmsAlarm" id="SmsAlarmYes" value="true" autocomplete="off" checked> 동의
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="gettingSmsAlarm" id="SmsAlarmNo" value="false" autocomplete="off"> 비동의
+                            </label>
+                        </div>
+                    </div>
 
                 </form>
             </div>
@@ -330,8 +334,9 @@
           var addr = $("#sample3_address").val();
           var addrDetail = $("#sample3_detailAddress").val();
           var ssn = "";
+          var regex = /^[a-zA-Z0-9]+$/;
 
-          if (id == null || id.length < 4 || idChecked == false) {
+          if (id == null || id.length < 4 || idChecked == false || !regex.test(id)) {
 
               $('#modalUserId').focus().addClass('shake');
               setTimeout(function () {
@@ -538,6 +543,7 @@
 
               });
           });
+
           $("#confirmPhCode").on("click", function() {
               if (smsConfirmNum !== null) {
 
@@ -548,10 +554,7 @@
                   alert("응답을 아직 받지 못했습니다. 잠시 후 다시 시도해주세요.");
               }
           });
-      });
 
-
-      $(document).ready(function() {
           //인증번호 재전송
           $("#resendPhCode").on("click", function () {
               console.log('재전송 버튼이 클릭되었습니다.');
@@ -567,6 +570,7 @@
                   dataType: "json",
                   success: function (response) {
 
+                      smsConfirmNum = response;
                   },
                   error: function (error) {
                       alert("실패");
@@ -686,6 +690,8 @@
                   dataType: "json",
                   success: function (result) {
 
+                      var regex = /^[a-zA-Z0-9]+$/;
+
                       if (result == 0) {
                           $("#checkId").text('사용할 수 없는 아이디입니다.').css({
                               'color': 'red',
@@ -693,6 +699,11 @@
                           });
                           idChecked = false; // id체크 true
 
+                      }else if (result == 1 && !regex.test(userId)) {
+                          $("#checkId").text('영문 대소문자와 숫자만 사용할 수 있습니다.').css({
+                              'color': 'red',
+                              'font-size': '10px'
+                          });
                       } else {
                           $("#checkId").text('사용 가능한 아이디입니다.').css({
                               'color': 'green',
@@ -721,6 +732,8 @@
                   $("#checkPwd").text("");
                   return; // 아직 입력된 상태가 아니라면 아무런 문구를 출력하지 않는다
               }
+              var passwordRegEx = /^(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+
 
               if($('#modalPwd').val()!=$('#pwdConfirm').val()){
                   // 만약 pw1과 pw2가 일치하지 않는다면
@@ -731,8 +744,16 @@
                   $('#pwdConfirm').val(''); // 값을 비움
                   $('#pwdConfirm').focus(); // 포인터를 pw2 로 맞춘다
                   pwdChecked=false;
-              }
-              else{
+              } else if($('#modalPwd').val()==$('#pwdConfirm').val() && !passwordRegEx.test($('#pwdConfirm').val()) ) {
+
+                  $("#checkPwd").text('특수문자 포함 8자 이상 입력해주세요.').css({
+                      'color': 'red',
+                      'font-size': '10px' // 문구 출력
+                  });
+                  $('#pwdConfirm').val(''); // 값을 비움
+                  $('#pwdConfirm').focus(); // 포인터를 pw2 로 맞춘다
+                  pwdChecked=false;
+              }else{
                   $("#checkPwd").html('비밀번호가 일치합니다').css({
                       'color': 'green',
                       'font-size': '10px' // 문구 출력
@@ -747,7 +768,7 @@
       let nicknameChecked = false;
       $(document).ready(function() {
 
-          $("#nickname").keyup(function () { // 아이디를 입력할때 마다 중복검사 실행
+          $("#nickname").keyup(function () { // 닉네임을 입력할때 마다 중복검사 실행
 
               checkNickname($(this).val())
           })
@@ -773,7 +794,11 @@
                               'font-size': '10px'
                           });
                           nicknameChecked = false; // id체크 true
-
+                      }else if(result == 1 && nickname.length > 8 ) {
+                          $("#checkNickname").text('닉네임은 8자를 넘을 수 없습니다.').css({
+                              'color': 'red',
+                              'font-size': '10px'
+                          });
                       } else {
                           $("#checkNickname").text('사용 가능한 닉네임입니다.').css({
                               'color': 'green',
@@ -846,6 +871,7 @@
                   $('#userPhoto').val(result);
 
                   document.querySelector('#drop_zone').innerHTML = '<img src="'+result+'" style="width:200px; height:100px;">';
+                  document.querySelector('#userPhoto').value = result;
 
               }
           });

@@ -85,7 +85,7 @@
 
         <div class="profile-image">
 
-            <img src="/images/user/khunam.png" style="width: 200px; height: 200px;" alt="">
+            <img src="${getUser.userPhoto}" style="width: 200px; height: 200px;" alt="">
 
         </div>
 
@@ -391,7 +391,6 @@
                                                 <input type="hidden" class="roomGender" value="${chatRoom.gender}">
                                                 <input type="hidden" class="minAge" value="${chatRoom.minAge}">
                                                 <input type="hidden" class="maxAge" value="${chatRoom.maxAge}">
-                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Enroll</button>
                                             </c:if>
                                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">
                                                 <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"

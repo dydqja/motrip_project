@@ -95,6 +95,8 @@ public class UserController {
         //아이디가 존재하지 않는경우
         if (dbUser == null) {
 //            model.addAttribute("loginError", "아이디가 존재하지 않습니다.");
+            request.setAttribute("idCheck", "fail");
+
             return "user/login.jsp"; // 로그인 페이지로 이동
         }
 
@@ -106,6 +108,8 @@ public class UserController {
         } else {
             // 비밀번호가 일치하지 않는 경우
 //            model.addAttribute("loginError", "비밀번호가 일치하지 않습니다.");
+            request.setAttribute("pwdCheck", "fail");
+
             return "user/login.jsp"; // 로그인 페이지로 이동
         }
 
