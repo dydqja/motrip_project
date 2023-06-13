@@ -3,10 +3,6 @@
     font-size: 20px;
 }
 
-.centered-content {
-    display: flex;
-    justify-content: center;
-}
 
 .page-img{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);

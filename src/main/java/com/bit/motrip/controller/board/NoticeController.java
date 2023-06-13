@@ -31,15 +31,16 @@ public class NoticeController {
 
     ///Method
     @RequestMapping("noticeList")
-    public String getNoticeList(@RequestParam(defaultValue = "1") int currentPage, Model model) throws Exception {
+    public String getNoticeList(@ModelAttribute("search") Search search, Model model) throws Exception {
 
         System.out.println("::");
         System.out.println("[NoticeController] 공지사항 목록 조회 서비스를 실행합니다.");
 
-        Search search = new Search();
-
         // 현재 위치의 페이지 번호
-        search.setCurrentPage(currentPage);
+        if(search.getCurrentPage() == 0){
+
+            search.setCurrentPage(1);
+        }
 
         // 한 페이지 당 출력되는 게시물 수
         int pageSize = 10;
@@ -55,7 +56,7 @@ public class NoticeController {
         int pageUnit = 3;
 
         // 총 페이지 수, 페이지 시작 번호, 페이지 끝 번호 연산
-        Page page = new Page(currentPage, totalCount, pageUnit, pageSize);
+        Page page = new Page(search.getCurrentPage(), totalCount, pageUnit, pageSize);
 
         // 총 페이지 수
         int maxPage = page.getMaxPage();
@@ -71,6 +72,7 @@ public class NoticeController {
         model.addAttribute("maxPage", maxPage);
         model.addAttribute("beginUnitPage", beginUnitPage);
         model.addAttribute("endUnitPage", endUnitPage);
+        model.addAttribute("search",search);
 
         return "notice/noticeList.jsp";
     }
@@ -123,6 +125,7 @@ public class NoticeController {
 
     @RequestMapping("updateNoticeView")
     public String updateNoticeView(@RequestParam("noticeNo") int noticeNo,
+                                   @RequestParam("isNoticeImportant") int isNoticeImportant,
                                    @RequestParam("noticeTitle") String noticeTitle,
                                    @RequestParam("noticeContents") String noticeContents, Model model) throws Exception {
 
@@ -130,6 +133,7 @@ public class NoticeController {
         System.out.println("[NoticeController] 공지사항 수정 화면 출력 서비스를 실행합니다.");
 
         model.addAttribute("noticeNo", noticeNo);
+        model.addAttribute("isNoticeImportant", isNoticeImportant);
         model.addAttribute("noticeTitle", noticeTitle);
         model.addAttribute("noticeContents", noticeContents);
 

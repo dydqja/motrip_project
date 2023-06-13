@@ -22,9 +22,7 @@
         <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
         <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
         <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-
         <link rel="stylesheet" href="/css/qna/qnaList.css">
-
 
         <script src="/vendor/jquery/dist/jquery.min.js"></script>
         <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
@@ -42,116 +40,149 @@
     </head>
 
     <body>
-
+        <form action="/qna/qnaList" method="post">
 
             <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-
-        <div class="page-img">
-            <div class="container">
-                <h1 class="main-head text-center board-title noticeZooming">질의응답</h1>
+            <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
+                <div class="container">
+                    <h1 class="main-head text-center board-title noticeZooming">질의응답</h1>
+                </div>
             </div>
-        </div>
 
-        <div class="container" >
+            <div class="page-img page-back" style="background-image: url('/images/board/noticeBack.jpg');">
 
-            <table class="table table-striped">
+                <div class="container" >
 
-                <thead>
-                    <tr>
-                        <th class="text-center">카테고리</th>
-                        <th class="text-center">제목</th>
-                        <th class="text-center">답변여부</th>
-                        <th class="text-center">작성자</th>
-                        <th class="text-center">작성날짜</th>
-                        <th class="text-center">조회수</th>
-                    </tr>
-                </thead>
+                    <!--테이블 리스트-->
+                    <table class="table table-striped">
 
-                <tbody>
+                        <thead class="table-header">
 
-                    <c:forEach var="qna" items="${qnaListData.list}">
-                        <fmt:formatDate value="${qna.qnaRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
+                            <tr>
+                                <th class="text-center">카테고리</th>
+                                <th class="text-center">제목</th>
+                                <th class="text-center">답변여부</th>
+                                <th class="text-center">작성자</th>
+                                <th class="text-center">작성날짜</th>
+                                <th class="text-center">조회수</th>
+                            </tr>
 
-                        <tr>
-                            <td class="text-center">
-                                <c:choose>
-                                    <c:when test="${qna.qnaCategory == 0}">계정문의</c:when>
-                                    <c:when test="${qna.qnaCategory == 1}">기타문의</c:when>
-                                    <c:when test="${qna.qnaCategory == 2}">여행플랜</c:when>
-                                    <c:when test="${qna.qnaCategory == 3}">채팅</c:when>
-                                    <c:when test="${qna.qnaCategory == 4}">메모</c:when>
-                                    <c:when test="${qna.qnaCategory == 5}">후기</c:when>
-                                </c:choose>
-                            </td>
-                            <td><a href="#" onclick="viewDetail(${qna.qnaNo})">${qna.qnaTitle}</a></td>
-                            <td class="text-center">${qna.isQnaAnswered == 1 ? '답변완료' : ''}</td>
-                            <td class="text-center">${qna.qnaAuthor}</td>
-                            <td class="text-center">${formattedDate}</td>
-                            <td class="text-center">${qna.qnaViews}</td>
-                        </tr>
+                        </thead>
 
-                    </c:forEach>
+                        <tbody class="table-body">
 
-                </tbody>
+                            <c:forEach var="qna" items="${qnaListData.list}">
+                                <fmt:formatDate value="${qna.qnaRegDate}" pattern="yyyy-MM-dd" var="formattedDate" />
 
-            </table>
+                                <tr>
+                                    <td class="text-center">
+                                        <c:choose>
+                                            <c:when test="${qna.qnaCategory == 0}">계정문의</c:when>
+                                            <c:when test="${qna.qnaCategory == 1}">기타문의</c:when>
+                                            <c:when test="${qna.qnaCategory == 2}">여행플랜</c:when>
+                                            <c:when test="${qna.qnaCategory == 3}">채팅</c:when>
+                                            <c:when test="${qna.qnaCategory == 4}">메모</c:when>
+                                            <c:when test="${qna.qnaCategory == 5}">후기</c:when>
+                                        </c:choose>
+                                    </td>
+                                    <td><a href="#" onclick="viewDetail(${qna.qnaNo})">${qna.qnaTitle}</a></td>
+                                    <td class="text-center">${qna.isQnaAnswered == 1 ? '답변완료' : ''}</td>
+                                    <td class="text-center">${qna.qnaAuthor}</td>
+                                    <td class="text-center">${formattedDate}</td>
+                                    <td class="text-center">${qna.qnaViews}</td>
+                                </tr>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
-                                <c:choose>
-                                    <c:when test="${page.currentPage == 1}">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            &laquo;
-                                        </a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a class="page-link" href="/qna/qnaList?currentPage=${page.currentPage - 1}" aria-label="Previous">
-                                            &laquo;
-                                        </a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </li>
-                            <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
-                                <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-                                    <a class="page-link" href="/qna/qnaList?currentPage=${i}">${i}</a>
-                                </li>
                             </c:forEach>
-                            <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
-                                <c:choose>
-                                    <c:when test="${page.currentPage == maxPage}">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            &raquo;
-                                        </a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a class="page-link" href="/qna/qnaList?currentPage=${page.currentPage + 1}" aria-label="Next">
-                                            &raquo;
-                                        </a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </li>
-                        </ul>
-                    </nav>
+                        </tbody>
+                    </table>
+
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            <!--검색창-->
+                            <div class="input-group">
+                                <input type="text" name="searchKeyword" value="" class="form-control" placeholder="제목">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary" id="search-qna">검색</button>
+                                    <input type="hidden" id="currentPage" name="currentPage" value="0"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 text-center">
+
+                            <!--페이지 내비게이션-->
+                            <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+                                <ul class="pagination">
+
+                                    <!--이전 버튼-->
+                                    <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
+                                        <c:choose>
+                                            <c:when test="${page.currentPage == 1}">
+                                                <a class="page-link" href="#" aria-label="Previous">
+                                                    &laquo;
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a class="page-link" href="/qna/qnaList?currentPage=${page.currentPage - 1}&searchKeyword=${search.searchKeyword}" aria-label="Previous">
+                                                    &laquo;
+                                                </a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </li>
+
+                                    <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
+
+                                        <!--페이지 번호-->
+                                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="/qna/qnaList?currentPage=${i}&searchKeyword=${search.searchKeyword}">${i}</a>
+                                        </li>
+
+                                    </c:forEach>
+
+                                    <!--다음 버튼-->
+                                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
+                                        <c:choose>
+                                            <c:when test="${page.currentPage == maxPage}">
+                                                <a class="page-link" href="#" aria-label="Next">
+                                                    &raquo;
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a class="page-link" href="/qna/qnaList?currentPage=${page.currentPage + 1}&searchKeyword=${search.searchKeyword}" aria-label="Next">
+                                                    &raquo;
+                                                </a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                        <div class="text-right">
+                            <div class="d-inline-block">
+
+                                <!-- 질의 등록 버튼 -->
+                                <c:if test="${sessionScope.user.userId != 'admin' && not empty sessionScope.user.userId}">
+                                    <button id="addQnaView" class="btn btn-primary">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        문의 등록
+                                    </button>
+                                </c:if>
+
+                                <!-- 목록보기 버튼 -->
+                                <button id="addQnaList" class="btn btn-primary">목록보기</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="text-right">
-
-                    <c:if test="${sessionScope.user.userId != 'admin' && not empty sessionScope.user.userId}">
-                        <button id="addQnaView" class="btn btn-primary">문의 등록</button>
-                    </c:if>
-
-                    <button id="addQnaList" class="btn btn-primary text-right">처음으로</button>
-                </div>
-
             </div>
-        </div>
-
-        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
-
+        </form>
 
         <script type="text/javascript">
 
@@ -178,13 +209,26 @@
 
             $(function() {
 
-                // 처음으로 서비스 실행
+                // 질의 목록 보기 서비스 실행
                 $("#addQnaList").on("click" , function() {
 
                     window.location.href = "/qna/qnaList?currentPage=1";
                 });
             });
 
+            function fncGetUserList(currentPage){
+                console.log($("#currentPage").val(currentPage));
+                $("form").submit();
+            }
+
+            $(function() {
+                $( "#search-notice" ).on("click" , function() {
+                    fncGetUserList(1);
+                });
+            })
+
         </script>
 
+        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
     </body>
+</html>
