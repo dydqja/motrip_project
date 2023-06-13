@@ -11,7 +11,7 @@
         <result column="trip_plan_title" property="tripPlanTitle" jdbcType="VARCHAR"/>
         <result column="trip_plan_thumbnail" property="tripPlanThumbnail" jdbcType="VARCHAR"/>
         <result column="trip_days" property="tripDays" jdbcType="INTEGER"/>
-        <result column="trip_plan_reg_date" property="tripPlanRegDate" jdbcType="DATE"/>
+        <result column="trip_plan_reg_date" property="tripPlanRegDate" jdbcType="DATE" javaType="java.util.Date"/>
         <result column="trip_plan_del_date" property="tripPlanDelDate" jdbcType="DATE"/>
         <result column="is_plan_deleted" property="isPlanDeleted" jdbcType="TINYINT"/>
         <result column="is_plan_public" property="isPlanPublic" jdbcType="TINYINT"/>
@@ -81,7 +81,15 @@
                         tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
                     </otherwise>
                 </choose>
-                 GROUP BY tp.trip_plan_no
+                <if test="blacklist != null and blacklist.size() > 0">
+                    AND tp.trip_plan_author NOT IN
+                    <foreach item="user" index="index" collection="blacklist" open="(" separator="," close=")">
+                        #{user}
+                    </foreach>
+                </if>
+
+
+        GROUP BY tp.trip_plan_no
              ) subquery
         WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum};
     </select>
@@ -94,7 +102,7 @@
         trip_plan_author, trip_plan_title, trip_plan_thumbnail, trip_days, trip_plan_reg_date, trip_plan_del_date, is_plan_deleted,
         is_plan_public, is_plan_downloadable, is_trip_completed, trip_plan_likes, trip_plan_views)
         VALUES (
-        #{tripPlanAuthor}, #{tripPlanTitle}, #{tripPlanThumbnail}, #{tripDays}, #{tripPlanRegDate}, #{tripPlanDelDate}, #{isPlanDeleted},
+        #{tripPlanAuthor}, #{tripPlanTitle}, #{tripPlanThumbnail}, #{tripDays}, DEFAULT, #{tripPlanDelDate}, #{isPlanDeleted},
         #{isPlanPublic}, #{isPlanDownloadable}, #{isTripCompleted}, #{tripPlanLikes}, #{tripPlanViews}
         )
     </insert>
@@ -128,7 +136,7 @@
         SET trip_plan_title = #{tripPlanTitle},
         trip_plan_thumbnail = #{tripPlanThumbnail},
         trip_days = #{tripDays},
-        trip_plan_reg_date = #{tripPlanRegDate},
+        trip_plan_reg_date = DEFAULT,
         is_plan_public = #{isPlanPublic},
         is_plan_downloadable = #{isPlanDownloadable}
         WHERE trip_plan_no = #{tripPlanNo}

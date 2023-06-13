@@ -32,6 +32,7 @@
     <script type="text/javascript">
         let markers = []; // 마커 배열
         let maps = []; // 지도 배열
+        let pathInfo = []; // 좌표 저장 배열
     </script>
 
     <style>
@@ -192,14 +193,13 @@
                     </h2>
                     <p class="byline">
                     <h4>
-                        <span class="italic">${tripPlan.tripPlanAuthor}</span>
+                        <span class="italic">${tripPlan.tripPlanNickName}</span>
                         <span class="dot">·</span>
-                        <span>${tripPlan.tripPlanRegDate}</span>
+                        <span>${tripPlan.strDate}</span>
                         <span class="dot">·</span>
-                        <span>${tripPlan.tripPlanLikes}</span>
+                        <span id="likes" align="center" width="200">${tripPlan.tripPlanLikes}</span>
                         <span class="dot">·</span>
-                        <td id="likes" align="center" width="200">${tripPlan.tripPlanLikes}</td>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span>${tripPlan.tripPlanViews}</span>&nbsp;&nbsp;
                         <button class="btn btn-primary" id="tripPlanLikes" value="${tripPlan.tripPlanNo}"
                                 style="width: auto; height: auto; box-sizing: border-box; padding: 5px 10px;">추천
                         </button>
@@ -285,18 +285,13 @@
                                     var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
                                     var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
                                     var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
+                                    var tripPath = '${place.tripPath}';
 
-                                        <%--var tripPath = ${place.tripPath};--%>
-
-                                        <%--var polyline = new kakao.maps.Polyline({--%>
-                                        <%--    path: tripPath,--%>
-                                        <%--    strokeWeight: 3, // 폴리라인의 두께--%>
-                                        <%--    strokeColor: '#FF0000', // 폴리라인의 색상--%>
-                                        <%--    strokeOpacity: 0.7 // 폴리라인의 투명도--%>
-                                        <%--});--%>
-
-                                        <%--// 폴리라인을 지도에 표시--%>
-                                        <%--polyline.setMap(map);--%>
+                                    var index = ${i-1};
+                                    if(!pathInfo[index]) {
+                                        pathInfo[index] = [];
+                                    }
+                                    pathInfo[index].push(tripPath);
 
                                     // markers 배열에 좌표 및 맵 ID 정보 추가
                                     markers.push({
@@ -393,6 +388,7 @@
     let tripDays = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
 
     $(function () { // 저장되었던 맵의 갯수 만큼 출력하고 세팅
+
         for (var i = 0; i < tripDays; i++) { // map의 아이디를 동적으로 할당하여 생성
             var mapContainer = document.getElementById('map' + i);
             var mapOptions = {
@@ -402,13 +398,34 @@
             var map = new kakao.maps.Map(mapContainer, mapOptions);
 
             maps.push(map);
+
+            for(var j = 0; j < pathInfo[i].length; j++){
+                if (pathInfo[i][j] !== "") {
+                    var path = JSON.parse(pathInfo[i][j]);
+
+                    var pathCoordinates = path.map(function (coord) {
+                        return new kakao.maps.LatLng(coord.Ma, coord.La);
+                    });
+
+                    var polyline = new kakao.maps.Polyline({
+                        path: pathCoordinates, // Initialize the path array
+                        strokeWeight: 5,
+                        strokeColor: '#e11f1f',
+                        strokeOpacity: 0.8,
+                        strokeStyle: 'shortdash'
+                    });
+                    polyline.setMap(map);
+                }
+            }
         }
+
         $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
             var bounds = new kakao.maps.LatLngBounds();
             var mapId = 'map' + index;
             var mapMarkers = markers.filter(function (marker) {
                 return marker.mapId === mapId;
             });
+
             $(mapMarkers).each(function (index, marker) {
                 var markerOptions = {
                     position: marker.position,
@@ -418,8 +435,21 @@
                 marker.setMap(map);
                 bounds.extend(markerOptions.position);
             });
+
+            // 바운드의 범위를 한 단계만 더 가깝게 설정
+            var extraPadding = 0.1; // 조절 가능한 추가 간격 (0.1은 10%를 의미)
+            var ne = bounds.getNorthEast();
+            var sw = bounds.getSouthWest();
+            var deltaX = (ne.getLng() - sw.getLng()) * extraPadding;
+            var deltaY = (ne.getLat() - sw.getLat()) * extraPadding;
+            var extendedNE = new kakao.maps.LatLng(ne.getLat() + deltaY, ne.getLng() + deltaX);
+            var extendedSW = new kakao.maps.LatLng(sw.getLat() - deltaY, sw.getLng() - deltaX);
+            bounds.extend(extendedNE);
+            bounds.extend(extendedSW);
+
             map.setBounds(bounds);
         });
+
     });
 
     $(function () { // 오버레이 표시

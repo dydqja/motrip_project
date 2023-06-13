@@ -45,6 +45,8 @@
     let totalTripTimes = [];
     let polylineArray = []; // 명소간 이동경로를 보여주기 위한 경로
     let pathArray = []; // 디비에 저장할 이동경로 패스값
+    let placeData = []; // 좌표 저장 배열
+    let pathInfo = []; // 저장된 좌표를 담아둘 배열
 
     let mapOptions = { // 지도 옵션
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
@@ -80,15 +82,17 @@
     .card:not(.no-move) .card-header {
       cursor: pointer;
     }
-  </style>
 
-  <c:if test="${empty sessionScope.user.userId}">
-    <script>
-      // 유저가 로그인되어 있지 않은 경우
-      alert("접근 권한이 없습니다.")
-      history.back();
-    </script>
-  </c:if>
+
+    .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+    .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
+    [id^="menu_wrap"] {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+    .bg_white {background:#fff;}
+    [id^="menu_wrap"] hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
+    [id^="menu_wrap"] .option{text-align: center;}
+    [id^="menu_wrap"] .option p {margin:10px 0;}
+    [id^="menu_wrap"] .option button {margin-left:5px;}
+  </style>
 
 </head>
 
@@ -143,10 +147,10 @@
         </c:if>
       </h5>
       <div style="text-align: right;">
-        <div class="tag-link">여행일수</div>
-        <button class="icon-triangle-up" id="btnAddTripDay"
+        <div class="btn btn-sm btn-success btn-default">여행일수</div>
+        <button class="btn btn-sm btn-success icon-triangle-up" id="btnAddTripDay"
                 style="background-color: #558B2F;"></button>
-        <button class="icon-triangle-down" id="btnRemoveTripDay"
+        <button class="btn btn-sm btn-success icon-triangle-down" id="btnRemoveTripDay"
                 style="background-color: #558B2F;"></button>
       </div>
     </div>
@@ -156,34 +160,38 @@
   <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
   <c:set var="i" value="${ i+1 }"/>
   <div class="container" id="container${i-1}">
-    <div class="day"> ${i}일차 여행플랜 </div>
+    <div display="flex;">
+      <div class="day"> ${i}일차 여행플랜 <button class="icon-locate-map" id="reset${i-1}" onclick="reset(event, ${i-1})"></button> </div>
+    </div>
+
     <div class="row">
-      <div class="col-sm-7">
+      <div class="col-sm-12">
+        <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
+        <div id="menu_wrap0" lass="bg_white" style="height:90%; overflow:auto; margin: 0%;">
+          <div class="input-group">
+            <input type="text" class="form-control" id="placeName${i-1}"
+                   onkeypress="handleKeyPress(event, ${i-1})" placeholder="명소 검색">
+              <button class="btn btn-primary" id="placeSearch${i-1}"
+                      onclick="handleKeyPress(event, ${i-1})">Search
+              </button>
+          </div>
+          <ul id="placesList${i-1}"></ul>
+          <div id="pagination"></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 3%"></div>
+
+    <div class="row">
+
+      <div class="col-sm-9">
         <textarea id="dailyPlanContents${i-1}" name="dailyPlanContents" required style="width: 100%;">${dailyPlan.dailyPlanContents}</textarea>
       </div>
 
-      <div class="col-sm-5">
+      <div class="col-sm-3">
         <div class="sidebar">
-          <div class="border-box">
-            <div id="menu_wrap0"></div>
-            <div class="box-title">
-              <div class="input-group">
-                <input type="text" class="form-control" id="placeName${i-1}"
-                       onkeypress="handleKeyPress(event, ${i-1})" placeholder="명소 검색">
-                <div class="input-group-btn">
-                  <button class="btn btn-primary" id="placeSearch${i-1}"
-                          onclick="handleKeyPress(event, ${i-1})">Search
-                  </button>
-                </div>
-              </div>
-            </div>
-            <button class="icon-locate-map" id="reset${i-1}" onclick="reset(event, ${i-1})"></button>
-            <div id="map${i-1}" style="width: 100%; height: 300px;"></div>
-            <ul id="placesList${i-1}"></ul>
-            <div id="pagination"></div>
-          </div>
 
-          <div class="border-box">
+          <div class="border-box" style="height: 400px; overflow: auto;">
             <div class="box-title">명소리스트
               <div class="tag-link" style="text-align: right;" id="totalTripTime${i-1}">${dailyPlan.totalTripTime}</div>
             </div>
@@ -215,12 +223,20 @@
                 var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
                 var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
                 var mapIndex = 'map${i-1}'; // 해당 명소의 맵 ID
+                var tripPath = '${place.tripPath}';
 
                 // 명소간 이동시간 저장
                 if (!placeTripTimes[mapIndex]) {
                   placeTripTimes[mapIndex] = [];
                 }
                 placeTripTimes[mapIndex].push(${place.tripTime});
+
+                // 폴리라인 그리기 위한 배열
+                var index = ${i-1};
+                if(!pathInfo[index]) {
+                  pathInfo[index] = [];
+                }
+                pathInfo[index].push(tripPath);
 
                 // 포지션과 mapId는 처음 읽어들어왔을때 중심점 잡기위해
                 var place = {
@@ -319,14 +335,6 @@
 
     function createSummerNoteElement(elementId) {
       $('#' + elementId).summernote({
-        callbacks: {
-          onImageUpload: function (files) {
-            // 이미지 업로드 후, 이미지 태그에 contenteditable 속성을 false로 설정
-            var img = $('<img>').attr('src', URL.createObjectURL(files[0]));
-            img.attr('contenteditable', false);
-            $(this).summernote('insertNode', img[0]);
-          }
-        },
         toolbar: [
           ['fontname', ['fontname']],
           ['fontsize', ['fontsize']],
@@ -339,21 +347,13 @@
         ],
         fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
         fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
-        height: 620,
+        height: 370,
         disableResizeEditor: true
       });
     };
 
     function initializeSummernote(idCheck) {
       $('#dailyPlanContents' + idCheck).summernote({
-        callbacks: {
-          onImageUpload: function (files) {
-            // 이미지 업로드 후, 이미지 태그에 contenteditable 속성을 false로 설정
-            var img = $('<img>').attr('src', URL.createObjectURL(files[0]));
-            img.attr('contenteditable', false);
-            $(this).summernote('insertNode', img[0]);
-          }
-        },
         toolbar: [
           ['fontname', ['fontname']],
           ['fontsize', ['fontsize']],
@@ -367,7 +367,7 @@
         fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
         fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
         focus: true,
-        height: 620,
+        height: 370,
         disableResizeEditor: true
       });
     }
@@ -412,6 +412,26 @@
         var mapContainer = document.getElementById('map' + i);
         var map = new kakao.maps.Map(mapContainer, mapOptions);
         maps.push(map);
+
+        for(var j = 0; j < pathInfo[i].length; j++){
+          if (pathInfo[i][j] !== "") {
+            var path = JSON.parse(pathInfo[i][j]);
+
+            var pathCoordinates = path.map(function (coord) {
+              return new kakao.maps.LatLng(coord.Ma, coord.La);
+            });
+
+            var polyline = new kakao.maps.Polyline({
+              path: pathCoordinates, // Initialize the path array
+              strokeWeight: 5,
+              strokeColor: '#e11f1f',
+              strokeOpacity: 0.8,
+              strokeStyle: 'shortdash'
+            });
+            polyline.setMap(map);
+          }
+        }
+
       }
       $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
 
@@ -512,6 +532,7 @@
               });
               itemEl.onmouseover = function () {
                 displayInfowindow(marker, title, indexCheck);
+                marker.setMap(maps[indexCheck]);
                 maps[indexCheck].panTo(marker.getPosition()); // 마우스를 올린 위치로 자연스럽게 이동
               };
               itemEl.onmouseout = function () {
@@ -889,18 +910,22 @@
       if (idCheck < 10) {
         console.log("뭐나오는지")
         console.log(idCheck);
-        var dynamicHTML = '<hr></hr>' +
-                '<div class="container" id="container' + idCheck +'"><div class="day">' + (idCheck+1)  + '일차 여행플랜 </div>' + '<div class="row">' + '<div class="col-sm-7">' +
+
+        var dynamicHTML = '<hr></hr><div style="margin-top: 3%"></div><div class="container" id="container' + idCheck +'">' +
+                '<div display="flex;">' + '<div class="day">' + (idCheck+1)  + '일차 여행플랜 <button class="icon-locate-map right" id="reset' + idCheck + '" onclick="reset(event, ' + idCheck + ')"></button></div>' +
+                '</div>' + '<div class="row">' + '<div class="col-sm-12">' + '<div id="map' + idCheck + '" style="width: 100%; height: 300px; border-radius: 15px;"></div>' +
+                '<div id="menu_wrap' + idCheck + '" class="bg_white" style="height:90%; overflow:auto; margin: 0%;">' + '<div class="input-group">' +
+                '<input type="text" class="form-control" id="placeName' + idCheck + '" onkeypress="handleKeyPress(event, ' + idCheck + ')" placeholder="명소 검색" style="width: 60%; font-size: 11px">' +
+                '<button class="btn btn-primary" id="placeSearch' + idCheck + '" style="width: 30%; font-size: 9px;" onclick="handleKeyPress(event, ' + idCheck + ')">Search</button>' +
+                '</div>' + '<ul id="placesList' + idCheck + '"></ul>' + '<div id="pagination"></div>' + '</div>' + '</div>' + '</div>' +
+                '<div style="margin-top: 3%"></div>' + '<div class="row">' + '<div class="col-sm-9">' +
                 '<textarea id="dailyPlanContents' + idCheck + '" name="dailyPlanContents" required style="width: 100%;"></textarea>' +
-                '</div>' + '<div class="col-sm-5">' + '<div class="sidebar">' +
-                '<div class="border-box">' + '<div id="menu_wrap' + idCheck + '"></div>' + '<div class="box-title">' + '<div class="input-group">' +
-                '<input type="text" class="form-control" id="placeName' + idCheck + '" onkeypress="handleKeyPress(event, ' + idCheck + ')" placeholder="명소 검색">' +
-                '<div class="input-group-btn">' +
-                '<button class="btn btn-primary" id="placeSearch' + idCheck + '" onclick="handleKeyPress(event, ' + idCheck + ')">Search</button>' +
-                '</div>' + '</div>' + '</div><button class="icon-locate-map" id="reset' + idCheck + '" onclick="reset(event, ' + idCheck + ')"></button>' +
-                '<div id="map' + idCheck + '" style="width: 100%; height: 300px;"></div>' + '<ul id="placesList' + idCheck + '"></ul>' + '<div id="pagination"></div>' +
-                '</div>' + '<div class="border-box">' + '<div class="box-title">명소리스트 <div class="tag-link" style="text-align: right;" id="totalTripTime' + idCheck + '"></div></div>' +
-                '<ul class="list' + idCheck + '">' + '</ul>' + '</div>' + '</div>' + '</div>' + '</div>' + '</div>';
+                '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' + '<div class="border-box" style="height: 400px; overflow: auto;">' +
+                '<div class="box-title">명소리스트' + '<div id="totalTripTime' + idCheck +'"></div>' + '</div>' + '<ul class="list' + idCheck + '" style="text-align: center;"></ul>' +
+                '</div>' + '</div>' + '</div>' + '</div>' + '<div class="addDaily" id="addDaily" style="text-align: right;">' +
+                '</div></div>';
+
+
 
         // 동적으로 생성한 요소들을 DOM에 추가
         var newElement = document.createElement('div');

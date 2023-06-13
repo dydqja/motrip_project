@@ -32,18 +32,17 @@
         //유저 아이디가 없다면 폴링을 하지 않는다.
         if(!userId){
           //  console.log('유저 아이디가 없으므로 폴링을 하지 않는다.');
-            return;
-        }
-        //문서 로드후 최초 1회 폴링을 시도한다.
-        getUnreadAlarmCount(userId);
-
-        //id 폴링타임의 값을 폴링타임으로 세팅한다.
-        $("#pollingTime").val(pollingTime);
-        //매 초마다 유저의 이름으로 unread 알람을 가져온다.
-        setInterval(function() {
+        }else{
+            //문서 로드후 최초 1회 폴링을 시도한다.
             getUnreadAlarmCount(userId);
-        }, pollingTime * 1000);
 
+            //id 폴링타임의 값을 폴링타임으로 세팅한다.
+            $("#pollingTime").val(pollingTime);
+            //매 초마다 유저의 이름으로 unread 알람을 가져온다.
+            setInterval(function() {
+                getUnreadAlarmCount(userId);
+            }, pollingTime * 1000);
+        }
     });
 
     //안 읽은 알람 갯수 파악. 폴링하는 부분에서 호출되면서 알람 카운터의 값들을 가져온다.
@@ -379,7 +378,7 @@
             readAlarm(alarmNo);
             
             //거절 url로 이동한다.
-            window.location.href = alarmRejectUrl;
+            rejectAlarmRequest(alarmRejectUrl);
 
     });
         //보류 버튼

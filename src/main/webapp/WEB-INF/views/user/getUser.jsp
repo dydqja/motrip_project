@@ -63,7 +63,7 @@
 
 <body>
 
-
+<form><input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}"></form>
 <%--    <%@ include file="/WEB-INF/views/layout/header.jsp" %>--%>
 
 
@@ -85,7 +85,7 @@
 
         <div class="profile-image">
 
-            <img src="/images/user/khunam.png" style="width: 200px; height: 200px;" alt="">
+            <img src="${getUser.userPhoto}" style="width: 200px; height: 200px;" alt="">
 
         </div>
 
@@ -360,7 +360,7 @@
                                             <div class="left"><span class="icon-calendar"></span>   ${chatRoom.strDate} [${chatRoom.tripDays}일]</div>
 
                                             <div class="right">
-                                                <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}" data-toggle="modal" ><span class="icon-plane"></span></a>
+                                                <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"><span class="icon-plane"></span></a>
                                                 <a href="#modal-regular2" data-toggle="modal"><span class="icon-user" value="${chatRoom.chatRoomNo}"></span></a>
                                                 <input type="hidden" />
                                                 <div id="modal-regular2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -391,7 +391,6 @@
                                                 <input type="hidden" class="roomGender" value="${chatRoom.gender}">
                                                 <input type="hidden" class="minAge" value="${chatRoom.minAge}">
                                                 <input type="hidden" class="maxAge" value="${chatRoom.maxAge}">
-                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Enroll</button>
                                             </c:if>
                                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">
                                                 <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
@@ -410,18 +409,18 @@
                             <nav aria-label="Page navigation example" class="text-center">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item ${chatRoomPage.currentPage == 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${chatRoomPage.currentPage - 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Previous">
+                                        <a class="page-link" href="/user/getUser?currentPage=${chatRoomPage.currentPage - 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Previous">
                                             &laquo;
                                         </a>
                                     </li>
                                     <c:forEach var="i" begin="${chatRoomBeginUnitPage}" end="${chatRoomEndUnitPage}">
                                         <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-                                            <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${i}&searchKeyword=${chatRoomSearch.searchKeyword}">${i}</a>
+                                            <a class="page-link" href="/user/getUser?currentPage=${i}&searchKeyword=${chatRoomSearch.searchKeyword}">${i}</a>
                                         </li>
                                     </c:forEach>
                                     <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-                                        <a class="page-link" href="/chatRoom/chatRoomList?currentPage=${chatRoomPage.currentPage + 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Next">
+                                        <a class="page-link" href="/user/getUser?currentPage=${chatRoomPage.currentPage + 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Next">
                                             &raquo;
                                         </a>
                                     </li>
@@ -431,6 +430,7 @@
                     </div>
                 </main>
             </div><!-- END Tabs findPwd -->
+
         </div><!-- END Tabs Content -->
     </div>
 </div>
@@ -898,10 +898,127 @@
 //     여행플랜부분 끝 ######################################################################
 
 //     채팅목록부분 시작#####################################################################
+    $(document).ready(function () {
+    $(function() {
+        $(".icon-user").on("click", function() {
+            var value = $(this).attr('value');
+            console.log(value);
+            $.ajax({
+                url: '/chatMember/json/fetchChatMembers/'+value,
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                success: function(members) {
+                    console.log(members);
+                    let memberArray = [];
 
+                    // 멤버를 출력할 요소 가져오기
+                    let modalBody = $("#modal-regular2").find(".modal-body");
 
+                    // 기존 멤버 제거
+                    modalBody.empty();
 
+                    // 멤버 추가
+                    members.forEach(function(member) {
+                        console.log(member.name);
+                        let memberElement = $("<div></div>").text(member.userId);
+                        memberArray.push(memberElement);
+                        modalBody.append(memberElement);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.log('AJAX Error:', error);
+                }
+            });
+        });
+    });
 
+});
+    function fncGoChatroom(){
+        $("form").attr("method","POST").attr("action","/chatRoom/chat").submit();
+    }
+    $(function() {
+        $(".go").on("click", function() {
+            let value = $(this).attr('value');
+            let userId = $("#userId").attr('value');
+            console.log(value);
+            console.log(userId);
+            $.ajax({
+                url: '/chatMember/json/fetchChatMembers/'+value,
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                success: function(members) {
+                    console.log(members);
+                    let flag=0;
+                    // 멤버 인지 확인
+                    members.forEach(function(member) {
+                        console.log("member name : ",member.userId);
+
+                        if(member.userId === userId){
+                            flag=1;
+                        }
+                    });
+                    if(flag === 1){
+                        $(function(){
+                            $("form").append($('<input>').attr({
+                                    type: 'hidden',
+                                    name: 'chatRoomNo',
+                                    value: value
+                                })
+                            );
+                            fncGoChatroom();
+                        });
+                    }else{alert("your not a member!!!");}
+                },
+                error: function(xhr, status, error) {
+                    console.log('AJAX Error:', error);
+                }
+            });
+        });
+    });
+    $(function() {
+        $(".icon-user").on("click", function() {
+            var value = $(this).attr('value');
+            console.log(value);
+            $.ajax({
+                url: '/chatMember/json/fetchChatMembers/'+value,
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                success: function(members) {
+                    console.log(members);
+                    let memberArray = [];
+
+                    // 멤버를 출력할 요소 가져오기
+                    let modalBody = $("#modal-regular2").find(".modal-body");
+
+                    // 기존 멤버 제거
+                    modalBody.empty();
+
+                    // 멤버 추가
+                    members.forEach(function(member) {
+                        console.log(member.name);
+                        let memberElement = $("<div></div>").text(member.userId);
+                        memberArray.push(memberElement);
+                        modalBody.append(memberElement);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.log('AJAX Error:', error);
+                }
+            });
+        });
+    });
 </script>
 
 <!-- 회원정보수정 모달 인클루드 -->

@@ -37,6 +37,7 @@ function addMemoRequest(userId, memoTitle, memoContents,memoColor,memoDialog){
             //summernote를 수정한다.
             let summernote = memoDialog.find('.summernote-contents');
             summernote.summernote('reset');
+            let changedMemoContents = htmlChanger(addedMemo.memoContents)
             summernote.summernote('pasteHTML', addedMemo.memoContents);
             //unEditMemo()를 호출한다.
             unEditMemo(memoDialog);
@@ -94,6 +95,7 @@ function updateMemoRequest(userId, memoTitle, memoContents,memoColor,memoDialog)
             //summernote를 수정한다.
             let summernote = memoDialog.find('.summernote-contents');
             summernote.summernote('reset');
+//            let changedMemoContents = htmlChanger(updatedMemo.memoContents)
             summernote.summernote('pasteHTML', updatedMemo.memoContents);
             //unEditMemo()를 호출한다.
             unEditMemo(memoDialog);
@@ -322,3 +324,35 @@ function nicknameCheckRequest(nickname,checkSpace){
     });
 }
 
+
+
+function getBase64Image(img) {
+    let canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    let dataURL = canvas.toDataURL("image/png");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+function htmlChanger(memoContents) {
+    let div = document.createElement('div');
+    div.innerHTML = memoContents;
+
+    let images = div.getElementsByTagName('img');
+    for (let i = 0; i < images.length; i++) {
+        let img = images[i];
+        let src = img.getAttribute('src');
+
+        if (src.startsWith('/imagePath/')) {
+            let base64 = getBase64Image(img);
+            img.setAttribute('src', 'data:image/png;base64,' + base64);
+        }
+    }
+
+    let changedHtml = div.innerHTML;
+    return changedHtml;
+}

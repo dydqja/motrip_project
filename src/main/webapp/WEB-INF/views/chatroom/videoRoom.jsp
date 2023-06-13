@@ -38,19 +38,17 @@
 </main>
 <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
 <script>
-  import {io} from "socket.io-client";
 
-  const socket = io(); //소켓 io 실행하는 서버찾아서 연결
-
+  const socket = io.connect("http://localhost:3000", {
+    cors:{origin:"http://localhost:3000"}//"http://192.168.0.28:3000" "http://localhost:3000"}
+  });
   const myFace = document.getElementById("myFace");
   const muteBtn = document.getElementById("mute");
   const cameraBtn = document.getElementById("camera");
   const cameraSelect = document.getElementById("cameras"); //select dom가져옴
-
-  //call
   const call = document.getElementById("call");
-
-  call.hidden = true;
+  //call
+    call.hidden = true;
 
   let myStream;
   let muted = false;
@@ -251,6 +249,7 @@
     console.log("peer's stream",data.stream);
     console.log("myStream",myStream);
     peersFace.srcObject = data.stream;
-  }</script>
+  }
+</script>
 </body>
 </html>

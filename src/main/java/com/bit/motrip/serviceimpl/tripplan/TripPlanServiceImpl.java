@@ -1,5 +1,6 @@
 package com.bit.motrip.serviceimpl.tripplan;
 
+import com.bit.motrip.common.ImageSaveService;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.evaluateList.EvaluateListDao;
 import com.bit.motrip.dao.tripplan.DailyPlanDao;
@@ -35,12 +36,9 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
-
-    //화면에 보여줄 리스트의 수
-    @Value("${tripPlanPageSize}")
-    private int tripPlanPageSize;
-
-    HttpSession httpSession;
+    @Autowired
+    @Qualifier("imageSaveService")
+    ImageSaveService imageSaveService;
 
     @Override
     public Map<String , Object > selectTripPlanList(Map<String, Object> parameters) throws Exception {
@@ -56,10 +54,13 @@ public class TripPlanServiceImpl implements TripPlanService {
         System.out.println("서비스 임플로 들어왔을떄 : " + parameters);
 
         List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(parameters);
-        //for (TripPlan tp : tripPlanList) {
-        //    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
-            // 내거 날짜 바꾸기
-        //}
+        for (TripPlan tp : tripPlanList) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+            String strDate = simpleDateFormat.format(tp.getTripPlanRegDate());
+            tp.setStrDate(strDate);
+
+            tp.setTripPlanNickName(userService.getUserById(tp.getTripPlanAuthor()).getNickname());
+        }
         int totalCount = tripPlanDao.selectTripPlanTotalCount(search);
         System.out.println("totalCount : " + totalCount);
 
@@ -67,10 +68,6 @@ public class TripPlanServiceImpl implements TripPlanService {
 
         map.put("list", tripPlanList );
         map.put("totalCount", new Integer(totalCount));
-        if(parameters.get("user") != null) {
-            map.put("tripPlanAuthor", tripPlanList.get(0).getTripPlanAuthor());
-            System.out.println("map : " + map);
-        }
 
         return map;
     }
@@ -78,13 +75,18 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Override // 여행플랜 저장
     public void addTripPlan(TripPlan tripPlan) throws Exception {
 
-        tripPlan.setTripPlanRegDate(new Date()); // 날짜변경해야함
+        //tripPlan.setTripPlanRegDate(new Date()); // 날짜변경해야함
 
         tripPlanDao.addTripPlan(tripPlan);
         int tripPlanNo = tripPlanDao.getTripPlan();
         List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
         for(int i=0; i<dailyPlan.size(); i++) {
             dailyPlan.get(i).setTripPlanNo(tripPlanNo);
+
+            String html = dailyPlan.get(i).getDailyPlanContents();
+            String changedHtml = imageSaveService.saveImage(html, tripPlan.getTripPlanAuthor(), "tripPlan");
+            dailyPlan.get(i).setDailyPlanContents(changedHtml);
+
             dailyPlanDao.addDailyPlan(dailyPlan.get(i));
             int dailyPlanNo = dailyPlanDao.getDailyPlan();
             List<Place> place = dailyPlan.get(i).getPlaceResultMap();
@@ -105,6 +107,12 @@ public class TripPlanServiceImpl implements TripPlanService {
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
         tripPlan.setTripPlanViews(tripPlan.getTripPlanViews() + 1);
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+        String strDate = simpleDateFormat.format(tripPlan.getTripPlanRegDate());
+        tripPlan.setStrDate(strDate);
+
+        tripPlan.setTripPlanNickName(userService.getUserById(tripPlan.getTripPlanAuthor()).getNickname());
+
 //        for(int i=0; i<tripPlan.getDailyplanResultMap().size(); i++){ // 총 이동시간을 스트링으로 바꿔출력하기 위해
 //            int total = Integer.parseInt(tripPlan.getDailyplanResultMap().get(i).getTotalTripTime());
 //            tripPlan.getDailyplanResultMap().get(i).setTotalTripTime(totaltime(total));
@@ -118,7 +126,7 @@ public class TripPlanServiceImpl implements TripPlanService {
     public TripPlan updateTripPlan(TripPlan tripPlan) throws Exception{
 
         if(!tripPlan.getisTripCompleted()){
-            tripPlan.setTripPlanRegDate(new Date());
+            //tripPlan.setTripPlanRegDate(new Date());
             tripPlanDao.updateTripPlan(tripPlan);
             List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
             List<DailyPlan> defaultDailyPlan = dailyPlanDao.selectDailyPlan(tripPlan.getTripPlanNo());

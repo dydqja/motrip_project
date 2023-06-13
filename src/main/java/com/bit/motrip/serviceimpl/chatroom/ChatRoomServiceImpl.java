@@ -125,7 +125,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         map.put("userId",userId);
         List<ChatRoom> chatRoomList = chatRoomDao.myChatRoomListPage(map);
 
-        int totalCount = chatRoomDao.getChatRoomTotalCount(search); //토탈 카운트
+        int totalCount = chatRoomDao.getMyChatRoomTotalCount(userId); //토탈 카운트
         System.out.println("totalcount in servicelayer : "+totalCount);
         Map<String, Object> map2 = new HashMap<String, Object>();
 

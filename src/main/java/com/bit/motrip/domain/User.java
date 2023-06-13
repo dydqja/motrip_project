@@ -32,11 +32,9 @@ public class User {
     private int warningCount;
     private boolean isSelfIntroPublic;
     private boolean isUserPhotoPublic;
-    private boolean isUsingMemoBar;
-    private boolean isListingAttachedMemo;
-    private boolean isListingSharedMemo;
     private int evaluateCount;
-//    private List<String> accessibleMemos;
+    private boolean isGettingSmsAlarm;
+
 
     //constructor
     public User() {
@@ -232,30 +230,6 @@ public class User {
         isUserPhotoPublic = userPhotoPublic;
     }
 
-    public boolean isUsingMemoBar() {
-        return isUsingMemoBar;
-    }
-
-    public void setUsingMemoBar(boolean usingMemoBar) {
-        isUsingMemoBar = usingMemoBar;
-    }
-
-    public boolean isListingAttachedMemo() {
-        return isListingAttachedMemo;
-    }
-
-    public void setListingAttachedMemo(boolean listingAttachedMemo) {
-        isListingAttachedMemo = listingAttachedMemo;
-    }
-
-    public boolean isListingSharedMemo() {
-        return isListingSharedMemo;
-    }
-
-    public void setListingSharedMemo(boolean listingSharedMemo) {
-        isListingSharedMemo = listingSharedMemo;
-    }
-
     public int getEvaluateCount() {
         return evaluateCount;
     }
@@ -263,13 +237,14 @@ public class User {
     public void setEvaluateCount(int evaluateCount) {
         this.evaluateCount = evaluateCount;
     }
-//    public List<String> getAceessableMemos() {
-//        return accessibleMemos;
-//    }
-//
-//    public void setAceessableMemos(List<String> aceessableMemos) {
-//        this.accessibleMemos = aceessableMemos;
-//    }
+
+    public boolean isGettingSmsAlarm() {
+        return isGettingSmsAlarm;
+    }
+
+    public void setGettingSmsAlarm(boolean gettingSmsAlarm) {
+        isGettingSmsAlarm = gettingSmsAlarm;
+    }
 
     public static User naverUser(Map<String, String> map) {
         User user = new User();
@@ -297,6 +272,7 @@ public class User {
                 ", isUserPhotoPublic=" + isUserPhotoPublic +
                 ", role=" + role +
                 ", evaluateCount=" + evaluateCount +
+                ", evaluateCount=" + isGettingSmsAlarm +
                 '}';
     }
 }

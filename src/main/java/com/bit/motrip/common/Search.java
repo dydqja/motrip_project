@@ -1,6 +1,7 @@
 package com.bit.motrip.common;
 
 import java.util.Arrays;
+import java.util.Date;
 
 public class Search {
 
@@ -22,11 +23,10 @@ public class Search {
     private String gender;
 
     private String planCondition;
-    private String reviewCondition;
     private int minAge;
     private int maxAge;
-    private int startDate;
-    private int duration;
+    private Date searchTravelStartDate;
+    private int searchDuration;
 
     //Constructor
     public Search() {
@@ -39,12 +39,6 @@ public class Search {
 
     public void setPlanCondition(String planCondition) {
         this.planCondition = planCondition;
-    }
-
-    public String getReviewCondition() {return reviewCondition;}
-
-    public void setReviewCondition(String reviewCondition) {
-        this.reviewCondition = reviewCondition;
     }
 
     public String getGender() {
@@ -69,22 +63,6 @@ public class Search {
 
     public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
-    }
-
-    public int getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(int startDate) {
-        this.startDate = startDate;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
     }
 
     public int getLimit() {
@@ -168,6 +146,22 @@ public class Search {
         this.searchConditions = searchConditions;
     }
 
+    public Date getSearchTravelStartDate() {
+        return searchTravelStartDate;
+    }
+
+    public void setSearchTravelStartDate(Date searchTravelStartDate) {
+        this.searchTravelStartDate = searchTravelStartDate;
+    }
+
+    public int getSearchDuration() {
+        return searchDuration;
+    }
+
+    public void setSearchDuration(int searchDuration) {
+        this.searchDuration = searchDuration;
+    }
+
     @Override
     public String toString() {
         return "Search{" +
@@ -187,9 +181,7 @@ public class Search {
                 ", minAge=" + minAge +
                 ", maxAge=" + maxAge +
                 ", planCondition=" + planCondition +
-                ", reviewCondition=" + reviewCondition +
-                ", startDate=" + startDate +
-                ", duration=" + duration +
+                ", searchTravelStartDate="+searchTravelStartDate+
                 '}';
     }
 }

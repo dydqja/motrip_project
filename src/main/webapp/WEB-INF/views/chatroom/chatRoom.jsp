@@ -634,8 +634,7 @@
             });
         });
     </script>
-    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
-    <script src="/js/main.js"></script>
+
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
@@ -671,12 +670,12 @@
         <main class="chat-main">
             <div class="chat-sidebar" >
                 <div class="chat-title" style="text-align: center"><h3 id="chatRoomTitle">${chatRoom.chatRoomTitle}</h3></div>
-                <audio id="myFace" autoplay></audio>
-            <div class="chatButton" align="center">
+                <audio id="myAudio" autoplay></audio>
+            <div class="chatButton" align="left">
                 <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"
                    data-toggle="modal" type="button" class="btn btn-primary" style="background-color: #66ffff">TripPlan</a>
-                <div type="button" class="btn btn-primary" id="mute" style="background-color: #75ff66">Mute</div>
-                <button class="btn btn-primary" id="videoRoom" style="background-color: #e366ff">Video</button>
+                <div type="button" class="btn btn-primary" id="roomMute" style="background-color: #75ff66">Mute</div>
+                <button type="button" class="btn btn-primary" id="videoRoom2" style="background-color: #e366ff">Video</button>
             </div>
                 <div></div>
                 <div class="users" style="text-align: left; border-bottom: #00b3ee"><h3>현재 참여 목록</h3></div>
@@ -687,13 +686,27 @@
             </div>
             <div class="chat-messages">
             </div>
+            <div class="chat-trip">
+                <div id="call">
+                    <div id="myStream">
+                        <video id="myFace" autoplay playsinline width="300" height="300"></video><br/>
+                        <button type="button" id="mute">Mute</button>
+                        <button type="button" id="camera">Turn Camera Off</button>
+                        <select id="cameras"></select>
+                        <video id="peersFace" autoplay playsinline width="200" height="200"></video>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-video">
+            </div>
         </main>
     </form>
 
-    <div id="image-preview"></div> <!-- Container for image preview -->
+<%--    <div id="image-preview"style="width:250px"></div> <!-- Container for image preview -->--%>
     <div class="chat-form-container">
 
         <form id="chat-form" enctype="multipart/form-data">
+            <div id="image-preview"style="width:250px;height: 45px"></div>
             <input type="file" id="uploadFile" name="uploadFile">
             <label for="uploadFile" class="file-label">+</label>
             <input
@@ -721,7 +734,7 @@
       crossorigin="anonymous"
     ></script> -->
 
-<%--    <script src="/js/imagepreview.js"></script>--%>
+
     <%--<script src="/vendor/jquery/dist/jquery.min.js"></script>--%>
 
 
@@ -740,6 +753,26 @@
 <%--   // upload.addEventListener('click', () => realUpload.click());--%>
 
 <%--</script>--%>
+    <script>
+        const call = document.getElementById("call");
+        const videoBtn = document.getElementById('videoRoom2');
+        call.hidden=true;
+        const input = document.getElementById("myInput");
 
+        // input.addEventListener("keydown", function(event) {
+        //     if (event.key === "Enter" && event.shiftKey) {
+        //         event.preventDefault(); // 기본 Enter 행동 방지
+        //         const currentCursorPosition = input.selectionStart;
+        //         const inputValue = input.value;
+        //         const newValue = inputValue.substring(0, currentCursorPosition) + "\n" + inputValue.substring(currentCursorPosition);
+        //         input.value = newValue;
+        //         input.selectionStart = input.selectionEnd = currentCursorPosition + 1;
+        //     }
+        // });
+    </script>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/rtc.js"></script>
+    <script src="/js/imagepreview.js"></script>
 </body>
 </html>

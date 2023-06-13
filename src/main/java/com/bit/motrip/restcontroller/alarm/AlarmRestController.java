@@ -131,7 +131,7 @@ public class AlarmRestController {
         String chatRoomTitle = chatRoom.getChatRoomTitle();
 
         //알람 내용
-        String contents = chatRoomTitle + "에 참가 신청이 수락되었습니다. 지금 바로 이동하시겠습니까?";
+        String contents = receiver.getNickname()+"님, "+chatRoomTitle + "에 참가 신청이 수락되었습니다. 지금 바로 참가하실 수 있습니다.";
         //알람 제목
         String title = chatRoomTitle+"에 참가 신청이 수락되었습니다.";
         //naviUrl
@@ -142,4 +142,50 @@ public class AlarmRestController {
         return successJson;
     }
 
+    @GetMapping("rejectChatRoomMember/{chatRoomNo}/{userId}/{tripPlanNo}")
+    public String rejectChatRoomMember(
+            @PathVariable int chatRoomNo,
+            @PathVariable String userId,
+            @PathVariable int tripPlanNo
+    ) throws Exception {
+        System.out.println("레스트컨트롤러 rejectChatRoomMember 동작");
+        //debug
+        System.out.println("GET : rejectMember");
+        System.out.println("받은 방번호"+chatRoomNo);
+        System.out.println("받은 아이디"+userId);
+        System.out.println("받은 트립플랜번호"+tripPlanNo);
+
+        /*//채팅방에 참가신청한 사람을 채팅방에 추가한다.
+        ChatMember chatMember = new ChatMember();
+        chatMember.setChatRoomNo(chatRoomNo);
+        chatMember.setUserId(userId);
+        chatMember.setTripPlanNo(tripPlanNo);
+
+        try {
+            chatMemberService.addChatMember(chatMember);
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("채팅방에 참가신청한 사람을 채팅방에 추가하는데 실패했습니다.");
+            return failJson;
+        }*/
+        /*수락한 뒤 신청자에게 알람을 보내는 로직 추가*/
+
+        //알람을 받을 사람.
+        User fakeSender = new User();
+        User receiver = userService.getUserById(userId);
+        //채팅방 이름
+        ChatRoom chatRoom = chatRoomService.getChatRoom(chatRoomNo);
+        String chatRoomTitle = chatRoom.getChatRoomTitle();
+
+        //알람 내용
+        String contents = receiver.getNickname()+"님, "+chatRoomTitle + "에 참가 신청이 거절되었습니다.";
+        //알람 제목
+        String title = chatRoomTitle+"에 참가 신청이 거절되었습니다.";
+        //naviUrl
+//        String naviUrl = "/chatRoom/getChat?chatRoomNo="+chatRoomNo+"&userId="+userId;
+        alarmService.addConfirmAlarm(fakeSender, receiver, title, contents);
+
+        System.out.println("successJson 을 리턴함.");
+        return successJson;
+    }
 }

@@ -17,7 +17,22 @@ public class WebConfig implements WebMvcConfigurer {
     private String connectPath = "/imagePath/**";
     private String resourcePath = "file:///images/";
 
-   // private String resourcePath = "file:///C:\\motripimage/";
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler(connectPath)
+                .addResourceLocations(resourcePath);
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedMethods("*")
+                .allowedOrigins("*");
+    }
+
+
+    // private String resourcePath = "file:///C:\\motripimage/";
 //    addResourceHandler : 리소스와 연결될 URL path를 지정합니다. (클라이언트가 파일에 접근하기 위해 요청하는 url)
 //    localhost:8080/imagePath*//**
 
@@ -31,12 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     //추가 공부 리소스 https://blog.jiniworld.me/28
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(connectPath)
-                .addResourceLocations(resourcePath);
-    }
-/*    @Bean
+    /*    @Bean
     public TilesConfigurer tilesConfigurer() {
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
         tilesConfigurer.setDefinitions(
@@ -51,19 +61,11 @@ public class WebConfig implements WebMvcConfigurer {
         tilesViewResolver.setOrder(1);
         return tilesViewResolver;
     }*/
-    @Bean
+/*    @Bean
     public ImageSaveService imageSaveService() {
         return new ImageSaveService(resourcePath);
-    }
+    }*/
 
     //CORS 관련 설정해 보았으나, 해결 안됨(그래도 혹시몰라서 남겨둠)
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedMethods("*")
-                .allowedOrigins("*");
-    }
-
-
 
 }
