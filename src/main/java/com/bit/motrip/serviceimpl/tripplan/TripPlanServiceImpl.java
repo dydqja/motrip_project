@@ -1,5 +1,6 @@
 package com.bit.motrip.serviceimpl.tripplan;
 
+import com.bit.motrip.common.ImageSaveService;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.evaluateList.EvaluateListDao;
 import com.bit.motrip.dao.tripplan.DailyPlanDao;
@@ -35,6 +36,9 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
+    @Autowired
+    @Qualifier("imageSaveService")
+    ImageSaveService imageSaveService;
 
     @Override
     public Map<String , Object > selectTripPlanList(Map<String, Object> parameters) throws Exception {
@@ -78,6 +82,11 @@ public class TripPlanServiceImpl implements TripPlanService {
         List<DailyPlan> dailyPlan = tripPlan.getDailyplanResultMap();
         for(int i=0; i<dailyPlan.size(); i++) {
             dailyPlan.get(i).setTripPlanNo(tripPlanNo);
+
+            String html = dailyPlan.get(i).getDailyPlanContents();
+            String changedHtml = imageSaveService.saveImage(html, tripPlan.getTripPlanAuthor(), "tripPlan");
+            dailyPlan.get(i).setDailyPlanContents(changedHtml);
+
             dailyPlanDao.addDailyPlan(dailyPlan.get(i));
             int dailyPlanNo = dailyPlanDao.getDailyPlan();
             List<Place> place = dailyPlan.get(i).getPlaceResultMap();

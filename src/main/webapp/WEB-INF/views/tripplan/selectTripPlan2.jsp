@@ -32,7 +32,7 @@
     <script type="text/javascript">
         let markers = []; // 마커 배열
         let maps = []; // 지도 배열
-        let placeData = [];
+        let pathInfo = []; // 좌표 저장 배열
     </script>
 
     <style>
@@ -288,12 +288,10 @@
                                     var tripPath = '${place.tripPath}';
 
                                     var index = ${i-1};
-
-                                    if(!placeData[index]) {
-                                        placeData[index] = [];
+                                    if(!pathInfo[index]) {
+                                        pathInfo[index] = [];
                                     }
-
-                                    placeData[index].push(tripPath);
+                                    pathInfo[index].push(tripPath);
 
                                     // markers 배열에 좌표 및 맵 ID 정보 추가
                                     markers.push({
@@ -401,12 +399,9 @@
 
             maps.push(map);
 
-            console.log(placeData);
-            console.log(placeData[i].length);
-
-            for(var j = 0; j < placeData[i].length; j++){
-                if (placeData[i][j] !== "") {
-                    var path = JSON.parse(placeData[i][j]);
+            for(var j = 0; j < pathInfo[i].length; j++){
+                if (pathInfo[i][j] !== "") {
+                    var path = JSON.parse(pathInfo[i][j]);
 
                     var pathCoordinates = path.map(function (coord) {
                         return new kakao.maps.LatLng(coord.Ma, coord.La);

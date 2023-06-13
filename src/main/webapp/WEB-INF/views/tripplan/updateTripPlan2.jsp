@@ -45,6 +45,8 @@
     let totalTripTimes = [];
     let polylineArray = []; // 명소간 이동경로를 보여주기 위한 경로
     let pathArray = []; // 디비에 저장할 이동경로 패스값
+    let placeData = []; // 좌표 저장 배열
+    let pathInfo = []; // 저장된 좌표를 담아둘 배열
 
     let mapOptions = { // 지도 옵션
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
@@ -221,12 +223,20 @@
                 var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
                 var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
                 var mapIndex = 'map${i-1}'; // 해당 명소의 맵 ID
+                var tripPath = '${place.tripPath}';
 
                 // 명소간 이동시간 저장
                 if (!placeTripTimes[mapIndex]) {
                   placeTripTimes[mapIndex] = [];
                 }
                 placeTripTimes[mapIndex].push(${place.tripTime});
+
+                // 폴리라인 그리기 위한 배열
+                var index = ${i-1};
+                if(!pathInfo[index]) {
+                  pathInfo[index] = [];
+                }
+                pathInfo[index].push(tripPath);
 
                 // 포지션과 mapId는 처음 읽어들어왔을때 중심점 잡기위해
                 var place = {
@@ -418,6 +428,26 @@
         var mapContainer = document.getElementById('map' + i);
         var map = new kakao.maps.Map(mapContainer, mapOptions);
         maps.push(map);
+
+        for(var j = 0; j < pathInfo[i].length; j++){
+          if (pathInfo[i][j] !== "") {
+            var path = JSON.parse(pathInfo[i][j]);
+
+            var pathCoordinates = path.map(function (coord) {
+              return new kakao.maps.LatLng(coord.Ma, coord.La);
+            });
+
+            var polyline = new kakao.maps.Polyline({
+              path: pathCoordinates, // Initialize the path array
+              strokeWeight: 5,
+              strokeColor: '#e11f1f',
+              strokeOpacity: 0.8,
+              strokeStyle: 'shortdash'
+            });
+            polyline.setMap(map);
+          }
+        }
+
       }
       $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
 
