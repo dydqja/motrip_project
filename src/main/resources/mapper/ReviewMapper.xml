@@ -24,15 +24,6 @@
 
     </resultMap>
 
-    <resultMap id="commentResultMap" type="com.bit.motrip.domain.Comment">
-        <id property="commentNo" column="comment_no" jdbcType="INTEGER"/>
-        <result property="reviewNo"      column="review_no"       jdbcType="INTEGER" />
-        <result property="commentAuthor" column="comment_author" jdbcType="VARCHAR"/>
-        <result property="commentContents" column="comment_contents" jdbcType="VARCHAR"/>
-        <result property="commentRegDate" column="comment_reg_date" jdbcType="DATE"/>
-        <result property="parentCommentNo" column="parent_comment_no" jdbcType="INTEGER"/>
-    </resultMap>
-
     <resultMap id="tripPlanResultMap" type="com.bit.motrip.domain.TripPlan">
         <id column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
         <result column="trip_plan_author" property="tripPlanAuthor" jdbcType="VARCHAR"/>
@@ -187,35 +178,38 @@
     </insert>
 
     <select id="selectReviewList" parameterType="Map" resultMap="reviewResultMap">
+        SELECT *
+        FROM (
         SELECT r.review_no, r.trip_plan_no, r.review_author, r.review_title, r.review_contents, r.review_thumbnail, r.insta_post_link,
         r.is_review_public, r.review_likes, r.view_count, r.review_reg_date, r.is_review_deleted,
-        r.review_del_date
+        r.review_del_date,
+        ROW_NUMBER() OVER (ORDER BY r.review_reg_date DESC, r.review_no DESC) AS row_num
         FROM review r
-        WHERE
+        WHERE  1=1
         <choose>
-            <when test="condition == 'myReviewList'"><!--<when test="reviewAuthor != null">-->
-                r.review_author = #{reviewAuthor}
+            <when test="condition == 'myReviewList'">
+              AND  r.review_author =  #{user.userId}
             </when>
-            <otherwise>
-                r.is_review_public = TRUE AND r.is_review_deleted = FALSE
-            </otherwise>
+            <when test="condition == 'publicReviewList'">
+              AND r.is_review_deleted = FALSE
+            </when>
         </choose>
         GROUP BY r.review_no
+        ) AS sub
+        WHERE row_num BETWEEN #{search.startRowNum} AND #{search.endRowNum}
         ORDER BY
         <choose>
-            <when test="'view_count' == search.searchCondition">
-                r.view_count DESC, r.review_no DESC
+            <when test="'view_count' == search.reviewCondition">
+                view_count DESC, review_no DESC
             </when>
-            <when test="'review_likes' == search.searchCondition">
-                r.review_likes DESC, r.review_no DESC
+            <when test="'review_likes' == search.reviewCondition">
+                review_likes DESC, review_no DESC
             </when>
             <otherwise>
-                r.review_reg_date DESC, r.review_no DESC
+                review_reg_date DESC, review_no DESC
             </otherwise>
         </choose>
-        LIMIT 0, 10;
     </select>
-
 
 
     <select id="getReviewCount" resultType="int">
@@ -273,9 +267,32 @@
     </update>
     <!-- Recover Review -->
 
+
     <!---Review Count-->
     <select id="reviewCount" resultType="int">
         select count(review_no) from review;
     </select>
     <!---Review Count-->
+    <!--조건으로 찾은 후기 갯수 -->
+    <select id="selectReviewTotalCount" parameterType="com.bit.motrip.common.Search"	resultType="int">
+        SELECT COUNT(*)
+        FROM(
+        SELECT *
+        FROM review
+        WHERE 1=1 AND is_review_public = TRUE AND is_review_deleted = FALSE
+        <!--        <choose>-->
+        <!--            <when test="planCondition == 'likes' and searchKeyword != null">-->
+        <!--                AND trip_plan_likes = #{searchKeyword}-->
+        <!--            </when>-->
+        <!--            <when test="planCondition == 'views' and searchKeyword != null">-->
+        <!--                AND trip_plan_views = #{searchKeyword}-->
+        <!--            </when>-->
+        <!--            <when test="planCondition == 'newDate' and searchKeyword != null">-->
+        <!--                AND trip_plan_reg_date = #{searchKeyword}-->
+        <!--            </when>-->
+        <!--        </choose>-->
+        ) countTable
+    </select>
+
+
 </mapper>

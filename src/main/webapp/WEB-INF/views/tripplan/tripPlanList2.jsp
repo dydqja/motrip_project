@@ -73,7 +73,7 @@
             <div class="col-sm-4">
                 <div class="sort-title counter-div right">
                     <div class="sort-title counter-div"><span class="icon-map counter" style="color: green"
-                                                              id="tripPlanCounter"></span>TripPlan
+                                                              id="tripPlanCounter">${page.totalCount}</span>TripPlan
                     </div>
                 </div>
                 <label><br></label>
@@ -112,13 +112,13 @@
                         </div>
                     </div>
 
-                    <div class="border-box">
-                        <div class="box-title">Trip Days Search</div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Days">
-                            <div class="input-group-btn"></div>
-                        </div>
-                    </div>
+<%--                    <div class="border-box">--%>
+<%--                        <div class="box-title">Trip Days Search</div>--%>
+<%--                        <div class="input-group">--%>
+<%--                            <input type="text" class="form-control" placeholder="Days">--%>
+<%--                            <div class="input-group-btn"></div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
 
                 </div>
             </div>
@@ -131,8 +131,13 @@
                     <div class="item-list trip-plan-item-list">
                         <div class="col-sm-5">
                             <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
-                                    type="hidden"
-                                    value="${tripPlan.tripPlanNo}"
+                                    type="hidden" id="tripPlanImage${tripPlan.tripPlanNo}"
+                                    <c:if test="${tripPlan.isPlanDeleted}">
+                                        value="0"
+                                    </c:if>
+                                    <c:if test="${!tripPlan.isPlanDeleted}">
+                                        value="${tripPlan.tripPlanNo}"
+                                    </c:if>
                                     class="tripPlanNo"/></div>
                         </div>
 
@@ -144,7 +149,7 @@
                                     <div class="sub-title">
                                         <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
                                             <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                                                <h6>#${place.placeTags}</h6>
+                                                <h6 style="text-overflow: ellipsis">#${place.placeTags}</h6>
                                             </c:forEach>
                                         </c:forEach>
                                     </div>
@@ -161,35 +166,56 @@
                                         </c:if>
                                     </div>
                                     <div>
-                                        <c:if test="${!tripPlan.isPlanDeleted}">
-                                            <c:if test="${not empty sessionScope.user.userId}">
-                                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                    <a href="/chatRoom/addChatRoom?tripPlanNo=${tripPlan.tripPlanNo}&userId=${sessionScope.user.userId}" type="button"
-                                                       class="btn-sm btn-info right">채팅방 생성</a>
-                                                </c:if>
+                                        <c:if test="${not empty sessionScope.user.userId}">
+                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                                <a href="/chatRoom/addChatRoom?tripPlanNo=${tripPlan.tripPlanNo}&userId=${sessionScope.user.userId}"
+                                                        <c:if test="${tripPlan.isPlanDeleted}">
+                                                            style="display: none;"
+                                                        </c:if>
+                                                   type="button" id="addChatRoom${tripPlan.tripPlanNo}"
+                                                   class="btn-sm btn-info right">채팅방 생성</a>
                                             </c:if>
-                                            <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
-                                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                    <button class="btn-sm btn-info right" name="tripPlanNo"
-                                                            value="${tripPlan.tripPlanNo}">여행완료
-                                                    </button>
-                                                </c:if>
+                                        </c:if>
+                                        <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
+                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                                <button class="btn-sm btn-info right tripPlanComplete" name="tripPlanNo"
+                                                        <c:if test="${tripPlan.isPlanDeleted}">
+                                                            style="display: none;"
+                                                        </c:if>
+                                                        id="tripPlanComplete${tripPlan.tripPlanNo}"
+                                                        value="${tripPlan.tripPlanNo}">여행완료
+                                                </button>
                                             </c:if>
                                         </c:if>
                                     </div>
                                 </div>
                             </div>
                             <div class="item-book">
-                                <c:if test="${!tripPlan.isPlanDeleted}">
+
                                 <button class="btn btn-sm btn-success" name="tripPlanNo"
+                                        <c:if test="${tripPlan.isPlanDeleted}">
+                                            style="display: none;"
+                                        </c:if>
+                                        id="tripPlanView${tripPlan.tripPlanNo}"
                                         value="${tripPlan.tripPlanNo}">조회<input type="hidden"
                                                                                 value="${tripPlan.tripPlanNo}"
                                                                                 class="tripPlanNo"/>
                                 </button>
+
+
+                                <c:if test="${not empty sessionScope.user.userId && tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
+                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                        <button id="btnDelete${tripPlan.tripPlanNo}" class="btn btn-sm btn-info btnDelete"
+                                                value="${tripPlan.tripPlanNo}">복구<input type="hidden"
+                                                                                        value="${tripPlan.tripPlanNo}"
+                                                                                        class="tripPlanNo"/>
+                                        </button>
+                                    </c:if>
                                 </c:if>
+
                                 <c:if test="${not empty sessionScope.user.userId && !tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
                                     <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                        <button id="btnDelete" class="btn btn-sm btn-danger"
+                                        <button id="btnDelete${tripPlan.tripPlanNo}" class="btn btn-sm btn-warning btnDelete"
                                                 value="${tripPlan.tripPlanNo}">삭제<input type="hidden"
                                                                                         value="${tripPlan.tripPlanNo}"
                                                                                         class="tripPlanNo"/>
@@ -197,15 +223,17 @@
                                     </c:if>
                                 </c:if>
 
-                                <c:if test="${not empty sessionScope.user.userId && tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                        <button id="btnDelete" class="btn btn-sm btn-info"
-                                                value="${tripPlan.tripPlanNo}">복구<input type="hidden"
-                                                                                        value="${tripPlan.tripPlanNo}"
-                                                                                        class="tripPlanNo"/>
-                                        </button>
-                                    </c:if>
+                                <c:if test="${sessionScope.user.userId == tripPlanAuthor && !tripPlan.isTripCompleted}">
+                                    <button id="btnTripPlanDelete${tripPlan.tripPlanNo}" class="btn btn-sm btn-danger btnTripPlanDelete"
+                                            <c:if test="${!tripPlan.isPlanDeleted}">
+                                                style="display: none;"
+                                            </c:if>
+                                            value="${tripPlan.tripPlanNo}">완전삭제<input type="hidden"
+                                                                                    value="${tripPlan.tripPlanNo}"
+                                                                                    class="tripPlanNo"/>
+                                    </button>
                                 </c:if>
+
 
                                 <div class="price">
                                     <label class="icon-hand-like">${tripPlan.tripPlanLikes}</label>
@@ -275,32 +303,27 @@
                 if (tripPlanNo == 0) {
                     // 삭제된 플랜을 눌렀을 때 아무 작업도 하지 않음
                 } else {
-                    console.log(tripPlanNo);
                     window.location.href = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
                 }
             });
         });
 
-        // 버튼의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
+        // 여행플랜 조회 버튼
         $(function () {
             $(".btn.btn-sm.btn-success").on("click", function () {
                 var tripPlanNo = $(this).find(".tripPlanNo").val();
-                if (tripPlanNo == 0) {
-                    // 삭제된 플랜을 눌렀을 때 아무 작업도 하지 않음
-                } else {
-                    console.log(tripPlanNo);
-                    window.location.href = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
-                }
+                window.location.href = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
             });
         });
 
         // 여행플랜 삭제하기 버튼
         $(function () {
-            $("button[id='btnDelete']").on("click", function () {
+            $(".btnDelete").on("click", function () {
                 var tripPlanNo = this.value;
-                var delTripPlan = $(this).closest("tr");
-
                 console.log(tripPlanNo);
+
+                var button = $(this); // 클릭한 버튼을 변수에 저장
+                console.log(button)
 
                 $.ajax({
                     url: "/tripPlan/tripPlanDeleted",
@@ -309,7 +332,33 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "JSON",
                     success: function (data) {
+                        if (data.isPlanDeleted) {
+                            button
+                                .removeClass("btn-warning")
+                                .addClass("btn-info")
+                                .html("복구");
 
+                            $("#tripPlanView" + tripPlanNo).hide(); // 조회 버튼 숨기기
+                            $("#addChatRoom" + tripPlanNo).hide(); // 채팅방 생성 버튼 숨기기
+                            $("#tripPlanComplete" + tripPlanNo).hide(); // 여행완료 버튼 숨기기
+                            $("#btnTripPlanDelete" + tripPlanNo).show();
+                            $("#tripPlanImage" + tripPlanNo).val(0);
+
+                            alert("삭제되었습니다.");
+                        } else {
+                            button
+                                .removeClass("btn-info")
+                                .addClass("btn-warning")
+                                .html("삭제");
+
+                            $("#tripPlanView" + tripPlanNo).show(); // 조회 버튼 숨기기
+                            $("#addChatRoom" + tripPlanNo).show(); // 채팅방 생성 버튼 숨기기
+                            $("#tripPlanComplete" + tripPlanNo).show(); // 여행완료 버튼 숨기기
+                            $("#btnTripPlanDelete" + tripPlanNo).hide();
+                            $("#tripPlanImage" + tripPlanNo).val(tripPlanNo);
+
+                            alert("복구되었습니다.");
+                        }
                     },
                     error: function (xhr, status, error) {
                         console.log("여행플랜 삭제 실패");
@@ -318,32 +367,53 @@
             });
         });
 
-        // AJAX 요청을 보내고 여행플랜의 수를 가져오는 함수
-        function listCounter() {
-            $.ajax({
-                url: "/tripPlan/tripPlanCount",
-                type: "POST",
-                dataType: "json",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                data: JSON.stringify({}),
-                success: function (data) {
-                    console.log(data);
-                    $("#tripPlanCounter").html(data); // 변경된 부분: data.count 값을 출력합니다.
-                    $(".total").text("Total : " + data);
-                    var t = $(".counter");
-                    t.countUp({delay: 30, time: 3e3})
-                },
-                error: function (xhr, status, error) {
-                    console.log("An error occurred: " + error);
-                }
-            });
-        }
+        // 여행플랜 완료 버튼
+        $(function () {
+            $(".tripPlanComplete").on("click", function () {
+                var tripPlanNo = $(this).val();
+                console.log(tripPlanNo);
 
-        // 페이지가 열리면 함수 실행
-        listCounter();
+                $.ajax({
+                    url: "/tripPlan/tripPlanCompleted",
+                    type: "GET",
+                    data: {"tripPlanNo": tripPlanNo},
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    success: function (data) {
+                        alert("여행이 완료되었습니다 이제 후기를 작성할수있습니다.")
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("여행플랜 완료 실패");
+                    }
+                });
+            });
+        });
+
+        // 여행플랜 완전삭제 버튼
+        $(function () {
+            $(".btnTripPlanDelete").on("click", function () {
+                var tripPlanNo = $(this).val();
+                console.log(tripPlanNo);
+
+                alert("정말로 데이터를 삭제하겠습니까? \n 다시는 복구할수없습니다.");
+
+                $.ajax({
+                    url: "/tripPlan/tripPlanDrop",
+                    type: "GET",
+                    data: {"tripPlanNo": tripPlanNo},
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        alert("여행플랜을 완전히 삭제하였습니다.")
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("여행플랜 완전 삭제 실패");
+                    }
+                });
+            });
+        });
+
     });
 
 </script>
