@@ -34,24 +34,25 @@
         <result property="isListingAttachedMemo"    column="is_listing_attached_memo"   jdbcType="TINYINT"/>
         <result property="isListingSharedMemo"      column="is_listing_Shared_memo"     jdbcType="TINYINT"/>
         <result property="evaluateCount"            column="evaluate_count"             jdbcType="INTEGER"/>
+        <result property="isGettingSmsAlarm"        column="is_getting_sms_alarm"       jdbcType="TINYINT"/>
     </resultMap>
 
     <insert id="addUser" parameterType="com.bit.motrip.domain.User">
         INSERT
         INTO users( user_id, nickname, pwd, user_name, phone, addr, addr_detail, email, ssn, self_intro, user_photo,
                     gender, age, role, is_secession, secession_date, is_suspension, suspension_date, warning_count,
-                    is_self_intro_public, is_user_photo_public
+                    is_self_intro_public, is_user_photo_public, is_getting_sms_alarm
                   )
         VALUES	 (	#{userId}, #{nickname}, #{pwd}, #{userName}, #{phone}, #{addr}, #{addrDetail}, #{email}, #{ssn}, #{selfIntro}, #{userPhoto},
                     #{gender}, #{age}, #{role}, #{isSecession}, #{secessionDate}, #{isSuspension}, #{suspensionDate}, #{warningCount},
-                    #{isSelfIntroPublic}, #{isUserPhotoPublic}
+                    #{isSelfIntroPublic}, #{isUserPhotoPublic}, #{isGettingSmsAlarm}
                  );
     </insert>
 
     <select 	id="getUserById"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
         SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.phone, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
                u.is_self_intro_public, u.is_user_photo_public, u.is_secession, u.is_suspension, u.role, u.gender,u.age,
-               u.secession_Date, u.suspension_date, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
+               u.secession_Date, u.suspension_date, u.is_getting_sms_alarm, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
         FROM users u
         LEFT JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
         WHERE u.user_id = #{userId}
@@ -61,7 +62,7 @@
     <select 	id="getUserByNickname"	parameterType="com.bit.motrip.domain.User"	resultMap="userSelectMap">
         SELECT u.user_id, u.pwd, u.user_name, u.nickname, u.phone, u.addr, u.addr_detail, u.gender, u.user_photo, u.self_intro,
                u.is_self_intro_public, u.is_user_photo_public, u.is_secession, u.is_suspension, u.role, u.gender,
-               u.secession_Date, u.suspension_date, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
+               u.secession_Date, u.suspension_date, u.is_getting_sms_alarm, IFNULL(SUM(e.is_score_plus), 0) AS evaluate_count
         FROM users u
                  LEFT JOIN evaluate_list e ON u.user_id = e.evaluated_user_id
         WHERE u.nickname = #{nickname}
@@ -122,6 +123,7 @@
             user_photo           = #{userPhoto},
             is_self_intro_public = #{isSelfIntroPublic},
             is_user_photo_public = #{isUserPhotoPublic},
+            is_getting_sms_alarm = #{isGettingSmsAlarm},
         </set>
         WHERE user_id = #{userId}
     </update>

@@ -3,7 +3,7 @@
 :root {
 	--dark-color-a: #1b6d85;
 	--dark-color-b: #33798f;
-	--light-color: #e6e9ff;
+	--light-color: #75ff66;
 	/*--success-color: #4b4b4b;*/
 	--error-color: #d9534f;
 }
@@ -63,9 +63,12 @@ a {
 .chat-main {
 	height: 78vh;
 	display: grid;
-	grid-template-columns: 1fr 6fr;
+	grid-template-columns: 1fr 4fr 2fr;
 }
-
+.chat-trip{
+	height: 78vh;
+	background: #5cb85c;
+}
 .chat-sidebar {
 	height: 78vh;
 	background: var(--dark-color-b);
@@ -96,23 +99,48 @@ a {
 
 	overflow-y: scroll;
 }
+/*.chat-messages .message .userbox{*/
 
+/*}*/
 .chat-messages .message {
 	padding: 5px;
-	margin-bottom: 15px;
-	background-color: var(--light-color);
+
 	border-radius: 5px;
 	overflow-wrap: break-word;
+	/* 왼쪽에 위치하는 스타일 */
+	align-self: flex-start;
+	float: right;
+	clear: both;
 }
 
-.chat-messages .message .meta {
-	font-size: 15px;
-	font-weight: bold;
-	color: var(--dark-color-b);
-	opacity: 0.7;
-	margin-bottom: 7px;
+.chat-messages .message2 {
+	padding: 5px;
+
+	border-radius: 5px;
+	overflow-wrap: break-word;
+	/* 오른쪽에 위치하는 스타일 */
+	align-self: flex-end;
+	float: left;
+	clear: both;
+
 }
 
+/*.chat-messages .message {*/
+/*	font-size: 15px;*/
+/*	font-weight: bold;*/
+/*	color: var(--dark-color-b);*/
+/*	background-color: var(--light-color);*/
+/*	opacity: 0.7;*/
+/*	margin-bottom: 7px;*/
+/*}*/
+
+/*.chat-messages .message .chatOthers {*/
+/*	font-size: 15px;*/
+/*	font-weight: bold;*/
+/*	color: #e67e39;*/
+/*	opacity: 0.7;*/
+/*	margin-bottom: 7px;*/
+/*}*/
 .chat-messages .message .meta span {
 	color: #777;
 
@@ -135,7 +163,67 @@ a {
 	flex: 2;
 }
 
+.chat-container {
+	margin-bottom: 10px;
+}
 
+.chat {
+	display: inline-block;
+	background-color: #F5F8FA;
+	padding: 8px;
+	border: 1px solid #E1E8ED;
+	border-radius: 20px;
+	font-size: 14px;
+	line-height: 1.4;
+	color: #14171A;
+}
+
+.chat span {
+	font-weight: bold;
+	color: #333;
+}
+
+.chat p {
+	margin: 5px 0 0;
+}
+.chat2 {
+	display: inline-block;
+	background-color: #F5F8FA;
+	padding: 8px;
+	border: 1px solid #E1E8ED;
+	border-radius: 20px;
+	font-size: 14px;
+	line-height: 1.4;
+	color: #14171A;
+}
+
+.chat2 span {
+	font-weight: bold;
+	color: #333;
+}
+
+.chat2 p {
+	margin: 5px 0 0;
+}
+.text {
+	background-color: #ffd966;
+	display: inline-block;
+	padding: 10px;
+	border-radius: 15px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	color: #14171A;
+	float: right;
+}
+.text2 {
+	background-color: #b9eee8;
+	display: inline-block;
+	padding: 10px;
+	border-radius: 15px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	color: #14171A;
+}
 
 @media (max-width: 700px) {
 	.chat-main {

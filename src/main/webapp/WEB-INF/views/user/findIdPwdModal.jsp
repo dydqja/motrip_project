@@ -337,7 +337,6 @@
 
                         $("#sendSmsByFindId").prop("disabled", true);
 
-                        alert($('#phoneByFindId').val());
                         var phone = $('#phoneByFindId').val();
 
                         $.ajax({
@@ -349,15 +348,13 @@
                             }),
                             dataType: "text",
                             success: function (response) {
-                                alert(response);
 
                                 $("#idModal").hide();
                                 $("#getIdShow").show();
                                 $("#getIdByPhone").text(response);
-                                // #############################
                             },
                             error: function (error) {
-                                alert("실패");
+                                alert("다시 시도해주세요.");
                             }
                         });
 
@@ -374,14 +371,11 @@
                     }
                 },
                 error: function (error) {
-                    alert("실패");
+                    alert("다시 시도해주세요.");
                 }
             });
         }
-    });
 
-
-    $(document).ready(function() {
         //인증번호 재전송
         $("#resendPhCodeByFindId").on("click", function () {
             console.log('재전송 버튼이 클릭되었습니다.');
@@ -396,10 +390,11 @@
                 data: JSON.stringify(smsMessage),
                 dataType: "json",
                 success: function (response) {
+                    smsConfirmNum = response;
 
                 },
                 error: function (error) {
-                    alert("실패");
+                    alert("다시 시도해주세요.");
                 }
             });	//ajax close
         });
@@ -499,49 +494,48 @@
                 alert("응답을 아직 받지 못했습니다. 잠시 후 다시 시도해주세요.");
             }
         });
-    });
 
-    function useSmsResponse(smsConfirmNum, phCodeConfirm) {
-        // 이 함수에서 AJAX 응답을 사용할 수 있습니다.
-        $.ajax({
-            url: "/user/phCodeConfirm",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({
-                smsConfirmNum: smsConfirmNum,
-                phCodeConfirm: phCodeConfirm
-            }),
-            dataType: "json",
-            success: function (response) {
 
-                if (response.result) {
+        function useSmsResponse(smsConfirmNum, phCodeConfirm) {
+            // 이 함수에서 AJAX 응답을 사용할 수 있습니다.
+            $.ajax({
+                url: "/user/phCodeConfirm",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    smsConfirmNum: smsConfirmNum,
+                    phCodeConfirm: phCodeConfirm
+                }),
+                dataType: "json",
+                success: function (response) {
 
-                    $("#PhCodeGroupByFindPwd").hide();
-                    $("#sendSmsByFindPwd").text("인증완료").css({
-                        "color": "white"
-                    });  // 텍스트 색상과 폰트 크기 변경
-                    $("#sendSmsByFindPwd").prop("disabled", true);
-                    $("#changePwd").show();
+                    if (response.result) {
 
-                } else if ($('#phCodeConfirmByFindPwd').val() == '') {
-                    $("#checkPhCodeConfirmByFindPwd").text("인증번호를 입력해 주세요").css({
-                        'color': 'red',
-                        'font-size': '10px'
-                    });
-                } else {
-                    $("#checkPhCodeConfirmByFindPwd").text("인증번호가 일치하지 않습니다").css({
-                        'color': 'red',
-                        'font-size': '10px'
-                    });
+                        $("#PhCodeGroupByFindPwd").hide();
+                        $("#sendSmsByFindPwd").text("인증완료").css({
+                            "color": "white"
+                        });  // 텍스트 색상과 폰트 크기 변경
+                        $("#sendSmsByFindPwd").prop("disabled", true);
+                        $("#changePwd").show();
+
+                    } else if ($('#phCodeConfirmByFindPwd').val() == '') {
+                        $("#checkPhCodeConfirmByFindPwd").text("인증번호를 입력해 주세요").css({
+                            'color': 'red',
+                            'font-size': '10px'
+                        });
+                    } else {
+                        $("#checkPhCodeConfirmByFindPwd").text("인증번호가 일치하지 않습니다").css({
+                            'color': 'red',
+                            'font-size': '10px'
+                        });
+                    }
+                },
+                error: function (error) {
+                    alert("다시 시도해주세요.");
                 }
-            },
-            error: function (error) {
-                alert("실패");
-            }
-        });
-    }
+            });
+        }
 
-    $(document).ready(function() {
         //인증번호 재전송
         $("#resendPhCodeByFindPwd").on("click", function () {
             console.log('재전송 버튼이 클릭되었습니다.');
@@ -557,9 +551,10 @@
                 dataType: "json",
                 success: function (response) {
 
+                    smsConfirmNum = response;
                 },
                 error: function (error) {
-                    alert("실패");
+                    alert("다시 시도해주세요.");
                 }
             });	//ajax close
         });

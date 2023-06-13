@@ -14,8 +14,8 @@ document.getElementById("uploadFile").addEventListener("change", function(event)
     image.src = e.target.result;
     console.log(image.src);
     image.classList.add("preview-image");
-    image.style.width = "200px";
-    image.style.height = "200px";
+    image.style.width = "100%";
+    image.style.height = "100%";
     previewContainer.appendChild(image);
     };
 
