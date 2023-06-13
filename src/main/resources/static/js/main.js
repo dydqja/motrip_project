@@ -173,7 +173,7 @@ function outputPhoto(message){
      <img src="/imagePath/${message.photo}"/><br/>
      &nbsp&nbsp
       ${message.text}
-    </p><`;
+    </p>`;
     document.querySelector('.chat-messages').appendChild(div);
 
   }else{

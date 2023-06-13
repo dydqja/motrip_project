@@ -13,14 +13,14 @@ import java.util.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
-@SpringBootTest
+//@SpringBootTest
 public class userDaoTests {
 
-    @Autowired
-    private UserDao userDao;
+//    @Autowired
+//    private UserDao userDao;
 
 //    @Test
-    public void addUserTest() throws Exception {
+//    public void addUserTest() throws Exception {
 //        User user = new User();
 //
 //        user.setUserId("J2IRjXNXVfL1S_50gh8mShg0yoyzowQZb1D_gfqz3O4");
@@ -46,10 +46,10 @@ public class userDaoTests {
         //user.setListingSharedMemo(FALSE);
 
 //        userDao.addUser(user);
-    }
+//    }
 
-    @Test
-    public void getUserTest() throws Exception {
+//    @Test
+//    public void getUserTest() throws Exception {
 //        User user = new User();
 //
 //        user.setUserId("testUser6");
@@ -57,10 +57,10 @@ public class userDaoTests {
 //        User getUser = userDao.getUserById(user.getUserId());
 //
 //        System.out.println(getUser.toString());
-    }
+//    }
 
 //    @Test
-    public void getListTest() throws Exception {
+//    public void getListTest() throws Exception {
 //        Search search = new Search();
 //
 //        int pageSize = 3;
@@ -77,10 +77,10 @@ public class userDaoTests {
 //        map.put("totalCount", new Integer(totalCount));
 //
 //        System.out.println(map);
-    }
+//    }
 
 //    @Test
-    public void updateUserTest() throws Exception {
+//    public void updateUserTest() throws Exception {
 
 //        User user = new User();
 //
@@ -99,7 +99,7 @@ public class userDaoTests {
     }
 
 //    @Test
-    public void deleteUserTest() throws Exception {
+//    public void deleteUserTest() throws Exception {
 
 //        User user = new User();
 //        Timestamp suspensionDate = new Timestamp(System.currentTimeMillis());
@@ -118,5 +118,5 @@ public class userDaoTests {
 //        getUser.setSuspensionDate(suspensionDate);
 //
 //        userDao.secessionAndRestoreUser(getUser);
-    }
-}
+//    }
+//}

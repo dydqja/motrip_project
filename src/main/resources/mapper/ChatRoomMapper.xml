@@ -120,6 +120,9 @@
 		<if test="gender != null">
 			AND gender = #{gender}
 		</if>
+		<if test="searchTravelStartDate != null">
+			AND travel_start_date = #{searchTravelStartDate}
+		</if>
 		ORDER BY cr.chat_room_no
 		) AS temp
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
@@ -137,6 +140,9 @@
 		</if>
 		<if test="gender != null">
 			AND gender = #{gender}
+		</if>
+		<if test="searchTravelStartDate != null">
+			AND travel_start_date = #{searchTravelStartDate}
 		</if>
 
 		) countTable
@@ -165,5 +171,15 @@
 		ORDER BY cr.chat_room_no
 			) AS temp
 		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+	</select>
+	<select  id="getMyChatRoomTotalCount"  parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM (
+			SELECT
+				*
+			FROM
+				chat_room_members
+			where user_id=#{value} and status = 0
+			) countTable
 	</select>
 </mapper>
