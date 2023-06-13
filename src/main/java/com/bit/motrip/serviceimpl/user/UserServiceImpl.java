@@ -272,9 +272,9 @@ public class UserServiceImpl implements UserService{
     public SmsResponse sendSms(SmsMessage smsMessage) throws Exception{
 
         System.out.println("UserServiceImpl에서 sendSms 실행됨.===========");
-
+        //현재 시각을 생성한다.
         String time = Long.toString(System.currentTimeMillis());
-
+        //현재 시각을 기준으로 유효한 signature 를 생성하고, http header에 그것을 넣는다.
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("x-ncp-apigw-timestamp", time);
