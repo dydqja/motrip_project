@@ -12,7 +12,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>공지사항 등록</title>
+        <title>공지 등록</title>
 
         <link rel="icon" type="image/png" href="assets/img/favicon.png" />
         <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
@@ -21,11 +21,7 @@
         <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
         <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
         <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-
         <link rel="stylesheet" href="/css/notice/addNotice.css">
-        <!-- 썸머노트 스타일시트 -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
-
 
         <script src="/vendor/jquery/dist/jquery.min.js"></script>
         <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
@@ -39,32 +35,88 @@
         <script src="/assets/js/bootstrap-tabcollapse.js"></script>
         <script src="/assets/js/min/countnumbers.min.js"></script>
         <script src="/assets/js/main.js"></script>
-        <script src="/assets/js/min/home.min.js"></script>
 
-        <!-- 썸머노트 스크립트 -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+        <!-- alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+        <!-- 서머노트 CDN 링크 -->
+        <link rel="stylesheet" href="/summernote/summernote.css">
+        <script src="/summernote/summernote.js"></script>
+    </head>
+
+    <body>
+        <c:set var="formAction" value="${(noticeTitle == null && noticeContents == null) ? '/notice/addNotice' : '/notice/updateNotice'}" />
+        <form action="${formAction}" method="post">
+
+            <input type="hidden" name="noticeAuthor" value="${sessionScope.user.userId}" />
+
+            <c:if test="${noticeNo != null}">
+
+                <input type="hidden" name="noticeNo" value="${noticeNo}" />
+
+            </c:if>
+
+            <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+
+            <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
+                <div class="container">
+                    <h1 class="main-head text-center board-title noticeZooming">공지 등록</h1>
+                </div>
+            </div>
+
+            <div class="page-img page-back" style="background-image: url('/images/board/noticeBack.jpg');">
+
+                <div class="container">
+                    <div>
+                        <select name="isNoticeImportant">
+                            <option value="0" ${isNoticeImportant == 0 ? 'selected' : ''}>일반</option>
+                            <option value="1" ${isNoticeImportant == 1 ? 'selected' : ''}>중요</option>
+                        </select>
+                        <input type="text" name="noticeTitle" id="noticeTitle" placeholder="제목을 입력해주세요" value="${noticeTitle}" style="color: black; width: 89%; height: 40px;">
+                    </div>
+
+                    <br>
+
+                    <div>
+                        <!-- 썸머노트 입력란 -->
+                        <textarea name="noticeContents" id="noticeContents">${noticeContents}</textarea>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-2">
+                            <button id="reset" class="btn btn-primary" type="reset">초기화</button>
+                        </div>
+
+                        <div class="text-right">
+                            <div class="d-inline-block">
+                                <!-- 공지 등록 버튼 -->
+
+                                <button id="addNotice" class="btn btn-primary" type="button">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    등록하기
+                                </button>
+
+                                <!-- 목록보기 버튼 -->
+                                <button id="getNoticeList" class="btn btn-primary" type="button">목록보기</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+
+        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
         <script type="text/javascript">
 
             $(function() {
-
-                // 썸머노트 초기화
-                $('#summernote').summernote({
-                    height: 300, // 입력창 높이 설정
-                    minHeight: null, // 최소 높이 설정
-                    maxHeight: null, // 최대 높이 설정
-                    focus: true, // 포커스 설정
-                    lang: 'ko-KR', // 언어 설정 (한국어)
-                    toolbar: [
-                        // 원하는 썸머노트 기능 추가 가능
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['font', ['strikethrough']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['height', ['height']]
-                    ]
-                });
 
                 $("#addNotice").on("click", function() {
 
@@ -73,17 +125,29 @@
 
                     if (!noticeTitle && !noticeContents) {
 
-                        alert("제목과 내용을 입력해주세요.");
+                        Swal.fire({
+                            title: '안녕하세요!',
+                            text: '제목과 내용을 입력해주세요.',
+                            icon: 'warning'
+                        });
                         return false;
 
                     } else if (!noticeTitle) {
 
-                        alert("제목을 입력해주세요.");
+                        Swal.fire({
+                            title: '안녕하세요!',
+                            text: '제목을 입력해주세요.',
+                            icon: 'warning'
+                        });
                         return false;
 
                     } else if (!noticeContents) {
 
-                        alert("내용을 입력해주세요.");
+                        Swal.fire({
+                            title: '안녕하세요!',
+                            text: '내용을 입력해주세요.',
+                            icon: 'warning'
+                        });
                         return false;
 
                     } else {
@@ -102,68 +166,35 @@
                 });
             });
 
+            <!-- 서머노트 기본생성 -->
+            $(document).ready(function () {
+                $('#noticeContents').summernote({
+                    toolbar: [
+                        ['fontname', ['fontname']],
+                        ['fontsize', ['fontsize']],
+                        ['style', ['bold', 'italic', 'underline']],
+                        ['color', ['forecolor', 'color']],
+                        ['table', ['table']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                    ],
+                    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+                    fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+                    height: 370,
+                    disableResizeEditor: true
+                });
+            });
+
+            // 썸머노트 초기화 함수
+            function resetSummernote() {
+                $('#noticeContents').summernote('code', '');
+            }
+
+            // 초기화 버튼 클릭 시 썸머노트 초기화
+            $('#reset').on('click', function () {
+                resetSummernote();
+            });
         </script>
-    </head>
-
-    <body>
-
-
-            <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-
-
-        <div class="page-img">
-            <div class="container">
-                <h1 class="main-head text-center board-title">${noticeTitle}</h1>
-            </div>
-        </div>
-
-        <c:set var="formAction" value="${(noticeTitle == null && noticeContents == null) ? '/notice/addNotice' : '/notice/updateNotice'}" />
-
-        <form action="${formAction}" method="post">
-
-            <input type="hidden" name="noticeAuthor" value="${sessionScope.user.userId}" />
-
-            <c:if test="${noticeNo != null}">
-
-                <input type="hidden" name="noticeNo" value="${noticeNo}" />
-
-            </c:if>
-
-            <div>
-
-                <input type="text" name="noticeTitle" id="noticeTitle" value="${noticeTitle}">
-
-            </div>
-
-            <br>
-
-            <div>
-                <!-- 썸머노트 입력란 -->
-                <textarea name="noticeContents" id="summernote">${noticeContents}</textarea>
-            </div>
-
-            <br>
-
-            <div>
-                <button id="addNotice" type="submit">등록하기</button>
-            </div>
-
-            <br>
-
-            <div>
-                <button type="reset">초기화</button>
-            </div>
-
-            <br>
-
-            <div>
-                <button id="getNoticeList" type="button">목록보기</button>
-            </div>
-
-        </form>
-
-        <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
-
 
     </body>
 
