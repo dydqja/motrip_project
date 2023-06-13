@@ -378,14 +378,6 @@
     <!-- 서머노트기본생성 -->
     $(document).ready(function () {
         $('#dailyPlanContents0').summernote({
-            callbacks: {
-                onImageUpload: function (files) {
-                    // 이미지 업로드 후, 이미지 태그에 contenteditable 속성을 false로 설정
-                    var img = $('<img>').attr('src', URL.createObjectURL(files[0]));
-                    img.attr('contenteditable', false);
-                    $(this).summernote('insertNode', img[0]);
-                }
-            },
             toolbar: [
                 ['fontname', ['fontname']],
                 ['fontsize', ['fontsize']],
@@ -405,14 +397,6 @@
 
     function initializeSummernote(idCheck) {
         $('#dailyPlanContents' + idCheck).summernote({
-            callbacks: {
-                onImageUpload: function (files) {
-                    // 이미지 업로드 후, 이미지 태그에 contenteditable 속성을 false로 설정
-                    var img = $('<img>').attr('src', URL.createObjectURL(files[0]));
-                    img.attr('contenteditable', false);
-                    $(this).summernote('insertNode', img[0]);
-                }
-            },
             toolbar: [
                 ['fontname', ['fontname']],
                 ['fontsize', ['fontsize']],
