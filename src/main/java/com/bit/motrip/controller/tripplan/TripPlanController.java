@@ -84,13 +84,7 @@ public class TripPlanController {
         System.out.println("GET : tripPlanList()");
 
 //        용범 추가부분 시작 ########################################
-        User myUser = (User) session.getAttribute("user");
-        Map<String,Object> evaluaterId = new HashMap<>();
-        evaluaterId.put("evaluaterId",myUser.getUserId());
 
-        System.out.println("세션에 등록된 아이디는? ::" + evaluaterId);
-        List<String> getBlacklistAll = evaluateListService.getBlacklistAll(evaluaterId);
-        System.out.println("세션유저를/가 블랙한 아이디리스트 = :: "+ getBlacklistAll);
 
 //        용범 추가부분 끝 ##########################################
 
@@ -102,6 +96,21 @@ public class TripPlanController {
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("search", search);
+
+        if(session.getAttribute("user") != null) {
+            User myUser = (User) session.getAttribute("user");
+            Map<String, Object> evaluaterId = new HashMap<>();
+            evaluaterId.put("evaluaterId", myUser.getUserId());
+
+            System.out.println("세션에 등록된 아이디는? ::" + evaluaterId);
+            List<String> getBlacklistAll = evaluateListService.getBlacklistAll(evaluaterId);
+            System.out.println("세션유저를/가 블랙한 아이디리스트 = :: " + getBlacklistAll);
+
+            parameters.put("blacklist", getBlacklistAll); // ==> 추가한부분(용범)
+        }
+
+
+
         if (type.equals("my")) {
             User user = (User) session.getAttribute("user");
             parameters.put("user", user);
@@ -110,35 +119,7 @@ public class TripPlanController {
 
         Map<String, Object> tripPlanList= tripPlanService.selectTripPlanList(parameters);
 
-
-//        용범 추가부분 시작 ########################################
-        System.out.println("Map<String, Object> tripPlanList 의 값은?? :: "+ tripPlanList);
-        // 새로운 리스트를 저장할 Map<String, Object>을 초기화합니다.
-        Map<String, Object> newTripPlanList = new HashMap<>();
-        // "list"라는 키로 리스트를 꺼냅니다.
-        List<TripPlan> tripPlans = (List<TripPlan>) tripPlanList.get("list");
-        // 필터링된 TripPlan들을 저장할 리스트를 생성합니다.
-        List<TripPlan> filteredTripPlans = new ArrayList<>();
-        // 리스트를 반복 처리합니다.
-        for (TripPlan tripPlan : tripPlans) {
-            // tripPlanAuthor 필드가 블랙리스트에 포함되어 있지 않다면 리스트에 추가합니다.
-            if (!getBlacklistAll.contains(tripPlan.getTripPlanAuthor())) {
-                filteredTripPlans.add(tripPlan);
-            }
-        }
-        // 필터링된 리스트를 새로운 Map에 "list"라는 키로 저장합니다.
-        newTripPlanList.put("list", filteredTripPlans);
-        // totalCount 값을 복사합니다.
-        newTripPlanList.put("totalCount", tripPlanList.get("totalCount"));
-        // 필터링된 리스트의 크기를 totalCount로 설정합니다.
-//        newTripPlanList.put("totalCount", filteredTripPlans.size());
-
-        System.out.println("블랙리스트 제외한 플랜목록 :: "+newTripPlanList);
-
-//        용범 추가부분 끝 ##########################################
-
-
-        int totalCount = (int) newTripPlanList.get("totalCount");
+        int totalCount = (int) tripPlanList.get("totalCount");
         int pageUnit = 3; // 화면 하단에 표시할 페이지 수
 
         Page page = new Page(search.getCurrentPage(), totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
@@ -147,7 +128,7 @@ public class TripPlanController {
         int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
         String tripPlanAuthor = (String) parameters.get("tripPlanAuthor");
 
-        model.addAttribute("tripPlanList",newTripPlanList.get("list"));
+        model.addAttribute("tripPlanList",tripPlanList.get("list"));
         model.addAttribute("page", page);
         model.addAttribute("maxPage", maxPage);
         model.addAttribute("beginUnitPage", beginUnitPage);

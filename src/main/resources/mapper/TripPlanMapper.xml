@@ -81,7 +81,15 @@
                         tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
                     </otherwise>
                 </choose>
-                 GROUP BY tp.trip_plan_no
+                <if test="blacklist != null and blacklist.size() > 0">
+                    AND tp.trip_plan_author NOT IN
+                    <foreach item="user" index="index" collection="blacklist" open="(" separator="," close=")">
+                        #{user}
+                    </foreach>
+                </if>
+
+
+        GROUP BY tp.trip_plan_no
              ) subquery
         WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum};
     </select>
