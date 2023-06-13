@@ -58,14 +58,14 @@ public class ChatMemberController {
             User sender = userService.getUserById(chatMember.getUserId());
             System.out.println("sender = "+sender.getUserId());
             //알람 내용
-            String content = sender.getNickname() + "님이 " + chatRoom.getChatRoomTitle() + "에 참가 신청합니다.";
+            String content = receiver.getNickname()+"님, "+sender.getNickname() + "님이 " + chatRoom.getChatRoomTitle() + "에 참가 신청합니다.";
             //알람 제목
             String title = chatRoom.getChatRoomTitle()+"에 참가 신청이 있습니다.";
             //acceptUrl
             String acceptUrl = "/alarm/acceptChatRoomMember/"+chatRoomNo+"/"+sender.getUserId()+"/"+tripPlanNo;
             //rejectUrl
             String rejectUrl = "/alarm/rejectChatRoomMember/"+chatRoomNo+"/"+sender.getUserId()+"/"+tripPlanNo;
-            alarmService.addAcceptableAlarm(sender,receiver, content, title, acceptUrl, rejectUrl);
+            alarmService.addAcceptableAlarm(sender,receiver, title, content, acceptUrl, rejectUrl);
 
         System.out.println(chatMember); //
 //        chatMemberService.addChatMember(chatMember);

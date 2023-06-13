@@ -23,7 +23,7 @@ public class Scheduler {
     //@Scheduled(cron = "0 15 10 15 * ?", zone = "Asia/Seoul")
 //    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Seoul")
     @Scheduled(cron = "0 */1 * * * *", zone = "Asia/Seoul")//1분마다 실행
-    public void sec5work() throws Exception {
+    public void min1work() throws Exception {
 
         cronService.cronDel("memo", "memo", "memo_del_date", "1");
 
