@@ -12,8 +12,6 @@ import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -112,8 +110,8 @@ public class ReviewController {
 
         User dbUser = (User) session.getAttribute("user");
         if (dbUser == null) {
-            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
-            return "redirect:/user/login.jsp";
+            //model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
+            return "redirect:user/login.jsp";
         }
 
         Map<String, Object> parameters = new HashMap<>();
@@ -222,38 +220,64 @@ public class ReviewController {
 
 
     @GetMapping("getReviewList") // 공개된 모든 후기 목록 조회
-    public String getReviewList(@ModelAttribute("search") Search search, Model model, HttpSession session) throws Exception {
+    public String getReviewList(@RequestParam(defaultValue = "1") int currentPage, Model model) throws Exception {
         System.out.println("/review/getReviewList : GET");
+
+        Search search = new Search();
+        search.setCurrentPage(currentPage);
+        System.out.println("currentPage>>>>>>>>"+currentPage);
+        System.out.println(search);
+        int pageSize = 3;
+        search.setPageSize(pageSize);
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("search", search);
         parameters.put("condition", "publicReviewList"); // 전체 공개 후기 목록을 조회하기 위한 조건 설정
 
-        // 세션에서 로그인한 회원의 정보 가져오기
-        User user = (User) session.getAttribute("user");
-        parameters.put("user", user);
+        Map<String, Object> reviewListData = reviewService.selectReviewList(parameters);
+        List<Review> reviewList = (List<Review>) reviewListData.get("reviewList");
+        System.out.println("reviewListData 왜 못갖고와"+reviewListData);
+        System.out.println("reviewList 왜 못갖고와"+reviewList);
 
-        System.out.println("컨트롤러 parameters >>>>>>>>" + parameters);
+        int totalCount = (int) reviewListData.get("totalCount");
+        System.out.println("컨트롤러@@@@@ parameters>>>>>>>>>>>>>>>>" + parameters);
 
-        Map<String, Object> result = reviewService.selectReviewList(parameters);
-        List<Review> reviewList = (List<Review>) result.get("reviewList");
+        int pageUnit = 10; // 화면 하단에 표시할 페이지 수
+        Page page = new Page(search.getCurrentPage(), totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
+        int maxPage = page.getMaxPage(); // 총 페이지 수
+        int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
+        int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
 
         model.addAttribute("reviewList", reviewList);
-        System.out.println("컨트롤러 reviewList >>>>>>>>" + reviewList);
+        model.addAttribute("page", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
+        model.addAttribute("search", search);
+        System.out.println("컨트롤러 reviewList >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + reviewList);
+        System.out.println(page);
+        System.out.println(maxPage);
+        System.out.println(beginUnitPage);
+        System.out.println(endUnitPage);
+        System.out.println(totalCount);
+        System.out.println(search);
+        System.out.println("컨트롤러 parameters>>>>>>>>>>>>>>>>" + parameters);
 
         return "review/getReviewList.jsp";
     }
 
 
+
     @GetMapping("getMyReviewList") // 나의 후기 목록
-    public String getMyReviewList(@ModelAttribute("search")Search search, Model model, HttpSession session) throws Exception {
+    public String getMyReviewList(@RequestParam(defaultValue = "1") int currentPage, Model model, HttpSession session) throws Exception {
         System.out.println("getMyReviewList(): GET ");
 
-        if(search.getPageSize() == 0){
-            search.setCurrentPage(1);
-        } else {
-            search.setCurrentPage(search.getCurrentPage());
-        }
+        Search search = new Search();
+        search.setCurrentPage(currentPage);
+        System.out.println("currentPage>>>>>>>>"+currentPage);
+        System.out.println(search);
+        int pageSize = 3;
+        search.setPageSize(pageSize);
 
         User dbUser = (User) session.getAttribute("user");
         if (dbUser == null) {
@@ -266,14 +290,39 @@ public class ReviewController {
         parameters.put("user", dbUser);
         parameters.put("condition", "myReviewList"); // 나의 후기 목록을 조회하기 위한 조건 설정
 
-        System.out.println("컨트롤러 parameters >>>>>>>>" + parameters);
+        Map<String, Object> reviewList = reviewService.selectReviewList(parameters);
+        List<Review> myReviewList = (List<Review>) reviewList.get("reviewList");
 
-        Map<String, Object> myReviewList = reviewService.selectReviewList(parameters);
+        System.out.println("myReviewList 왜 못갖고와"+myReviewList);
+        System.out.println("reviewList 왜 못갖고와"+reviewList);
 
-        model.addAttribute("myReviewList", myReviewList.get("reviewList")); // 수정된 키 이름으로 변경
-        System.out.println("myReviewList >>>>>>>>" + myReviewList);
+        int totalCount = (int) reviewList.get("totalCount");
+        System.out.println(totalCount);
+        System.out.println("컨트롤러getMyReviewList  parameters>>>>>>>>>>>>>>>>" + parameters);
 
-        model.addAttribute("publicReviewList", true); // 전체 공유에서는 삭제버튼이 안보이게 하기위함
+        int pageUnit = 10; // 화면 하단에 표시할 페이지 수
+        Page page = new Page(search.getCurrentPage(), totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
+        int maxPage = page.getMaxPage(); // 총 페이지 수
+        int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
+        int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
+
+        model.addAttribute("myReviewList", myReviewList);
+        model.addAttribute("page", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
+        model.addAttribute("search", search);
+        System.out.println(page);
+        System.out.println(maxPage);
+        System.out.println(beginUnitPage);
+        System.out.println(endUnitPage);
+        System.out.println(totalCount);
+        System.out.println(search);
+        System.out.println("컨트롤러 getMyReviewList parameters>>>>>>>>>>>>>>>>" + parameters);
+
+
+        model.addAttribute("reviewList", reviewList.get("myReviewList")); // 수정된 키 이름으로 변경
+
 
         return "review/getMyReviewList.jsp";
     }
