@@ -120,9 +120,9 @@
 		<if test="gender != null">
 			AND gender = #{gender}
 		</if>
-		<if test="searchTravelStartDate != null">
-			AND travel_start_date = #{searchTravelStartDate}
-		</if>
+<!--		<if test="searchTravelStartDate != null">-->
+<!--			AND DATE_FORMAT(travel_start_date, 'yyyy-mm-dd') = #{searchTravelStartDate}-->
+<!--		</if>-->
 		ORDER BY cr.chat_room_no
 		) AS temp
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
@@ -141,9 +141,9 @@
 		<if test="gender != null">
 			AND gender = #{gender}
 		</if>
-		<if test="searchTravelStartDate != null">
-			AND travel_start_date = #{searchTravelStartDate}
-		</if>
+<!--		<if test="searchTravelStartDate != null">-->
+<!--			AND DATE_FORMAT(travel_start_date, 'yyyy-mm-dd') = #{searchTravelStartDate}-->
+<!--		</if>-->
 
 		) countTable
 	</select>
