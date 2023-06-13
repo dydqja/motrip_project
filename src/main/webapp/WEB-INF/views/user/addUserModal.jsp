@@ -11,7 +11,7 @@
     <title>MoTrip 회원가입</title>
 
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
-
+    <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
     <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
     <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"/>
 
 
 
@@ -121,6 +123,7 @@
 <body>
 
 
+
 <%--<div class="form-group">--%>
 <%--    <label>Name</label>--%>
 <%--    <input type="text" class="form-control" placeholder="Email">--%>
@@ -185,7 +188,7 @@
                         <button type="button" class="pwd-btn hvr-grow" id="resendPhCode" style="background-color: #8B2955;">재전송</button>
                     </div>
 
-                    <div class="form-group" >
+                    <div class="form-group text-center">
                         <label class="label label-primary">주소<span style="color:red"> *</span></label>
                         <div>
                             <input type="text" class="pwd-input" id="sample3_address" name="addr" aria-describedby="helpBlock2">
@@ -281,7 +284,7 @@
     </div>
   </div>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<%--<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>--%>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="/vendor/jquery/dist/jquery.min.js"></script>
@@ -289,8 +292,10 @@
 <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
 <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--%>
+
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
 
 <script src="/vendor/retina.min.js"></script>

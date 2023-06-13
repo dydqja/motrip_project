@@ -19,7 +19,7 @@
 </head>
 
 <body class="login" style="background-image: url('/images/user/login.jpg'); opacity: 1;">
-<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<%--<%@ include file="/WEB-INF/views/layout/header.jsp" %>--%>
 <div class="pre-loader">
     <div class="loading-img"></div>
 </div>
@@ -181,9 +181,9 @@
 </script>
 
 <!-- 회원가입 모달 인클루드 -->
-<%--<jsp:include page="addUserModal.jsp"/>--%>
+<jsp:include page="addUserModal.jsp"/>
 <!-- 아이디&비밀번호찾기 모달 인클루드 -->
-<%--<jsp:include page="findIdPwdModal.jsp"/>--%>
+<jsp:include page="findIdPwdModal.jsp"/>
 
 
 </body>
