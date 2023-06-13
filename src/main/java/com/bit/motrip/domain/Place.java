@@ -104,6 +104,7 @@ public class Place {
                 ", placeAddress='" + placeAddress + '\'' +
                 ", placeCategory=" + placeCategory +
                 ", tripTime='" + tripTime + '\'' +
+                ", tripPath='" + tripPath + '\'' +
                 '}';
     }
 }

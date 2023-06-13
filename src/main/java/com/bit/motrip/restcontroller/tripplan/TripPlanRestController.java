@@ -78,6 +78,19 @@ public class TripPlanRestController {
         return tripPlanService.selectTripPlan(tripPlanNo);
     }
 
+    @GetMapping("tripPlanCompleted") /// 여행플랜 완료
+    public TripPlan tripPlanCompleted(@RequestParam("tripPlanNo") int tripPlanNo) throws Exception {
+        System.out.println("GET : tripPlanCompleted()");
+        tripPlanService.tripPlanCompleted(tripPlanNo);
+        return tripPlanService.selectTripPlan(tripPlanNo);
+    }
+
+    @GetMapping("tripPlanDrop") /// 여행플랜 완전 삭제
+    public void tripPlanDrop (@RequestParam("tripPlanNo") int tripPlanNo) throws Exception {
+        System.out.println("GET : tripPlanDrop()");
+        tripPlanService.deleteTripPlan(tripPlanNo);
+    }
+
     @GetMapping("tripPlanLikes") // 여행플랜 추천하기
     public int tripPlanLikes(@RequestParam("tripPlanNo") int tripPlanNo, HttpSession session) throws Exception {
         System.out.println("GET : tripPlanLikes()");
