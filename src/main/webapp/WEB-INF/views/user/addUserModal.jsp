@@ -845,7 +845,8 @@
                   console.log(result);
                   $('#userPhoto').val(result);
 
-                  document.querySelector('#drop_zone').innerHTML = '<img src="'+result+'">';
+                  document.querySelector('#drop_zone').innerHTML = '<img src="'+result+'" style="width:200px; height:100px;">';
+
               }
           });
       }
