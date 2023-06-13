@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -74,6 +75,12 @@ public class ImageSaveService {
     }
     public void saveBase64Image(String base64Data, String filePath) {
         try {
+            // 디렉토리 생성
+            File directory = new File(filePath).getParentFile();
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
             // Base64 데이터 디코딩
             byte[] imageData = Base64.getDecoder().decode(base64Data);
 
