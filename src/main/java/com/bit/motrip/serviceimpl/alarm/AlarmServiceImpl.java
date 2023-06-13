@@ -355,7 +355,8 @@ public class AlarmServiceImpl implements AlarmService {
     //간단하게 sms 보내기
     public String simpleSms(User receiver, String contents) throws Exception {
         String result = "";
-        if(receiver!= null){
+        if(receiver.isGettingSmsAlarm()){
+            System.out.println("simpleSms 실행");
             String phNumber = receiver.getPhone();
             String phNumberParsing = phNumberParsing(phNumber);
             String smsContents = contents;
