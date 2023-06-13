@@ -5,6 +5,7 @@ import com.bit.motrip.common.Search;
 
 import com.bit.motrip.domain.EvaluateList;
 import com.bit.motrip.domain.User;
+import com.bit.motrip.service.chatroom.ChatRoomService;
 import com.bit.motrip.service.evaluateList.EvaluateListService;
 import com.bit.motrip.service.review.ReviewService;
 import com.bit.motrip.service.tripplan.TripPlanService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -36,6 +38,12 @@ public class UserController {
     @Autowired
     @Qualifier("reviewServiceImpl")
     private ReviewService reviewService;
+    @Autowired
+    @Qualifier("chatRoomServiceImpl")
+    private ChatRoomService chatRoomService;
+    @Autowired
+    @Qualifier("evaluateListServiceImpl")
+    private EvaluateListService evaluateListService;
 
     public UserController() {
         System.out.println(this.getClass());
@@ -176,17 +184,17 @@ public class UserController {
                            @RequestParam(value = "type", defaultValue = "all") String type, Model model, HttpSession session ) throws Exception {
 
         System.out.println("/user/getUser : GET");
-        System.out.println("userId = ["+userId+"], nickname = ["+nickname+"]");
+        System.out.println("userId = [" + userId + "], nickname = [" + nickname + "]");
         //Business Logic
-        if(userId != null) {
+        if (userId != null) {
             User user = userService.getUserById(userId);
-            System.out.println("getUserById로 가져온 user값은 ? " +user);
+            System.out.println("getUserById로 가져온 user값은 ? " + user);
             // Model 과 View 연결
             model.addAttribute("getUser", user);
 
-        } else if(nickname != null) {
+        } else if (nickname != null) {
             User user = userService.getUserByNickname(nickname);
-            System.out.println("getUserByNickname으로 가져온 user값은 ? " +user);
+            System.out.println("getUserByNickname으로 가져온 user값은 ? " + user);
             // Model 과 View 연결
             model.addAttribute("getUser", user);
 
@@ -210,7 +218,7 @@ public class UserController {
         }
         System.out.println("처음 페이지 들어왔을떄 : " + parameters);
 
-        Map<String, Object> tripPlanList= tripPlanService.selectTripPlanList(parameters);
+        Map<String, Object> tripPlanList = tripPlanService.selectTripPlanList(parameters);
 
         int totalCount = (int) tripPlanList.get("totalCount");
         int pageUnit = 3; // 화면 하단에 표시할 페이지 수
@@ -221,14 +229,14 @@ public class UserController {
         int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
         String tripPlanAuthor = (String) parameters.get("tripPlanAuthor");
 
-        model.addAttribute("tripPlanList",tripPlanList.get("list"));
+        model.addAttribute("tripPlanList", tripPlanList.get("list"));
         model.addAttribute("page", page);
         model.addAttribute("maxPage", maxPage);
         model.addAttribute("beginUnitPage", beginUnitPage);
         model.addAttribute("endUnitPage", endUnitPage);
         model.addAttribute("tripPlanAuthor", tripPlanAuthor);
         System.out.println(tripPlanAuthor);
-        if(tripPlanAuthor == null) {
+        if (tripPlanAuthor == null) {
             model.addAttribute("condition", "all");
         } else {
             model.addAttribute("condition", "my");
@@ -236,7 +244,42 @@ public class UserController {
 
 //      채팅방목록 가져오는곳 #################################################################
 
+        User sessionUser = (User) session.getAttribute("user");
+        System.out.println(sessionUser);
 
+        if (search.getCurrentPage() == 0) {
+
+            search.setCurrentPage(1);
+        }
+//        if(search.getSearchKeyword() == null){
+//            search.setSearchKeyword('');
+//        }
+        System.out.println(search);
+        System.out.println(search.getGender());
+        search.setPageSize(pageSize);
+
+        Map<String, Object> chatRoomListData = chatRoomService.myChatRoomListPage(search, sessionUser.getUserId());
+
+        int chatTotalCount = (int) chatRoomListData.get("totalCount");
+
+        // maxPage, beginUnitPage, endUnitPage 연산
+        Page chatPage = new Page(search.getCurrentPage(), chatTotalCount, pageUnit, pageSize);
+
+        // 총 페이지 수
+        int chatMaxPage = page.getMaxPage();
+
+        // 화면 하단에 표시할 페이지의 시작 번호
+        int chatBeginUnitPage = page.getBeginUnitPage();
+
+        // 화면 하단에 표시할 페이지의 끝 번호
+        int chatEndUnitPage = page.getEndUnitPage();
+
+        model.addAttribute("chatRoomList", chatRoomListData.get("list"));
+        model.addAttribute("chatRoomPage", chatPage);
+        model.addAttribute("chatRoomMaxPage", chatMaxPage);
+        model.addAttribute("chatRoomBeginUnitPage", chatBeginUnitPage);
+        model.addAttribute("chatRoomEndUnitPage", chatEndUnitPage);
+        model.addAttribute("chatRoomSearch", search);
 
 
         return "/user/getUser.jsp";
