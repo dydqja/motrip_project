@@ -18,6 +18,7 @@
 		<result column="trip_plan_no" property="tripPlanNo" jdbcType="INTEGER"/>
 		<result column="trip_days" property="tripDays" jdbcType="INTEGER"/>
 		<result column="trip_plan_title" property="tripPlanTitle" jdbcType="VARCHAR"/>
+		<result column="trip_plan_thumbnail" property="tripPlanThumbnail" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<resultMap id="chatMemberResultMap" type="com.bit.motrip.domain.ChatMember">
@@ -104,7 +105,7 @@
 <!--	</select>-->
 	<select id="chatRoomListPage" parameterType="com.bit.motrip.common.Search" resultMap="chatRoomResultMap">
 		SELECT * FROM (
-		SELECT cr.*, tp.trip_plan_no, tp.trip_days, tp.trip_plan_title, ROW_NUMBER() OVER (ORDER BY cr.chat_room_no) AS row_seq
+		SELECT cr.*, tp.trip_plan_no, tp.trip_days, tp.trip_plan_title,tp.trip_plan_thumbnail, ROW_NUMBER() OVER (ORDER BY cr.chat_room_no) AS row_seq
 		FROM chat_rooms cr
 
 		RIGHT JOIN (

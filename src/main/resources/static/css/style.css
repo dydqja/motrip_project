@@ -67,7 +67,8 @@ a {
 }
 .chat-trip{
 	height: 78vh;
-	background: #5cb85c;
+	background: rgba(185, 238, 232, 0.37);
+	overflow-y: scroll;
 }
 .chat-sidebar {
 	height: 78vh;

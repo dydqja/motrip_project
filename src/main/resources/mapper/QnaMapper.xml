@@ -65,7 +65,7 @@
         UPDATE board SET BOARD_VIEWS = BOARD_VIEWS + 1 WHERE BOARD_NO = #{qnaNo}
     </update>
 
-    <insert id="addQna" parameterType="com.bit.motrip.domain.Qna" >
+    <insert id="addQna" parameterType="com.bit.motrip.domain.Qna" useGeneratedKeys="true" keyProperty="qnaNo" keyColumn="BOARD_NO">
         INSERT INTO board (BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, BOARD_CATEGORY)
         VALUES (
             (SELECT USER_ID FROM users WHERE USER_ID = #{qnaAuthor}),

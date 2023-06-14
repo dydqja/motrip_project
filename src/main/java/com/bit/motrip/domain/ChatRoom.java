@@ -17,9 +17,18 @@ public class ChatRoom { //채팅방 도메인
     private int tripPlanNo;
     private String tripPlanTitle;
     private int tripDays;
+    private String tripPlanThumbnail;
     private int chatRoomStatus; // 0 모집중 1 모집완료
     //getter & setter
     private String strDate;
+
+    public String getTripPlanThumbnail() {
+        return tripPlanThumbnail;
+    }
+
+    public void setTripPlanThumbnail(String tripPlanThumbnail) {
+        this.tripPlanThumbnail = tripPlanThumbnail;
+    }
 
     public int getMinAge() {
         return minAge;

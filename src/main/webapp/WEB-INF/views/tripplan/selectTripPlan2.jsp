@@ -172,6 +172,22 @@
         }
     </style>
 
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/vendor/retina.min.js"></script>
+    <script src="/vendor/jquery.imageScroll.min.js"></script>
+    <script src="/assets/js/min/responsivetable.min.js"></script>
+    <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+
+    <script src="/assets/js/min/countnumbers.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+
 </head>
 
 <body>
@@ -195,7 +211,7 @@
                         <div class="author">
                             <span>${tripPlan.tripPlanTitle}</span>
                         </div>
-                    </h2>
+                    </h2>w
                     <p class="byline">
                     <h4>
                         <span class="italic">${tripPlan.tripPlanNickName}</span>
@@ -529,20 +545,6 @@
 
 <!-- 아래는 템플릿용 스크립트입니다. -->
 
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-
-<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-<script src="/vendor/retina.min.js"></script>
-<script src="/vendor/jquery.imageScroll.min.js"></script>
-<script src="/assets/js/min/responsivetable.min.js"></script>
-<script src="/assets/js/bootstrap-tabcollapse.js"></script>
-
-<script src="/assets/js/min/countnumbers.min.js"></script>
-<script src="/assets/js/main.js"></script>
 
 </body>
 </html>

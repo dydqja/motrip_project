@@ -117,7 +117,7 @@
 <%--                                </label>--%>
                                 <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="venus-mars">
                                     <input type="radio" name="gender" id="option2" value="MF">
-                                    <span class="fa fa-venus-mars"></span>
+                                    <span class="fa ">ALL</span>
                                 </label>
                                 <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="mars">
                                     <input type="radio" name="gender" id="option4" value="M">
@@ -140,13 +140,13 @@
                         </div>
                     </div>
 
-                    <div class="border-box">
-                        <div class="box-title">StartDate</div>
+<%--                    <div class="border-box">--%>
+<%--                        <div class="box-title">StartDate</div>--%>
 
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="datepicker" placeholder="StartDate">
-                        </div>
-                    </div>
+<%--                        <div class="input-group">--%>
+<%--                            <input type="text" class="form-control" id="datepicker" placeholder="StartDate">--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
 
 <%--                    <div class="border-box">--%>
 <%--                        <div class="box-title">DURATION</div>--%>
@@ -168,9 +168,13 @@
                 <c:set var="i" value="${ i+1 }" />
                 <div class="item-list">
                     <div class="col-sm-5">
-                        <div class="item-img row" style="background-image: url('http://placehold.it/320x250');">
+                        <c:if test="${chatRoom.tripPlanThumbnail != null && chatRoom.tripPlanThumbnail != ''}">
+                        <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${chatRoom.tripPlanThumbnail}');">
+                        </c:if>
+                        <c:if test="${chatRoom.tripPlanThumbnail == ''}">
+                            <div class="item-img row" style="background-image: url('/images/chatRoomImage.jpg');"></div>
+                        </c:if>
                             <div class="item-overlay">
-                                <a href="trip_detail.html"><span class="icon-binocular"></span></a>
                             </div>
                         </div>
                     </div>
@@ -203,7 +207,7 @@
                                     <a href="#modal-regular2" data-toggle="modal"><span class="icon-user" value="${chatRoom.chatRoomNo}"></span></a>
                                     <input type="hidden" />
                                     <div id="modal-regular2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-                                        <div class="modal-dialog">
+                                        <div class="modal-dialog"style="width: 300px">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -318,18 +322,56 @@
                         "Content-Type": "application/json"
                     },
                     success: function (members) {
+                        alert(members);
                         const matchingMember = members.find(member => member.userId === userId);
+                        const inChatRoomUserId = members.map(member => member.userId);
+                        alert(inChatRoomUserId);
                         if (matchingMember) {
                             alert("이미가입했던 채팅방입니다.");
-                        } else {
+                        } else if ((roomGender === gender || roomGender === "MF") && age >= minAge && age <= maxAge) {
 
-                            if ((roomGender === gender || roomGender === "MF") && age >= minAge && age <= maxAge) {
-                                alert("신청완료 방장의 허락을 기다려 주세요");
-                                fncJoinChatroom(chatRoomNo);
+                            $.ajax({
+                                url: "/user/getBlacklistAll",
+                                async: false,
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify({
+                                    evaluaterId: "${sessionScope.user.userId}"
+                                }),
+                                dataType: "json",
+                                success: function (response) {
+
+                                    if (inChatRoomUserId.some(id => response.includes(id))) {
+
+                                        Swal.fire({
+                                            title: '정말 입장신청 하시겠습니까?',
+                                            text: "해당 채팅방에는 블랙리스트 회원이 존재합니다",
+                                            icon: 'warning',
+                                            showCancelButton: true,  // 취소 버튼 활성화
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: '신청',
+                                            cancelButtonText: '취소'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                // 사용자가 확인을 눌렀을 때의 동작
+                                                fncJoinChatroom(chatRoomNo);
+                                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                                // 사용자가 취소를 눌렀을 때의 동작
+                                            }
+                                        })
+                                    } else {
+                                        alert("신청완료 방장의 허락을 기다려 주세요");
+                                        fncJoinChatroom(chatRoomNo);
+                                    }
+                                },
+                                error: function (error) {
+                                    alert("다시 시도해주세요.");
+                                }
+                            });
                             } else {
                                 alert("조건에 부합하지 않습니다.");
                             }
-                        }
                     },
                     error: function (xhr, status, error) {
                         alert("fail");
@@ -386,7 +428,11 @@
                     // 멤버 추가
                     members.forEach(function(member) {
                         console.log(member.name);
+                        let profileImageUrl = "https://via.placeholder.com/50";
                         let memberElement = $("<div></div>").text(member.userId);
+                        let profileImage = $("<img>").attr("src", profileImageUrl).attr("style","/imagePath");
+
+                        memberElement.prepend(profileImage); // 이미지를 요소의 첫 번째 자식으로 추가
                         memberArray.push(memberElement);
                         modalBody.append(memberElement);
                     });

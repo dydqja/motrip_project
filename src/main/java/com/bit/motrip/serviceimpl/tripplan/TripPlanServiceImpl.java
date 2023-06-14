@@ -297,7 +297,7 @@ public class TripPlanServiceImpl implements TripPlanService {
 
                 //알람 내용을 작성한다.
                 String alarmTitle = tripPlanTitle+"에"+likes+"회째 추천!";
-                String alarmContents = userNick+"회원님의"+tripPlanTitle+"여행플랜이 " + likes + "회나 추천되었습니다! 지금 확인해보세요.";
+                String alarmContents = userNick+"회원님의"+tripPlanTitle+"여행플랜이 벌써 " + likes + " 회나 추천되었습니다! 지금 확인해보세요.";
                 String alarmNaviUrl = "/tripPlan/selectTripPlan?tripPlanNo="+gettingTripPlan.getTripPlanNo();
                 //알람을 보낸다.
                 alarmService.addNavigateAlarm(fakeSender,receiver,alarmTitle,alarmContents,alarmNaviUrl);
@@ -312,7 +312,7 @@ public class TripPlanServiceImpl implements TripPlanService {
                 String userNick = receiver.getNickname();
 
                 //알람 내용을 작성한다.
-                String alarmTitle = tripPlanTitle+"에"+likes+"첫 추천!";
+                String alarmTitle = tripPlanTitle+"에 첫 추천!";
                 String alarmContents = userNick+"회원님의"+tripPlanTitle+"여행플랜이 " + "첫 번째로 추천을 받았습니다! 지금 확인해보세요.";
                 String alarmNaviUrl = "/tripPlan/selectTripPlan?tripPlanNo="+gettingTripPlan.getTripPlanNo();
                 //알람을 보낸다.

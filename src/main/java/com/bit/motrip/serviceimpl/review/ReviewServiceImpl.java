@@ -62,6 +62,8 @@ public class ReviewServiceImpl implements ReviewService {
         Search search = (Search) parameters.get("search");
         int totalCount = tripPlanDao.selectTripPlanTotalCount(search);
 
+
+
         User dbUser = (User) parameters.get("user");
         if(dbUser != null) { // 나의 여행플랜
             parameters.put("tripPlanAuthor", dbUser.getUserId());
@@ -80,18 +82,18 @@ public class ReviewServiceImpl implements ReviewService {
             parameters.put("list", updatedTripPlanList);
            // System.out.println("임쁠 parameters>>>>>>"+parameters);
         }
+
         System.out.println("===================여기는 임쁠 지나가요=================");
         parameters.put("totalCount", totalCount);
         return parameters;
     }
-    public TripPlan addReviewView(@RequestParam("tripPlanNo") int tripPlanNo, Review review,
-                                @RequestParam("tripPlanTitle") String tripPlanTitle,
-                                Model model, HttpSession session) throws Exception{
+    public TripPlan selectTripPlan(@RequestParam("tripPlanNo") int tripPlanNo) throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
         tripPlan.setTripPlanViews(tripPlan.getTripPlanViews() + 1);
         System.out.println("여기는 임쁠 tripPlan>>>>"+tripPlan);
 
         tripPlanDao.tripPlanViews(tripPlan);
+
        return tripPlan;
     }
 
@@ -161,10 +163,14 @@ public class ReviewServiceImpl implements ReviewService {
     public Review getReview(int reviewNo) throws Exception {
         Review review = reviewDao.getReview(reviewNo);
         review.setViewCount(review.getViewCount() + 1);
+        TripPlan tripPlan = tripPlanDao.selectTripPlan(review.getTripPlanNo());
+        System.out.println("tripPlan 임쁠>>>>>"+tripPlan);
 
-        reviewDao.getReview(reviewNo);
+        review.setTripPlanNo(tripPlan.getTripPlanNo()); // 리뷰에 해당하는 여행 계획 정보 설정
+        System.out.println("review 임쁠>>>>>>>"+review);
         return review;
     }
+
 
     //후기 수정
     @Override
