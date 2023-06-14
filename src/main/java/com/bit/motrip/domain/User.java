@@ -267,6 +267,7 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", gender='" + gender + '\'' +
                 ", age='" + age + '\'' +
+                ", userPhoto=" + userPhoto +
                 ", isSecession=" + isSecession +
                 ", isSelfIntroPublic=" + isSelfIntroPublic +
                 ", isUserPhotoPublic=" + isUserPhotoPublic +
