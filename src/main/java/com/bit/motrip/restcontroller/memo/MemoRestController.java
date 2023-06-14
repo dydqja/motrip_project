@@ -194,9 +194,13 @@ public class MemoRestController {
         //System.out.println("메모번호는 "+memoNo+"입니다.");
 
         try {
-            memoService.restoreMemo(memo);
+            Memo restoredMemo = memoService.restoreMemo(memo);
+            System.out.println("복구된 메모는 "+restoredMemo+"입니다.");
+            if(restoredMemo == null) {
+                return failJson;
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return successJson;
@@ -370,6 +374,34 @@ public class MemoRestController {
         int isSuccess = 1;
         try {
             memoService.updateMemoAttach(2,chatRoomNoInt,memoNoInt);
+        } catch (Exception e) {
+            isSuccess = 0;
+        }
+        if (isSuccess == 0) {
+            System.out.println("null 을 보내겠다.");
+            return null;
+        }else {
+            System.out.println("successJson 을 보내겠다.");
+            return successJson;
+        }
+    }
+
+
+    @PostMapping("attachMemoToReview")
+    public String attachMemoToReview(
+            @RequestParam("memoNo") String memoNo,
+            @RequestParam("reviewNo") String reviewNo)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+        String cleanReviewNo = reviewNo.replace(">", "");
+        int reviewNoInt = Integer.parseInt(cleanReviewNo);
+
+        System.out.println("memoNoInt : "+memoNoInt);
+        System.out.println("reviewNoInt : "+reviewNoInt);
+
+        int isSuccess = 1;
+        try {
+            memoService.updateMemoAttach(1,reviewNoInt,memoNoInt);
         } catch (Exception e) {
             isSuccess = 0;
         }

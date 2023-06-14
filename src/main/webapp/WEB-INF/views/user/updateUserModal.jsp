@@ -136,18 +136,13 @@
         </div>
         <div class="modal-body" style="background-color: #F5F1E3; ">
 
-
-
-
-
-
           <form class="form-horizontal" style="margin-right: 20%; margin-left: 20%;" >
 
             <c:if test="${getUser.pwd ne null}">
             <div class="form-group text-center" >
               <label class="label label-primary">아이디</label>
               <h3>${getUser.userId}</h3>
-              <input type="hidden" name="userId" id="userId" value="${getUser.userId}"  />
+              <input type="hidden" name="userId" id="updateModalUserId" value="${getUser.userId}"  />
             </div>
 
 

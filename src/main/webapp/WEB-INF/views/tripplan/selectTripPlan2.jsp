@@ -179,7 +179,12 @@
     <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
 <div class="post-single left">
-    <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
+    <c:if test="${tripPlan.tripPlanThumbnail != null && tripPlan.tripPlanThumbnail != ''}">
+    <div class="page-img" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');">
+        </c:if>
+<c:if test="${tripPlan.tripPlanThumbnail == ''}">
+<div class="page-img" style="background-image: url('/images/tripImage.jpg');">
+    </c:if>
         <div class="page-img-txt container">
             <div class="row">
                 <div class="col-sm-8">

@@ -144,10 +144,7 @@
                         <div class="box-title">StartDate</div>
 
                         <div class="input-group">
-                            <input type="text" class="form-control" id="datepicker" name="searchTravelStartDate" placeholder="StartDate">
-                            <div class="input-group-btn">
-                                Days
-                            </div>
+                            <input type="text" class="form-control" id="datepicker" placeholder="StartDate">
                         </div>
                     </div>
 
@@ -452,7 +449,7 @@
 
     function fncGetUserList(currentPage){
         console.log($("#currentPage").val(currentPage));
-        $("form").attr("method" , "GET").attr("action" , "/chatRoom/chatRoomList?").submit();
+        $("form").attr("method" , "GET").attr("action" , "/chatRoom/chatRoomList").submit();
     }
 
     $(function() {

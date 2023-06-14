@@ -37,7 +37,7 @@ function addMemoRequest(userId, memoTitle, memoContents,memoColor,memoDialog){
             //summernote를 수정한다.
             let summernote = memoDialog.find('.summernote-contents');
             summernote.summernote('reset');
-            let changedMemoContents = htmlChanger(addedMemo.memoContents)
+            let changedMemoContents = //htmlChanger(addedMemo.memoContents)
             summernote.summernote('pasteHTML', addedMemo.memoContents);
             //unEditMemo()를 호출한다.
             unEditMemo(memoDialog);
@@ -223,7 +223,7 @@ function deleteMemoRequest(memoNo, memoDialog){
             //alert("삭제되었습니다.");
             Swal.fire(
                 '성공!',
-                '메모가 완전히 삭제되었습니다. 복구하지 않으면 15일 뒤에 완전히 삭제됩니다.',
+                '메모가 삭제되었습니다. 복구하지 않으면 2분 뒤에 완전히 삭제됩니다.',
                 'success'
             )
             getMemoList('myMemo');
@@ -243,7 +243,7 @@ function restoreMemoRequest(memoNo, memoDialog){
             memoNo: memoNo
         }
     }).success(function (result) {
-        if(result){
+        if(result.status=='success'){
             //alert("복구되었습니다.");
             Swal.fire(
                 '성공!',
@@ -252,6 +252,13 @@ function restoreMemoRequest(memoNo, memoDialog){
             )
             getMemoList('deletedMemo');
             memoDialog.dialog('close');
+        }else if(result.status=='fail'){
+            //alert("복구에 실패했습니다.");
+            Swal.fire(
+                '실패!',
+                '메모 복구에 실패했습니다. 삭제 대기 기간이 지나 이미 삭제되었을 수 있습니다.',
+                'error'
+            )
         }
     }).fail(function (error) {
         alert(JSON.stringify(error));
@@ -325,34 +332,3 @@ function nicknameCheckRequest(nickname,checkSpace){
 }
 
 
-
-function getBase64Image(img) {
-    let canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    let ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-
-    let dataURL = canvas.toDataURL("image/png");
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-}
-
-function htmlChanger(memoContents) {
-    let div = document.createElement('div');
-    div.innerHTML = memoContents;
-
-    let images = div.getElementsByTagName('img');
-    for (let i = 0; i < images.length; i++) {
-        let img = images[i];
-        let src = img.getAttribute('src');
-
-        if (src.startsWith('/imagePath/')) {
-            let base64 = getBase64Image(img);
-            img.setAttribute('src', 'data:image/png;base64,' + base64);
-        }
-    }
-
-    let changedHtml = div.innerHTML;
-    return changedHtml;
-}

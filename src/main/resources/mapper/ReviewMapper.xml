@@ -197,6 +197,12 @@
         GROUP BY r.review_no
         ) AS sub
         WHERE row_num BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+        <if test="blacklist != null and blacklist.size() > 0">
+            AND review_author NOT IN
+            <foreach item="user" index="index" collection="blacklist" open="(" separator="," close=")">
+                #{user}
+            </foreach>
+        </if>
         ORDER BY
         <choose>
             <when test="'view_count' == search.reviewCondition">

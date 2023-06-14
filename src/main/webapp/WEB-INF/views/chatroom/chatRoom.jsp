@@ -535,7 +535,7 @@
                             chatUsers.append(li);
 
                             if (author === member.userId) {
-                                li.append('<img src="/imagePath/masetHat.png"/>'); // 방장
+                                // li.append('<img src="/imagePath/masetHat.png"/>'); // 방장
                             }
                             if (author === username && author !== member.userId) {
                                 var kickButton = $("<button>")

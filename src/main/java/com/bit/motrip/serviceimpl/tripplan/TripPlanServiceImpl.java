@@ -7,14 +7,22 @@ import com.bit.motrip.dao.tripplan.DailyPlanDao;
 import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
 import com.bit.motrip.domain.*;
+import com.bit.motrip.service.alarm.AlarmService;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -39,6 +47,12 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Autowired
     @Qualifier("imageSaveService")
     ImageSaveService imageSaveService;
+    @Autowired
+    @Qualifier("alarmServiceImpl")
+    AlarmService alarmService;
+
+    @Value(value = "${filePath}thumbnail")
+    private Path fileStorageLocation; // 썸네일 경로
 
     @Override
     public Map<String , Object > selectTripPlanList(Map<String, Object> parameters) throws Exception {
@@ -143,7 +157,6 @@ public class TripPlanServiceImpl implements TripPlanService {
                     System.out.println(defaultPlaces + "기존값 확인");
 
                     for(int j=0; j<place.size(); j++){
-
                         if(j < defaultPlaces.size()) {
                             place.get(j).setPlaceNo(defaultPlaces.get(j).getPlaceNo());
                             placeDao.updatePlace(place.get(j));
@@ -261,6 +274,53 @@ public class TripPlanServiceImpl implements TripPlanService {
         // 추천수를 높이고 tripPlanEvaluateList의 숫자가 최근 추천수이기에 + 1을 더해주어 최종 저장
         tripPlan.setTripPlanLikes(tripPlanEvaluateList.size() + 1);
         tripPlan.setTripPlanNo((Integer) tripPlanLikes.get("tripPlanNo"));
+
+        //디버그
+        System.out.println("트립플랜 라이크스의 숫자를 찍어본다." + tripPlan.getTripPlanLikes());
+        System.out.println("트립플랜 라이크스의 no를 찍어본다." + tripPlan.getTripPlanNo());
+
+
+        //알람 코드 삽입
+            //변수를 잡아둔다.
+            int likes = tripPlan.getTripPlanLikes();
+            User fakeSender = new User();
+            //만약 추천수가 10단위라면
+            if(likes % 10 == 0){
+                //트립플랜의 본디 정보를 확인한다.
+                TripPlan gettingTripPlan = tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+
+                int tripPlanNo = tripPlan.getTripPlanNo();
+                String tripPlanTitle = gettingTripPlan.getTripPlanTitle();
+                String receiverId = gettingTripPlan.getTripPlanAuthor();
+                User receiver = userService.getUserById(receiverId);
+                String userNick = receiver.getNickname();
+
+                //알람 내용을 작성한다.
+                String alarmTitle = tripPlanTitle+"에"+likes+"회째 추천!";
+                String alarmContents = userNick+"회원님의"+tripPlanTitle+"여행플랜이 " + likes + "회나 추천되었습니다! 지금 확인해보세요.";
+                String alarmNaviUrl = "/tripPlan/selectTripPlan?tripPlanNo="+gettingTripPlan.getTripPlanNo();
+                //알람을 보낸다.
+                alarmService.addNavigateAlarm(fakeSender,receiver,alarmTitle,alarmContents,alarmNaviUrl);
+            }else if (likes == 1){
+                //트립플랜의 본디 정보를 확인한다.
+                TripPlan gettingTripPlan = tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+
+                int tripPlanNo = tripPlan.getTripPlanNo();
+                String tripPlanTitle = gettingTripPlan.getTripPlanTitle();
+                String receiverId = gettingTripPlan.getTripPlanAuthor();
+                User receiver = userService.getUserById(receiverId);
+                String userNick = receiver.getNickname();
+
+                //알람 내용을 작성한다.
+                String alarmTitle = tripPlanTitle+"에"+likes+"첫 추천!";
+                String alarmContents = userNick+"회원님의"+tripPlanTitle+"여행플랜이 " + "첫 번째로 추천을 받았습니다! 지금 확인해보세요.";
+                String alarmNaviUrl = "/tripPlan/selectTripPlan?tripPlanNo="+gettingTripPlan.getTripPlanNo();
+                //알람을 보낸다.
+                alarmService.addNavigateAlarm(fakeSender,receiver,alarmTitle,alarmContents,alarmNaviUrl);
+            }
+
+        //알람 코드 종료
+
         tripPlanDao.tripPlanLikes(tripPlan);
         return tripPlan.getTripPlanLikes();
     }
@@ -269,6 +329,50 @@ public class TripPlanServiceImpl implements TripPlanService {
     public int tripPlanCount() throws Exception {
         return tripPlanDao.tripPlanCount();
     }
+
+    @Override
+    public List<TripPlan> indexTripPlanLikes() throws Exception {
+        // 아이디랑 태그 가져올수있도록 할것
+        return tripPlanDao.indexTripPlanLikes();
+    }
+
+    public String fileUpload(MultipartFile file) throws Exception {
+
+        System.out.println("tripPlanfileUpload");
+        // 파일이 비어있는지 체크
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("파일이 없습니다.");
+        }
+
+//        @Value(value = "${filePath}")
+//        private Path fileStorageLocation;
+
+        System.out.println("받은 파일의 경로는 => : " + file.getOriginalFilename());
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        System.out.println("파일경로에서 파일이름만 뽑은 값은 => : " + fileName);
+
+        String uniqueFileName = UUID.randomUUID().toString() + "_" + fileName;
+        System.out.println("파일이름+UUID해서 준 임의파일이름은? => : " + uniqueFileName);
+
+        /*파일이 저장될 기본 경로(this.fileStorageLocation)에 파일이름(uniqueFileName) 을 추가(resolve) 하여,
+        새로운 경로 생성(Path targetLocation)*/
+        Path targetLocation = this.fileStorageLocation.resolve(uniqueFileName);
+        System.out.println("기본경로+파일이름으로 생성된 새로운경로는? => : " + targetLocation);
+
+        System.out.println("업로드파일 데이터스트림 => : "+ file.getInputStream());
+        /*업로드된 파일의 데이터 스트림을 가져오고(file.getInputStream()) 이 데이터 스트림을 지정된 경로(targetLocation)로 복사(Files.copy)한다.
+        복사한 위치에 동일한 이름의 파일이 있다면 기존 파일을 새 파일로 대체(StandardCopyOption.REPLACE_EXISTING)한다. */
+        try (InputStream is = file.getInputStream()) {
+            Files.copy(is, targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("파일 저장에 실패했습니다. 파일 이름: " + fileName, e);
+        }
+
+        return uniqueFileName;
+    }
+
 
 //    public static String totaltime(int totalTripTimes) {
 //        int totalHours = (int) Math.floor(totalTripTimes / 60);

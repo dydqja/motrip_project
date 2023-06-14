@@ -26,5 +26,6 @@ public interface TripPlanDao {
     public void tripPlanViews(TripPlan tripPlan) throws Exception;
     public int tripPlanCount() throws Exception;
     public int selectTripPlanTotalCount(Search search) throws Exception;
+    public List<TripPlan> indexTripPlanLikes() throws Exception;
 
 }

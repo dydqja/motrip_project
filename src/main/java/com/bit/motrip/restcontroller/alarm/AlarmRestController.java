@@ -40,9 +40,14 @@ public class AlarmRestController {
 
     @PostMapping("getUnreadAlarmCount")
     public String getUnreadAlarmCount(HttpSession session){
-        System.out.println("레스트컨트롤러 getUnreadAlarmCount 동작");
+        //System.out.println("레스트컨트롤러 getUnreadAlarmCount 동작");
+        Object obj = session.getAttribute("user");
+        if (obj == null) {
+            System.out.println("세션에 유저가 없으므로 알람을 돌려주지 않습니다.");
+            return "{ \"result\": \"fail\" }";
+        }
         User user = (User) session.getAttribute("user");
-        System.out.println("받은 유저아이디는"+user.getUserId());
+        //System.out.println("받은 유저아이디는"+user.getUserId());
 
         int unreadCount = alarmService.getUnreadAlarmCount(user.getUserId());
 

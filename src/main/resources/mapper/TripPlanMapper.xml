@@ -218,6 +218,14 @@
         ) countTable
     </select>
 
+    <!-- index 조회수 높은 6개의 여행플랜 -->
+    <select id="indexTripPlanLikes" resultMap="tripPlanResultMap">
+        SELECT *
+        FROM trip_plan
+        ORDER BY trip_plan_likes DESC, trip_plan_no ASC
+        LIMIT 6;
+    </select>
+
     <!-- 태그 찾아오기 -->
 
 </mapper>
