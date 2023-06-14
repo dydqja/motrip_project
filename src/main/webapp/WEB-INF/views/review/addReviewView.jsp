@@ -109,7 +109,6 @@
         }
     </style>
 
-
     <style>
         .post {
             width: 100%; /* 원하는 너비 설정 */
@@ -426,7 +425,7 @@ $(document).ready(function () {
                             <span style="font-size: 24px;">'</span>
                             <span>&nbsp;&nbsp;에 대한 후기를 작성합니다. </span>
                         </div>
-
+                        <div style="margin: 20px;"></div>
                         <div class="author">
                             <c:set var="nickname" value="${user.nickname}"/>
                             <span>By</span><a href="#"><span id="nickname">
@@ -485,9 +484,8 @@ $(document).ready(function () {
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul class="nav nav-tabs">
-                                        <li class="active"><a data-toggle="tab" href="#qwe">QWE</a></li>
-                                        <li><a data-toggle="tab" href="#asd">ASD</a></li>
-                                        <li><a data-toggle="tab" href="#zxc">ZXC</a></li>
+                                        <li class="active"><a data-toggle="tab" href="#qwe">Day-1</a></li>
+                                        <li><a data-toggle="tab" href="#asd">Day-2</a></li>
                                     </ul>
 
 
@@ -496,13 +494,9 @@ $(document).ready(function () {
                                             <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
                                         </div>
                                         <div id="asd" class="tab-pane fade">
-                                            <h4>ASD Content</h4>
                                             <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
                                         </div>
-                                        <div id="zxc" class="tab-pane fade">
-                                            <h4>ZXC Content</h4>
-                                            <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -566,6 +560,7 @@ $(document).ready(function () {
                                                 var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
                                                 var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
                                                 var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
+                                                var tripPath = '${place.tripPath}';
 
                                                 console.log("placeTags:", placeTags);
                                                 console.log("placePhoneNumber:", placePhoneNumber);
@@ -576,6 +571,12 @@ $(document).ready(function () {
                                                 console.log("longitude:", longitude);
                                                 console.log("markerPosition:", markerPosition);
                                                 console.log("mapId:", mapId);
+
+                                                var index = ${i-1};
+                                                if(!pathInfo[index]) {
+                                                    pathInfo[index] = [];
+                                                }
+                                                pathInfo[index].push(tripPath);
 
                                                 // markers 배열에 좌표 및 맵 ID 정보 추가
                                                 markers.push({
@@ -703,10 +704,11 @@ $(document).ready(function () {
 <!-- 아래는 설정용 스크립트입니다. -->
 
 <script type="text/javascript">
-    console.log("maps>>>>>>>>>>>>>>>>>>",maps)
+
     let tripDays = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
-    console.log("tripDays",tripDays);
+
     $(function () { // 저장되었던 맵의 갯수 만큼 출력하고 세팅
+
         for (var i = 0; i < tripDays; i++) { // map의 아이디를 동적으로 할당하여 생성
             var mapContainer = document.getElementById('map' + i);
             var mapOptions = {
@@ -714,14 +716,36 @@ $(document).ready(function () {
                 level: 3
             };
             var map = new kakao.maps.Map(mapContainer, mapOptions);
+
             maps.push(map);
+
+            for(var j = 0; j < pathInfo[i].length; j++){
+                if (pathInfo[i][j] !== "") {
+                    var path = JSON.parse(pathInfo[i][j]);
+
+                    var pathCoordinates = path.map(function (coord) {
+                        return new kakao.maps.LatLng(coord.Ma, coord.La);
+                    });
+
+                    var polyline = new kakao.maps.Polyline({
+                        path: pathCoordinates, // Initialize the path array
+                        strokeWeight: 5,
+                        strokeColor: '#e11f1f',
+                        strokeOpacity: 0.8,
+                        strokeStyle: 'shortdash'
+                    });
+                    polyline.setMap(map);
+                }
+            }
         }
+
         $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
             var bounds = new kakao.maps.LatLngBounds();
             var mapId = 'map' + index;
             var mapMarkers = markers.filter(function (marker) {
                 return marker.mapId === mapId;
             });
+
             $(mapMarkers).each(function (index, marker) {
                 var markerOptions = {
                     position: marker.position,
@@ -731,10 +755,22 @@ $(document).ready(function () {
                 marker.setMap(map);
                 bounds.extend(markerOptions.position);
             });
+
+            // 바운드의 범위를 한 단계만 더 가깝게 설정
+            var extraPadding = 0.1; // 조절 가능한 추가 간격 (0.1은 10%를 의미)
+            var ne = bounds.getNorthEast();
+            var sw = bounds.getSouthWest();
+            var deltaX = (ne.getLng() - sw.getLng()) * extraPadding;
+            var deltaY = (ne.getLat() - sw.getLat()) * extraPadding;
+            var extendedNE = new kakao.maps.LatLng(ne.getLat() + deltaY, ne.getLng() + deltaX);
+            var extendedSW = new kakao.maps.LatLng(sw.getLat() - deltaY, sw.getLng() - deltaX);
+            bounds.extend(extendedNE);
+            bounds.extend(extendedSW);
+
             map.setBounds(bounds);
         });
-    });
 
+    });
 
     $(function () { // 오버레이 표시
         var overlays = [];
@@ -745,16 +781,20 @@ $(document).ready(function () {
                 position: markers[i].position,
                 map: maps[mapIndex]
             };
-            console.log("mapId:", mapId);
-            console.log("mapIndex:", mapIndex);
-            console.log("markerOptions:", markerOptions);
-
             var marker = new kakao.maps.Marker(markerOptions);
             marker.setMap(markerOptions.map);
-            console.log("marker", marker);
+
+            var category = '';
+            if (markers[i].placeCategory == 0) {
+                category = '여행지';
+            } else if (markers[i].placeCategory == 1) {
+                category = '식당';
+            } else if (markers[i].placeCategory == 2) {
+                category = '숙소';
+            }
 
             // 오버레이 정보창
-            var content = '<div class="wrap">' +
+            var content = '<div class="wrap custom-container">' +
                 '    <div class="info">' +
                 '        <div class="title">' +
                 '            ' + markers[i].placeTags +
@@ -766,7 +806,7 @@ $(document).ready(function () {
                 '           </div>' +
                 '            <div class="desc">' +
                 '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
-                '                <div class="category">(카테고리) ' + markers[i].placeCategory + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
+                '                <div class="category">(카테고리) ' + category + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
                 '    </div></div></div></div>';
 
             var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
@@ -814,16 +854,16 @@ $(document).ready(function () {
     <!-- 아래는 버튼클릭시 동작되는 부분입니다 -->
 
     $(function () {
-        $("button[id='reviewLikes']").on("click", function () {
-            var reviewNo = "${review.reviewNo}";
+        $("button[id='tripPlanLikes']").on("click", function () {
+            var tripPlanNo = "${tripPlan.tripPlanNo}";
             $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
-                url: "/review/reviewLikes",
+                url: "/tripPlan/tripPlanLikes",
                 type: "GET",
-                data: {"reviewLikes": reviewNo},
+                data: {"tripPlanNo": tripPlanNo},
                 success: function (data) {
                     console.log(data);
                     if (data == -1) {
-                        alert("이미 추천한 후기입니다.");
+                        alert("이미 추천한 여행플랜입니다.");
                     } else if (data == 0) {
                         alert("비회원은 추천을 할수없습니다.");
                     } else {
