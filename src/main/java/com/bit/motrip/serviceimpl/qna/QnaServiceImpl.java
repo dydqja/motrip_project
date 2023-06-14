@@ -3,7 +3,10 @@ package com.bit.motrip.serviceimpl.qna;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.qna.QnaDao;
 import com.bit.motrip.domain.Qna;
+import com.bit.motrip.domain.User;
+import com.bit.motrip.service.alarm.AlarmService;
 import com.bit.motrip.service.qna.QnaService;
+import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,9 +22,17 @@ public class QnaServiceImpl implements QnaService {
     @Autowired
     @Qualifier("qnaDao")
     private QnaDao qnaDao;
+    @Autowired
+    @Qualifier("alarmServiceImpl")
+    private final AlarmService alarmService;
+    @Autowired
+    @Qualifier("userServiceImpl")
+    private final UserService userService;
 
     ///Constructor
-    public QnaServiceImpl(){
+    public QnaServiceImpl(AlarmService alarmService, UserService userService){
+        this.alarmService = alarmService;
+        this.userService = userService;
 
         System.out.println("::"+getClass()+".setQnaDao Call.........");
     }
@@ -62,6 +73,38 @@ public class QnaServiceImpl implements QnaService {
     public void addQna(Qna qna) throws Exception {
 
         qnaDao.addQna(qna);
+
+        System.out.println("질의응답의 내용을 확인합니다.");
+        System.out.println("qnaNo : " + qna.getQnaNo());
+        System.out.println("qnaTitle : " + qna.getQnaTitle());
+        System.out.println("qnaAuthor : " + qna.getQnaAuthor());
+        System.out.println("qnaCategory : " + qna.getQnaCategory());
+
+        String realCategory = "";
+        if(qna.getQnaCategory() == 0){
+            realCategory = "계정문의";
+        } else if (qna.getQnaCategory() == 1) {
+            realCategory = "기타문의";
+        } else if (qna.getQnaCategory() == 2) {
+            realCategory = "여행플랜문의";
+        } else if (qna.getQnaCategory() == 3) {
+            realCategory = "채팅문의";
+        } else if (qna.getQnaCategory() == 4) {
+            realCategory = "메모문의";
+        }else {
+            realCategory = "후기문의";
+        }
+
+
+        //알림 등록
+        //어드민 리스트를 가져온다(미구현)
+        User receiver = userService.getUserById("admin");
+        User sender = userService.getUserById(qna.getQnaAuthor());
+        String alarmTitle = sender.getNickname() + "님의"+realCategory+" :"+qna.getQnaTitle();
+        String alarmContents = sender.getUserName() + "님이"+realCategory+","+qna.getQnaTitle()+"을 등록하셨습니다. 지금 확인해주세요";
+        String alarmNaviUrl = "/qna/getQna?qnaNo="+qna.getQnaNo();
+
+        alarmService.addNavigateAlarm(sender,receiver, alarmTitle, alarmContents, alarmNaviUrl);
     }
 
     //질의응답 응답 등록 서비스
