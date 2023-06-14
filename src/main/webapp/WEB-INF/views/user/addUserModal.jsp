@@ -257,7 +257,7 @@
                         </div>
 
                         <div id="drop_zone" name="userPhoto" style="margin-top: 10px; font-size: 16px;">사진 파일을 올려주세요</div>
-                        <input type="hidden" name="userPhoto" id="userPhoto"  />
+                        <input type="hidden" name="userPhoto" id="userPhoto" value="" />
                     </div>
 
                     <div class="form-group text-left">
@@ -875,9 +875,8 @@
                   console.log(result);
                   $('#userPhoto').val(result);
 
-                  document.querySelector('#drop_zone').innerHTML = '<img src="'+result+'" style="width:200px; height:100px;">';
-                  document.querySelector('#userPhoto').value = result;
-
+                  $('#drop_zone').html('<img src="'+result+'" style="width:200px; height:100px;">');
+                  $('#userPhoto').val(result);
               }
           });
       }

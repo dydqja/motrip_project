@@ -273,7 +273,7 @@ public class User {
                 ", isUserPhotoPublic=" + isUserPhotoPublic +
                 ", role=" + role +
                 ", evaluateCount=" + evaluateCount +
-                ", evaluateCount=" + isGettingSmsAlarm +
+                ", isGettingSmsAlarm=" + isGettingSmsAlarm +
                 '}';
     }
 }
