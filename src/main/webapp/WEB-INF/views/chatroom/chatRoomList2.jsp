@@ -171,10 +171,10 @@
                         <div class="item-img row" style="background-image: url('/imagePath/${tripPlan.tripPlanThumbnail}');">
                             <div class="item-overlay">
                                 <c:if test="${tripPlan.tripPlanThumbnail != null && tripPlan.tripPlanThumbnail != ''}">
-                                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');">
+                                    <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');"></div>
                                 </c:if>
                                 <c:if test="${tripPlan.tripPlanThumbnail == ''}">
-                                <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
+                                    <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"></div>
                                 </c:if>
                             </div>
                         </div>
