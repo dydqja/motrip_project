@@ -136,7 +136,8 @@
         </div>
         <div class="modal-body" style="background-color: #F5F1E3; ">
 
-          <form class="form-horizontal" style="margin-right: 20%; margin-left: 20%;" >
+          <form class="form-horizontal" id="updateUserForm" style="margin-right: 20%; margin-left: 20%;" >
+            <input type="hidden" name="userPhoto" id="userPhoto"/>
 
             <c:if test="${getUser.pwd ne null}">
             <div class="form-group text-center" >
@@ -252,7 +253,7 @@
               </div>
 
               <div id="drop_zone" name="userPhoto" style="margin-top: 10px;">사진 파일을 올려주세요</div>
-              <input type="hidden" name="userPhoto" id="userPhoto"  />
+
             </div>
 
             <div class="form-group text-center">
@@ -306,6 +307,17 @@
 
 
   <script type="text/javascript">
+
+    $(document).ready(function () {
+
+      var originalImageUrl = '${getUser.userPhoto}'; // 기존 이미지 URL
+      $('#drop_zone').html('<img src="'+originalImageUrl+'" style="width: 100%; height: auto; object-fit: cover;">');
+
+    });
+
+
+
+
 
     $(document).ready(function() {
       // 모달 창이 숨겨질 때 실행될 이벤트를 설정합니다.
@@ -417,7 +429,7 @@
         return;
       }
 
-      $('input[name="userPhoto"]').val(fileRoute);
+
 
         var userId = "${getUser.userId}";
 
@@ -561,8 +573,9 @@
           $("#updatePwdConfirmCheck").text("");
           return; // 아직 입력된 상태가 아니라면 아무런 문구를 출력하지 않는다
         }
+        var passwordRegEx = /^(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
 
-        if($('#updatePwd').val()!=$('#updatePwdConfirm').val()){
+        if($('#updatePwd').val()!=$('#updatePwdConfirm').val()) {
           // 만약 pw1과 pw2가 일치하지 않는다면
           $("#updatePwdConfirmCheck").text('비밀번호가 일치하지 않습니다').css({
             'color': 'red',
@@ -570,15 +583,23 @@
           });
           $('#updatePwdConfirm').val(''); // 값을 비움
           $('#updatePwdConfirm').focus(); // 포인터를 pw2 로 맞춘다
-          updatePwdConfirmChecked=false;
-        }
-        else{
-          $("#updatePwdConfirmCheck").text('비밀번호가 일치합니다').css({
-            'color': 'green',
-            'font-size': '10px' // 문구 출력
-          });
-          updatePwdConfirmChecked=true;
-        }
+          updatePwdConfirmChecked = false;
+          }else if($('#updatePwd').val()==$('#updatePwdConfirm').val() && !passwordRegEx.test($('#updatePwdConfirm').val()) ) {
+
+            $("#updatePwdConfirmCheck").text('특수문자 포함 8자 이상 입력해주세요.').css({
+              'color': 'red',
+              'font-size': '10px' // 문구 출력
+            });
+            $('#pwdConfirm').val(''); // 값을 비움
+            $('#pwdConfirm').focus(); // 포인터를 pw2 로 맞춘다
+            pwdChecked=false;
+          }else{
+            $("#updatePwdConfirmCheck").text('비밀번호가 일치합니다').css({
+              'color': 'green',
+              'font-size': '10px' // 문구 출력
+            });
+            updatePwdConfirmChecked=true;
+          }
         // setAble();
       }
     });
@@ -657,6 +678,11 @@
                 'font-size': '10px'
               });
               nicknameChecked = false; // id체크 true
+            }else if(result == 1 && nickname.length > 8 ) {
+              $("#checkNickname").text('닉네임은 8자를 넘을 수 없습니다.').css({
+                'color': 'red',
+                'font-size': '10px'
+              });
             } else {
               $("#checkNickname").text('사용 가능한 닉네임입니다.').css({
                 'color': 'green',
@@ -907,7 +933,6 @@
       });
     });
 
-    var fileRoute;
     function selectFile(fileObject) {
       var files = fileObject;
       var file = files[0];
@@ -927,12 +952,32 @@
           console.log(result);
           $('#userPhoto').val(result);
 
-          document.querySelector('#drop_zone').innerHTML = '<img src="'+result+'" style="width:200px; height:100px;">';
-          document.querySelector('#userPhoto').value = result;
+          $('#drop_zone').html('<img src="'+result+'" style="width: 100%; height: auto; object-fit: cover;">');
+          $('#userPhoto').val(result);
         }
       });
     }
 
+    //모달 닫힐때 폼 초기화
+    $(document).ready(function() {
+      // 모달이 완전히 숨겨진 후에 발생하는 이벤트를 이용
+      $('#updateUserModal').on('hidden.bs.modal', function(e) {
+        // 'addUserForm' 폼의 모든 입력 필드를 초기화
+        $('#updateUserForm')[0].reset();
+
+        $("#sendSms").text("인증번호전송").css({
+          "color": "white"
+        });  // 텍스트 색상과 폰트 크기 변경
+        $("#sendSms").prop("disabled", false);
+
+        $("#currentPwdCheck").text("");
+        $("#updatePwdCheck").text("");
+        $("#updatePwdConfirmCheck").text("");
+        $("#checkNickname").text("");
+        $("#checkPhone").text("");
+        $("#checkPhCodeConfirm").text("");
+      });
+    });
 
   </script>
 

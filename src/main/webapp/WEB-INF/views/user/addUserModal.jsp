@@ -224,7 +224,7 @@
                             <img style="max-width: 20px; max-height: 20px; margin-top: 20px;" src="/images/user/asterisk.png">
                             <img style="max-width: 20px; max-height: 20px; margin-top: 20px;" src="/images/user/asterisk.png">
                         </div>
-                        <input type="hidden" name="ssn"  />
+                        <input type="hidden" name="ssn" id="ssn" />
                     </div>
 
                     <div class="form-group text-left">
@@ -425,6 +425,15 @@
               return;
           }
 
+          if(juminCheck == false) {
+              console.log("juminCheck == false");
+              $('#ssn1').focus().addClass('shake');
+              setTimeout(function () {
+                  $('#ssn1').removeClass('shake');
+              }, 1000);
+              return;
+          }
+
           if( $("input:text[name='ssn1']").val() != ""  &&  $("input:text[name='ssn2']").val() != "") {
 
               var ssn = $("input[name='ssn1']").val() + "-"
@@ -460,9 +469,50 @@
               }
           });
       });
+      let juminCheck = false;
+      //==> 주민번호 유효성 check
+      $(function() {
+          // 주민등록번호 필드가 변경되었을 때 이벤트를 발생시킵니다.
+          $("#ssn1, #ssn2").on("change" , function() {
 
+              var ssn1 = $("#ssn1").val();
+              var ssn2 = $("#ssn2").val();
 
+              // 두 필드 모두 값이 입력되었을 때만 검사를 수행합니다.
+              if (ssn1.length == 6 && ssn2.length == 1) {
+                  var ssn = ssn1 + ssn2;
 
+                  if(!PortalJuminCheck(ssn)) {
+                      $(this).focus().addClass('shake');
+                      juminCheck = false;
+                      setTimeout(function () {
+                          $(this).removeClass('shake');
+                      }.bind(this), 1000);
+                      return;
+                  }else{
+                      juminCheck = true;
+                  }
+              }
+          });
+      });
+      function PortalJuminCheck(ssn){
+          var pattern = /^([0-9]{6})-?([1-4]{1})$/;
+          var num = ssn;
+          if (!pattern.test(num)) return false;
+          num = RegExp.$1 + RegExp.$2;
+
+          // 앞 6자리 날짜 유효성 검사
+          var yy = num.substring(0,2);
+          var mm = num.substring(2,4);
+          var dd = num.substring(4,6);
+
+          var year = (num.charAt(6) <= "2") ? "19" + yy : "20" + yy;
+          var date = new Date(year, mm - 1, dd);
+          if (date.getYear() % 100 != yy || date.getMonth() + 1 != mm || date.getDate() != dd)
+              return false;
+
+          return true;
+      }
 
       //인증번호 클릭시 인증번호 입력창 생성
       $(document).ready(function() {
@@ -577,7 +627,7 @@
                       smsConfirmNum = response;
                   },
                   error: function (error) {
-                      alert("실패");
+                      alert("다시 시도해주세요.");
                   }
               });	//ajax close
           });
@@ -849,7 +899,7 @@
                   }
                   selectFile(files)
               } else {
-                  alert("ERROR");
+                  alert("다시 시도해주세요.");
               }
           });
       });
@@ -878,7 +928,6 @@
               }
           });
       }
-
       //모달 닫힐때 폼 초기화
       $(document).ready(function() {
           // 모달이 완전히 숨겨진 후에 발생하는 이벤트를 이용
@@ -890,6 +939,13 @@
                   "color": "white"
               });  // 텍스트 색상과 폰트 크기 변경
               $("#sendSms").prop("disabled", false);
+
+              $("#checkId").text("");
+              $("#checkPwd").text("");
+              $("#checkNickname").text("");
+              $("#checkPhone").text("");
+              $("#checkPhCodeConfirm").text("");
+
           });
       });
 

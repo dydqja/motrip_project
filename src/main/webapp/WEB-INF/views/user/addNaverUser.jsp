@@ -390,7 +390,6 @@
         // Drag & Drop 파일업로드
         $(document).ready(function() {
 
-
             var dropZone = $('#drop_zone');
             dropZone.on('dragover', function (e) {
                 console.log('이미지파일 드래그해서 드랍존에 올린상태###');
@@ -417,7 +416,7 @@
                     }
                     selectFile(files)
                 } else {
-                    alert("ERROR");
+                    alert("다시 시도해주세요");
                 }
             });
         });
