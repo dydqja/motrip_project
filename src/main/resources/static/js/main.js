@@ -9,12 +9,11 @@ const fileInput = document.getElementById('uploadFile');
 // console.log(queryString);
 // const username = params.get("username");
 // const room = params.get("chatRoomNo");
-
 //console.log(username,room);
 
 //cors 에러 해결
-const socket = io.connect("https://www.motrip.co.kr/node", {
-  cors:{origin:"https://www.motrip.co.kr/node"}//"http://192.168.0.28:3000" "http://localhost:3000"}
+const socket = io.connect("http://localhost:3000", {
+  cors:{origin:"http://localhost:3000"}//"http://192.168.0.28:3000" "http://localhost:3000"}
 });
 //join chatroom
 socket.emit('joinRoom',{username,room});

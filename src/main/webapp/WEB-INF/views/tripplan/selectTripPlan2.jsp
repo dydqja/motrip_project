@@ -195,7 +195,7 @@
                         <div class="author">
                             <span>${tripPlan.tripPlanTitle}</span>
                         </div>
-                    </h2>
+                    </h2>w
                     <p class="byline">
                     <h4>
                         <span class="italic">${tripPlan.tripPlanNickName}</span>
