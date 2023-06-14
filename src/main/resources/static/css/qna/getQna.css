@@ -1,0 +1,92 @@
+.qna-content {
+    white-space: pre-line;
+    font-size: 20px;
+    padding: 0 0;
+    margin-left:160px;
+    margin-top:-10px;
+}
+
+.page-img{
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.board-title {
+    cursor: default;
+    pointer-events: none;
+    user-select: none;
+}
+
+@keyframes Zooming {
+    0%, 100% {
+        transform: scale(0.8);
+    }
+    50% {
+        transform: scale(1);
+    }
+}
+
+.Zooming {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    animation: Zooming 20s infinite ease-in;
+}
+
+.qnaAnswerContents{
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-left:150px;
+}
+
+.qnaAnswer{
+    white-space: pre-line;
+    font-size: 20px;
+    padding: 0 0;
+    margin-left:160px;
+    margin-top:-10px;
+}
+
+.category {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.qLine {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-left:160px;
+}
+
+.aLine {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-left:160px;
+}
+
+/* Button effect animation */
+#updateQnaView {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    width: 90px;
+}
+
+#deleteQna {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    width: 90px;
+    background-color:#E53935;
+}
+
+#deleteQna:hover {
+    background-color:#FF5252;
+}
+
+#getQnaList {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    width: 90px;
+    background-color: #999999;
+}
+
+#getQnaList:hover {
+    background-color: #CCCCCC;
+}

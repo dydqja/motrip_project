@@ -130,8 +130,20 @@
                     <c:set var="i" value="${ i+1 }"/>
                     <div class="item-list trip-plan-item-list">
                         <div class="col-sm-5">
-                            <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
-                                    type="hidden" id="tripPlanImage${tripPlan.tripPlanNo}"
+                            <c:if test="${tripPlan.tripPlanThumbnail != null && tripPlan.tripPlanThumbnail != ''}">
+                                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');">
+                                    <input type="hidden" id="tripPlanImage${tripPlan.tripPlanNo}"
+                                            <c:if test="${tripPlan.isPlanDeleted}">
+                                                value="0"
+                                            </c:if>
+                                            <c:if test="${!tripPlan.isPlanDeleted}">
+                                                value="${tripPlan.tripPlanNo}"
+                                            </c:if>
+                                           class="tripPlanNo"/></div>
+                            </c:if>
+                            <c:if test="${tripPlan.tripPlanThumbnail == ''}">
+                            <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
+                                <input type="hidden" id="tripPlanImage${tripPlan.tripPlanNo}"
                                     <c:if test="${tripPlan.isPlanDeleted}">
                                         value="0"
                                     </c:if>
@@ -139,6 +151,7 @@
                                         value="${tripPlan.tripPlanNo}"
                                     </c:if>
                                     class="tripPlanNo"/></div>
+                            </c:if>
                         </div>
 
                         <div class="col-sm-7">

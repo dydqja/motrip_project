@@ -267,12 +267,13 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", gender='" + gender + '\'' +
                 ", age='" + age + '\'' +
+                ", userPhoto=" + userPhoto +
                 ", isSecession=" + isSecession +
                 ", isSelfIntroPublic=" + isSelfIntroPublic +
                 ", isUserPhotoPublic=" + isUserPhotoPublic +
                 ", role=" + role +
                 ", evaluateCount=" + evaluateCount +
-                ", evaluateCount=" + isGettingSmsAlarm +
+                ", isGettingSmsAlarm=" + isGettingSmsAlarm +
                 '}';
     }
 }

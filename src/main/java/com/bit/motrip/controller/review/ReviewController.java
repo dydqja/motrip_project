@@ -4,7 +4,9 @@ package com.bit.motrip.controller.review;
 import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.chatroom.ChatRoomDao;
+import com.bit.motrip.dao.tripplan.TripPlanDao;
 import com.bit.motrip.domain.*;
+import com.bit.motrip.service.evaluateList.EvaluateListService;
 import com.bit.motrip.service.review.CommentService;
 import com.bit.motrip.service.review.ReviewService;
 import com.bit.motrip.service.tripplan.TripPlanService;
@@ -17,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -44,6 +47,12 @@ public class ReviewController {
     @Qualifier("chatRoomDao")
     ChatRoomDao chatRoomDao; //Chatroom
 
+    @Autowired
+    @Qualifier("evaluateListServiceImpl")
+    private EvaluateListService evaluateListService; //Chatroom
+
+
+
 
     ///Contructor
     public ReviewController(){
@@ -64,41 +73,8 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    // 여행완료된 플랜목록 가져옴(ajax)
 
-  /*  @RequestMapping("getCompletedTripPlan")
-    @ResponseBody
-    public ResponseEntity<List<TripPlan>> getCompletedTripPlan(@RequestParam(required = false) Integer chatRoomNo, HttpSession session) {
-        try {
-            List<TripPlan> tripPlans = new ArrayList<>();
-
-            if (chatRoomNo != null) {
-                // chatRoomNo가 제공된 경우
-                tripPlans = reviewService.getCompletedTripPlan(chatRoomNo);
-                System.out.println("chatRoomNo>>>>>>>>>>"+chatRoomNo);
-                System.out.println("chatRoomNo가 제공된 경우 tripPlans?>>>>>>>"+tripPlans);
-            } else {
-                // chatRoomNo가 제공되지 않은 경우
-                tripPlans = reviewService.getPublicNonDeletedTripPlans();
-                System.out.println("chatRoomNo가 제공되지 않은 경우 tripPlans?>>>>>>>"+tripPlans);
-            }
-            // 첫 번째 tripPlanNo를 가져옴(@!!!!!!!!!!!!!원인 아니까 나중에 고치면 됨!!!!!!!!!!!!!!!!!!!!)
-            int selectedTripPlanNo = 0;
-            if (!tripPlans.isEmpty()) {
-                selectedTripPlanNo = tripPlans.get(0).getTripPlanNo();
-            }
-            // 세션에 선택한 tripPlanNo 저장
-            session.setAttribute("selectedTripPlanNo", selectedTripPlanNo);
-            System.out.println("selectedTripPlanNo?>>>>>"+selectedTripPlanNo);
-
-            return ResponseEntity.ok(tripPlans);
-        } catch (Exception e) {
-            // 예외 처리 로직 추가
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }*/
-
-    //1.입력폼에 앞서 모달로 '완료된 여행플랜리스트' 띄워서 다음jsp에 Post
+    //1.입력폼에 앞서 모달로 '완료된 여행플랜리스트' 띄워서 다음 jsp에 Post
     @GetMapping("getCompletedTripPlanList")
     public String getCompletedTripPlanList(@RequestParam(defaultValue = "1") int currentPage, Model model, HttpSession session) throws Exception {
         System.out.println("getCompletedTripPlanList() : GET");
@@ -144,6 +120,7 @@ public class ReviewController {
         return "/review/getCompletedTripPlanList.jsp";
     }
 
+
     //2.단순 입력폼에서 정보 입력받음 Get
     @GetMapping(value = "addReviewView")
     public String addReviewView(@RequestParam("tripPlanNo") int tripPlanNo,Review review,
@@ -164,6 +141,7 @@ public class ReviewController {
         System.out.println("여기는 컨트롤러 addReviewView>>>>>>>>>"+tripPlan);
 
         model.addAttribute("tripPlan", tripPlan);
+        System.out.println("컨트롤러 tripPlan>>>>>>>>>>>>>>>>>>>>>> "+tripPlan);
         model.addAttribute("reviewAuthor", reviewAuthor);
         model.addAttribute("tripPlanNo", tripPlanNo);
         System.out.println("2.tripPlanNo>>>>"+model.addAttribute("tripPlanNo", tripPlanNo));
@@ -220,19 +198,35 @@ public class ReviewController {
 
 
     @GetMapping("getReviewList") // 공개된 모든 후기 목록 조회
-    public String getReviewList(@RequestParam(defaultValue = "1") int currentPage, Model model) throws Exception {
+    public String getReviewList(@RequestParam(defaultValue = "1") int currentPage, Model model, HttpSession session) throws Exception {
         System.out.println("/review/getReviewList : GET");
 
         Search search = new Search();
         search.setCurrentPage(currentPage);
+
         System.out.println("currentPage>>>>>>>>"+currentPage);
         System.out.println(search);
+
         int pageSize = 3;
         search.setPageSize(pageSize);
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("search", search);
         parameters.put("condition", "publicReviewList"); // 전체 공개 후기 목록을 조회하기 위한 조건 설정
+
+        //######용범 추가 부분 시작(blackList 관련)##############
+        if(session.getAttribute("user") != null) {
+            User myUser = (User) session.getAttribute("user");
+            Map<String, Object> evaluaterId = new HashMap<>();
+            evaluaterId.put("evaluaterId", myUser.getUserId());
+
+            System.out.println("세션에 등록된 아이디는? ::" + evaluaterId);
+            List<String> getBlacklistAll = evaluateListService.getBlacklistAll(evaluaterId);
+            System.out.println("세션유저를/가 블랙한 아이디리스트 = :: " + getBlacklistAll);
+
+            parameters.put("blacklist", getBlacklistAll);
+        }
+        //######용범 추가 부분 끝(blackList 관련)##############
 
         Map<String, Object> reviewListData = reviewService.selectReviewList(parameters);
         List<Review> reviewList = (List<Review>) reviewListData.get("reviewList");
@@ -329,40 +323,26 @@ public class ReviewController {
 
 
 
-    @GetMapping("getReview") // 후기 단 1개 상세조회
-    public String getReview(@RequestParam("reviewNo") int reviewNo, Model model, HttpSession session) {
-        System.out.println("/review/getReview : GET");
-        try {
-            // 후기 상세 조회
-            Review getReview = reviewService.getReview(reviewNo);
-            if (getReview != null) {
-                // 조회수 증가
-                reviewService.getReview(reviewNo);
-
-                // 댓글 목록 조회
-                List<Comment> commentList = commentService.getCommentList(reviewNo);
-
-                model.addAttribute("getReview", getReview);
-                System.out.println("getReview >>>>>>>>" + getReview);
-                model.addAttribute("commentList", commentList);
-                System.out.println("commentList >>>>>>>>" + commentList);
-
-                // 작성자 정보 설정
-                String commentAuthor = (String) session.getAttribute("nickname");
-                System.out.println("commentAuthor >>>>>>>>" + commentAuthor);
-                model.addAttribute("commentAuthor", commentAuthor);
-
-                return "review/getReview.jsp";
-            } else {
-                model.addAttribute("errorMessage", "해당 후기를 찾을 수 없습니다.");
-                return "errorPage.jsp";
-            }
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "후기 조회 중 오류가 발생했습니다.");
-            e.printStackTrace();
-            return "errorPage.jsp";
+    @GetMapping("/getReview")// 후기 단 1개 조회
+    public String getReview(@RequestParam("reviewNo") int reviewNo, Model model, HttpSession session) throws Exception {
+        User dbUser = (User) session.getAttribute("user");
+        if (dbUser == null) {
+            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
+            return "user/login.jsp";
         }
+
+        // 리뷰 상세 조회
+        Review review = reviewService.getReview(reviewNo);
+
+        // 해당 리뷰와 관련된 여행 계획 정보 가져오기
+        TripPlan tripPlan = tripPlanService.selectTripPlan(review.getTripPlanNo());
+
+        model.addAttribute("review", review);
+        model.addAttribute("tripPlan", tripPlan);
+
+        return "review/getReview.jsp";
     }
+
 
 
 

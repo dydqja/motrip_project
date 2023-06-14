@@ -12,7 +12,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>질의응답 상세</title>
+        <title>질의 상세</title>
 
         <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
         <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
@@ -21,9 +21,7 @@
         <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
         <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
         <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-
         <link rel="stylesheet" href="/css/qna/getQna.css"/>
-
 
         <script src="/vendor/jquery/dist/jquery.min.js"></script>
         <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
@@ -37,125 +35,118 @@
         <script src="/assets/js/bootstrap-tabcollapse.js"></script>
         <script src="/assets/js/min/countnumbers.min.js"></script>
         <script src="/assets/js/main.js"></script>
-        <script src="/assets/js/min/home.min.js"></script>
+
+        <!-- alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+        <!-- 서머노트 CDN 링크 -->
+        <link rel="stylesheet" href="/summernote/summernote.css">
+        <script src="/summernote/summernote.js"></script>
     </head>
 
     <body>
+        <c:set var="formAction" value="${(sessionScope.user.userId eq 'admin') ? '/qna/addQnaAnswer' : '/qna/updateQnaView'}" />
+        <form action="${formAction}" method="post">
 
+            <input type="hidden" name="qnaNo" value="${qnaGetData.qnaNo}" />
+            <input type="hidden" name="qnaTitle" value="${qnaGetData.qnaTitle}" />
+            <input type="hidden" name="qnaContents" value="${qnaGetData.qnaContents}" />
+            <input type="hidden" name="isQnaAnswered" value="${qnaGetData.isQnaAnswered}" />
+            <input type="hidden" name="qnaCategory" value="${qnaGetData.qnaCategory}" />
+
+            <c:choose>
+                <c:when test="${qnaGetData.qnaCategory == 0}">계정문의</c:when>
+                <c:when test="${qnaGetData.qnaCategory == 1}">기타문의</c:when>
+                <c:when test="${qnaGetData.qnaCategory == 2}">여행플랜</c:when>
+                <c:when test="${qnaGetData.qnaCategory == 3}">채팅</c:when>
+                <c:when test="${qnaGetData.qnaCategory == 4}">메모</c:when>
+                <c:when test="${qnaGetData.qnaCategory == 5}">후기</c:when>
+            </c:choose>
 
             <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-
-        <div class="page-img">
-            <div class="container">
-                <div class="col-sm-8">
-                    <h1 class="main-head">질의응답</h1>
+            <div class="page-img" style="background-image: url('/images/board/qnaTop.jpg');">
+                <div class="container">
+                    <h1 class="main-head text-center board-title Zooming">${qnaGetData.qnaTitle}</h1>
                 </div>
-                <div class="col-sm-4">
-                    <ul class="breadcrumb">
-                        <li><a href=""><span class="icon-home"></span></a>
-                        </li>
-                        <li><a href="">List</a>
-                        </li>
-                    </ul>
-                </div>
-
             </div>
-        </div>
 
-        <div class="container">
+            <div class="page-img" style="background-image: url('/images/board/qnaBack.jpg');">
 
-            <c:set var="formAction" value="${(sessionScope.user.userId eq 'admin') ? '/qna/addQnaAnswer' : '/qna/updateQnaView'}" />
-            <form action="${formAction}" method="post">
+                <div class="container">
 
-                <input type="hidden" name="qnaNo" value="${qnaGetData.qnaNo}" />
-                <input type="hidden" name="isQnaAnswered" value="${qnaGetData.isQnaAnswered}" />
+                    <div class="row">
+                        <div class="qLine">
+                            <h3>Q.&nbsp;<span class="category">${qnaGetData.qnaCategory == 0 ? '계정문의' : qnaGetData.qnaCategory == 1 ? '기타문의' : qnaGetData.qnaCategory == 2 ? '여행플랜' : qnaGetData.qnaCategory == 3 ? '채팅' : qnaGetData.qnaCategory == 4 ? '메모' : '후기'}</span></h3>
+                            <hr>
+                        </div>
 
-                <div class="mb-3">
+                        <div class="col-md-9 qna-content">
+                            ${qnaGetData.qnaContents}
+                        </div>
 
-                    <input type="hidden" name="qnaTitle" value="${qnaGetData.qnaTitle}" />
-                    ${qnaGetData.qnaTitle}
+                        <div class="text-right">
+                            <div class="d-inline-block">
 
-                    <input type="hidden" name="qnaCategory" value="${qnaGetData.qnaCategory}" />
+                                <!--유저만 볼 수 있음-->
+                                <c:if test="${sessionScope.user.userId ne 'admin' && not empty sessionScope.user.userId && empty qnaGetData.qnaAnswerContents && sessionScope.user.userId eq qnaGetData.qnaAuthor}">
+                                    <div>
+                                        <button id="updateQnaView" class="btn btn-primary" type="button">내용 수정</button>
+                                    </div>
+                                </c:if>
 
-                    <c:choose>
-                        <c:when test="${qnaGetData.qnaCategory == 0}">계정문의</c:when>
-                        <c:when test="${qnaGetData.qnaCategory == 1}">기타문의</c:when>
-                        <c:when test="${qnaGetData.qnaCategory == 2}">여행플랜</c:when>
-                        <c:when test="${qnaGetData.qnaCategory == 3}">채팅</c:when>
-                        <c:when test="${qnaGetData.qnaCategory == 4}">메모</c:when>
-                        <c:when test="${qnaGetData.qnaCategory == 5}">후기</c:when>
-                    </c:choose>
+                                <!--운영자나 유저가 볼 수 있음-->
+                                <c:if test="${sessionScope.user.userId eq 'admin' || not empty sessionScope.user.userId && empty qnaGetData.qnaAnswerContents && sessionScope.user.userId eq qnaGetData.qnaAuthor}">
+                                        <br>
+                                    <div>
+                                        <button id="deleteQna" class="btn btn-danger" type="button">삭제하기</button>
+                                    </div>
+                                </c:if>
+                                    <br>
+                                <div>
+                                    <button id="getQnaList" class="btn btn-secondary" type="button">목록보기</button>
+                                </div>
 
+                                <!--운영자만 볼 수 있음-->
+                                <c:if test="${sessionScope.user.userId eq 'admin' }">
+                                        <br>
+                                    <div>
+                                        <button id="addQnaAnswer" class="btn btn-primary" type="button">응답 등록</button>
+                                    </div>
+                                </c:if>
+
+                            </div>
+                        </div>
+
+                        <!--유저만 볼 수 있음-->
+                        <c:if test="${sessionScope.user.userId ne 'admin' && qnaGetData.qnaAnswerContents != null}">
+                            <div class="aLine">
+                                <h3>A.</h3>
+                                <hr>
+                            </div>
+
+                            <div class="qnaAnswer">
+                                ${qnaGetData.qnaAnswerContents}
+                            </div>
+                        </c:if>
+
+                        <!--운영자만 볼 수 있음-->
+                        <c:if test="${sessionScope.user.userId eq 'admin' }">
+                            <div class="aLine">
+                                <h3>A.</h3>
+                                <hr>
+                            </div>
+
+                            <div class="qnaAnswerContents">
+                                <textarea name="qnaAnswerContents" id="qnaAnswerContents">${qnaGetData.qnaAnswerContents}</textarea>
+                            </div>
+                        </c:if>
+                    </div>
                 </div>
-
-                <br>
-
-                <div class="mb-3">
-
-                    <input type="hidden" name="qnaContents" value="${qnaGetData.qnaContents}" />
-                    ${qnaGetData.qnaContents}
-
-                </div>
-
-                <br>
-
-                <c:if test="${sessionScope.user.userId ne 'admin' && qnaGetData.qnaAnswerContents != null}">
-
-                    <div class="mb-3">
-
-                        ${qnaGetData.qnaAnswerContents}
-
-                    </div>
-
-                </c:if>
-
-                <c:if test="${sessionScope.user.userId eq 'admin' }">
-
-                    <div class="mb-3">
-
-                        <textarea name="qnaAnswerContents" id="qnaAnswerContents" class="form-control">${qnaGetData.qnaAnswerContents}</textarea>
-
-                    </div>
-
-                    <br>
-
-                    <div>
-                        <button id="addQnaAnswer" type="submit" class="btn btn-primary">응답 등록</button>
-                    </div>
-
-                </c:if>
-
-                <c:if test="${sessionScope.user.userId ne 'admin' && not empty sessionScope.user.userId && empty qnaGetData.qnaAnswerContents && sessionScope.user.userId eq qnaGetData.qnaAuthor}">
-
-                    <div>
-                        <button id="updateQnaView" type="submit" class="btn btn-primary">질문 수정</button>
-                    </div>
-
-                </c:if>
-
-                <c:if test="${sessionScope.user.userId eq 'admin' || not empty sessionScope.user.userId && empty qnaGetData.qnaAnswerContents && sessionScope.user.userId eq qnaGetData.qnaAuthor}">
-
-                    <br>
-
-                    <div>
-                        <button id="deleteQna" type="button" class="btn btn-danger">삭제하기</button>
-                    </div>
-
-                </c:if>
-
-                <br>
-
-                <div>
-                    <button id="getQnaList" type="button" class="btn btn-secondary">목록 보기</button>
-                </div>
-
-            </form>
-
-        </div>
+            </div>
+        </form>
 
         <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
-
 
         <script type="text/javascript">
 
@@ -166,7 +157,11 @@
 
                     if ($('#qnaAnswerContents').val().trim() === '') {
 
-                        alert('답변 내용을 입력해주세요.');
+                        Swal.fire({
+                            title: '안녕하세요!',
+                            text: '답변을 입력해주세요.',
+                            icon: 'warning'
+                        });
                         return false;
 
                     } else {
@@ -205,6 +200,35 @@
                 });
             });
 
+            <!-- 서머노트 기본생성 -->
+            $(document).ready(function () {
+                $('#qnaAnswerContents').summernote({
+                    toolbar: [
+                        ['fontname', ['fontname']],
+                        ['fontsize', ['fontsize']],
+                        ['style', ['bold', 'italic', 'underline']],
+                        ['color', ['forecolor', 'color']],
+                        ['table', ['table']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                    ],
+                    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+                    fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+                    height: 100,
+                    width: 1050,
+                    disableResizeEditor: true
+                });
+            });
+
+            // 썸머노트 초기화 함수
+            function resetSummernote() {
+                $('#qnaAnswerContents').summernote('code', '');
+            }
+
+            // 초기화 버튼 클릭 시 썸머노트 초기화
+            $('#reset').on('click', function () {
+                resetSummernote();
+            });
         </script>
 
     </body>

@@ -197,6 +197,12 @@
         GROUP BY r.review_no
         ) AS sub
         WHERE row_num BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+        <if test="blacklist != null and blacklist.size() > 0">
+            AND review_author NOT IN
+            <foreach item="user" index="index" collection="blacklist" open="(" separator="," close=")">
+                #{user}
+            </foreach>
+        </if>
         ORDER BY
         <choose>
             <when test="'view_count' == search.reviewCondition">
@@ -220,15 +226,11 @@
 
     <!-- Select One Review -->
     <select id="getReview" parameterType="int" resultMap="reviewResultMap">
-
         SELECT r.review_no, r.trip_plan_no, r.review_author, r.review_title,
-               r.review_contents, r.review_thumbnail, r.insta_post_link,
+               r.review_contents, r.review_thumbnail,
                r.is_review_public, r.review_likes, r.view_count,
-               r.review_reg_date, r.is_review_deleted, r.review_del_date,
-               c.comment_no, c.comment_author, c.comment_contents,
-               c.comment_reg_date, c.parent_comment_no
+               r.review_reg_date, r.is_review_deleted, r.review_del_date
         FROM review r
-                 LEFT JOIN comment c ON r.review_no = c.review_no
         WHERE r.review_no = #{reviewNo}
             LIMIT 1;
     </select>

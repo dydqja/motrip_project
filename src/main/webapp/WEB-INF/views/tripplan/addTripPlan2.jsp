@@ -59,6 +59,7 @@
         let idCheck = 1; // 늘어나거나 줄어나는 id의 값을 체크
         let isPlanPublic = false; // 공유여부
         let isPlanDownloadable = false; // 가져가기여부 (미구현)
+        let tripPlanThumbnail = "";
     </script>
 
     <style>
@@ -221,26 +222,30 @@
 
 </head>
 
-<header class="nav-menu fixed">
     <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
 
 <body>
 
 <div class="post-single left">
-    <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
+    <div class="page-img" style="background-image: url('/images/tripImage.jpg'); height: 400px;">
         <div class="page-img-txt container">
             <div class="row">
+                <div style="margin-top: 5%"></div>
                 <div class="col-sm-8">
-                    <div class="author-img">
-                        <img src="/images/tripImage.jpg" alt="">
-                    </div>
                     <div class="author">
-                        <h4>
-                            <span class="italic">${user.userId}</span>
-                            <span class="dot">·</span>
-                        </h4>
+                        <div class="author-img">
+                            <img src="/images/tripImage.jpg" alt="">
+                        </div>
+                        <h4><span class="italic">${user.userId}</span></h4>
+                        <div style="display: flex">
+                            <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목" style="color: black; width: 400px; height: 30px; opacity: 0.3;"></h4></span>
+                            <h5>
+                                공개<input type="checkbox" id="chbispublic" class="round" value="true"/>&nbsp;&nbsp;
+                                비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true" disabled/>
+                            </h5>
+                        </div>
                     </div>
+                    <button id="tripPlanThumbnail" style="font-size: 10px;">여행플랜 썸네일</button>
                 </div>
             </div>
         </div>
@@ -249,11 +254,6 @@
     <main class="white">
         <div class="container">
             <div >
-                <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목" style="color: black; width: 70%; height: 40px; opacity: 0.5;"></h4></span>
-                <h5>
-                    공개<input type="checkbox" id="chbispublic" class="round" value="true"/>&nbsp;&nbsp;
-                    비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true" disabled/>
-                </h5>
                 <div style="text-align: right;">
                     <div class="btn btn-sm btn-success btn-default">여행일수</div>
                     <button class="btn btn-sm btn-success icon-triangle-up" id="btnAddTripDay"
@@ -911,10 +911,11 @@
             var placeSum = 0; // 명소의 갯수 파악
 
             if(($('#dailyPlanContents' + i).val() != "" && $('#dailyPlanContents' + i).val() != null) && (allPlaces['map' + i] != undefined && allPlaces['map' + i] != null && allPlaces['map' + i].length != 0)) {
-                dailyPlanContent = $('#dailyPlanContents' + i).val();
 
+                dailyPlanContent = $('#dailyPlanContents' + i).val();
                 totalTripTime = totalTripTimes[i];
                 placeSum = allPlaces['map' + i].length;
+
                 for (var j = 0; j < placeSum; j++) {
                     placeInfo.push(JSON.stringify(placeData[i][j]));
                 }
@@ -949,6 +950,7 @@
 
         var tripPlan = {
             tripPlanTitle: tripPlanTitle,
+            tripPlanThumbnail: tripPlanThumbnail,
             tripDays: idCheck,
             isPlanPublic: isPlanPublic,
             isPlanDownloadable: isPlanDownloadable,
@@ -1138,7 +1140,11 @@
             console.log("0으로 시작")
 
             totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index];
-            $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+            if(totalTripTimes[indexCheck] == 0 && totalTripTimes[indexCheck] == NaN) {
+                $("#totalTripTime" + indexCheck).text("");
+            } else {
+                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+            }
 
             placeTripTimes['map' + indexCheck].splice(index, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
             placeTripPositions[indexCheck].splice(index, index + 1); // 삭제된 좌표 인덱스
@@ -1212,7 +1218,12 @@
 
             totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index - 1];
             totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index];
-            $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+            console.log(totalTripTimes[indexCheck])
+            if(isNaN()) {
+                $("#totalTripTime" + indexCheck).text("");
+            } else {
+                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+            }
 
             placeTripTimes['map' + indexCheck].splice(index - 1, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
             placeTripPositions[indexCheck].splice(index, index); // 삭제된 좌표 인덱스
@@ -1315,12 +1326,12 @@
                         tripTimeEl.textContent = minute;
                         placeData[indexCheck][index-1].tripTime = minute;
                         placeTripTimes['map' + indexCheck].push(minute);
-                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
+                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck]) + minute;
                     } else {
                         tripTimeEl.textContent = (hour * 60) + minute;
                         placeData[indexCheck][index-1].tripTime = ((hour * 60) + minute);
                         placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
-                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
+                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck]) + (hour * 60) + minute;
                     }
                     $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
 
@@ -1332,6 +1343,55 @@
                 }
             });
         }
+    });
+
+    // 여행플랜 썸네일
+    $("#tripPlanThumbnail").click(function() {
+        Swal.fire({
+            title: "썸네일 업로드",
+            html: '<input type="file" id="fileInput">',
+            showCancelButton: true,
+            confirmButtonText: "저장",
+            cancelButtonText: "취소",
+            preConfirm: function() {
+                return new Promise(function(resolve) {
+                    var file = document.getElementById("fileInput").files[0];
+                    if (file) {
+                        resolve(file);
+                    } else {
+                        Swal.showValidationMessage("파일을 선택해주세요.");
+                    }
+                });
+            }
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                var uploadedFile = result.value;
+                console.log("파일 업로드 성공:", uploadedFile);
+
+                // FormData 객체 생성
+                var formData = new FormData();
+                formData.append("file", uploadedFile);
+
+                // 파일 업로드 AJAX 요청
+                $.ajax({
+                    url: "/tripPlan/fileUpload",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log("파일 업로드 성공:", response);
+                        var imagePath = response;
+                        tripPlanThumbnail = imagePath.replace(/^\/imagePath\//, "");
+                        console.log(tripPlanThumbnail);
+                        $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + tripPlanThumbnail + "')");
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("파일 업로드 실패:", error);
+                    }
+                });
+            }
+        });
     });
 
 </script>

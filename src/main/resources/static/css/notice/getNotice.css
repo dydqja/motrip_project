@@ -34,7 +34,17 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    animation: noticeZooming 20s infinite ease-in;
+    animation: Zooming 20s infinite ease-in;
+}
+
+.category {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nLine {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-left:160px;
 }
 
 /* Button effect animation */

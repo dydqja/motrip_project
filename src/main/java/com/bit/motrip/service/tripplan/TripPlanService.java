@@ -5,6 +5,7 @@ import com.bit.motrip.domain.DailyPlan;
 import com.bit.motrip.domain.Place;
 import com.bit.motrip.domain.TripPlan;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -23,5 +24,7 @@ public interface TripPlanService {
     public void tripPlanCompleted(int tripPlanNo) throws Exception;
     public int tripPlanLikes(Map<String, Object> tripPlanLikes) throws Exception;
     public int tripPlanCount() throws Exception;
+    public List<TripPlan> indexTripPlanLikes() throws Exception;
+    public String fileUpload(MultipartFile file) throws  Exception;
 
 }
