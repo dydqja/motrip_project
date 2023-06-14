@@ -147,10 +147,18 @@
 
             for(var i=0; i<indexTripPlan.length; i++){
               $(".title" + i + "").text(indexTripPlan[i].tripPlanTitle);
-
               $(".day" + i + "").text(indexTripPlan[i].tripDays + " Days");
+              $(".author" + i + "").text(indexTripPlan[i].tripPlanNickName);
+              var tripPlanThumbnail = indexTripPlan[i].tripPlanThumbnail;
+              $("#item-img" + i).css("background-image", "url('/imagePath/thumbnail/" + tripPlanThumbnail + "')");
 
-              $(".author" + i + "").text(indexTripPlan[i].tripPlanAuthor);
+              $("#like" + i).text(indexTripPlan[i].tripPlanLikes);
+              $("#view" + i).text(indexTripPlan[i].tripPlanViews);
+
+              var tripPlanNo = indexTripPlan[i].tripPlanNo;
+              var tripPlanUrl = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
+              $("#tripPlanNo" + i).attr("href", tripPlanUrl);
+              $("#image" + i).attr("href", tripPlanUrl);
             }
           },
           error: function (xhr, status, error) {
@@ -207,15 +215,15 @@
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-road-sign"></span></span>
         <div class="desc">
-          <h5>Take Rare Path</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae laborum soluta quos praesentium, magni repellendus.</p>
+          <h5>좌우 구분 잘하세요</h5>
+          <p>저희는 인생의 길을 찾아주는 웹사이트가 아닙니다.</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-map"></span></span>
         <div class="desc">
           <h5>나의 여행플랜 작성</h5>
-          <p>지도에 경로를 그리며 여행플랜을 작성하세요, 동선을 확인하고 완벽한 일정을 만드십시오</p>
+          <p>지도에 경로를 그리며 여행플랜을 작성하세요<br>동선을 확인하고 완벽한 일정을 만드십시오</p>
         </div>
       </div>
 
@@ -229,15 +237,15 @@
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-flower"></span></span>
         <div class="desc">
-          <h5>Near to Nature</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil harum sapiente ipsa hic voluptas? Ut architecto eveniet possimus.</p>
+          <h5>자연과 한마음</h5>
+          <p>모여행은 친환경을 중시합니다. <br>모여행은 일회용 젓가락을 사용하지 않아요</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-binocular"></span></span>
         <div class="desc">
-          <h5>Behold Awesome Scenary</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate quisquam esse quia, necessitatibus quos. Modi cum?</p>
+          <h5>새로운 발견! 잊지 못할 여행! </h5>
+          <p>믿을 수 있는 여행 동료들과 함께<br>멋진 여행 후기를 작성해보세요.</p>
         </div>
       </div>
 
@@ -267,14 +275,14 @@
 
       <div class="col-sm-6 col-md-4">
         <div class="item-grid">
-          <div class="item-img" style="background-image: url('http://placehold.it/368x240');">
+          <div class="item-img" id="item-img0" style="background-image: url('http://placehold.it/368x240');">
             <div class="item-overlay">
-              <a href="trip_detail.html"><span class="icon-binocular"></span></a>
+              <a id="image0" href="trip_detail.html"><span class="icon-binocular"></span></a>
             </div>
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-locate"></span>
+              <span class="icon-locate" style="color: #2929e8;"></span>
               <h4 class="title0"><a href=""></a></h4>
             </div>
 
@@ -285,10 +293,15 @@
             <div class="item-detail">
               <div class="left">
                 <div class="day0"><span class="icon-sun"></span>3 Days</div>
+                <div style="margin: 10%"></div>
+                <div style="display: flex">
+                  <h4><span class="icon-hand-like" id="like0" style="color: black"></span></h4>
+                  <h4><span class="icon-eye" id="view0" style="color: black"></span></h4>
+                </div>
               </div>
               <div class="right">
-                <div class="author0"></div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
+                <h4><div class="author0"></div></h4>
+                <a id="tripPlanNo0" href="/tripPlan/selectTripPlan?tripPlanNo=tripPlanNo0" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>
@@ -296,14 +309,14 @@
       </div>
       <div class="col-sm-6 col-md-4">
         <div class="item-grid">
-          <div class="item-img" style="background-image: url('http://placehold.it/368x240');">
+          <div class="item-img" id="item-img1" style="background-image: url('http://placehold.it/368x240');">
             <div class="item-overlay">
-              <a href="trip_detail.html"><span class="icon-binocular"></span></a>
+              <a id="image1" href="trip_detail.html"><span class="icon-binocular"></span></a>
             </div>
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-locate"></span>
+              <span class="icon-locate" style="color: #2929e8;"></span>
               <h4 class="title1"><a href=""></a></h4>
             </div>
 
@@ -314,10 +327,15 @@
             <div class="item-detail">
               <div class="left">
                 <div class="day1"><span class="icon-sun"></span>3 Days</div>
+                <div style="margin: 10%"></div>
+                <div style="display: flex">
+                  <h4><span class="icon-hand-like" id="like1" style="color: black"></span></h4>
+                  <h4><span class="icon-eye" id="view1" style="color: black"></span></h4>
+                </div>
               </div>
               <div class="right">
-                <div class="author1"></div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
+                <h4><div class="author1"></div></h4>
+                <a id="tripPlanNo1" href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>
@@ -325,14 +343,14 @@
       </div>
       <div class="col-sm-6 col-md-4">
         <div class="item-grid">
-          <div class="item-img" style="background-image: url('http://placehold.it/368x240');">
+          <div class="item-img" id="item-img2" style="background-image: url('http://placehold.it/368x240');">
             <div class="item-overlay">
-              <a href="trip_detail.html"><span class="icon-binocular"></span></a>
+              <a id="image2" href="trip_detail.html"><span class="icon-binocular"></span></a>
             </div>
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-locate"></span>
+              <span class="icon-locate" style="color: #2929e8;"></span>
               <h4 class="title2"><a href=""></a></h4>
             </div>
 
@@ -343,10 +361,15 @@
             <div class="item-detail">
               <div class="left">
                 <div class="day2"><span class="icon-sun"></span></div>
+                <div style="margin: 10%"></div>
+                <div style="display: flex">
+                  <h4><span class="icon-hand-like" id="like2" style="color: black"></span></h4>
+                  <h4><span class="icon-eye" id="view2" style="color: black"></span></h4>
+                </div>
               </div>
               <div class="right">
-                <div class="author2"></div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
+                <h4><div class="author2"></div></h4>
+                <a id="tripPlanNo2" href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>
@@ -354,14 +377,14 @@
       </div>
       <div class="col-sm-6 col-md-4">
         <div class="item-grid">
-          <div class="item-img" style="background-image: url('http://placehold.it/368x240');">
+          <div class="item-img" id="item-img3" style="background-image: url('http://placehold.it/368x240');">
             <div class="item-overlay">
-              <a href="trip_detail.html"><span class="icon-binocular"></span></a>
+              <a id="image3" href="trip_detail.html"><span class="icon-binocular"></span></a>
             </div>
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-locate"></span>
+              <span class="icon-locate" style="color: #2929e8;"></span>
               <h4 class="title3"><a href=""></a></h4>
             </div>
 
@@ -372,10 +395,15 @@
             <div class="item-detail">
               <div class="left">
                 <div class="day3"><span class="icon-sun"></span></div>
+                <div style="margin: 10%"></div>
+                <div style="display: flex">
+                  <h4><span class="icon-hand-like" id="like3" style="color: black"></span></h4>
+                  <h4><span class="icon-eye" id="view3" style="color: black"></span></h4>
+                </div>
               </div>
               <div class="right">
-                <div class="author3"></div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
+                <h4><div class="author3"></div></h4>
+                <a id="tripPlanNo3" href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>
@@ -384,14 +412,14 @@
 
       <div class="col-sm-6 col-md-4">
         <div class="item-grid">
-          <div class="item-img" style="background-image: url('http://placehold.it/368x240');">
+          <div class="item-img" id="item-img4" style="background-image: url('http://placehold.it/368x240');">
             <div class="item-overlay">
-              <a href="trip_detail.html"><span class="icon-binocular"></span></a>
+              <a id="image4" href="trip_detail.html"><span class="icon-binocular"></span></a>
             </div>
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-locate"></span>
+              <span class="icon-locate" style="color: #2929e8;"></span>
               <h4 class="title4"><a href=""></a></h4>
             </div>
 
@@ -402,10 +430,15 @@
             <div class="item-detail">
               <div class="left">
                 <div class="day4"><span class="icon-sun"></span></div>
+                <div style="margin: 10%"></div>
+                <div style="display: flex">
+                  <h4><span class="icon-hand-like" id="like4" style="color: black"></span></h4>
+                  <h4><span class="icon-eye" id="view4" style="color: black"></span></h4>
+                </div>
               </div>
               <div class="right">
-                <div class="author4"></div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
+                <h4><div class="author4"></div></h4>
+                <a id="tripPlanNo4" href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>
@@ -414,14 +447,14 @@
 
       <div class="col-sm-6 col-md-4">
         <div class="item-grid">
-          <div class="item-img" style="background-image: url('http://placehold.it/368x240');">
+          <div class="item-img" id="item-img5" style="background-image: url('http://placehold.it/368x240');">
             <div class="item-overlay">
-              <a href="trip_detail.html"><span class="icon-binocular"></span></a>
+              <a id="image5" href="trip_detail.html"><span class="icon-binocular"></span></a>
             </div>
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-locate"></span>
+              <span class="icon-locate" style="color: #2929e8;"></span>
               <h4 class="title5"><a href=""></a></h4>
             </div>
 
@@ -432,10 +465,15 @@
             <div class="item-detail">
               <div class="left">
                 <div class="day5"><span class="icon-sun"></span></div>
+                <div style="margin: 10%"></div>
+                <div style="display: flex">
+                  <h4><span class="icon-hand-like" id="like5" style="color: black"></span></h4>
+                  <h4><span class="icon-eye" id="view5" style="color: black"></span></h4>
+                </div>
               </div>
               <div class="right">
-                <div class="author5"></div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
+                <h4><div class="author5"></div></h4>
+                <a id="tripPlanNo5" href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>

@@ -184,7 +184,7 @@
         <div class="page-img-txt container">
             <div class="row">
                 <div class="col-sm-8">
-                    <h5>No.${review.reviewNo}</h5>
+                    <div style="margin: 70px;"></div>
                     <h2>
                         <div class="author-img">
                             <img src="/images/tripImage.jpg" alt="">
@@ -195,16 +195,15 @@
                     </h2>
                     <p class="byline">
                     <h4>
-                        <span class="italic">${user.nickname}</span>
-                        <span class="dot">·</span>
+                    <div style="margin: 40px;"></div>
+                    <span>By</span><span id="nickname">
+                            <c:out value="${user.nickname}"/></span></a>
+                        <span class="italic"></span>
                         <span>${review.reviewRegDate}</span>
-                        <span class="dot">·</span>
-                        <span id="likes" align="center" width="200">${review.reviewLikes}</span>
-                        <span class="dot">·</span>
-                        <span>${review.viewCount}</span>&nbsp;&nbsp;
-                        <button class="btn btn-primary" id="tripPlanLikes" value="${review.reviewNo}"
-                                style="width: auto; height: auto; box-sizing: border-box; padding: 5px 10px;">추천
-                        </button>
+
+
+
+
 
                     </h4>
                     </p>

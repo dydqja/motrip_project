@@ -84,7 +84,7 @@
 
                     <div>
                         <!-- 썸머노트 입력란 -->
-                        <textarea name="qnaContents" id="qnaContents">${qnaContents}</textarea>
+                        <label for="qnaContents"></label><textarea name="qnaContents" id="qnaContents">${qnaContents}</textarea>
                     </div>
 
                     <div class="row">

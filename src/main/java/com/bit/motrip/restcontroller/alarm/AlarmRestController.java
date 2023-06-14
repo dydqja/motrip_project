@@ -140,7 +140,7 @@ public class AlarmRestController {
         //알람 제목
         String title = chatRoomTitle+"에 참가 신청이 수락되었습니다.";
         //naviUrl
-        String naviUrl = "/chatRoom/getChat?chatRoomNo="+chatRoomNo+"&userId="+userId;
+        String naviUrl = "/chatRoom/getChat?chatRoomNo="+chatRoomNo;
         alarmService.addNavigateAlarm(fakeSender, receiver, title, contents, naviUrl);
 
         System.out.println("successJson 을 리턴함.");
