@@ -429,13 +429,18 @@
         return;
       }
 
+      var userId = "${getUser.userId}";
 
+      if(formData.get(userId) == null || formData.get(userId) == ''){
+        formData.set('userId',userId)
+      };
 
-        var userId = "${getUser.userId}";
+      var userPhoto = "${getUser.userPhoto}";
 
-        if(formData.get(userId) == null || formData.get(userId) == ''){
-          formData.set('userId',userId)
-        };
+      alert("폼데이타겟유져포토는? :: " +formData.get('userPhoto'));
+      if (formData.get('userPhoto') == null) {
+        formData.set('UserPhoto', userPhoto)
+      };
 
       $.ajax({
         url: "/user/updateUser",
@@ -457,7 +462,8 @@
 
           if(data.userPhotoPublic) {
             console.log("data.userPhotoPublic -> " +data.userPhotoPublic);
-            $('#userPhoto').text(data.userPhoto).show();
+            $('#profileUserPhoto').attr('src', data.userPhoto);
+
           } else {
             console.log("data.userPhotoPublic -> " +data.userPhotoPublic);
             $('#userPhoto').text("비공개정보입니다.").show();

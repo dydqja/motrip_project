@@ -90,7 +90,7 @@
 
         <div class="profile-image">
 
-            <img src="${getUser.userPhoto}" style="width: 200px; height: 200px;" alt="">
+            <img id="profileUserPhoto" src="${getUser.userPhoto}" style="width: 200px; height: 200px; object-fit: cover;" alt="">
 
         </div>
 
