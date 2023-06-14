@@ -5,6 +5,7 @@ import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.chatroom.ChatRoomDao;
 import com.bit.motrip.domain.*;
+import com.bit.motrip.service.evaluateList.EvaluateListService;
 import com.bit.motrip.service.review.CommentService;
 import com.bit.motrip.service.review.ReviewService;
 import com.bit.motrip.service.tripplan.TripPlanService;
@@ -43,6 +44,10 @@ public class ReviewController {
     @Autowired
     @Qualifier("chatRoomDao")
     ChatRoomDao chatRoomDao; //Chatroom
+
+    @Autowired
+    @Qualifier("evaluateListServiceImpl")
+    private EvaluateListService evaluateListService; //Chatroom
 
 
     ///Contructor
@@ -220,19 +225,35 @@ public class ReviewController {
 
 
     @GetMapping("getReviewList") // 공개된 모든 후기 목록 조회
-    public String getReviewList(@RequestParam(defaultValue = "1") int currentPage, Model model) throws Exception {
+    public String getReviewList(@RequestParam(defaultValue = "1") int currentPage, Model model, HttpSession session) throws Exception {
         System.out.println("/review/getReviewList : GET");
 
         Search search = new Search();
         search.setCurrentPage(currentPage);
+
         System.out.println("currentPage>>>>>>>>"+currentPage);
         System.out.println(search);
+
         int pageSize = 3;
         search.setPageSize(pageSize);
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("search", search);
         parameters.put("condition", "publicReviewList"); // 전체 공개 후기 목록을 조회하기 위한 조건 설정
+
+        //######용범 추가 부분 시작(blackList 관련)##############
+        if(session.getAttribute("user") != null) {
+            User myUser = (User) session.getAttribute("user");
+            Map<String, Object> evaluaterId = new HashMap<>();
+            evaluaterId.put("evaluaterId", myUser.getUserId());
+
+            System.out.println("세션에 등록된 아이디는? ::" + evaluaterId);
+            List<String> getBlacklistAll = evaluateListService.getBlacklistAll(evaluaterId);
+            System.out.println("세션유저를/가 블랙한 아이디리스트 = :: " + getBlacklistAll);
+
+            parameters.put("blacklist", getBlacklistAll);
+        }
+        //######용범 추가 부분 끝(blackList 관련)##############
 
         Map<String, Object> reviewListData = reviewService.selectReviewList(parameters);
         List<Review> reviewList = (List<Review>) reviewListData.get("reviewList");
