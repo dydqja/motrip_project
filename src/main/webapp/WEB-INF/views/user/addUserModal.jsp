@@ -873,10 +873,10 @@
               type: 'POST',
               success: function (result) {
                   console.log(result);
-                  $('#userPhoto').val(result);
 
                   $('#drop_zone').html('<img src="'+result+'" style="width:200px; height:100px;">');
-                  $('#userPhoto').val(result);
+                  let abc = $('#userPhoto').val(result);
+                  console.log(abc);
               }
           });
       }
