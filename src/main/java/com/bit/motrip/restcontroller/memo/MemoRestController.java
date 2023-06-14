@@ -385,4 +385,32 @@ public class MemoRestController {
             return successJson;
         }
     }
+
+
+    @PostMapping("attachMemoToReview")
+    public String attachMemoToReview(
+            @RequestParam("memoNo") String memoNo,
+            @RequestParam("reviewNo") String reviewNo)  {
+
+        int memoNoInt = Integer.parseInt(memoNo);
+        String cleanReviewNo = reviewNo.replace(">", "");
+        int reviewNoInt = Integer.parseInt(cleanReviewNo);
+
+        System.out.println("memoNoInt : "+memoNoInt);
+        System.out.println("reviewNoInt : "+reviewNoInt);
+
+        int isSuccess = 1;
+        try {
+            memoService.updateMemoAttach(1,reviewNoInt,memoNoInt);
+        } catch (Exception e) {
+            isSuccess = 0;
+        }
+        if (isSuccess == 0) {
+            System.out.println("null 을 보내겠다.");
+            return null;
+        }else {
+            System.out.println("successJson 을 보내겠다.");
+            return successJson;
+        }
+    }
 }
