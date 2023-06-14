@@ -466,7 +466,13 @@
 
           } else {
             console.log("data.userPhotoPublic -> " +data.userPhotoPublic);
-            $('#userPhoto').text("비공개정보입니다.").show();
+            if('${getUser.gender}' == 'M' ) {
+              $('#manBasicProfile').attr('src', '/images/user/manBasicProfile.png');
+              $('#profileUserPhoto').attr('src', '/images/user/manBasicProfile.png');
+            } else {
+              $('#womanBasicProfile').attr('src', '/images/user/womanBasicProfile.png');
+              $('#profileUserPhoto').attr('src', '/images/user/womanBasicProfile.png');
+            }
           }
 
           swal({
