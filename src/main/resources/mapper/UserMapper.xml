@@ -40,11 +40,11 @@
     <insert id="addUser" parameterType="com.bit.motrip.domain.User">
         INSERT
         INTO users( user_id, nickname, pwd, user_name, phone, addr, addr_detail, email, ssn, self_intro, user_photo,
-                    gender, age, role, is_secession, secession_date, is_suspension, suspension_date, warning_count,
+                    gender, age, is_secession, secession_date, is_suspension, suspension_date, warning_count,
                     is_self_intro_public, is_user_photo_public, is_getting_sms_alarm
                   )
         VALUES	 (	#{userId}, #{nickname}, #{pwd}, #{userName}, #{phone}, #{addr}, #{addrDetail}, #{email}, #{ssn}, #{selfIntro}, #{userPhoto},
-                    #{gender}, #{age}, #{role}, #{isSecession}, #{secessionDate}, #{isSuspension}, #{suspensionDate}, #{warningCount},
+                    #{gender}, #{age}, #{isSecession}, #{secessionDate}, #{isSuspension}, #{suspensionDate}, #{warningCount},
                     #{isSelfIntroPublic}, #{isUserPhotoPublic}, #{isGettingSmsAlarm}
                  );
     </insert>
