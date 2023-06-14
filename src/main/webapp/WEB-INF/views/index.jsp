@@ -223,7 +223,7 @@
         <span class="square-icon"><span class="icon-map"></span></span>
         <div class="desc">
           <h5>나의 여행플랜 작성</h5>
-          <p>지도에 경로를 그리며 여행플랜을 작성하세요, 동선을 확인하고 완벽한 일정을 만드십시오</p>
+          <p>지도에 경로를 그리며 여행플랜을 작성하세요<br>동선을 확인하고 완벽한 일정을 만드십시오</p>
         </div>
       </div>
 
@@ -237,15 +237,15 @@
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-flower"></span></span>
         <div class="desc">
-          <h5>Near to Nature</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil harum sapiente ipsa hic voluptas? Ut architecto eveniet possimus.</p>
+          <h5>자연과 한마음</h5>
+          <p>모여행은 친환경을 중시합니다. <br>모여행은 일회용 젓가락을 사용하지 않아요</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-binocular"></span></span>
         <div class="desc">
           <h5>새로운 발견! 잊지 못할 여행! </h5>
-          <p>믿을 수 있는 여행 동료들과 함께 멋진 여행 후기를 작성해보세요.</p>
+          <p>믿을 수 있는 여행 동료들과 함께<br>멋진 여행 후기를 작성해보세요.</p>
         </div>
       </div>
 

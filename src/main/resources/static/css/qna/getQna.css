@@ -1,9 +1,7 @@
 .qna-content {
-    white-space: pre-line;
     font-size: 20px;
-    padding: 0 0;
     margin-left:160px;
-    margin-top:-10px;
+    padding:0;
 }
 
 .page-img{
@@ -39,15 +37,12 @@
 
 .qnaAnswerContents{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    margin-left:150px;
+    margin-left:160px;
 }
 
 .qnaAnswer{
-    white-space: pre-line;
     font-size: 20px;
-    padding: 0 0;
     margin-left:160px;
-    margin-top:-10px;
 }
 
 .category {
@@ -56,15 +51,11 @@
 }
 
 .qLine {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    margin-left:160px;
-    padding-bottom: 50px;
+    margin: 0 0 0 160px;
 }
 
 .aLine {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    margin-left:160px;
-    padding-top: 50px;
+    margin: 0 0 0 160px;
 }
 
 /* Button effect animation */
