@@ -1372,8 +1372,9 @@
                     contentType: false,
                     success: function(response) {
                         console.log("파일 업로드 성공:", response);
-                        tripPlanThumbnail = response;
-                        console.log(response);
+                        var imagePath = response;
+                        tripPlanThumbnail = imagePath.replace(/^\/imagePath\//, "");
+                        console.log(tripPlanThumbnail);
                         $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + tripPlanThumbnail + "')");
                     },
                     error: function(xhr, status, error) {
