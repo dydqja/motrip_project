@@ -1,9 +1,6 @@
 .notice-content {
-    white-space: pre-line;
     font-size: 20px;
-    padding: 0 0;
-    margin-left:160px;
-    margin-top:-10px;
+    padding:0;
 }
 
 .page-img{
@@ -43,7 +40,6 @@
 }
 
 .nLine {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     margin-left:160px;
 }
 

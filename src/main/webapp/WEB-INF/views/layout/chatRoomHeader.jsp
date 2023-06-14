@@ -71,7 +71,6 @@
               </c:if>
               <li><a id="roomPhotos">채팅방 사진첩</a></li>
 
-              <li><a id="videoRoom">videoTest</a></li>
             </ul>
           </li>
           <li class="dropdown">

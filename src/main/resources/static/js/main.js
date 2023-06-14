@@ -157,10 +157,13 @@ function outputMessage(message){
 };
 //photo
 function outputPhoto(message){
+
   const div = document.createElement('div');
 
   if(username==message.username){
     div.classList.add('message');
+
+
     div.innerHTML = `
     
     <div class="userbox" align="right">
@@ -169,7 +172,7 @@ function outputPhoto(message){
     <img src="https://via.placeholder.com/50x50" style="border-radius: 40%;"/>
     </div>
     <p class="text">
-     <img src="/imagePath/${message.photo}"/><br/>
+     <img src="/imagePath/photos/${chatRoom.tripPlanThumbnail}'"/><br/>
      &nbsp&nbsp
       ${message.text}
     </p>`;
@@ -181,7 +184,7 @@ function outputPhoto(message){
     <p class="chat2">${message.username}</p>
     <span>   ${message.time}</span><br/>
     <p class="text2">
-        <img src="/imagePath/${message.photo}"/>
+        <img src="/imagePath/photos/${chatRoom.tripPlanThumbnail}'"/>
         &nbsp&nbsp
       ${message.text}`;
     document.querySelector('.chat-messages').appendChild(div);

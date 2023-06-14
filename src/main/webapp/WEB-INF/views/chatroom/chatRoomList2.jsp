@@ -101,7 +101,7 @@
                         <div class="input-group">
                             <input type="text" name="searchKeyword" value="" class="form-control" placeholder="Search Site">
                             <div class="input-group-btn">
-                                <button class="btn btn-primary" id="search-chatroom">Search</button>
+                                <button type="button" class="btn btn-primary" id="search-chatroom">Search</button>
                                 <input type="hidden" id="currentPage" name="currentPage" value="0"/>
                             </div>
                         </div>
@@ -169,14 +169,11 @@
                 <div class="item-list">
                     <div class="col-sm-5">
                         <c:if test="${chatRoom.tripPlanThumbnail != null && chatRoom.tripPlanThumbnail != ''}">
-                        <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${chatRoom.tripPlanThumbnail}');">
+                        <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${chatRoom.tripPlanThumbnail}');"></div>
                         </c:if>
                         <c:if test="${chatRoom.tripPlanThumbnail == ''}">
                             <div class="item-img row" style="background-image: url('/images/chatRoomImage.jpg');"></div>
                         </c:if>
-                            <div class="item-overlay">
-                            </div>
-                        </div>
                     </div>
                     <div class="col-sm-7">
                         <div class="item-desc">
@@ -225,23 +222,23 @@
                             </div>
                         </div>
                         <div class="item-book">
-                            <button class="btn btn-primary hvr-fade go" name="chatRoomNo" value="${chatRoom.chatRoomNo}">Enter</button>
+                            <button type="button" class="btn btn-primary hvr-fade go" name="chatRoomNo" value="${chatRoom.chatRoomNo}">Enter</button>
                             <c:if test="${chatRoom.currentPersons eq chatRoom.maxPersons}">
-                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
+                                <button type="button" class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
                                         style="margin-left: 10px; background-color: #ee3f00" disabled>Hottest</button>
                             </c:if>
                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 0}">
                                 <input type="hidden" class="roomGender" value="${chatRoom.gender}">
                                 <input type="hidden" class="minAge" value="${chatRoom.minAge}">
                                 <input type="hidden" class="maxAge" value="${chatRoom.maxAge}">
-                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Enroll</button>
+                                <button  type="button" class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}" style="margin-left: 10px; background-color: #00b3ee">Enroll</button>
                             </c:if>
                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">
-                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
+                                <button  type="button" class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
                                         style="margin-left: 10px; background-color: #66ffd6" disabled>Completed</button>
                             </c:if>
                             <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 2}">
-                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
+                                <button  type="button" class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
                                         style="margin-left: 10px; background-color: #f5ff66; color: red" disabled>Finished</button>
                             </c:if>
                             <div class="price">${chatRoom.currentPersons} / ${chatRoom.maxPersons}</div>
@@ -309,7 +306,7 @@
             const maxAge = $(this).siblings('.maxAge').val();
             const age = calculateAge($("#birthYear").attr('value'));
             const chatRoomNo = $(this).val();
-            alert(chatRoomNo);
+
             if(userId !== '') {
                 const value = $(this).attr('value');
 
@@ -322,12 +319,16 @@
                         "Content-Type": "application/json"
                     },
                     success: function (members) {
-                        alert(members);
+
                         const matchingMember = members.find(member => member.userId === userId);
                         const inChatRoomUserId = members.map(member => member.userId);
-                        alert(inChatRoomUserId);
+
                         if (matchingMember) {
-                            alert("이미가입했던 채팅방입니다.");
+                            Swal.fire({
+                                title:"채팅방신청오류",
+                                text: "이미 가입했던 채팅방 입니다.",
+                                icon: 'info'
+                            });
                         } else if ((roomGender === gender || roomGender === "MF") && age >= minAge && age <= maxAge) {
 
                             $.ajax({
@@ -361,25 +362,29 @@
                                             }
                                         })
                                     } else {
-                                        alert("신청완료 방장의 허락을 기다려 주세요");
+                                        Swal.fire({title:"채팅방신청성공",
+                                            text: "신청완료 방장의 허락을 기다려 주세요",
+                                            icon: 'success'});
                                         fncJoinChatroom(chatRoomNo);
                                     }
                                 },
                                 error: function (error) {
-                                    alert("다시 시도해주세요.");
+                                    Swal.fire("다시 시도해주세요.");
                                 }
                             });
                             } else {
-                                alert("조건에 부합하지 않습니다.");
+                            Swal.fire({title:"채팅방 입장 신청 실패",
+                                text: "조건에 부합하지 않습니다.",
+                                icon: 'question'});
                             }
                     },
                     error: function (xhr, status, error) {
-                        alert("fail");
+                        Swal.fire("fail");
                         console.log('AJAX Error:', error);
                     }
                 });
             }else{
-                alert("로그인하세요");
+                Swal.fire("로그인하세요");
             }
         });
     });
@@ -408,7 +413,7 @@
             var value = $(this).attr('value');
             console.log(value);
             $.ajax({
-                url: '/chatMember/json/fetchChatMembers/'+value,
+                url: '/chatMember/json/iconChatMembers/'+value,
                 type: 'GET',
                 dataType: 'json',
                 headers: {
@@ -427,10 +432,15 @@
 
                     // 멤버 추가
                     members.forEach(function(member) {
-                        console.log(member.name);
-                        let profileImageUrl = "https://via.placeholder.com/50";
+                        let profileImageUrl
+                        if(member.userPhoto === ''){
+                            profileImageUrl = "https://via.placeholder.com/50";
+                        }else{
+                            profileImageUrl = member.userPhoto;
+                            // profileImageUrl = "https://via.placeholder.com/50";
+                        }
                         let memberElement = $("<div></div>").text(member.userId);
-                        let profileImage = $("<img>").attr("src", profileImageUrl).attr("style","/imagePath");
+                        let profileImage = $("<img>").attr("src", profileImageUrl).attr("style", "width:50px; height:50px;border-radius: 50%;").attr("align","center");
 
                         memberElement.prepend(profileImage); // 이미지를 요소의 첫 번째 자식으로 추가
                         memberArray.push(memberElement);
@@ -479,7 +489,13 @@
                             );
                             fncGoChatroom();
                         });
-                    }else{alert("your not a member!!!");}
+                    }else{Swal.fire({title:"채팅방 입장 실패",
+                        text: "채팅방 멤버가 아닙니다!",
+                        icon: 'error',
+                        showCancelButton: true,  // 취소 버튼 활성화
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: '취소'});}
                 },
                 error: function(xhr, status, error) {
                     console.log('AJAX Error:', error);

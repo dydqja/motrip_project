@@ -872,10 +872,9 @@
               success: function (result) {
                   console.log(result);
 
-                  $('#drop_zone').html('<img src="'+result+'" style="width:200px; height:100px;">');
+                  $('#drop_zone').html('<img src="'+result+'" style="width: 100%; height: auto; object-fit: cover;">');
                   $('#userPhoto').val(result);
-                  let abc = $('#userPhoto').val();
-                  console.log(abc);
+
               }
           });
       }

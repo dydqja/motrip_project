@@ -16,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
 //    private String resourcePath = "file:///home/uploadedImage";
     private String connectPath = "/imagePath/**";
     private String resourcePath = "file:///images/";
-
+// 무조건 푸시하기전에 아래꺼!!
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
