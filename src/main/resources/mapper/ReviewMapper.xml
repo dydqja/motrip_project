@@ -104,7 +104,7 @@
                  JOIN chat_room_members cm ON tp.trip_plan_no = cm.trip_plan_no
         WHERE tp.is_trip_completed = true
           AND (
-                (tp.is_plan_public = true AND tp.is_plan_deleted = false AND tp.trip_plan_author = #{tripPlanAuthor})
+                (tp.is_plan_public = true AND tp.is_plan_deleted = false AND tp.trip_plan_author = 'thwodus')
 
             )
             LIMIT 0, 10;

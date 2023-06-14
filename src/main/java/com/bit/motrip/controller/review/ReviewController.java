@@ -79,16 +79,16 @@ public class ReviewController {
     public String getCompletedTripPlanList(@RequestParam(defaultValue = "1") int currentPage, Model model, HttpSession session) throws Exception {
         System.out.println("getCompletedTripPlanList() : GET");
 
-        Search search = new Search();
-        search.setCurrentPage(currentPage);
-        int pageSize = 5;
-        search.setPageSize(pageSize);
-
         User dbUser = (User) session.getAttribute("user");
         if (dbUser == null) {
             //model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
             return "redirect:user/login.jsp";
         }
+
+        Search search = new Search();
+        search.setCurrentPage(currentPage);
+        int pageSize = 5;
+        search.setPageSize(pageSize);
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("search", search);
@@ -124,7 +124,6 @@ public class ReviewController {
     //2.단순 입력폼에서 정보 입력받음 Get
     @GetMapping(value = "addReviewView")
     public String addReviewView(@RequestParam("tripPlanNo") int tripPlanNo,Review review,
-                                @RequestParam("tripPlanTitle") String tripPlanTitle,
                                 Model model,HttpSession session) throws Exception {
         System.out.println("/review/addReviewView: GET");
 
@@ -145,8 +144,8 @@ public class ReviewController {
         model.addAttribute("reviewAuthor", reviewAuthor);
         model.addAttribute("tripPlanNo", tripPlanNo);
         System.out.println("2.tripPlanNo>>>>"+model.addAttribute("tripPlanNo", tripPlanNo));
-        model.addAttribute("tripPlanTitle", tripPlanTitle);
-        System.out.println("2.tripPlanTitle>>>>"+model.addAttribute("tripPlanTitle", tripPlanTitle));
+
+
 
         return "review/addReviewView.jsp";
     }
