@@ -966,18 +966,18 @@
         console.log("저장전 확인");
         console.log(tripPlan);
 
-        // $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
-        //     url: "/tripPlan/addTripPlan",
-        //     type: "POST",
-        //     data: JSON.stringify(tripPlan),
-        //     contentType: "application/json; charset=utf-8",
-        //     success: function () {
-        //         window.location.href = "/tripPlan/tripPlanList";
-        //     },
-        //     error: function (xhr, status, error) {
-        //         console.log(error);
-        //     }
-        // });
+        $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
+            url: "/tripPlan/addTripPlan",
+            type: "POST",
+            data: JSON.stringify(tripPlan),
+            contentType: "application/json; charset=utf-8",
+            success: function () {
+                window.location.href = "/tripPlan/tripPlanList";
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
 
     });
 
