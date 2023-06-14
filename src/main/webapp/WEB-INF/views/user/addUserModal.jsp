@@ -432,8 +432,6 @@
 
               $("input:hidden[name='ssn']").val( ssn );
           }
-          $('input[name="userPhoto"]').val(fileRoute);
-
           swal({
               title: "회원 가입이 완료되었습니다.",
               text: "여행을 떠나보세요",
@@ -856,7 +854,6 @@
           });
       });
 
-      var fileRoute;
       function selectFile(fileObject) {
           var files = fileObject;
           var file = files[0];
