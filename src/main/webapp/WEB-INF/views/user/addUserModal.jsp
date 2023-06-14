@@ -143,6 +143,7 @@
 
             <div class="col-sm-12">
                 <form id="addUserForm">
+                    <input type="hidden" name="userPhoto" id="userPhoto" value="" />
 
                     <div class="form-group" >
                         <label class="label label-primary">아이디<span style="color:red"> *</span></label>
@@ -257,7 +258,7 @@
                         </div>
 
                         <div id="drop_zone" name="userPhoto" style="margin-top: 10px; font-size: 16px;">사진 파일을 올려주세요</div>
-                        <input type="hidden" name="userPhoto" id="userPhoto" value="" />
+
                     </div>
 
                     <div class="form-group text-left">
@@ -431,8 +432,6 @@
 
               $("input:hidden[name='ssn']").val( ssn );
           }
-          $('input[name="userPhoto"]').val(fileRoute);
-
           swal({
               title: "회원 가입이 완료되었습니다.",
               text: "여행을 떠나보세요",
@@ -855,7 +854,6 @@
           });
       });
 
-      var fileRoute;
       function selectFile(fileObject) {
           var files = fileObject;
           var file = files[0];
@@ -873,10 +871,11 @@
               type: 'POST',
               success: function (result) {
                   console.log(result);
-                  $('#userPhoto').val(result);
 
                   $('#drop_zone').html('<img src="'+result+'" style="width:200px; height:100px;">');
                   $('#userPhoto').val(result);
+                  let abc = $('#userPhoto').val();
+                  console.log(abc);
               }
           });
       }
