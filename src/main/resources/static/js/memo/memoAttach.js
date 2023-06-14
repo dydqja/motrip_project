@@ -6,6 +6,8 @@ let tripPlanTitle = '';
 let memoTitle = '';
 let memChatRoomNo = 0;
 let chatRoomTitle = '';
+let memReviewNo = 0;
+let memReviewTitle = '';
 
 $(document).on('click', '.memo-dialog-attach-btn', function(event) {
     event.preventDefault();
@@ -79,6 +81,22 @@ $(document).on('click', '.chat-room-item-list', function() {
     }
 });
 
+//후기방 리스너
+$(document).on('mouseenter', '.review-item-list', function() {
+    if(isCellMode){
+        memReviewNo = $(this).find('.reviewNo').val();
+        //console.log(memReviewNo);
+        memReviewTitle = $(this).find('.item-title').text().trim();
+    }
+});
+$(document).on('click', '.review-item-list', function() {
+    if(isCellMode){
+        disableCellMode();
+        isInfoMessageDisplayed = false;
+        attachMemoToReviewRequest(memoNo,memReviewNo);
+    }
+});
+
 
 
 
@@ -138,6 +156,40 @@ function attachMemoToChatRoomRequest(memoNo,memChatRoomNo){
                 swal.fire({
                     title: '메모 부착 실패',
                     text: '채팅방, ['+chatRoomTitle+']에 ['+memoTitle+'] 를 부착하는데 실패하였습니다.',
+                    icon: 'error'
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+
+function attachMemoToReviewRequest(memoNo,memReviewNo){
+    $.ajax({
+        type: 'post',
+        url: '/memo/attachMemoToReview',
+        dataType: 'json',
+        data: {
+            memoNo: memoNo,
+            reviewNo: memReviewNo
+        },
+        success: function (result) {
+            if (result.status === 'success') {
+                // 부착 성공
+                swal.fire({
+                    title: '메모 부착 성공',
+                    text: '후기, ['+memReviewTitle+']에 ['+memoTitle+'] 를 부착하였습니다.',
+                    icon: 'success'
+                });
+                getMemoList('myMemo');
+            } else {
+                // 부착 실패
+                swal.fire({
+                    title: '메모 부착 실패',
+                    text: '후기, ['+memReviewTitle+']에 ['+memoTitle+'] 를 부착하는데 실패하였습니다.',
                     icon: 'error'
                 });
             }
