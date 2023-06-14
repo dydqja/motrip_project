@@ -114,12 +114,14 @@ cameraSelect.addEventListener("input",handleCameraChange); //input이 바뀌면 
 async function initCall(){ //hidden을 바꾼다!
     if(call.hidden==true){
         call.hidden=false;
+        trip.hidden=true;
         console.log(room);
         await getMedia();
         makeConnection();
     }else{
         myPeerConnection.close();
         call.hidden=true;
+        trip.hidden=false;
         socket.emit('leave_room', rtcRoom);
         console.log("video out!!");
     }
@@ -195,11 +197,22 @@ function handleIce(data){
     // console.log("got ice candidate");
     // console.log(data);
 }
-
+let count = 0;
 function handleAddStream(data){
-    const peersFace = document.getElementById("peersFace");
+
+    const peersFace = document.getElementById(`peersFace${count}`);
     console.log("god a event from here");
     console.log("peer's stream",data.stream);
     console.log("myStream",myStream);
     peersFace.srcObject = data.stream;
+    // count += 1;
+    //     var video = document.createElement('video');
+    //     video.autoplay = true;
+    //     video.playsinline = true;
+    //     video.width = 300;
+    //     video.height = 300;
+    //     video.id = `peersFace${count}`;
+    //     var div = document.getElementById('myStream');
+    //     div.appendChild(video);
+
 }
