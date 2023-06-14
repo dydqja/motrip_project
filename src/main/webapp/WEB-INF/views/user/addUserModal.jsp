@@ -875,7 +875,8 @@
                   console.log(result);
 
                   $('#drop_zone').html('<img src="'+result+'" style="width:200px; height:100px;">');
-                  let abc = $('#userPhoto').val(result);
+                  $('#userPhoto').val(result);
+                  let abc = $('#userPhoto').val();
                   console.log(abc);
               }
           });
