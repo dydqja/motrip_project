@@ -357,6 +357,12 @@ public class UserRestController {
 
         return getBlacklistAll;
     }
+
+    @RequestMapping(value = "getUserCount", method = RequestMethod.POST)
+    public int getUserCount () throws Exception {
+        return userService.userCount();
+    }
+
 }
 
 
