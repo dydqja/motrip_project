@@ -432,12 +432,11 @@
 
                     // 멤버 추가
                     members.forEach(function(member) {
-                        console.log(member.name);
                         let profileImageUrl
                         if(member.userPhoto === ''){
                             profileImageUrl = "https://via.placeholder.com/50";
                         }else{
-                            profileImageUrl = `/imagePath/${member.userPhoto}`
+                            profileImageUrl = member.userPhoto;
                             // profileImageUrl = "https://via.placeholder.com/50";
                         }
                         let memberElement = $("<div></div>").text(member.userId);
