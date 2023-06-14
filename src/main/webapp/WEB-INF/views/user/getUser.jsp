@@ -1,7 +1,9 @@
+<%@ page import="com.bit.motrip.domain.User" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
 
 
 <!DOCTYPE html>
@@ -67,6 +69,7 @@
 </head>
 
 <body>
+<% User getUser = (User)request.getAttribute("getUser"); %>
 
 <form><input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}"></form>
 <%--    <%@ include file="/WEB-INF/views/layout/header.jsp" %>--%>
@@ -89,17 +92,24 @@
     <div class="profile">
 
         <div class="profile-image">
-            <c:if test="${not empty getUser.userPhoto}">
-            <img id="profileUserPhoto" src="${getUser.userPhoto}" style="width: 200px; height: 200px; object-fit: cover;" alt="">
-            </c:if>
-            <c:if test="${empty getUser.userPhoto}">
-                <c:if test="${getUser.gender eq 'M'}">
-                    <img id="manBasicProfile" src="/images/user/manBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
-                </c:if>
-                <c:if test="${getUser.gender eq 'F'}">
-                    <img id="womanBasicProfile" src="/images/user/womanBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
-                </c:if>
-            </c:if>
+            <%
+                if(getUser.getUserPhoto() != null && !getUser.getUserPhoto().isEmpty()) {
+            %>
+            <img id="profileUserPhoto" src="<%=getUser.getUserPhoto()%>" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <%
+            } else {
+                if(getUser.getGender().equals("M")) {
+            %>
+            <img id="manBasicProfile" src="/images/user/manBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <%
+            } else if(getUser.getGender().equals("F")) {
+            %>
+            <img id="womanBasicProfile" src="/images/user/womanBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <%
+                    }
+                }
+            %>
+
         </div>
 
         <div class="profile-user-settings" style="display: inline-block; align-items: center;">
