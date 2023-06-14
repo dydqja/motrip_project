@@ -131,12 +131,40 @@
           }
         });
       }
+      function indexTripPlanLikes() {
+        $.ajax({
+          url: "/tripPlan/indexTripPlanLikes",
+          type: "POST",
+          dataType: "json",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          data: JSON.stringify({}),
+          success: function (data) {
+            var indexTripPlan = data;
+            console.log(indexTripPlan);
+
+            for(var i=0; i<indexTripPlan.length; i++){
+              $(".title" + i + "").text(indexTripPlan[i].tripPlanTitle);
+
+              $(".day" + i + "").text(indexTripPlan[i].tripDays + " Days");
+
+              $(".author" + i + "").text(indexTripPlan[i].tripPlanAuthor);
+            }
+          },
+          error: function (xhr, status, error) {
+            console.log("An error occurred: " + error);
+          }
+        });
+      }
 
       // 페이지가 열리면 함수 실행
       listChatRoomCounter();
       listTripCounter();
       listReviewCounter();
       listUserCounter();
+      indexTripPlanLikes();
     });
 
   </script>
@@ -246,23 +274,21 @@
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-easy"></span>
-              <h4 class="title"><a href="">Routeburn Track</a></h4>
+              <span class="icon-locate"></span>
+              <h4 class="title0"><a href=""></a></h4>
             </div>
 
             <div class="sub-title">
-              <span class="location">New Zealand</span>
-              <span class="grade">Easy</span>
+              <span class="location"></span>
             </div>
 
             <div class="item-detail">
               <div class="left">
-                <div class="day"><span class="icon-sun"></span>3 Days</div>
-                <div class="night"><span class="icon-moon"></span>2 Nights</div>
+                <div class="day0"><span class="icon-sun"></span>3 Days</div>
               </div>
               <div class="right">
-                <div class="price">USD 1029</div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">asd</a>
+                <div class="author0"></div>
+                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>
@@ -277,23 +303,21 @@
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-hard"></span>
-              <h4 class="title"><a href="">Fitz Roy Trek</a></h4>
+              <span class="icon-locate"></span>
+              <h4 class="title1"><a href=""></a></h4>
             </div>
 
             <div class="sub-title">
-              <span class="location">Patagonia, Argentina</span>
-              <span class="grade">Hard</span>
+              <span class="location"></span>
             </div>
 
             <div class="item-detail">
               <div class="left">
-                <div class="day"><span class="icon-sun"></span>3 Days</div>
-                <div class="night"><span class="icon-moon"></span>2 Nights</div>
+                <div class="day1"><span class="icon-sun"></span>3 Days</div>
               </div>
               <div class="right">
-                <div class="price">USD 121</div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">Book Now</a>
+                <div class="author1"></div>
+                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>
@@ -308,23 +332,21 @@
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-extreme"></span>
-              <h4 class="title"><a href="">Annapurna Circuit</a></h4>
+              <span class="icon-locate"></span>
+              <h4 class="title2"><a href=""></a></h4>
             </div>
 
             <div class="sub-title">
-              <span class="location">Nepal</span>
-              <span class="grade">Extreme</span>
+              <span class="location"></span>
             </div>
 
             <div class="item-detail">
               <div class="left">
-                <div class="day"><span class="icon-sun"></span>3 Days</div>
-                <div class="night"><span class="icon-moon"></span>2 Nights</div>
+                <div class="day2"><span class="icon-sun"></span></div>
               </div>
               <div class="right">
-                <div class="price">USD 121</div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">Book Now</a>
+                <div class="author2"></div>
+                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>
@@ -339,23 +361,21 @@
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-hard"></span>
-              <h4 class="title"><a href="">Overland Track</a></h4>
+              <span class="icon-locate"></span>
+              <h4 class="title3"><a href=""></a></h4>
             </div>
 
             <div class="sub-title">
-              <span class="location">Australia</span>
-              <span class="grade">Hard</span>
+              <span class="location"></span>
             </div>
 
             <div class="item-detail">
               <div class="left">
-                <div class="day"><span class="icon-sun"></span>3 Days</div>
-                <div class="night"><span class="icon-moon"></span>2 Nights</div>
+                <div class="day3"><span class="icon-sun"></span></div>
               </div>
               <div class="right">
-                <div class="price">USD 121</div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">Book Now</a>
+                <div class="author3"></div>
+                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>
@@ -371,23 +391,21 @@
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-medium"></span>
-              <h4 class="title"><a href="">The Haute Route</a></h4>
+              <span class="icon-locate"></span>
+              <h4 class="title4"><a href=""></a></h4>
             </div>
 
             <div class="sub-title">
-              <span class="location">France-Switzerland</span>
-              <span class="grade">Medium</span>
+              <span class="location"></span>
             </div>
 
             <div class="item-detail">
               <div class="left">
-                <div class="day"><span class="icon-sun"></span>3 Days</div>
-                <div class="night"><span class="icon-moon"></span>2 Nights</div>
+                <div class="day4"><span class="icon-sun"></span></div>
               </div>
               <div class="right">
-                <div class="price">USD 121</div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">Book Now</a>
+                <div class="author4"></div>
+                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>
@@ -403,23 +421,21 @@
           </div>
           <div class="item-desc">
             <div class="item-info">
-              <span class="icon-hard"></span>
-              <h4 class="title"><a href="">Torres del Paine Circuit</a></h4>
+              <span class="icon-locate"></span>
+              <h4 class="title5"><a href=""></a></h4>
             </div>
 
             <div class="sub-title">
-              <span class="location">Chile</span>
-              <span class="grade">Hard</span>
+              <span class="location"></span>
             </div>
 
             <div class="item-detail">
               <div class="left">
-                <div class="day"><span class="icon-sun"></span>3 Days</div>
-                <div class="night"><span class="icon-moon"></span>2 Nights</div>
+                <div class="day5"><span class="icon-sun"></span></div>
               </div>
               <div class="right">
-                <div class="price">USD 121</div>
-                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">Book Now</a>
+                <div class="author5"></div>
+                <a href="trip_detail.html" class="btn btn-primary hvr-sweep-to-right">조회</a>
               </div>
             </div>
           </div>

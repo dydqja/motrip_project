@@ -98,9 +98,7 @@
 
 <body>
 
-<header class="nav-menu fixed">
   <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
 
 
 <div class="post-single left">
@@ -188,18 +186,43 @@
         <textarea id="dailyPlanContents${i-1}" name="dailyPlanContents" required style="width: 100%;">${dailyPlan.dailyPlanContents}</textarea>
       </div>
 
+      <script>
+        var index = ${i-1};
+        var totalTripTime = "${dailyPlan.totalTripTime}";
+
+        totalTripTimes.push(totalTripTime);
+
+      </script>
+
       <div class="col-sm-3">
         <div class="sidebar">
 
-          <div class="border-box" style="height: 400px; overflow: auto;">
+          <div class="border-box" style="height: 400px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
             <div class="box-title">명소리스트
               <div class="tag-link" style="text-align: right;" id="totalTripTime${i-1}">${dailyPlan.totalTripTime}</div>
             </div>
             <c:set var="j" value="0"/>
             <c:forEach var="place" items="${dailyPlan.placeResultMap}">
               <c:set var="j" value="${ j+1 }"/>
-            <ul class="list${i-1}">
-              <div class="col-12 column">
+<%--                <div class="card text-white mb-3" style="width: auto; height: auto; font-size: 9px;">--%>
+<%--                  <label class="deleteBox" name="deleteBox" id="deleteBox${i-1}" data-index="${j-1}">[삭제]</label>--%>
+<%--                  <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">--%>
+<%--                    <h5 class="card-title" name="placeTitle" >--%>
+<%--                      <div style="color: black; width: 100%;">--%>
+<%--                        <span class="icon-locate" style="color: #467cf1; margin-left: -30px;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}--%>
+<%--                      </div>--%>
+<%--                    </h5>--%>
+<%--                  </div>--%>
+<%--                </div>--%>
+<%--                <c:if test="${place.tripTime != null}">--%>
+<%--                <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"--%>
+<%--                     style="background-color: rgba(188,222,167,0.39); width: 100%; height: auto; ">--%>
+<%--                  <div style=" color: black; display: inline-block;">이동시간: ${place.tripTime}</div>--%>
+<%--                </div>--%>
+<%--                </c:if>--%>
+              
+              <ul class="list${i-1}">
+              <div class="col-12 column" style="text-align: center;>
                 <div class="card text-white mb-3" style="background-color: rgb(80, 250, 120); width: auto; height: auto; text-align: center;">
                   <div class="card-header" name="placeCategory" id="placeCategory${i-1}" data-index="${j-1}"></div>
                   <label class="deleteBox" name="deleteBox" id="deleteBox${i-1}" data-index="${j-1}">[삭제]</label>
@@ -212,6 +235,7 @@
                 <div></div>
               </div>
             </ul>
+
               <script type="text/javascript">
                 var placeTags = "${place.placeTags}";
                 var placePhoneNumber = "${place.placePhoneNumber}";
@@ -232,7 +256,6 @@
                 placeTripTimes[mapIndex].push(${place.tripTime});
 
                 // 폴리라인 그리기 위한 배열
-                var index = ${i-1};
                 if(!pathInfo[index]) {
                   pathInfo[index] = [];
                 }
@@ -244,17 +267,33 @@
                   placeAddress: placeAddress,
                   placeCoordinates: latitude + "," + longitude,
                   placeCategory: placeCategory,
-                  placeImage: "",
+                  placeImage: placeImage,
                   placePhoneNumber: placePhoneNumber,
                   tripTime: tripTime,
+                  tripPath: tripPath,
                   position: markerPosition,
                   mapId: mapIndex
                 };
 
+                // 이전에 작성된 명소들에 대한 모든 정보들의 배열
                 if (!allPlaces[mapIndex]) {
                   allPlaces[mapIndex] = [];
                 }
                 allPlaces[mapIndex].push(place);
+
+
+                console.log("위치확인용")
+                console.log(markers); // 설정완료 화면 마커들
+                console.log(markersBound) // 설정완료 중앙값
+                console.log(maps )  // 설정완료 맵
+                console.log( placeTripPositions ) // 설정완료 좌표
+                console.log( placeTripTimes) // 설정완료 이동시간
+                console.log( allPlaces ) // 설정완료 명소 전체정보
+                console.log(totalTripTimes ) // 설정완료 전체이동시간
+                console.log( polylineArray ) // 설정완료 명소간 이동경로
+                console.log( pathArray ) //
+                console.log( placeData )
+                console.log( pathInfo ) // 설정완료
 
               </script>
             </c:forEach>
@@ -408,15 +447,28 @@
   <script>
 
     $(function () { // 맵 생성 및 화면 재구성
+
       for (var i = 0; i < idCheck; i++) { // map의 아이디를 동적으로 할당하여 생성
         var mapContainer = document.getElementById('map' + i);
         var map = new kakao.maps.Map(mapContainer, mapOptions);
         maps.push(map);
 
+        if (!polylineArray[i]) {
+          polylineArray[i] = [];
+        }
+        if (!markers[i]) {
+          markers[i] = [];
+        }
+        if (!pathArray[i]) {
+          pathArray[i] = [];
+        }
+
+        var count = 0;
+
         for(var j = 0; j < pathInfo[i].length; j++){
           if (pathInfo[i][j] !== "") {
             var path = JSON.parse(pathInfo[i][j]);
-
+            pathArray[i].push(path);
             var pathCoordinates = path.map(function (coord) {
               return new kakao.maps.LatLng(coord.Ma, coord.La);
             });
@@ -428,13 +480,14 @@
               strokeOpacity: 0.8,
               strokeStyle: 'shortdash'
             });
+
+            polylineArray[i].push(polyline)
             polyline.setMap(map);
           }
         }
-
       }
-      $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
 
+      $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
 
         var bounds = new kakao.maps.LatLngBounds();
         var mapId = 'map' + index;
@@ -450,8 +503,9 @@
           var marker = new kakao.maps.Marker(markerOptions);
           marker.setMap(map);
           bounds.extend(markerOptions.position);
+          markers[count].push(marker);
         });
-
+        markersBound[index] = bounds;
 
         var mapPlaces = []; // map별로 나눠서 배열에 저장하기 위하여 선언
         for (var i = 0; i < mapMarkers.length; i++) { // 안에 여러개의 명소가 있을수 있으므로 하나씩 저장
@@ -462,6 +516,7 @@
         placeTripPositions.push(mapPlaces);
 
         map.setBounds(bounds);
+        count++;
       });
     });
 
@@ -560,6 +615,9 @@
                 if (!pathArray[indexCheck]) {
                   pathArray[indexCheck] = [];
                 }
+                if(!placeData[indexCheck]) {
+                  placeData[indexCheck] = [];
+                }
 
                 marker.setMap(maps[indexCheck]); // 해당 지도에 마커를 표출합니다
                 markers[indexCheck].push(marker); // 해당 지도의 마커 배열에 추가합니다
@@ -608,9 +666,11 @@
                           placeImage: placeImage,
                           placeCategory: 0,
                           placePhoneNumber: doc.querySelector('.info .tel').textContent.trim(),
+                          tripPath: null,
                           tripTime: null
                         };
                         allPlaces['map' + indexCheck].push(place);
+                        //placeData[indexCheck].push(place);
                       }, 1500); // 1.5초 지연 후에 다음 작업을 수행합니다.
                     } else {
                       console.log('검색 결과가 없습니다.');
@@ -626,10 +686,12 @@
                       placeImage: placeImage,
                       placeCategory: 0,
                       placePhoneNumber: doc.querySelector('.info .tel').textContent.trim(),
+                      tripPath: null,
                       tripTime: null,
                       tripPath: pathArray[indexCheck][varStatusIndex]
                     };
                     allPlaces['map' + indexCheck].push(place);
+                    //placeData[indexCheck].push(place);
                   }
                 });
 
@@ -651,6 +713,21 @@
                         '</div>' +
                         '<div></div>' +
                         '</div>';
+
+                // var newCard = '<div class="card text-white mb-3" style="width: auto; height: auto; font-size: 9px;">' +
+                //         '<label class="deleteBox" name="deleteBox" id="deleteBox' + indexCheck + '" data-index="' + varStatusIndex + '">[삭제]</label>' +
+                //         '<div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">' +
+                //         '<h5 class="card-title" name="placeTitle">' +
+                //         '<div style="color: black; width: 100%;">' +
+                //         '<span class="icon-locate" style="color: #467cf1; margin-left: -30px;" value="' + place.placeCategory + '"></span>&nbsp;&nbsp;#' + place.placeTags +
+                //         '</div>' +
+                //         '</h5>' +
+                //         '</div>' +
+                //         '</div>' +
+                //         '<div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" ' +
+                //         'style="background-color: rgba(188,222,167,0.39); width: 100%; height: auto; ">' +
+                //         '<div style=" color: black; display: inline-block;">이동시간: ' + place.tripTime + '</div>' +
+                //         '</div>';
 
                 var newPlaceElement = document.createElement('div');
                 newPlaceElement.setAttribute('id', 'newPlaceElement' + indexCheck);
@@ -702,12 +779,14 @@
                 return new kakao.maps.LatLng(coordinate.lat, coordinate.lng);
               });
               pathArray[indexCheck].push(path);
+              //placeData[indexCheck][varStatusIndex-1].tripPath = JSON.stringify(path);
+
 
               var polyline = new kakao.maps.Polyline({
                 map: maps[indexCheck],
                 path: path,
                 strokeWeight: 4,
-                strokeColor: '#2116fa',
+                strokeColor: '#e11f1f',
                 strokeOpacity: 0.7,
                 strokeStyle: 'shortdash'
               });
@@ -717,11 +796,13 @@
 
               var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (varStatusIndex - 1) + '"]');
               if (hour == 0) {
-                tripTimeEl.textContent = minute + "분";
+                tripTimeEl.textContent = minute;
+                //placeData[indexCheck][varStatusIndex-1].tripTime = minute;
                 placeTripTimes['map' + indexCheck].push(minute);
                 totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
               } else {
-                tripTimeEl.textContent = (hour * 60) + "시간" + minute + "분";
+                tripTimeEl.textContent = (hour * 60) + minute;
+                //placeData[indexCheck][varStatusIndex-1].tripTime = ((hour * 60) + minute);
                 placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
                 totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
               }
@@ -735,9 +816,9 @@
         }
 
         function addMarker(position) {  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-              marker = new kakao.maps.Marker({
-                position: position
-              });
+          marker = new kakao.maps.Marker({
+            position: position
+          });
           return marker;
         }
 
@@ -828,12 +909,18 @@
           totalTripTime = totalTripTimes[i];
           placeSum = allPlaces['map' + i].length;
 
+          console.log(allPlaces['map' + i])
+
+          // for (var j = 0; j < placeSum; j++) {
+          //   var placeText = allPlaces['map' + i][j];
+          //   var tripTimeText = placeTripTimes['map' + i][j];
+          //   var place = placeText;
+          //   place.tripTime = tripTimeText; // 시간 값을 할당
+          //   placeInfo.push(JSON.stringify(placeText));
+          // }
+
           for (var j = 0; j < placeSum; j++) {
-            var placeText = allPlaces['map' + i][j];
-            var tripTimeText = placeTripTimes['map' + i][j];
-            var place = placeText;
-            place.tripTime = tripTimeText; // 시간 값을 할당
-            placeInfo.push(JSON.stringify(placeText));
+            placeInfo.push(JSON.stringify(allPlaces['map' + i][j]));
           }
 
           dailyPlanContents.push({
@@ -861,7 +948,6 @@
       }
 
       var tripPlan = {
-        tripPlanNo: ${tripPlan.tripPlanNo},
         tripPlanTitle: tripPlanTitle,
         tripDays: idCheck,
         isPlanPublic: isPlanPublic,
@@ -870,29 +956,45 @@
           return {
             dailyPlanContents: dailyPlan.dailyPlanContents,
             totalTripTime: dailyPlan.totalTripTime,
-            placeResultMap: dailyPlan.placesInfo.map(function (place) {
-              return JSON.parse(place); // JSON 문자열을 객체로 변환
-            }),
+            placeResultMap: dailyPlan.placesInfo.map(place => JSON.parse(place)), // JSON 문자열을 객체로 변환
           };
         }),
       };
+
+
+      <%--var tripPlan = {--%>
+      <%--  tripPlanNo: ${tripPlan.tripPlanNo},--%>
+      <%--  tripPlanTitle: tripPlanTitle,--%>
+      <%--  tripDays: idCheck,--%>
+      <%--  isPlanPublic: isPlanPublic,--%>
+      <%--  isPlanDownloadable: isPlanDownloadable,--%>
+      <%--  dailyplanResultMap: dailyPlanContents.map(function (dailyPlan) {--%>
+      <%--    return {--%>
+      <%--      dailyPlanContents: dailyPlan.dailyPlanContents,--%>
+      <%--      totalTripTime: dailyPlan.totalTripTime,--%>
+      <%--      placeResultMap: dailyPlan.placesInfo.map(function (place) {--%>
+      <%--        return JSON.parse(place); // JSON 문자열을 객체로 변환--%>
+      <%--      }),--%>
+      <%--    };--%>
+      <%--  }),--%>
+      <%--};--%>
 
       console.log("저장전 확인");
       console.log(tripPlan);
 
 
-      $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
-        url: "/tripPlan/updateTripPlan",
-        type: "POST",
-        data: JSON.stringify(tripPlan),
-        contentType: "application/json; charset=utf-8",
-        success: function () {
-          window.location.href = "/tripPlan/tripPlanList?type=my";
-        },
-        error: function (xhr, status, error) {
-          console.log(error);
-        }
-      });
+      // $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
+      //   url: "/tripPlan/updateTripPlan",
+      //   type: "POST",
+      //   data: JSON.stringify(tripPlan),
+      //   contentType: "application/json; charset=utf-8",
+      //   success: function () {
+      //     window.location.href = "/tripPlan/tripPlanList?type=my";
+      //   },
+      //   error: function (xhr, status, error) {
+      //     console.log(error);
+      //   }
+      // });
 
     });
 
@@ -1008,6 +1110,7 @@
       console.log(markers[indexCheck]);
       console.log(markersBound[indexCheck]);
       console.log(maps[indexCheck]);
+      console.log(placeData[indexCheck]);
 
       delete placeTripTimes['map' + indexCheck];
       totalTripTimes.splice(indexCheck, 1);
@@ -1015,6 +1118,7 @@
       delete allPlaces['map' + indexCheck];
       delete markers[indexCheck];
       delete markersBound[indexCheck];
+      delete placeData[indexCheck];
       maps.splice(indexCheck, 1);
       console.log(maps);
     }
@@ -1049,8 +1153,12 @@
         markers[indexCheck].splice(index, index + 1); // 마커 삭제
 
         var polyline = polylineArray[indexCheck][index]
-        polyline.setMap(null);
+        if(polyline != null) {
+          polyline.setMap(null);
+        }
         polylineArray[indexCheck].splice(index, index + 1); // 폴리라인 삭제
+
+        //placeData[indexCheck].splice(index , index+1); // 최종 데이터값
 
         // 이후 남아있는 리스트박스들의 id 값을 업데이트
         var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
@@ -1125,6 +1233,8 @@
 
         polylineArray[indexCheck].splice(index-1 , index + 1); // 폴리라인 삭제
 
+        //placeData[indexCheck].splice(index, index);
+
         // 이후 남아있는 리스트박스들의 id 값을 업데이트
         var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
         console.log(elTripTimes)
@@ -1165,7 +1275,7 @@
         console.log(end)
       }
 
-      if (end != null || start != null || start != end || end != undefined || start != undefined ) { // 마지막 값이 없거나 명소가 같을 경우에는 찾지않음
+      if (end !== null && start !== null && start !== end && end !== undefined && start !== undefined && end !== 'undefined' && start !== 'undefined') { // 마지막 값이 없거나 명소가 같을 경우에는 찾지않음
         $.ajax({ // 명소간 이동시간 구하기(길찾기 API)
           url: "/tripPlan/tripTime",
           type: "GET",
@@ -1181,6 +1291,7 @@
               return new kakao.maps.LatLng(coordinate.lat, coordinate.lng);
             });
             pathArray[indexCheck].push(path);
+            //placeData[indexCheck][index-1].tripPath = JSON.stringify(path);
 
             var polyline = new kakao.maps.Polyline({
               map: maps[indexCheck],
@@ -1198,10 +1309,12 @@
             console.log(tripTimeEl);
             if (hour == 0) {
               tripTimeEl.textContent = minute;
+              //placeData[indexCheck][index-1].tripTime = minute;
               placeTripTimes['map' + indexCheck].push(minute);
               totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
             } else {
               tripTimeEl.textContent = (hour * 60) + minute;
+              //placeData[indexCheck][index-1].tripTime = ((hour * 60) + minute);
               placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
               totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
             }

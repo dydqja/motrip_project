@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -110,6 +111,23 @@ public class TripPlanRestController {
     @PostMapping("tripPlanCount") // 여행플랜 총 개수
     public int tripPlanCount() throws Exception {
         return tripPlanService.tripPlanCount();
+    }
+
+    @PostMapping("indexTripPlanLikes")
+    public List<TripPlan> indexTripPlanLikes() throws Exception {
+        return tripPlanService.indexTripPlanLikes();
+    }
+
+    @PostMapping(value = "fileUpload")
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
+        System.out.println("/tripPlan/fileUpload : POST");
+
+        System.out.println("client에서 넘어온 file 값은 => : " + file);
+        String fileName = tripPlanService.fileUpload(file);
+
+        System.out.println("ServiceImpl에서 리턴한 fileName => : " + fileName);
+
+        return ResponseEntity.ok().body("/imagePath/" + fileName);
     }
 
     @GetMapping("tripTime")

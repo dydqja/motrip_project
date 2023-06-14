@@ -13,8 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -39,6 +46,9 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Autowired
     @Qualifier("imageSaveService")
     ImageSaveService imageSaveService;
+
+    @Value(value = "${filePath}")
+    private Path fileStorageLocation; // 썸네일 경로
 
     @Override
     public Map<String , Object > selectTripPlanList(Map<String, Object> parameters) throws Exception {
@@ -269,6 +279,51 @@ public class TripPlanServiceImpl implements TripPlanService {
     public int tripPlanCount() throws Exception {
         return tripPlanDao.tripPlanCount();
     }
+
+    @Override
+    public List<TripPlan> indexTripPlanLikes() throws Exception {
+        // 아이디랑 태그 가져올수있도록 할것
+        return tripPlanDao.indexTripPlanLikes();
+    }
+
+    public String fileUpload(MultipartFile file) throws Exception {
+
+        System.out.println("tripPlanfileUpload");
+        // 파일이 비어있는지 체크
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("파일이 없습니다.");
+        }
+
+//        @Value(value = "${filePath}")
+//        private Path fileStorageLocation;
+
+        System.out.println("받은 파일의 경로는 => : " + file.getOriginalFilename());
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        System.out.println("파일경로에서 파일이름만 뽑은 값은 => : " + fileName);
+
+        String uniqueFileName = UUID.randomUUID().toString() + "_" + fileName;
+        System.out.println("파일이름+UUID해서 준 임의파일이름은? => : " + uniqueFileName);
+
+        /*파일이 저장될 기본 경로(this.fileStorageLocation)에 파일이름(uniqueFileName) 을 추가(resolve) 하여,
+        새로운 경로 생성(Path targetLocation)*/
+        Path targetLocation = this.fileStorageLocation.resolve(uniqueFileName);
+        System.out.println("기본경로+파일이름으로 생성된 새로운경로는? => : " + targetLocation);
+
+        System.out.println("업로드파일 데이터스트림 => : "+ file.getInputStream());
+
+        /*업로드된 파일의 데이터 스트림을 가져오고(file.getInputStream()) 이 데이터 스트림을 지정된 경로(targetLocation)로 복사(Files.copy)한다.
+        복사한 위치에 동일한 이름의 파일이 있다면 기존 파일을 새 파일로 대체(StandardCopyOption.REPLACE_EXISTING)한다. */
+        try (InputStream is = file.getInputStream()) {
+            Files.copy(is, targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("파일 저장에 실패했습니다. 파일 이름: " + fileName, e);
+        }
+
+        return uniqueFileName;
+    }
+
 
 //    public static String totaltime(int totalTripTimes) {
 //        int totalHours = (int) Math.floor(totalTripTimes / 60);
