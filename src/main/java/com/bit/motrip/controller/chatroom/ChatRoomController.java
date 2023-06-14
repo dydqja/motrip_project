@@ -139,24 +139,30 @@ public class ChatRoomController {
     //chatRoom/getChat?chatRoomNo=1&userId=1
     @GetMapping("getChat")
     public String getChat(@RequestParam("chatRoomNo") String chatRoomNo,
-                       @RequestParam("userId") String userId, Model model) throws Exception{
+                          HttpSession session,
+                        Model model) throws Exception{
         System.out.println("getChat이 돌았습니다.");
-
-        int chatRoomNoInt = Integer.parseInt(chatRoomNo);
-        ChatRoom ch = chatRoomService.getChatRoom(chatRoomNoInt);
-        ChatMember author = chatMemberService.getChatMemberAuthor(chatRoomNoInt);
-        List<ChatMember> chatMemberList = chatMemberService.chatMemberList(chatRoomNoInt);
-        model.addAttribute("username",userId); //유저 name으로 userId 전송
+        User sessionUser = (User) session.getAttribute("user");
+        System.out.println(sessionUser);
+        ChatRoom chatRoom = chatRoomService.getChatRoom(Integer.parseInt(chatRoomNo));
+        ChatRoom ch = chatRoomService.getChatRoom(chatRoom.getChatRoomNo());
+        System.out.println(ch);
+        ChatMember author = chatMemberService.getChatMemberAuthor(chatRoom.getChatRoomNo());
+        List<ChatMember> chatMemberList = chatMemberService.chatMemberList(chatRoom.getChatRoomNo());
+        //tripPlan 보내기
+        System.out.println("채팅방에서 tripplan정보 가져오기 테스트:" + tripPlanService.selectTripPlan(ch.getTripPlanNo()));
+        model.addAttribute("tripPlan",tripPlanService.selectTripPlan(ch.getTripPlanNo()));
+        model.addAttribute("username",sessionUser.getUserId()); //유저 name으로 userId 전송
+//        model.addAttribute("username",userId); //유저 name으로 userId 전송
         model.addAttribute("chatRoom",ch); //채팅방 객체 전송
         model.addAttribute("chatMembers",chatMemberList);
         model.addAttribute("author",author);
-        System.out.println("chatRoomNo"+chatRoomNoInt);
-        System.out.println("chatuserId : "+userId);
+        System.out.println("chatRoomNo"+chatRoom.getChatRoomNo());
         System.out.println(author.getUserId());
         int flag = 0;
         //chatMemberService.getChatMember()
         for (ChatMember chm:chatMemberList) {
-            if(chm.getUserId().equals(userId)){
+            if(chm.getUserId().equals(sessionUser.getUserId())){ //userId
                 flag = 1;
                 if(chm.getStatus() == 1 ){
                     flag = 2;
@@ -170,7 +176,8 @@ public class ChatRoomController {
         }else {
             return "redirect:/chatRoom/chatRoomList";
         }
-    } // 채팅방
+    }
+
 
 
     // 채팅방
