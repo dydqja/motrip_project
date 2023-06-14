@@ -1,41 +1,31 @@
 .notice-content {
     white-space: pre-line;
     font-size: 20px;
-}
-
-.centered-content {
-    display: flex;
-    justify-content: center;
+    padding: 0 0;
+    margin-left:160px;
+    margin-top:-10px;
 }
 
 .page-img{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.table-header th {
-    background-color: black;
-    color: white;
+.board-title {
+    cursor: default;
+    pointer-events: none;
+    user-select: none;
 }
 
-.table-body td {
-    color: #558B2F;
-}
-
-/*타이틀 제목*/
-.main-head {
-    text-align: center;
-}
-
-@keyframes noticeZooming {
+@keyframes Zooming {
     0%, 100% {
-        transform: scale(1);
+        transform: scale(0.8);
     }
     50% {
-        transform: scale(1.4);
+        transform: scale(1);
     }
 }
 
-.noticeZooming {
+.Zooming {
     position: absolute;
     top: 0;
     left: 0;
@@ -47,46 +37,6 @@
     animation: noticeZooming 20s infinite ease-in;
 }
 
-.important-row {
-    background-color: #f5f5f5;
-    font-weight: bold;
-}
-
-td {
-    background-color: white;
-}
-
-.table-striped{
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.table-striped tbody tr:hover td {
-    background-color: #f5f5f5;
-}
-
-.pagination .page-item .page-link {
-    border-radius: 50%;
-}
-
-.board-title {
-    cursor: default;
-    pointer-events: none;
-    user-select: none;
-}
-
-/*페이지 내비게이션*/
-
-.pagination li.disabled a {
-    cursor: default;
-    pointer-events: none;
-}
-
-.pagination li a {
-    user-select: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-
 /* Button effect animation */
 #updateNoticeView {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -96,9 +46,19 @@ td {
 #deleteNotice {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     width: 90px;
+    background-color:#E53935;
+}
+
+#deleteNotice:hover {
+    background-color:#FF5252;
 }
 
 #getNoticeList {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     width: 90px;
+    background-color: #999999;
+}
+
+#getNoticeList:hover {
+    background-color: #CCCCCC;
 }

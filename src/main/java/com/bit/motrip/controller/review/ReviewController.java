@@ -110,8 +110,8 @@ public class ReviewController {
 
         User dbUser = (User) session.getAttribute("user");
         if (dbUser == null) {
-            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
-            return "redirect:/user/login.jsp";
+            //model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
+            return "redirect:user/login.jsp";
         }
 
         Map<String, Object> parameters = new HashMap<>();
