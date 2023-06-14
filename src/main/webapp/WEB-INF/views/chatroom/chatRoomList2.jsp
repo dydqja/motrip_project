@@ -68,7 +68,7 @@
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-<div class="page-img" style="background-image: url('/images/chatRoomImage.jpg');">
+<div class="page-img" style="background-image: url('');">
     <div class="container">
         <div class="col-sm-8">
             <h1 class="main-head">ChatRoom</h1>
@@ -170,7 +170,12 @@
                     <div class="col-sm-5">
                         <div class="item-img row" style="background-image: url('/imagePath/${tripPlan.tripPlanThumbnail}');">
                             <div class="item-overlay">
-                                <a href="trip_detail.html"><span class="icon-binocular"></span></a>
+                                <c:if test="${tripPlan.tripPlanThumbnail != null && tripPlan.tripPlanThumbnail != ''}">
+                                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');">
+                                </c:if>
+                                <c:if test="${tripPlan.tripPlanThumbnail == ''}">
+                                <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
+                                </c:if>
                             </div>
                         </div>
                     </div>
