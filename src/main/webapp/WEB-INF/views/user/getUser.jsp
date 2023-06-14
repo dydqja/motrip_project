@@ -98,6 +98,8 @@
                 </c:if>
                 <c:if test="${getUser.gender eq 'F'}">
                     <img id="womanBasicProfile" src="/images/user/womanBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+                </c:if>
+            </c:if>
         </div>
 
         <div class="profile-user-settings" style="display: inline-block; align-items: center;">
