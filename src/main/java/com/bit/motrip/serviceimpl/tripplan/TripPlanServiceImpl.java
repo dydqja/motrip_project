@@ -77,6 +77,7 @@ public class TripPlanServiceImpl implements TripPlanService {
         }
         int totalCount = tripPlanDao.selectTripPlanTotalCount(search);
         System.out.println("totalCount : " + totalCount);
+        System.out.println(tripPlanList);
 
         Map<String, Object> map = new HashMap<String, Object>();
 
