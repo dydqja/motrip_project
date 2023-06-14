@@ -68,7 +68,7 @@
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-<div class="page-img" style="background-image: url('');">
+<div class="page-img" style="background-image: url('/images/chatRoomImage.jpg');">
     <div class="container">
         <div class="col-sm-8">
             <h1 class="main-head">ChatRoom</h1>
@@ -168,14 +168,13 @@
                 <c:set var="i" value="${ i+1 }" />
                 <div class="item-list">
                     <div class="col-sm-5">
-                        <div class="item-img row" style="background-image: url('/imagePath/${tripPlan.tripPlanThumbnail}');">
+                        <c:if test="${tripPlan.tripPlanThumbnail != null && tripPlan.tripPlanThumbnail != ''}">
+                        <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');">
+                        </c:if>
+                        <c:if test="${tripPlan.tripPlanThumbnail == ''}">
+                            <div class="item-img row" style="background-image: url('/images/chatRoomImage.jpg');"></div>
+                        </c:if>
                             <div class="item-overlay">
-                                <c:if test="${tripPlan.tripPlanThumbnail != null && tripPlan.tripPlanThumbnail != ''}">
-                                    <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');"></div>
-                                </c:if>
-                                <c:if test="${tripPlan.tripPlanThumbnail == ''}">
-                                    <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"></div>
-                                </c:if>
                             </div>
                         </div>
                     </div>
