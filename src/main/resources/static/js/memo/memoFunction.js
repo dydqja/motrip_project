@@ -5,13 +5,13 @@ function editMemo(memoDialog){
 
     //기존 다이얼로그에 title-input 이 있는지 확인한다.
     if(memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-title-input').length > 0){
-        console.log("title input already exists");
+        //console.log("title input already exists");
         //기존 title input 을 드러낸다.
         memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-title-input').show();
     }else {
         //타이틀을 수정하기 위한 input을 만든다.
         let titleInput = $('<input>', {
-            class: 'memo-dialog-title-input',
+            class: 'memo-dialog-title-input form-control',
             type: 'text',
             value: memoTitle,
             mousedown: function(e) {
@@ -28,9 +28,9 @@ function editMemo(memoDialog){
 
     //기존 다이얼로그에 color-input 이 있는지 확인한다.
     if(memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-color-input').length > 0){
-        console.log("color input already exists");
+        //console.log("color input already exists");
         //기존 color input 을 드러낸다.
-        memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-color-input').show();
+        //memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-color-input').show();
     }else{
         //다이얼로그로부터 색을 추출한다.
         let memoColor = memoDialog.find('.memo-dialog-info').val();
@@ -46,6 +46,9 @@ function editMemo(memoDialog){
         //색을 수정하기 위한 input을 붙인다.
         memoDialog.siblings('.ui-dialog-titlebar').prepend(colorInput);
     }
+    //color input 을 무조건 숨긴다.
+    memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-color-input').hide();
+
     //기존 컨텐츠를 숨긴다.
     memoDialog.find('.memo-contents-div').hide();
     //서머노트를 드러낸다.

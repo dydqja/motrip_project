@@ -194,9 +194,13 @@ public class MemoRestController {
         //System.out.println("메모번호는 "+memoNo+"입니다.");
 
         try {
-            memoService.restoreMemo(memo);
+            Memo restoredMemo = memoService.restoreMemo(memo);
+            System.out.println("복구된 메모는 "+restoredMemo+"입니다.");
+            if(restoredMemo == null) {
+                return failJson;
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return successJson;

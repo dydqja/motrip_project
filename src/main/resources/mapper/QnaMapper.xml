@@ -32,6 +32,9 @@
                      board
                  WHERE
                      BOARD_CATEGORY = 1
+                <if test="searchKeyword != null">
+                    AND BOARD_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+                </if>
              ) AS derived_table
         WHERE
             row_seq BETWEEN #{startRowNum} AND #{endRowNum}
