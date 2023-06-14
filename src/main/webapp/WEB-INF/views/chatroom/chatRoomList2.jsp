@@ -168,10 +168,10 @@
                 <c:set var="i" value="${ i+1 }" />
                 <div class="item-list">
                     <div class="col-sm-5">
-                        <c:if test="${tripPlan.tripPlanThumbnail != null && tripPlan.tripPlanThumbnail != ''}">
-                        <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');">
+                        <c:if test="${chatRoom.tripPlanThumbnail != null && chatRoom.tripPlanThumbnail != ''}">
+                        <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${chatRoom.tripPlanThumbnail}');">
                         </c:if>
-                        <c:if test="${tripPlan.tripPlanThumbnail == ''}">
+                        <c:if test="${chatRoom.tripPlanThumbnail == ''}">
                             <div class="item-img row" style="background-image: url('/images/chatRoomImage.jpg');"></div>
                         </c:if>
                             <div class="item-overlay">
