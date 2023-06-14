@@ -463,6 +463,8 @@
           if(data.userPhotoPublic) {
             console.log("data.userPhotoPublic -> " +data.userPhotoPublic);
             $('#profileUserPhoto').attr('src', data.userPhoto);
+            $('#manBasicProfile').attr('src', data.userPhoto);
+            $('#womanBasicProfile').attr('src', data.userPhoto);
 
           } else {
             console.log("data.userPhotoPublic -> " +data.userPhotoPublic);
