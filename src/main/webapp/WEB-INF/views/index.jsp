@@ -474,28 +474,29 @@
 <div class="banner supported-by">
   <ul class="supported-list">
     <li>
-      <a href="#">
-        <img src="/assets/img/supported_by/logo_2.png">
+      <a href="https://www.bitcamp.co.kr/content/company">
+        <img src="/assets/img/supported_by/bitcamp.png" style="width: 164px; height: 41px">
       </a>
     </li>
     <li>
-      <a href="#">
-        <img src="/assets/img/supported_by/logo_1.png">
+      <a href="https://ncamp.kr/">
+        <img src="/assets/img/supported_by/navercloudcamp.png" style="width: 164px; height: 41px">
+        <%--width 164 height 41--%>
       </a>
     </li>
     <li>
-      <a href="#">
-        <img src="/assets/img/supported_by/logo_3.png">
+      <a href="https://magicecole.com/">
+        <img src="/assets/img/supported_by/magicecole.png" style="width: 164px; height: 41px">
       </a>
     </li>
     <li>
-      <a href="#">
-        <img src="/assets/img/supported_by/logo_4.png">
+      <a href="https://www.bitcamp.co.kr/content/company">
+        <img src="/assets/img/supported_by/bitcamp.png" style="width: 164px; height: 41px">
       </a>
     </li>
     <li>
-      <a href="#">
-        <img src="/assets/img/supported_by/logo_5.png">
+      <a href="https://ncamp.kr/">
+        <img src="/assets/img/supported_by/navercloudcamp.png" style="width: 164px; height: 41px">
       </a>
     </li>
   </ul>
