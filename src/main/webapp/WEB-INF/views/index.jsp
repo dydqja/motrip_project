@@ -236,8 +236,8 @@
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-binocular"></span></span>
         <div class="desc">
-          <h5>Behold Awesome Scenary</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate quisquam esse quia, necessitatibus quos. Modi cum?</p>
+          <h5>새로운 발견! 잊지 못할 여행! </h5>
+          <p>믿을 수 있는 여행 동료들과 함께 멋진 여행 후기를 작성해보세요.</p>
         </div>
       </div>
 

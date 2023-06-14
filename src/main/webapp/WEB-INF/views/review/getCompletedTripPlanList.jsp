@@ -140,7 +140,7 @@
       <tr>
         <td style="text-align: center;">${tripPlan.tripPlanNo}</td>
         <td>
-          <a href="addReviewView?tripPlanNo=${tripPlan.tripPlanNo}&tripPlanTitle=${tripPlan.tripPlanTitle}">
+          <a href="addReviewView?tripPlanNo=${tripPlan.tripPlanNo}">
               ${tripPlan.tripPlanTitle}</a>
         </td>
         <td>${tripPlan.tripPlanRegDate}</td>
