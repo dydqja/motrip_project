@@ -67,12 +67,14 @@
                 <div class="container">
 
                     <div class="qLine">
-                        <h3>Q.&nbsp;<span class="category">${qnaGetData.qnaCategory == 0 ? '계정문의' : qnaGetData.qnaCategory == 1 ? '기타문의' : qnaGetData.qnaCategory == 2 ? '여행플랜' : qnaGetData.qnaCategory == 3 ? '채팅' : qnaGetData.qnaCategory == 4 ? '메모' : '후기'}</span></h3>
-                        <hr>
-                    </div>
+                        <div >
+                            <h3>Q.&nbsp;<span class="category">${qnaGetData.qnaCategory == 0 ? '계정문의' : qnaGetData.qnaCategory == 1 ? '기타문의' : qnaGetData.qnaCategory == 2 ? '여행플랜' : qnaGetData.qnaCategory == 3 ? '채팅' : qnaGetData.qnaCategory == 4 ? '메모' : '후기'}</span></h3>
+                            <hr>
+                        </div>
 
-                    <div class="col-md-9 qna-content">
-                        ${qnaGetData.qnaContents}
+                        <div class="col-md-11 qna-content">
+                            ${qnaGetData.qnaContents}
+                        </div>
                     </div>
 
                     <div class="text-right">
@@ -94,7 +96,7 @@
                             </c:if>
                                 <br>
                             <div>
-                                <button id="getQnaList" class="btn btn-secondary" type="button">목록보기</button>
+                                <button id="getQnaList" class="btn btn-secondary" type="button">처음으로</button>
                             </div>
 
                             <!--운영자만 볼 수 있음-->
@@ -104,31 +106,34 @@
                                     <button id="addQnaAnswer" class="btn btn-primary" type="button">응답 등록</button>
                                 </div>
                             </c:if>
-
                         </div>
                     </div>
 
                     <!--유저만 볼 수 있음-->
                     <c:if test="${sessionScope.user.userId ne 'admin' && qnaGetData.qnaAnswerContents != null}">
                         <div class="aLine">
-                            <h3>A.</h3>
-                            <hr>
-                        </div>
+                            <div>
+                                <h3>A.</h3>
+                                <hr>
+                            </div>
 
-                        <div class="qnaAnswer">
-                            ${qnaGetData.qnaAnswerContents}
+                            <div class="qnaAnswer">
+                                ${qnaGetData.qnaAnswerContents}
+                            </div>
                         </div>
                     </c:if>
 
                     <!--운영자만 볼 수 있음-->
                     <c:if test="${sessionScope.user.userId eq 'admin' }">
                         <div class="aLine">
-                            <h3>A.</h3>
-                            <hr>
-                        </div>
+                            <div>
+                                <h3>A.</h3>
+                                <hr>
+                            </div>
 
-                        <div class="qnaAnswerContents">
-                            <label for="qnaAnswerContents"></label><textarea name="qnaAnswerContents" id="qnaAnswerContents">${qnaGetData.qnaAnswerContents}</textarea>
+                            <div class="qnaAnswerContents">
+                                <label for="qnaAnswerContents"></label><textarea name="qnaAnswerContents" id="qnaAnswerContents">${qnaGetData.qnaAnswerContents}</textarea>
+                            </div>
                         </div>
                     </c:if>
                 </div>
@@ -203,7 +208,7 @@
                     ],
                     fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
                     fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
-                    height: 100,
+                    height: 150,
                     width: 1010,
                     disableResizeEditor: true
                 });

@@ -99,8 +99,7 @@
                                     등록하기
                                 </button>
 
-                                <!-- 목록보기 버튼 -->
-                                <button id="getNoticeList" class="btn btn-primary" type="button">목록보기</button>
+                                <button id="getNoticeList" class="btn btn-primary" type="button">처음으로</button>
                             </div>
                         </div>
 

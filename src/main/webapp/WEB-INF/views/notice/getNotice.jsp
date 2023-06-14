@@ -57,35 +57,34 @@
 
                 <div class="container">
 
-                    <div class="row">
-
-                        <div class="nLine">
+                    <div class="nLine">
+                        <div>
                             <h3>N.&nbsp;<span class="category">${noticeGetData.isNoticeImportant == 0 ? '일반' : '중요'}</span></h3>
                             <hr>
                         </div>
 
-                        <div class="col-md-9 notice-content">
+                        <div class="col-md-11 notice-content">
                             ${noticeGetData.noticeContents}
                         </div>
+                    </div>
 
-                        <div class="text-right">
-                            <div class="d-inline-block">
+                    <div class="text-right">
+                        <div class="d-inline-block">
 
-                                <c:if test="${sessionScope.user.userId eq 'admin'}">
-                                    <div>
-                                        <button id="updateNoticeView" class="btn btn-primary" type="button">내용 수정</button>
-                                    </div>
-                                        <br>
-                                    <div>
-                                        <button id="deleteNotice" class="btn btn-primary" type="button">삭제하기</button>
-                                    </div>
-                                </c:if>
+                            <c:if test="${sessionScope.user.userId eq 'admin'}">
+                                <div>
+                                    <button id="updateNoticeView" class="btn btn-primary" type="button">내용 수정</button>
+                                </div>
                                     <br>
                                 <div>
-                                    <button id="getNoticeList" class="btn btn-primary" type="button">목록보기</button>
+                                    <button id="deleteNotice" class="btn btn-primary" type="button">삭제하기</button>
                                 </div>
-
+                            </c:if>
+                                <br>
+                            <div>
+                                <button id="getNoticeList" class="btn btn-primary" type="button">처음으로</button>
                             </div>
+
                         </div>
                     </div>
                 </div>

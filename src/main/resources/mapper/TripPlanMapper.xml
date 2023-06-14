@@ -76,9 +76,15 @@
                 <choose>
                     <when test="tripPlanAuthor != null">
                         tp.trip_plan_author = #{tripPlanAuthor}
+                        <if test="search.searchKeyword != null">
+                            AND trip_plan_title LIKE CONCAT('%', #{search.searchKeyword}, '%')
+                        </if>
                     </when>
                     <otherwise>
                         tp.is_plan_public = TRUE AND tp.is_plan_deleted = FALSE
+                        <if test="search.searchKeyword != null">
+                            AND trip_plan_title LIKE CONCAT('%', #{search.searchKeyword}, '%')
+                        </if>
                     </otherwise>
                 </choose>
                 <if test="blacklist != null and blacklist.size() > 0">
@@ -203,18 +209,10 @@
         FROM(
         SELECT *
         FROM trip_plan
-        WHERE 1=1 AND is_plan_public = TRUE AND is_plan_deleted = FALSE
-<!--        <choose>-->
-<!--            <when test="planCondition == 'likes' and searchKeyword != null">-->
-<!--                AND trip_plan_likes = #{searchKeyword}-->
-<!--            </when>-->
-<!--            <when test="planCondition == 'views' and searchKeyword != null">-->
-<!--                AND trip_plan_views = #{searchKeyword}-->
-<!--            </when>-->
-<!--            <when test="planCondition == 'newDate' and searchKeyword != null">-->
-<!--                AND trip_plan_reg_date = #{searchKeyword}-->
-<!--            </when>-->
-<!--        </choose>-->
+        WHERE is_plan_public = TRUE AND is_plan_deleted = FALSE
+        <if test="searchKeyword != null">
+            AND trip_plan_title LIKE CONCAT('%', #{searchKeyword}, '%')
+        </if>
         ) countTable
     </select>
 
@@ -222,6 +220,7 @@
     <select id="indexTripPlanLikes" resultMap="tripPlanResultMap">
         SELECT *
         FROM trip_plan
+        WHERE is_plan_public = TRUE AND is_plan_deleted = FALSE
         ORDER BY trip_plan_likes DESC, trip_plan_no ASC
         LIMIT 6;
     </select>
