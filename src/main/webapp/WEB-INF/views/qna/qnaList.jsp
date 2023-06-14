@@ -44,13 +44,13 @@
 
             <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-            <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
+            <div class="page-img" style="background-image: url('/images/board/qnaTop.jpg');">
                 <div class="container">
                     <h1 class="main-head text-center board-title Zooming">질의응답</h1>
                 </div>
             </div>
 
-            <div class="page-img page-back" style="background-image: url('/images/board/noticeBack.jpg');">
+            <div class="page-img page-back" style="background-image: url('/images/board/qnaBack.jpg');">
 
                 <div class="container" >
 
@@ -61,8 +61,8 @@
 
                             <tr>
                                 <th class="text-center">카테고리</th>
-                                <th class="text-center">제목</th>
                                 <th class="text-center">답변여부</th>
+                                <th class="text-center">제목</th>
                                 <th class="text-center">작성자</th>
                                 <th class="text-center">작성날짜</th>
                                 <th class="text-center">조회수</th>
@@ -86,8 +86,13 @@
                                             <c:when test="${qna.qnaCategory == 5}">후기</c:when>
                                         </c:choose>
                                     </td>
-                                    <td><a href="#" onclick="viewDetail(${qna.qnaNo})">${qna.qnaTitle}</a></td>
                                     <td class="text-center">${qna.isQnaAnswered == 1 ? '답변완료' : ''}</td>
+                                    <td>
+                                        <a href="#" onclick="viewDetail(${qna.qnaNo})">
+                                            <img src="${qna.isQnaAnswered == 1 ? '/images/board/qna2.gif' : '/images/board/qna1.gif'}" style="max-width: 30px; max-height: 30px;">
+                                            ${qna.qnaTitle}
+                                        </a>
+                                    </td>
                                     <td class="text-center">${qna.qnaAuthor}</td>
                                     <td class="text-center">${formattedDate}</td>
                                     <td class="text-center">${qna.qnaViews}</td>

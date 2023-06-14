@@ -1140,7 +1140,11 @@
             console.log("0으로 시작")
 
             totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index];
-            $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+            if(totalTripTimes[indexCheck] == 0 && totalTripTimes[indexCheck] == NaN) {
+                $("#totalTripTime" + indexCheck).text("");
+            } else {
+                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+            }
 
             placeTripTimes['map' + indexCheck].splice(index, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
             placeTripPositions[indexCheck].splice(index, index + 1); // 삭제된 좌표 인덱스
@@ -1214,7 +1218,12 @@
 
             totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index - 1];
             totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index];
-            $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+            console.log(totalTripTimes[indexCheck])
+            if(isNaN()) {
+                $("#totalTripTime" + indexCheck).text("");
+            } else {
+                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+            }
 
             placeTripTimes['map' + indexCheck].splice(index - 1, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
             placeTripPositions[indexCheck].splice(index, index); // 삭제된 좌표 인덱스
@@ -1317,12 +1326,12 @@
                         tripTimeEl.textContent = minute;
                         placeData[indexCheck][index-1].tripTime = minute;
                         placeTripTimes['map' + indexCheck].push(minute);
-                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
+                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck]) + minute;
                     } else {
                         tripTimeEl.textContent = (hour * 60) + minute;
                         placeData[indexCheck][index-1].tripTime = ((hour * 60) + minute);
                         placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
-                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
+                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck]) + (hour * 60) + minute;
                     }
                     $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
 

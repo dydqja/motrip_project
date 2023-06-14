@@ -7,6 +7,7 @@ import com.bit.motrip.dao.tripplan.DailyPlanDao;
 import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
 import com.bit.motrip.domain.*;
+import com.bit.motrip.service.alarm.AlarmService;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Autowired
     @Qualifier("imageSaveService")
     ImageSaveService imageSaveService;
+    @Autowired
+    @Qualifier("alarmServiceImpl")
+    AlarmService alarmService;
 
     @Value(value = "${filePath}thumbnail")
     private Path fileStorageLocation; // 썸네일 경로
@@ -153,7 +157,6 @@ public class TripPlanServiceImpl implements TripPlanService {
                     System.out.println(defaultPlaces + "기존값 확인");
 
                     for(int j=0; j<place.size(); j++){
-
                         if(j < defaultPlaces.size()) {
                             place.get(j).setPlaceNo(defaultPlaces.get(j).getPlaceNo());
                             placeDao.updatePlace(place.get(j));
@@ -271,6 +274,53 @@ public class TripPlanServiceImpl implements TripPlanService {
         // 추천수를 높이고 tripPlanEvaluateList의 숫자가 최근 추천수이기에 + 1을 더해주어 최종 저장
         tripPlan.setTripPlanLikes(tripPlanEvaluateList.size() + 1);
         tripPlan.setTripPlanNo((Integer) tripPlanLikes.get("tripPlanNo"));
+
+        //디버그
+        System.out.println("트립플랜 라이크스의 숫자를 찍어본다." + tripPlan.getTripPlanLikes());
+        System.out.println("트립플랜 라이크스의 no를 찍어본다." + tripPlan.getTripPlanNo());
+
+
+        //알람 코드 삽입
+            //변수를 잡아둔다.
+            int likes = tripPlan.getTripPlanLikes();
+            User fakeSender = new User();
+            //만약 추천수가 10단위라면
+            if(likes % 10 == 0){
+                //트립플랜의 본디 정보를 확인한다.
+                TripPlan gettingTripPlan = tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+
+                int tripPlanNo = tripPlan.getTripPlanNo();
+                String tripPlanTitle = gettingTripPlan.getTripPlanTitle();
+                String receiverId = gettingTripPlan.getTripPlanAuthor();
+                User receiver = userService.getUserById(receiverId);
+                String userNick = receiver.getNickname();
+
+                //알람 내용을 작성한다.
+                String alarmTitle = tripPlanTitle+"에"+likes+"회째 추천!";
+                String alarmContents = userNick+"회원님의"+tripPlanTitle+"여행플랜이 " + likes + "회나 추천되었습니다! 지금 확인해보세요.";
+                String alarmNaviUrl = "/tripPlan/selectTripPlan?tripPlanNo="+gettingTripPlan.getTripPlanNo();
+                //알람을 보낸다.
+                alarmService.addNavigateAlarm(fakeSender,receiver,alarmTitle,alarmContents,alarmNaviUrl);
+            }else if (likes == 1){
+                //트립플랜의 본디 정보를 확인한다.
+                TripPlan gettingTripPlan = tripPlanDao.selectTripPlan(tripPlan.getTripPlanNo());
+
+                int tripPlanNo = tripPlan.getTripPlanNo();
+                String tripPlanTitle = gettingTripPlan.getTripPlanTitle();
+                String receiverId = gettingTripPlan.getTripPlanAuthor();
+                User receiver = userService.getUserById(receiverId);
+                String userNick = receiver.getNickname();
+
+                //알람 내용을 작성한다.
+                String alarmTitle = tripPlanTitle+"에"+likes+"첫 추천!";
+                String alarmContents = userNick+"회원님의"+tripPlanTitle+"여행플랜이 " + "첫 번째로 추천을 받았습니다! 지금 확인해보세요.";
+                String alarmNaviUrl = "/tripPlan/selectTripPlan?tripPlanNo="+gettingTripPlan.getTripPlanNo();
+                //알람을 보낸다.
+                alarmService.addNavigateAlarm(fakeSender,receiver,alarmTitle,alarmContents,alarmNaviUrl);
+            }
+
+        //알람 코드 종료
+
         tripPlanDao.tripPlanLikes(tripPlan);
         return tripPlan.getTripPlanLikes();
     }

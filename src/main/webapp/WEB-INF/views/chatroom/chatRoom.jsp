@@ -431,6 +431,14 @@
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
 <%--    <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">--%>
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
+    <script type="text/javascript">
+        let markers = []; // 마커 배열
+        let maps = []; // 지도 배열
+        let pathInfo = []; // 좌표 저장 배열
+
+    </script>
 
     <script type="text/javascript">
         const username = "${username}";
@@ -469,8 +477,17 @@
                 fncVideoChatroom();
             });
         });
+        function fncGetUser(getUserName){
 
-
+            var url = "/user/getUser?userId=" + getUserName;
+            window.location.href = url;
+        }
+        $(function() {
+            $(document).on("click",".getUser", function() {
+                let getUserName = $(this).attr("value");
+                fncGetUser(getUserName);
+            });
+        });
         // const realUpload = document.querySelector('#uploadFile');
         // const upload = document.querySelector('#upload');
         // // upload.addEventListener('click', () => realUpload.click());
@@ -531,7 +548,7 @@
                         // 멤버 리스트를 순회하며 <li> 요소 생성 및 추가
                         $.each(members, function(index, member) {
                             memberArray.push(member.userId);
-                            var li = $('<li>').attr("id", member.userId).text(member.userId);
+                            var li = $('<li>').attr("id", member.userId).attr("class","getUser").attr("value",member.userId).text(member.userId);
                             chatUsers.append(li);
 
                             if (author === member.userId) {
@@ -668,37 +685,113 @@
         <input type="hidden" name="chatRoomStatus" value="${chatRoom.chatRoomStatus}"/>
         <input type="hidden" id="room-name"/>
         <main class="chat-main">
-            <div class="chat-sidebar" >
+            <div class="chat-sidebar">
                 <div class="chat-title" style="text-align: center"><h3 id="chatRoomTitle">${chatRoom.chatRoomTitle}</h3></div>
                 <audio id="myAudio" autoplay></audio>
-            <div class="chatButton" align="left">
-                <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"
-                   data-toggle="modal" type="button" class="btn btn-primary" style="background-color: #66ffff">TripPlan</a>
-                <div type="button" class="btn btn-primary" id="roomMute" style="background-color: #75ff66">Mute</div>
-                <button type="button" class="btn btn-primary" id="videoRoom2" style="background-color: #e366ff">Video</button>
-            </div>
+                <div class="chatButton" align="center">
+                    <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"
+                       data-toggle="modal" type="button" class="btn btn-primary" style="background-color: #66ffff">TripPlan</a>
+<%--                    <div type="button" class="btn btn-primary" id="roomMute" style="background-color: #75ff66">Mute</div>--%>
+                    <button type="button" class="btn btn-primary" id="videoRoom2" style="background-color: #e366ff">VideoOn</button>
+                </div>
                 <div></div>
                 <div class="users" style="text-align: left; border-bottom: #00b3ee"><h3>현재 참여 목록</h3></div>
-                <ul id="users"></ul><td/>
+                <ul id="users"></ul>
                 <div class="dbUsers" style="text-align: left"><h3>채팅방 멤버</h3></div>
-                <ul id="chatUsers">
-                </ul>
+                <ul id="chatUsers"></ul>
             </div>
-            <div class="chat-messages">
-            </div>
-            <div class="chat-trip">
+            <div class="chat-messages"></div>
+            <div class="chat-trip" style="position: relative;">
                 <div id="call">
-                    <div id="myStream">
+                    <div id="myStream" align="center">
                         <video id="myFace" autoplay playsinline width="300" height="300"></video><br/>
                         <button type="button" id="mute">Mute</button>
                         <button type="button" id="camera">Turn Camera Off</button>
                         <select id="cameras"></select>
-                        <video id="peersFace" autoplay playsinline width="200" height="200"></video>
+                        <video id="peersFace0" autoplay playsinline width="200" height="200"></video>
                     </div>
                 </div>
-            </div>
-            <div class="chat-video">
-            </div>
+                <div id="trip">
+                    <h2><span class="italic" STYLE="color: black">${tripPlan.tripPlanTitle}</span></h2>
+                    <span class="dot">좋아요 : </span>
+                    <span id="likes" align="center" width="200">${tripPlan.tripPlanLikes}</span>
+                    <span class="dot">조회수 : </span>
+                    <span>${tripPlan.tripPlanViews}</span>&nbsp;&nbsp;
+
+                    <c:set var="i" value="0"/>
+                    <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
+                        <c:set var="i" value="${ i+1 }"/>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div id="map${i-1}" style="width: 500px; height: 300px; border-radius: 15px;"></div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div display="flex;">
+                                        <span class="icon-map" style="font-size: 50px;"></span>
+                                        <b><div class="day" style="color: black ">${i}일차 여행플랜 </div>
+                                        <div class="tag-차link" style="text-align: left; color:rebeccapurple">총 이동시간: ${dailyPlan.totalTripTime} 분</div></b>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="box-title" style="margin: 3%;color: darkblue"><b>명소리스트</b></div>
+                                    <div class="border-box" style="height: 200px; width: 100%; overflow-y: auto; overflow-x: hidden; ">
+                                        <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                                            <div class="col-12 column" style="text-align: center;">
+                                                <div class="card text-white mb-3" style="width: auto; height: auto; font-size: 9px;">
+                                                    <div class="card-body btn btn-lg btn-info" style="border-radius: 15px; background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
+                                                        <h5 class="card-title" name="placeTitle">
+                                                            <div style="color: black; width: 100%;">
+                                                                <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
+                                                            </div>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                                <c:if test="${place.tripTime != null}">
+                                                    <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" style="background-color: rgba(188,222,167,0.39); width: auto; height: auto;">
+                                                        <div style="color: black; display: inline-block;">이동시간: ${place.tripTime}</div>
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                            <script type="text/javascript">
+                                                var placeTags = "${place.placeTags}";
+                                                var placePhoneNumber = "${place.placePhoneNumber}";
+                                                var placeAddress = "${place.placeAddress}";
+                                                var placeCategory = "${place.placeCategory}";
+                                                var placeImage = "${place.placeImage}";
+                                                var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
+                                                var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
+                                                var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
+                                                var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
+                                                var tripPath = '${place.tripPath}';
+
+                                                var index = ${i-1};
+                                                if(!pathInfo[index]) {
+                                                    pathInfo[index] = [];
+                                                }
+                                                pathInfo[index].push(tripPath);
+
+                                                // markers 배열에 좌표 및 맵 ID 정보 추가
+                                                markers.push({
+                                                    position: markerPosition,
+                                                    mapId: mapId,
+                                                    placeTags: placeTags,
+                                                    placePhoneNumber: placePhoneNumber,
+                                                    placeAddress: placeAddress,
+                                                    placeCategory: placeCategory,
+                                                    placeImage: placeImage
+                                                });
+
+                                            </script>
+                                        </c:forEach> <!-- place for end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+                        </div><!-- container -->
+                    </c:forEach> <!-- dailyPlan for end -->
+                </div><!-- trip -->
+            </div><!-- chat-trip -->
         </main>
     </form>
 
@@ -756,7 +849,9 @@
     <script>
         const call = document.getElementById("call");
         const videoBtn = document.getElementById('videoRoom2');
+        const trip = document.getElementById("trip");
         call.hidden=true;
+        trip.hidden=false;
         const input = document.getElementById("myInput");
 
         // input.addEventListener("keydown", function(event) {
@@ -769,10 +864,156 @@
         //         input.selectionStart = input.selectionEnd = currentCursorPosition + 1;
         //     }
         // });
+        let tripDays = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
+
+        $(function () { // 저장되었던 맵의 갯수 만큼 출력하고 세팅
+
+            for (var i = 0; i < tripDays; i++) { // map의 아이디를 동적으로 할당하여 생성
+                var mapContainer = document.getElementById('map' + i);
+                var mapOptions = {
+                    center: new kakao.maps.LatLng(37.566826, 126.9786567),
+                    level: 3
+                };
+                var map = new kakao.maps.Map(mapContainer, mapOptions);
+
+                maps.push(map);
+
+                for(var j = 0; j < pathInfo[i].length; j++){
+                    if (pathInfo[i][j] !== "") {
+                        var path = JSON.parse(pathInfo[i][j]);
+
+                        var pathCoordinates = path.map(function (coord) {
+                            return new kakao.maps.LatLng(coord.Ma, coord.La);
+                        });
+
+                        var polyline = new kakao.maps.Polyline({
+                            path: pathCoordinates, // Initialize the path array
+                            strokeWeight: 5,
+                            strokeColor: '#e11f1f',
+                            strokeOpacity: 0.8,
+                            strokeStyle: 'shortdash'
+                        });
+                        polyline.setMap(map);
+                    }
+                }
+            }
+
+            $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
+                var bounds = new kakao.maps.LatLngBounds();
+                var mapId = 'map' + index;
+                var mapMarkers = markers.filter(function (marker) {
+                    return marker.mapId === mapId;
+                });
+
+                $(mapMarkers).each(function (index, marker) {
+                    var markerOptions = {
+                        position: marker.position,
+                        map: map
+                    };
+                    var marker = new kakao.maps.Marker(markerOptions);
+                    marker.setMap(map);
+                    bounds.extend(markerOptions.position);
+                });
+
+                // 바운드의 범위를 한 단계만 더 가깝게 설정
+                var extraPadding = 0.1; // 조절 가능한 추가 간격 (0.1은 10%를 의미)
+                var ne = bounds.getNorthEast();
+                var sw = bounds.getSouthWest();
+                var deltaX = (ne.getLng() - sw.getLng()) * extraPadding;
+                var deltaY = (ne.getLat() - sw.getLat()) * extraPadding;
+                var extendedNE = new kakao.maps.LatLng(ne.getLat() + deltaY, ne.getLng() + deltaX);
+                var extendedSW = new kakao.maps.LatLng(sw.getLat() - deltaY, sw.getLng() - deltaX);
+                bounds.extend(extendedNE);
+                bounds.extend(extendedSW);
+
+                map.setBounds(bounds);
+            });
+
+        });
+
+        $(function () { // 오버레이 표시
+            var overlays = [];
+            for (var i = 0; i < markers.length; i++) { // 각 지도에 맞춰서 마커들을 표시
+                var mapId = markers[i].mapId;
+                var mapIndex = parseInt(mapId.replace("map", ""));
+                var markerOptions = {
+                    position: markers[i].position,
+                    map: maps[mapIndex]
+                };
+                var marker = new kakao.maps.Marker(markerOptions);
+                marker.setMap(markerOptions.map);
+
+                var category = '';
+                if (markers[i].placeCategory == 0) {
+                    category = '여행지';
+                } else if (markers[i].placeCategory == 1) {
+                    category = '식당';
+                } else if (markers[i].placeCategory == 2) {
+                    category = '숙소';
+                }
+
+                // 오버레이 정보창
+                var content = '<div class="wrap custom-container">' +
+                    '    <div class="info">' +
+                    '        <div class="title">' +
+                    '            ' + markers[i].placeTags +
+                    '            <div class="close" data-index="' + i + '" title="닫기"></div>' +
+                    '        </div>' +
+                    '        <div class="body">' +
+                    '            <div class="img">' +
+                    '                <img src="' + markers[i].placeImage + '" width="73" height="70">' +
+                    '           </div>' +
+                    '            <div class="desc">' +
+                    '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
+                    '                <div class="category">(카테고리) ' + category + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
+                    '    </div></div></div></div>';
+
+                var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
+                    content: content,
+                    map: maps[mapIndex],
+                    position: marker.getPosition(),
+                    yAnchor: 1
+                });
+
+                overlay.setMap(null); // 오버레이 초기 상태는 숨김으로 설정
+                overlays.push(overlay);
+
+                (function (marker, overlay, mapIndex) {
+
+                    // 마커를 클릭했을 때 오버레이 표시
+                    kakao.maps.event.addListener(marker, 'click', function () {
+                        maps[mapIndex].setLevel(3); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
+                        maps[mapIndex].panTo(marker.getPosition()); // 해당 마커 위치로 지도 이동
+                        overlay.setMap(maps[mapIndex]);
+                    });
+
+                    // 지도상 어디든 클릭했을 때 오버레이 숨김
+                    kakao.maps.event.addListener(maps[mapIndex], 'click', function () {
+                        overlay.setMap(null);
+                    });
+
+                    // 화면 초기화
+                    $('#reset' + mapIndex).click(function () {
+                        overlay.setMap(null);
+                        var mapIndex = parseInt(this.id.replace("reset", ""));
+                        var bounds = new kakao.maps.LatLngBounds();
+
+                        for (var j = 0; j < markers.length; j++) {
+                            if (markers[j].mapId === "map" + mapIndex) {
+                                bounds.extend(markers[j].position);
+                            }
+                        }
+                        maps[mapIndex].setBounds(bounds);
+                    });
+
+                })(marker, overlay, mapIndex);
+            }
+        });
     </script>
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/rtc.js"></script>
     <script src="/js/imagepreview.js"></script>
+
 </body>
 </html>

@@ -117,7 +117,7 @@
 <%--                                </label>--%>
                                 <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="venus-mars">
                                     <input type="radio" name="gender" id="option2" value="MF">
-                                    <span class="fa fa-venus-mars"></span>
+                                    <span class="fa ">ALL</span>
                                 </label>
                                 <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="mars">
                                     <input type="radio" name="gender" id="option4" value="M">
@@ -140,13 +140,13 @@
                         </div>
                     </div>
 
-                    <div class="border-box">
-                        <div class="box-title">StartDate</div>
+<%--                    <div class="border-box">--%>
+<%--                        <div class="box-title">StartDate</div>--%>
 
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="datepicker" placeholder="StartDate">
-                        </div>
-                    </div>
+<%--                        <div class="input-group">--%>
+<%--                            <input type="text" class="form-control" id="datepicker" placeholder="StartDate">--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
 
 <%--                    <div class="border-box">--%>
 <%--                        <div class="box-title">DURATION</div>--%>
@@ -203,7 +203,7 @@
                                     <a href="#modal-regular2" data-toggle="modal"><span class="icon-user" value="${chatRoom.chatRoomNo}"></span></a>
                                     <input type="hidden" />
                                     <div id="modal-regular2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-                                        <div class="modal-dialog">
+                                        <div class="modal-dialog"style="width: 300px">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -424,7 +424,11 @@
                     // 멤버 추가
                     members.forEach(function(member) {
                         console.log(member.name);
+                        let profileImageUrl = "https://via.placeholder.com/50";
                         let memberElement = $("<div></div>").text(member.userId);
+                        let profileImage = $("<img>").attr("src", profileImageUrl).attr("style","border-radius: 50%;");
+
+                        memberElement.prepend(profileImage); // 이미지를 요소의 첫 번째 자식으로 추가
                         memberArray.push(memberElement);
                         modalBody.append(memberElement);
                     });

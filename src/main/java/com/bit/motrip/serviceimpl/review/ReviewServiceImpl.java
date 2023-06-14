@@ -84,7 +84,7 @@ public class ReviewServiceImpl implements ReviewService {
         parameters.put("totalCount", totalCount);
         return parameters;
     }
-    public TripPlan addReviewView(@RequestParam("tripPlanNo") int tripPlanNo, Review review,
+    public TripPlan selectTripPlan(@RequestParam("tripPlanNo") int tripPlanNo,
                                 @RequestParam("tripPlanTitle") String tripPlanTitle,
                                 Model model, HttpSession session) throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
@@ -92,6 +92,7 @@ public class ReviewServiceImpl implements ReviewService {
         System.out.println("여기는 임쁠 tripPlan>>>>"+tripPlan);
 
         tripPlanDao.tripPlanViews(tripPlan);
+
        return tripPlan;
     }
 
@@ -161,10 +162,14 @@ public class ReviewServiceImpl implements ReviewService {
     public Review getReview(int reviewNo) throws Exception {
         Review review = reviewDao.getReview(reviewNo);
         review.setViewCount(review.getViewCount() + 1);
+        TripPlan tripPlan = tripPlanDao.selectTripPlan(review.getTripPlanNo());
+        System.out.println("tripPlan 임쁠>>>>>"+tripPlan);
 
-        reviewDao.getReview(reviewNo);
+        review.setTripPlanNo(tripPlan.getTripPlanNo()); // 리뷰에 해당하는 여행 계획 정보 설정
+        System.out.println("review 임쁠>>>>>>>"+review);
         return review;
     }
+
 
     //후기 수정
     @Override
