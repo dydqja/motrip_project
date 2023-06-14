@@ -46,6 +46,7 @@
             <input type="hidden" name="noticeContents" value="${noticeGetData.noticeContents}" />
 
             <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+
             <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
                 <div class="container">
                     <h1 class="main-head text-center board-title Zooming">${noticeGetData.noticeTitle}</h1>
@@ -58,6 +59,11 @@
 
                     <div class="row">
 
+                        <div class="nLine">
+                            <h3>N.&nbsp;<span class="category">${noticeGetData.isNoticeImportant == 0 ? '일반' : '중요'}</span></h3>
+                            <hr>
+                        </div>
+
                         <div class="col-md-9 notice-content">
                             ${noticeGetData.noticeContents}
                         </div>
@@ -66,21 +72,15 @@
                             <div class="d-inline-block">
 
                                 <c:if test="${sessionScope.user.userId eq 'admin'}">
-
                                     <div>
                                         <button id="updateNoticeView" class="btn btn-primary" type="button">내용 수정</button>
                                     </div>
-
-                                    <br>
-
+                                        <br>
                                     <div>
                                         <button id="deleteNotice" class="btn btn-primary" type="button">삭제하기</button>
                                     </div>
-
                                 </c:if>
-
-                                <br>
-
+                                    <br>
                                 <div>
                                     <button id="getNoticeList" class="btn btn-primary" type="button">목록보기</button>
                                 </div>
