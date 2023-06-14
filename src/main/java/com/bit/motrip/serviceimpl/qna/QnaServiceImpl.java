@@ -1,5 +1,6 @@
 package com.bit.motrip.serviceimpl.qna;
 
+import com.bit.motrip.common.ImageSaveService;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.dao.qna.QnaDao;
 import com.bit.motrip.domain.Qna;
@@ -28,13 +29,17 @@ public class QnaServiceImpl implements QnaService {
     @Autowired
     @Qualifier("userServiceImpl")
     private final UserService userService;
+    @Autowired
+    @Qualifier("imageSaveService")
+    private final ImageSaveService imageSaveService;
 
     ///Constructor
-    public QnaServiceImpl(AlarmService alarmService, UserService userService){
+    public QnaServiceImpl(AlarmService alarmService, UserService userService, ImageSaveService imageSaveService){
         this.alarmService = alarmService;
         this.userService = userService;
+        this.imageSaveService = imageSaveService;
 
-        System.out.println("::"+getClass()+".setQnaDao Call.........");
+        //System.out.println("::"+getClass()+".setQnaDao Call.........");
     }
 
     ///Method
@@ -71,6 +76,10 @@ public class QnaServiceImpl implements QnaService {
     //질의응답 질의 등록 서비스
     @Override
     public void addQna(Qna qna) throws Exception {
+        //서머노트 이미지 처리
+        String originalHtml = qna.getQnaContents();
+        String changedHtml = imageSaveService.saveImage(originalHtml,qna.getQnaAuthor(),"qna");
+        qna.setQnaContents(changedHtml);
 
         qnaDao.addQna(qna);
 /*

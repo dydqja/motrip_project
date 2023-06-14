@@ -16,6 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/summernote/summernote.js"></script>
 <script src="/js/alarm/alarm.js"></script>
+<script src="/js/alarm/ajaxAlarm.js"></script>
 <script src="/js/memo/listMemo.js"></script>
 <script src="/js/memo/buildMemo.js"></script>
 <script src="/js/memo/memoBtnCtrl.js"></script>
@@ -48,6 +49,7 @@
 
       <div class="navbar-collapse collapse" id="main-navbar">
         <ul class="nav navbar-nav">
+
           <li class="dropdown">
             <a href="#">채팅방 Menu <i class="fa fa-chevron-down nav-arrow"></i></a>
             <ul class="dropdown-menu">
@@ -77,15 +79,15 @@
             <ul class="dropdown-menu">
               <li><a href="home_default.html">모두의 여행이란</a></li>
               <li><a href="home_slider.html">설계 포트폴리오</a></li>
-              <li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
+              <%--<li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
               <c:if test="${empty sessionScope.user}">
-                <li><a href="/test/login/user1">유저1로 로그인</a></li>
-                <li><a href="/test/login/user2">유저2로 로그인</a></li>
-                <li><a href="/test/login/admin">admin 로그인</a></li>
+              <li><a href="/test/login/user1">유저1로 로그인</a></li>
+              <li><a href="/test/login/user2">유저2로 로그인</a></li>
+              <li><a href="/test/login/admin">admin 로그인</a></li>
               </c:if>
               <c:if test="${not empty sessionScope.user}">
-                <li><a href="/test/logout">${user.userId}님,로그아웃</a></li>
-              </c:if>
+              <li><a href="/test/logout">${user.userId}님,로그아웃</a></li>
+              </c:if>--%>
             </ul>
           </li>
           <li class="dropdown">
@@ -105,136 +107,141 @@
             <ul class="dropdown-menu">
               <li><a href="/chatRoom/chatRoomList">채팅방 목록</a>
               </li>
-            </ul>
+              <%--<li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=2">채팅방 추가테스트2</a>
+              </li>
+              <li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=56">채팅방 추가테스트5</a>--%>
           </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle">후기</a>
-            <ul class="dropdown-menu">
-              <li><a href="/review/addReviewView">후기 작성</a>
-              </li>
-              <li><a href="/review/getReviewList">모든 후기</a>
-              </li>
-              <li><a  href="/review/getMyReviewList">나의 후기</a>
-              </li>
-            </ul>
-          </li>
-          <c:if test="${not empty sessionScope.user}">
-            <li id="memo-section" class="dropdown">
-              <input type="hidden" id="memo-search-condition" value="myMemo">
-              <a href="#" class="dropdown-toggle">메모</a>
-              <ul id="memo-dropdown" class="dropdown-menu">
-                <div class="my-memo-thumbnail btn-group-justified" role="group">
-                  <a href="#" class="btn btn-line btn-sm btn-default" role="button" onclick="buildNewMemo('user2')">+ 새 메모</a>
-                </div>
-                <div class="panel-group" id="memo-accordion" role="tablist" aria-multiselectable="true">
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="my-memo-btn">
-                      <p class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#my-memo-collapse" aria-expanded="true" aria-controls="collapseOne">
-                          나의 메모 보기
-                        </a>
-                      </p>
-                    </div>
-                    <div id="my-memo-collapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                      <div class="panel-body">
-                        <div id="my-memo-control" class="btn-group btn-group-justified " role="group">
-                          <a href="#" id="my-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('myMemo',-1)">◀</a>
-                          <a href="#" id="my-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
-                          <a href="#" id="my-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('myMemo',+1)">▶</a>
-                        </div>
-                        <div id="my-memo-list-container">
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="shared-memo-btn">
-                      <p class="panel-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#shared-memo-collapse" aria-expanded="false" aria-controls="collapseTwo">
-                          공유받은 메모 보기
-                        </a>
-                      </p>
-                    </div>
-                    <div id="shared-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                      <div class="panel-body">
-                        <div id="shared-memo-control" class="btn-group btn-group-justified " role="group">
-                          <a href="#" id="shared-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('sharedMemo',-1)">◀</a>
-                          <a href="#" id="shared-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
-                          <a href="#" id="shared-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('sharedMemo',+1)">▶</a>
-                        </div>
-                        <div id="shared-memo-list-container">
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="del-memo-btn">
-                      <p class="panel-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#del-memo-collapse" aria-expanded="false" aria-controls="collapseThree">
-                          삭제된 메모 보기
-                        </a>
-                      </p>
-                    </div>
-                    <div id="del-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                      <div class="panel-body">
-                        <div id="del-memo-control" class="btn-group btn-group-justified " role="group">
-                          <a href="#" id="del-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('deletedMemo',-1)">◀</a>
-                          <a href="#" id="del-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
-                          <a href="#" id="del-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('deletedMemo',+1)">▶</a>
-                        </div>
-                        <div id="del-memo-list-container">
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ul>
+        </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle">후기</a>
+          <ul class="dropdown-menu">
+            <li><a href="/review/getCompletedTripPlanList">후기 작성</a>
             </li>
-          </c:if>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="boardDropdown" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
-              게시판
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="boardDropdown">
-              <li>
-                <a class="dropdown-item" href="/notice/noticeList">공지사항</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="/qna/qnaList">질의응답</a>
-              </li>
-            </ul>
-          </li>
-          <c:if test="${empty sessionScope.user}">
-          <li> <a href="/user/login"><span class="icon-user"></span>로그인</a>
-            </c:if>
-            <c:if test="${not empty sessionScope.user}">
-          <li class="dropdown">
-            <a class="icon-user" href="#">${sessionScope.user.nickname}</a>
-            <ul class="dropdown-menu">
-              <li><a href="#">MyPage</a>
-              </li>
-              <c:if test="${sessionScope.user.role == 0}">
-                <li><a href="/user/listUser">회원목록</a>
-                </li>
-              </c:if>
-              <li><a href="#">로그아웃</a>
-              </li>
-            </ul>
-          </li>
-          </c:if>
-          </li>
-          <li class="dropdown">
-            <a id="alarm-set-area" href="#">
-              <span id="alarm-bell"  class="icon-bell" data-toggle="popover" data-content="popoverContents" data-placement="top" data-trigger="focus" title=""></span>
-              <span id="unreadAlarmCount" class="badge badge-danger">0</span></a>
-            <ul id="alarm-thumbnail-area" class="dropdown-menu  dropdown-menu-right cart-menu">
+            <li><a href="/review/getReviewList">모든 후기</a>
+            </li>
+            <li><a  href="/review/getMyReviewList">나의 후기</a>
+            </li>
+          </ul>
+        </li>
+        <c:if test="${not empty sessionScope.user}">
+          <li id="memo-section" class="dropdown">
+            <input type="hidden" id="memo-search-condition" value="myMemo">
+            <a href="#" class="dropdown-toggle">메모</a>
+            <ul id="memo-dropdown" class="dropdown-menu">
+              <div class="my-memo-thumbnail btn-group-justified" role="group">
+                <a href="#" class="btn btn-line btn-sm btn-default" role="button" onclick="buildNewMemo('user2')">+ 새 메모</a>
+              </div>
+              <div class="panel-group" id="memo-accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="my-memo-btn">
+                    <p class="panel-title">
+                      <a role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#my-memo-collapse" aria-expanded="true" aria-controls="collapseOne">
+                        나의 메모 보기
+                      </a>
+                    </p>
+                  </div>
+                  <div id="my-memo-collapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                      <div id="my-memo-control" class="btn-group btn-group-justified " role="group">
+                        <a href="#" id="my-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('myMemo',-1)">◀</a>
+                        <a href="#" id="my-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
+                        <a href="#" id="my-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('myMemo',+1)">▶</a>
+                      </div>
+                      <div id="my-memo-list-container">
 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="shared-memo-btn">
+                    <p class="panel-title">
+                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#shared-memo-collapse" aria-expanded="false" aria-controls="collapseTwo">
+                        공유받은 메모 보기
+                      </a>
+                    </p>
+                  </div>
+                  <div id="shared-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                      <div id="shared-memo-control" class="btn-group btn-group-justified " role="group">
+                        <a href="#" id="shared-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('sharedMemo',-1)">◀</a>
+                        <a href="#" id="shared-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
+                        <a href="#" id="shared-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('sharedMemo',+1)">▶</a>
+                      </div>
+                      <div id="shared-memo-list-container">
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="del-memo-btn">
+                    <p class="panel-title">
+                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#memo-accordion" href="#del-memo-collapse" aria-expanded="false" aria-controls="collapseThree">
+                        삭제된 메모 보기
+                      </a>
+                    </p>
+                  </div>
+                  <div id="del-memo-collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <div id="del-memo-control" class="btn-group btn-group-justified " role="group">
+                        <a href="#" id="del-memo-prev-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('deletedMemo',-1)">◀</a>
+                        <a href="#" id="del-memo-current-page" class="btn btn-line btn-sm btn-default" role="button">1</a>
+                        <a href="#" id="del-memo-next-btn" class="btn btn-line btn-sm btn-default" role="button" onclick="changePage('deletedMemo',+1)">▶</a>
+                      </div>
+                      <div id="del-memo-list-container">
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </ul>
           </li>
+        </c:if>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="boardDropdown" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            게시판
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="boardDropdown">
+            <li>
+              <a class="dropdown-item" href="/notice/noticeList">공지사항</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/qna/qnaList">질의응답</a>
+            </li>
+          </ul>
+        </li>
+        <c:if test="${empty sessionScope.user}">
+        <li> <a href="/user/login"><span class="icon-user"></span>로그인</a>
+          </c:if>
+          <c:if test="${not empty sessionScope.user}">
+        <li class="dropdown">
+          <a class="icon-user" href="#">${sessionScope.user.nickname}</a>
+          <ul class="dropdown-menu">
+            <li><a href="/user/getUser?userId=${sessionScope.user.userId}">MyPage</a>
+            </li>
+            <c:if test="${sessionScope.user.role == 0}">
+              <li><a href="/user/listUser">회원목록</a>
+              </li>
+            </c:if>
+            <li><a href="/user/logout">로그아웃</a>
+
+            </li>
+          </ul>
+        </li>
+        </c:if>
+        </li>
+        <li class="dropdown">
+          <a id="alarm-set-area" href="#">
+            <span id="alarm-bell"  class="icon-bell" data-toggle="popover" data-content="popoverContents" data-placement="top" data-trigger="focus" title=""></span>
+            <span id="unreadAlarmCount" class="badge badge-danger">0</span></a>
+          <ul id="alarm-thumbnail-area" class="dropdown-menu  dropdown-menu-right cart-menu">
+
+          </ul>
+        </li>
         </ul>
       </div>
     </div>

@@ -318,18 +318,56 @@
                         "Content-Type": "application/json"
                     },
                     success: function (members) {
+                        alert(members);
                         const matchingMember = members.find(member => member.userId === userId);
+                        const inChatRoomUserId = members.map(member => member.userId);
+                        alert(inChatRoomUserId);
                         if (matchingMember) {
                             alert("이미가입했던 채팅방입니다.");
-                        } else {
+                        } else if ((roomGender === gender || roomGender === "MF") && age >= minAge && age <= maxAge) {
 
-                            if ((roomGender === gender || roomGender === "MF") && age >= minAge && age <= maxAge) {
-                                alert("신청완료 방장의 허락을 기다려 주세요");
-                                fncJoinChatroom(chatRoomNo);
+                            $.ajax({
+                                url: "/user/getBlacklistAll",
+                                async: false,
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify({
+                                    evaluaterId: "${sessionScope.user.userId}"
+                                }),
+                                dataType: "json",
+                                success: function (response) {
+
+                                    if (inChatRoomUserId.some(id => response.includes(id))) {
+
+                                        Swal.fire({
+                                            title: '정말 입장신청 하시겠습니까?',
+                                            text: "해당 채팅방에는 블랙리스트 회원이 존재합니다",
+                                            icon: 'warning',
+                                            showCancelButton: true,  // 취소 버튼 활성화
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: '신청',
+                                            cancelButtonText: '취소'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                // 사용자가 확인을 눌렀을 때의 동작
+                                                fncJoinChatroom(chatRoomNo);
+                                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                                // 사용자가 취소를 눌렀을 때의 동작
+                                            }
+                                        })
+                                    } else {
+                                        alert("신청완료 방장의 허락을 기다려 주세요");
+                                        fncJoinChatroom(chatRoomNo);
+                                    }
+                                },
+                                error: function (error) {
+                                    alert("다시 시도해주세요.");
+                                }
+                            });
                             } else {
                                 alert("조건에 부합하지 않습니다.");
                             }
-                        }
                     },
                     error: function (xhr, status, error) {
                         alert("fail");

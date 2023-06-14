@@ -54,15 +54,6 @@
             <input type="hidden" name="isQnaAnswered" value="${qnaGetData.isQnaAnswered}" />
             <input type="hidden" name="qnaCategory" value="${qnaGetData.qnaCategory}" />
 
-            <c:choose>
-                <c:when test="${qnaGetData.qnaCategory == 0}">계정문의</c:when>
-                <c:when test="${qnaGetData.qnaCategory == 1}">기타문의</c:when>
-                <c:when test="${qnaGetData.qnaCategory == 2}">여행플랜</c:when>
-                <c:when test="${qnaGetData.qnaCategory == 3}">채팅</c:when>
-                <c:when test="${qnaGetData.qnaCategory == 4}">메모</c:when>
-                <c:when test="${qnaGetData.qnaCategory == 5}">후기</c:when>
-            </c:choose>
-
             <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
             <div class="page-img" style="background-image: url('/images/board/qnaTop.jpg');">
@@ -138,7 +129,7 @@
                             </div>
 
                             <div class="qnaAnswerContents">
-                                <textarea name="qnaAnswerContents" id="qnaAnswerContents">${qnaGetData.qnaAnswerContents}</textarea>
+                                <label for="qnaAnswerContents"></label><textarea name="qnaAnswerContents" id="qnaAnswerContents">${qnaGetData.qnaAnswerContents}</textarea>
                             </div>
                         </c:if>
                     </div>
