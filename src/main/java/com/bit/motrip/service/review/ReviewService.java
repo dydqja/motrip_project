@@ -34,4 +34,6 @@ public interface ReviewService {
     public int reviewLikes (Map<String, Object> tripPlanLikes) throws Exception;
 
     public int reviewCount() throws Exception;
+
+    //public Map<String, Object> reviewListPage(Search search)throws Exception;
 }//end of ReviewService

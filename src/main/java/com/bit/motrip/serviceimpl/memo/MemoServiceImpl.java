@@ -248,6 +248,8 @@ public class MemoServiceImpl implements MemoService {
                 //메모 업데이트가 성공하면 화면단에 변경된 메모의 내용을 보여주기 위해 다시 한번 getMemo를 한다.
                 return memoDao.getMemo(memoNo);
             } else {
+/*                Memo failMemo = new Memo();
+                failMemo.setMemoNo(-1);*/
                 throw new Exception("메모가 복구되지 않았습니다.");
             }
         }catch (Exception e){

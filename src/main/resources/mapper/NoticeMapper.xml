@@ -29,6 +29,9 @@
                      board
                  WHERE
                      BOARD_CATEGORY = 0
+                <if test="searchKeyword != null">
+                    AND BOARD_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+                </if>
              ) AS derived_table
         WHERE
             row_seq BETWEEN #{startRowNum} AND #{endRowNum}
@@ -45,6 +48,9 @@
                     board
                 WHERE
                     BOARD_CATEGORY = 0
+                <if test="searchKeyword != null">
+                    AND BOARD_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+                </if>
             ) countTable
     </select>
 
@@ -66,7 +72,7 @@
             #{noticeContents},
             0,
             CURDATE(),
-            1,
+            #{isNoticeImportant},
             0)
     </insert>
 
@@ -74,7 +80,7 @@
         UPDATE board
         SET BOARD_TITLE = #{noticeTitle},
             BOARD_CONTENTS = #{noticeContents},
-            IS_NOTICE_IMPORTANT = 1
+            IS_NOTICE_IMPORTANT = #{isNoticeImportant}
         WHERE BOARD_NO = #{noticeNo}
     </update>
 

@@ -378,7 +378,7 @@
             readAlarm(alarmNo);
             
             //거절 url로 이동한다.
-            window.location.href = alarmRejectUrl;
+            rejectAlarmRequest(alarmRejectUrl);
 
     });
         //보류 버튼

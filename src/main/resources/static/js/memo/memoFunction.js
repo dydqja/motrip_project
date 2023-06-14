@@ -5,13 +5,13 @@ function editMemo(memoDialog){
 
     //기존 다이얼로그에 title-input 이 있는지 확인한다.
     if(memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-title-input').length > 0){
-        console.log("title input already exists");
+        //console.log("title input already exists");
         //기존 title input 을 드러낸다.
         memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-title-input').show();
     }else {
         //타이틀을 수정하기 위한 input을 만든다.
         let titleInput = $('<input>', {
-            class: 'memo-dialog-title-input',
+            class: 'memo-dialog-title-input form-control',
             type: 'text',
             value: memoTitle,
             mousedown: function(e) {
@@ -28,9 +28,9 @@ function editMemo(memoDialog){
 
     //기존 다이얼로그에 color-input 이 있는지 확인한다.
     if(memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-color-input').length > 0){
-        console.log("color input already exists");
+        //console.log("color input already exists");
         //기존 color input 을 드러낸다.
-        memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-color-input').show();
+        //memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-color-input').show();
     }else{
         //다이얼로그로부터 색을 추출한다.
         let memoColor = memoDialog.find('.memo-dialog-info').val();
@@ -46,6 +46,9 @@ function editMemo(memoDialog){
         //색을 수정하기 위한 input을 붙인다.
         memoDialog.siblings('.ui-dialog-titlebar').prepend(colorInput);
     }
+    //color input 을 무조건 숨긴다.
+    memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-color-input').hide();
+
     //기존 컨텐츠를 숨긴다.
     memoDialog.find('.memo-contents-div').hide();
     //서머노트를 드러낸다.
@@ -139,18 +142,18 @@ function updateMemo(memoDialog){
     //다이얼로그로부터 입력된 color 를 추출한다.
     let memoColor = memoDialog.siblings('.ui-dialog-titlebar').find('.memo-dialog-color-input').val();
 
-    console.log("memoTitle : " + memoTitle);
-    console.log("memoContents : " + memoContents);
+    //console.log("memoTitle : " + memoTitle);
+    //console.log("memoContents : " + memoContents);
     updateMemoRequest(userId, memoTitle, memoContents,memoColor,memoDialog);
 }
 
 function changeMemoColor(colorInput, selectedColor){
-    console.log("changeMemoColor on");
+    //console.log("changeMemoColor on");
     //버튼이 속한 dialog 요소를 잡는다.
 }
 
 function shareMemo(memoDialog){
-    console.log("shareMemo on");
+    //console.log("shareMemo on");
     //dialog의 info를 추출한다.
     let infoJson = memoDialog.find('.memo-dialog-info').val();
     //info를 json으로 변환한다.
@@ -161,9 +164,9 @@ function shareMemo(memoDialog){
     let memoAuthor = info.memoAuthor;
     //세션의 유저를 추출한다.
     let userId = $('#memo-user-id').val();
-    console.log("공유할 메모의 memoNo : " + memoNo);
-    console.log("공유할 메모의 memoAuthor : " + memoAuthor);
-    console.log("현재 접속중인 userId : " + userId);
+    //console.log("공유할 메모의 memoNo : " + memoNo);
+   // console.log("공유할 메모의 memoAuthor : " + memoAuthor);
+    //console.log("현재 접속중인 userId : " + userId);
 
     //리스트 만들 곳 비워주고 히든 인풋 넣어주는 영역.
     //공유할 메모의 작성자와 현재 접속중인 유저가 같으면 공유 컨트롤 모달을 띄운다.
@@ -201,7 +204,7 @@ function deleteMemo(memoDialog){
         deleteMemoRequest(memoNo, memoDialog);
     }else {
         //작성자와 현재 접속중인 유저가 다르면
-        console.log("세션유저와 작성자가 다릅니다. 삭제할 수 없습니다.");
+      //  console.log("세션유저와 작성자가 다릅니다. 삭제할 수 없습니다.");
     }
 }
 
@@ -221,7 +224,7 @@ function restoreMemo(memoDialog){
         restoreMemoRequest(memoNo, memoDialog);
     }else {
         //작성자와 현재 접속중인 유저가 다르면
-        console.log("세션유저와 작성자가 다릅니다. 복구할 수 없습니다.");
+       // console.log("세션유저와 작성자가 다릅니다. 복구할 수 없습니다.");
     }
 }
 
@@ -241,7 +244,7 @@ function removeMemo(memoDialog){
         removeMemoRequest(memoNo, memoDialog);
     }else {
         //작성자와 현재 접속중인 유저가 다르면
-        console.log("세션유저와 작성자가 다릅니다. 제거할 수 없습니다.");
+        //console.log("세션유저와 작성자가 다릅니다. 제거할 수 없습니다.");
     }
 
 }

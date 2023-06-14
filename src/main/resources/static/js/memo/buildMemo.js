@@ -189,13 +189,32 @@ function buildNewMemo(userId){
     memoDialog.dialog({
         autoOpen: true,
         autoResize: true,
-        width: 400,
+        width: 'auto',
         height: 'auto'
     });
 
 
     //서머노트를 적용한다.
-    memoDialog.find('.summernote-contents').summernote();
+    memoDialog.find('.summernote-contents').summernote({
+        toolbar: [
+            ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['style', ['bold', 'italic', 'underline']],
+            ['color', ['forecolor', 'color']],
+            ['table', ['table']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['insert', ['picture']],
+        ],
+        fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+        width: 'auto',
+        height: 'auto'
+    });
+
+
+
+
     //서머노트 div를 숨긴다.
     memoDialog.find('.summernote-container').hide();
     //contents-div 를 닫는다.
@@ -212,11 +231,27 @@ function showMemoDialog(memo){
     memoDialog.dialog({
         autoOpen: true,
         autoResize: true,
-        width: 400,
+        width: 'auto',
         height: 'auto'
     });
     //서머노트를 적용한다.
-    memoDialog.find('.summernote-contents').summernote();
+    memoDialog.find('.summernote-contents').summernote({
+        toolbar: [
+            ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['style', ['bold', 'italic', 'underline']],
+            ['color', ['forecolor', 'color']],
+            ['table', ['table']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['insert', ['picture']],
+        ],
+        fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+        width: 'auto',
+        height: 'auto'
+    });
+
     //메모다이얼로그에서 서머노트를 숨긴다.
     memoDialog.find('.summernote-container').hide();
     //메모다이얼로그에서 저장 버튼을 숨긴다.
@@ -224,18 +259,19 @@ function showMemoDialog(memo){
 
 }
 
-function buildMemoSharerTableRow(memoAccess){
+function buildMemoSharerTableRow(memoAccess) {
     let userId = memoAccess.memoAccessUser;
     let userNickname = memoAccess.userNickname;
     let userEmail = memoAccess.userEmail;
 
     let row = $('<tr>');
-    row.append($('<td>').html('<span class="memo-sharer">'+userNickname+'</span>'));
+    row.append($('<td>').html('<span class="memo-sharer">' + userNickname + '</span>'));
     row.append($('<td>').text(userEmail));
-    row.append($('<td>').html('<a href="/user/getUser?userId="'+userId+'>자세히</a>'));
-    row.append($('<td>').html('<button class="memo-share-modal-unShare-btn-for-sharer" value="'+userId+'">공유해제</button>'));
+    row.append($('<td>').html('<a href="/user/getUser?userId=' + userId + '">자세히</a>'));
+    row.append($('<td>').html('<button class="memo-share-modal-unShare-btn-for-sharer" value="' + userId + '">공유해제</button>'));
     return row;
 }
+
 function buildMemoShareeTableRow(memoNo){
 
     let row = $('<tr>');

@@ -48,7 +48,7 @@ public class ChatRoomController {
             ,Model model) throws Exception{
 //        User sessionUser = (User) session.getAttribute("user");
 //        System.out.println(sessionUser);
-
+        System.out.println("searchTravelStartDate ::::: "+search.getSearchTravelStartDate());
         if(search.getCurrentPage() == 0){
 
             search.setCurrentPage(1);
@@ -98,22 +98,26 @@ public class ChatRoomController {
 
     @PostMapping("chat")
     public String chat(@ModelAttribute("chatRoom") ChatRoom chatRoom,
-                       @RequestParam("userId") String userId, Model model) throws Exception{
+//                       @RequestParam("userId") String userId,
+                       HttpSession session
+            , Model model) throws Exception{
+                User sessionUser = (User) session.getAttribute("user");
+        System.out.println(sessionUser);
         ChatRoom ch = chatRoomService.getChatRoom(chatRoom.getChatRoomNo());
         System.out.println(ch);
         ChatMember author = chatMemberService.getChatMemberAuthor(chatRoom.getChatRoomNo());
         List<ChatMember> chatMemberList = chatMemberService.chatMemberList(chatRoom.getChatRoomNo());
-        model.addAttribute("username",userId); //유저 name으로 userId 전송
+        model.addAttribute("username",sessionUser.getUserId()); //유저 name으로 userId 전송
+//        model.addAttribute("username",userId); //유저 name으로 userId 전송
         model.addAttribute("chatRoom",ch); //채팅방 객체 전송
         model.addAttribute("chatMembers",chatMemberList);
         model.addAttribute("author",author);
         System.out.println("chatRoomNo"+chatRoom.getChatRoomNo());
-        System.out.println("chatuserId : "+userId);
         System.out.println(author.getUserId());
         int flag = 0;
         //chatMemberService.getChatMember()
         for (ChatMember chm:chatMemberList) {
-            if(chm.getUserId().equals(userId)){
+            if(chm.getUserId().equals(sessionUser.getUserId())){ //userId
                 flag = 1;
                 if(chm.getStatus() == 1 ){
                     flag = 2;

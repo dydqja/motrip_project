@@ -37,6 +37,9 @@ public interface ReviewDao {
     //후기 조회수
     public void reviewViews(Review review) throws Exception;
 
-
+    public int selectReviewTotalCount(Search search) throws Exception;
     public int reviewCount() throws Exception;
+
+
+   // public List<Review> reviewListPage(Search search)throws Exception;
 }//end of ReviewDao

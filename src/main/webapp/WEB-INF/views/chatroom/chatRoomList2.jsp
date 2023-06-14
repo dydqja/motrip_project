@@ -145,18 +145,16 @@
 
                         <div class="input-group">
                             <input type="text" class="form-control" id="datepicker" placeholder="StartDate">
-                            <div class="input-group-btn">
-                                Days
-                            </div>
                         </div>
                     </div>
 
-                    <div class="border-box">
-                        <div class="box-title">DURATION</div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Days">
-                        </div>
-                    </div>
+<%--                    <div class="border-box">--%>
+<%--                        <div class="box-title">DURATION</div>--%>
+<%--                        <div class="input-group">--%>
+<%--                            <input type="text" class="form-control" name="searchDuration" placeholder="Days">--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+
                 </div>
             </div>
 
@@ -443,6 +441,7 @@
             });
         });
     });
+
     $(window).on('beforeunload', function() {
         $('input[name="chatRoomNo"]').remove();
     });
@@ -450,7 +449,7 @@
 
     function fncGetUserList(currentPage){
         console.log($("#currentPage").val(currentPage));
-        $("form").attr("method" , "GET").attr("action" , "/chatRoom/chatRoomList?").submit();
+        $("form").attr("method" , "GET").attr("action" , "/chatRoom/chatRoomList").submit();
     }
 
     $(function() {

@@ -1,130 +1,200 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<head>
+<!DOCTYPE html>
+<html lang="ko">
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <title>질의응답 등록</title>
+        <title>문의 등록</title>
 
-    <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="/css/qna/addQna.css"/>
+        <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+        <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
+        <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
+        <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
+        <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
+        <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
+        <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
+        <link rel="stylesheet" href="/css/qna/addQna.css"/>
 
+        <script src="/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
+        <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+        <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+        <script src="/vendor/retina.min.js"></script>
+        <script src="/vendor/jquery.imageScroll.min.js"></script>
+        <script src="/assets/js/min/responsivetable.min.js"></script>
+        <script src="/assets/js/bootstrap-tabcollapse.js"></script>
+        <script src="/assets/js/min/countnumbers.min.js"></script>
+        <script src="/assets/js/main.js"></script>
 
-    <%-- Bootstrap --%>
-    <script src="http://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <!-- alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-    <%-- Jquery --%>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <!-- 서머노트 CDN 링크 -->
+        <link rel="stylesheet" href="/summernote/summernote.css">
+        <script src="/summernote/summernote.js"></script>
+    </head>
 
-</head>
+    <body>
+        <c:set var="formAction" value="${(qnaTitle == null && qnaContents == null) ? '/qna/addQna' : '/qna/updateQna'}" />
+        <form action="${formAction}" method="post">
 
-<body>
+            <input type="hidden" name="qnaAuthor" value="${sessionScope.user.userId}" />
 
+            <c:if test="${qnaNo != null}">
 
-        <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+                <input type="hidden" name="qnaNo" value="${qnaNo}" />
 
-    <h1>질의응답 등록</h1>
+            </c:if>
 
-    <br>
-    <br>
-    <br>
+            <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-    <c:set var="formAction" value="${(qnaTitle == null && qnaContents == null) ? '/qna/addQna' : '/qna/updateQna'}" />
-    <form action="${formAction}" method="post">
+            <div class="page-img" style="background-image: url('/images/board/noticeTop.jpg');">
+                <div class="container">
+                    <h1 class="main-head text-center board-title Zooming">문의 등록</h1>
+                </div>
+            </div>
 
-        <input type="hidden" name="qnaAuthor" value="${sessionScope.user.userId}" />
+            <div class="page-img page-back" style="background-image: url('/images/board/noticeBack.jpg');">
 
-        <c:if test="${qnaNo != null}">
+                <div class="container">
+                    <div>
+                        <select name="qnaCategory">
+                            <option value="0" ${qnaCategory == 0 ? 'selected' : ''}>계정문의</option>
+                            <option value="1" ${qnaCategory == 1 ? 'selected' : ''}>기타문의</option>
+                            <option value="2" ${qnaCategory == 2 ? 'selected' : ''}>여행플랜</option>
+                            <option value="3" ${qnaCategory == 3 ? 'selected' : ''}>채팅</option>
+                            <option value="4" ${qnaCategory == 4 ? 'selected' : ''}>메모</option>
+                            <option value="5" ${qnaCategory == 5 ? 'selected' : ''}>후기</option>
+                        </select>
 
-            <input type="hidden" name="qnaNo" value="${qnaNo}" />
+                        <input type="text" name="qnaTitle" id="qnaTitle" placeholder="제목을 입력해주세요" value="${qnaTitle}">
+                    </div>
 
-        </c:if>
+                    <br>
 
-        <div>
+                    <div>
+                        <!-- 썸머노트 입력란 -->
+                        <textarea name="qnaContents" id="qnaContents">${qnaContents}</textarea>
+                    </div>
 
-            <input type="text" name="qnaTitle" id="qnaTitle" value="${qnaTitle}">
+                    <div class="row">
 
-            <select name="qnaCategory">
-                <option value="0" ${qnaCategory == 0 ? 'selected' : ''}>계정문의</option>
-                <option value="1" ${qnaCategory == 1 ? 'selected' : ''}>기타문의</option>
-                <option value="2" ${qnaCategory == 2 ? 'selected' : ''}>여행플랜</option>
-                <option value="3" ${qnaCategory == 3 ? 'selected' : ''}>채팅</option>
-                <option value="4" ${qnaCategory == 4 ? 'selected' : ''}>메모</option>
-                <option value="5" ${qnaCategory == 5 ? 'selected' : ''}>후기</option>
-            </select>
+                        <div class="col-md-2">
+                            <button id="reset" class="btn btn-primary" type="reset">초기화</button>
+                        </div>
 
-        </div>
+                        <div class="text-right">
+                            <div class="d-inline-block">
 
-        <br>
+                                <!-- 문의 등록 버튼 -->
+                                <button id="addQna" class="btn btn-primary" type="button">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    등록하기
+                                </button>
 
-        <div>
-            <textarea name="qnaContents" id="qnaContents">${qnaContents}</textarea>
-        </div>
+                                <!-- 목록보기 버튼 -->
+                                <button id="getQnaList" class="btn btn-primary" type="button">목록보기</button>
+                            </div>
+                        </div>
+                    </div>
 
-        <br>
+                </div>
+            </div>
+        </form>
 
-        <div>
-            <button id="addQna" type="submit">등록하기</button>
-        </div>
+        <script type="text/javascript">
 
-        <br>
+            $(function() {
 
-        <div>
-            <button type="reset">초기화</button>
-        </div>
+                $("#addQna").on("click", function() {
 
-        <br>
+                    var qnaTitle = $("#qnaTitle").val();
+                    var qnaContents = $("#qnaContents").val();
 
-        <div>
-            <button id="getQnaList" type="button">목록보기</button>
-        </div>
+                    if (!qnaTitle && !qnaContents) {
 
-    </form>
+                        Swal.fire({
+                            title: '안녕하세요!',
+                            text: '제목과 내용을 입력해주세요.',
+                            icon: 'warning'
+                        });
+                        return false;
 
-    <script type="text/javascript">
+                    } else if (!qnaTitle) {
 
-        $(function() {
+                        Swal.fire({
+                            title: '안녕하세요!',
+                            text: '제목을 입력해주세요.',
+                            icon: 'warning'
+                        });
+                        return false;
 
-            $("#addQna").on("click", function() {
+                    } else if (!qnaContents) {
 
-                var qnaTitle = $("#qnaTitle").val();
-                var qnaContents = $("#qnaContents").val();
+                        Swal.fire({
+                            title: '안녕하세요!',
+                            text: '내용을 입력해주세요.',
+                            icon: 'warning'
+                        });
+                        return false;
 
-                if (!qnaTitle && !qnaContents) {
+                    } else {
 
-                    alert("제목과 내용을 입력해주세요.");
-                    return false;
-
-                } else if (!qnaTitle) {
-
-                    alert("제목을 입력해주세요.");
-                    return false;
-
-                } else if (!qnaContents) {
-
-                    alert("내용을 입력해주세요.");
-                    return false;
-
-                } else {
-
-                    $('form').submit();
-                }
+                        $('form').submit();
+                    }
+                });
             });
-        });
 
-        $(function() {
+            $(function() {
 
-            // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-            $("#getQnaList").on("click" , function() {
+                // DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+                $("#getQnaList").on("click" , function() {
 
-                window.location.href = "/qna/qnaList";
+                    window.location.href = "/qna/qnaList";
+                });
             });
-        });
 
-    </script>
+            <!-- 서머노트 기본생성 -->
+            $(document).ready(function () {
+                $('#qnaContents').summernote({
+                    toolbar: [
+                        ['fontname', ['fontname']],
+                        ['fontsize', ['fontsize']],
+                        ['style', ['bold', 'italic', 'underline']],
+                        ['color', ['forecolor', 'color']],
+                        ['table', ['table']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                    ],
+                    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+                    fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+                    height: 370,
+                    disableResizeEditor: true
+                });
+            });
 
-</body>
+            // 썸머노트 초기화 함수
+            function resetSummernote() {
+                $('#qnaContents').summernote('code', '');
+            }
+
+            // 초기화 버튼 클릭 시 썸머노트 초기화
+            $('#reset').on('click', function () {
+                resetSummernote();
+            });
+        </script>
+    </body>
+</html>

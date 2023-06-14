@@ -18,15 +18,14 @@
 
   <title>블랙리스트</title>
 
-  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+<%--  <link rel="icon" type="image/png" href="/assets/img/favicon.png">--%>
+<%--  <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">--%>
+<%--  <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">--%>
+<%--  <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">--%>
+<%--  <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">--%>
+<%--  <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">--%>
+<%--  <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">--%>
 
-  <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
-  <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
-  <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
-  <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
-  <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
-  <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 
 
 
@@ -137,18 +136,13 @@
         </div>
         <div class="modal-body" style="background-color: #F5F1E3; ">
 
-
-
-
-
-
           <form class="form-horizontal" style="margin-right: 20%; margin-left: 20%;" >
 
             <c:if test="${getUser.pwd ne null}">
             <div class="form-group text-center" >
               <label class="label label-primary">아이디</label>
               <h3>${getUser.userId}</h3>
-              <input type="hidden" name="userId" id="userId" value="${getUser.userId}"  />
+              <input type="hidden" name="userId" id="updateModalUserId" value="${getUser.userId}"  />
             </div>
 
 
@@ -228,7 +222,7 @@
             </div>
 
             <div class="form-group text-center">
-              <div style="margin-left: 20%; margin-right: 20%;">
+
                 <label for="selfIntro" class="label label-primary">자기소개</label>
 
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -239,7 +233,7 @@
                     <input type="radio" name="selfIntroPublic" id="selfIntroPrivateButton" value="false" autocomplete="off"> 비공개
                   </label>
                 </div>
-              </div>
+
               <div style="margin-left: 20%; margin-right: 20%;">
                 <textarea class="pwd-textarea" name="selfIntro" id="selfIntro" placeholder="300자 이내 자기소개" maxlength="300" >${getUser.selfIntro}</textarea>
               </div>
@@ -259,9 +253,19 @@
 
               <div id="drop_zone" name="userPhoto" style="margin-top: 10px;">사진 파일을 올려주세요</div>
               <input type="hidden" name="userPhoto" id="userPhoto"  />
-              <!--
-              <img class="previewImage" id="imagePreview" src="" alt="Image preview">
-              -->
+            </div>
+
+            <div class="form-group text-center">
+              <label for="drop_zone" class="label label-primary">SMS수신동의</label>
+
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                  <input type="radio" name="gettingSmsAlarm" id="SmsAlarmYes" value="true" autocomplete="off" checked> 동의
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="gettingSmsAlarm" id="SmsAlarmNo" value="false" autocomplete="off"> 비동의
+                </label>
+              </div>
             </div>
 
           </form>
@@ -282,21 +286,23 @@
     </div>
   </div>
 
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <script src="/vendor/jquery/dist/jquery.min.js"></script>
-  <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
-  <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
-  <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
-  <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
-  <script src="/vendor/retina.min.js"></script>
-  <script src="/vendor/jquery.imageScroll.min.js"></script>
-  <script src="/assets/js/min/responsivetable.min.js"></script>
-  <script src="/assets/js/bootstrap-tabcollapse.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<%--  <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>--%>
+<%--  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>--%>
+<%--  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>--%>
+<%--  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>--%>
+<%--  <script src="/vendor/jquery/dist/jquery.min.js"></script>--%>
+<%--  <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>--%>
+<%--  <script src="/vendor/jquery.ui.touch-punch.min.js"></script>--%>
+<%--  <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>--%>
+<%--  <script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>--%>
+<%--  <script src="/vendor/owlcarousel/owl.carousel.min.js"></script>--%>
+<%--  <script src="/vendor/retina.min.js"></script>--%>
+<%--  <script src="/vendor/jquery.imageScroll.min.js"></script>--%>
+<%--  <script src="/assets/js/min/responsivetable.min.js"></script>--%>
+<%--  <script src="/assets/js/bootstrap-tabcollapse.js"></script>--%>
+<%--  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>--%>
+<%--  <script src="/assets/js/main.js"></script>--%>
+<%--  <script src="/assets/js/min/login.min.js"></script>--%>
 
 
   <script type="text/javascript">
@@ -866,28 +872,6 @@
       }
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // Drag & Drop 파일업로드
     $(document).ready(function() {
 
@@ -943,9 +927,8 @@
           console.log(result);
           $('#userPhoto').val(result);
 
-          // document.querySelector('#imagePreview').src = result;
-
-
+          document.querySelector('#drop_zone').innerHTML = '<img src="'+result+'" style="width:200px; height:100px;">';
+          document.querySelector('#userPhoto').value = result;
         }
       });
     }
