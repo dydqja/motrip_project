@@ -157,7 +157,6 @@ public class TripPlanServiceImpl implements TripPlanService {
                     System.out.println(defaultPlaces + "기존값 확인");
 
                     for(int j=0; j<place.size(); j++){
-
                         if(j < defaultPlaces.size()) {
                             place.get(j).setPlaceNo(defaultPlaces.get(j).getPlaceNo());
                             placeDao.updatePlace(place.get(j));

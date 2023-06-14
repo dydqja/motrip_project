@@ -30,7 +30,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    animation: noticeZooming 20s infinite ease-in;
+    animation: Zooming 20s infinite ease-in;
 }
 
 select {
@@ -50,7 +50,6 @@ select {
 
 #qnaContents{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    width: 100%;
 }
 
 /* Button effect animation */
