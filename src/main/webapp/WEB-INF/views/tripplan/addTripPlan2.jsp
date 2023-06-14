@@ -59,6 +59,7 @@
         let idCheck = 1; // 늘어나거나 줄어나는 id의 값을 체크
         let isPlanPublic = false; // 공유여부
         let isPlanDownloadable = false; // 가져가기여부 (미구현)
+        let tripPlanThumbnail = "";
     </script>
 
     <style>
@@ -949,6 +950,7 @@
 
         var tripPlan = {
             tripPlanTitle: tripPlanTitle,
+            tripPlanThumbnail: tripPlanThumbnail,
             tripDays: idCheck,
             isPlanPublic: isPlanPublic,
             isPlanDownloadable: isPlanDownloadable,
@@ -964,18 +966,18 @@
         console.log("저장전 확인");
         console.log(tripPlan);
 
-        $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
-            url: "/tripPlan/addTripPlan",
-            type: "POST",
-            data: JSON.stringify(tripPlan),
-            contentType: "application/json; charset=utf-8",
-            success: function () {
-                window.location.href = "/tripPlan/tripPlanList";
-            },
-            error: function (xhr, status, error) {
-                console.log(error);
-            }
-        });
+        // $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
+        //     url: "/tripPlan/addTripPlan",
+        //     type: "POST",
+        //     data: JSON.stringify(tripPlan),
+        //     contentType: "application/json; charset=utf-8",
+        //     success: function () {
+        //         window.location.href = "/tripPlan/tripPlanList";
+        //     },
+        //     error: function (xhr, status, error) {
+        //         console.log(error);
+        //     }
+        // });
 
     });
 
@@ -1370,11 +1372,12 @@
                     contentType: false,
                     success: function(response) {
                         console.log("파일 업로드 성공:", response);
-                        // 서버로부터 받은 이미지 경로(response)를 활용하여 추가 작업 수행 가능
+                        tripPlanThumbnail = response;
+                        console.log(response);
+                        $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + tripPlanThumbnail + "')");
                     },
                     error: function(xhr, status, error) {
                         console.log("파일 업로드 실패:", error);
-                        // 파일 업로드 실패 시 에러 처리
                     }
                 });
             }

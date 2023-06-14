@@ -47,7 +47,7 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Qualifier("imageSaveService")
     ImageSaveService imageSaveService;
 
-    @Value(value = "${filePath}")
+    @Value(value = "${filePath}thumbnail")
     private Path fileStorageLocation; // 썸네일 경로
 
     @Override
@@ -311,7 +311,6 @@ public class TripPlanServiceImpl implements TripPlanService {
         System.out.println("기본경로+파일이름으로 생성된 새로운경로는? => : " + targetLocation);
 
         System.out.println("업로드파일 데이터스트림 => : "+ file.getInputStream());
-
         /*업로드된 파일의 데이터 스트림을 가져오고(file.getInputStream()) 이 데이터 스트림을 지정된 경로(targetLocation)로 복사(Files.copy)한다.
         복사한 위치에 동일한 이름의 파일이 있다면 기존 파일을 새 파일로 대체(StandardCopyOption.REPLACE_EXISTING)한다. */
         try (InputStream is = file.getInputStream()) {
