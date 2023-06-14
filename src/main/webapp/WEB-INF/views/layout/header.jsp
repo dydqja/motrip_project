@@ -54,7 +54,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="home_default.html">모두의 여행이란</a></li>
                             <li><a href="home_slider.html">설계 포트폴리오</a></li>
-                            <li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
+                            <%--<li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
                             <c:if test="${empty sessionScope.user}">
                             <li><a href="/test/login/user1">유저1로 로그인</a></li>
                             <li><a href="/test/login/user2">유저2로 로그인</a></li>
@@ -62,7 +62,7 @@
                             </c:if>
                             <c:if test="${not empty sessionScope.user}">
                             <li><a href="/test/logout">${user.userId}님,로그아웃</a></li>
-                            </c:if>
+                            </c:if>--%>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -82,9 +82,9 @@
                         <ul class="dropdown-menu">
                             <li><a href="/chatRoom/chatRoomList">채팅방 목록</a>
                             </li>
-                            <li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=2">채팅방 추가테스트2</a>
+                            <%--<li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=2">채팅방 추가테스트2</a>
                             </li>
-                            <li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=56">채팅방 추가테스트5</a>
+                            <li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=56">채팅방 추가테스트5</a>--%>
                             </li>
                         </ul>
                     </li>
