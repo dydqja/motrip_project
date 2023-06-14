@@ -80,7 +80,7 @@
 
                     <div>
                         <!-- 썸머노트 입력란 -->
-                        <textarea name="noticeContents" id="noticeContents">${noticeContents}</textarea>
+                        <label for="noticeContents"></label><textarea name="noticeContents" id="noticeContents">${noticeContents}</textarea>
                     </div>
 
                     <div class="row">
