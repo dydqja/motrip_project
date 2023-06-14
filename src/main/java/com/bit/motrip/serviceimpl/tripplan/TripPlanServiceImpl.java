@@ -333,7 +333,17 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Override
     public List<TripPlan> indexTripPlanLikes() throws Exception {
         // 아이디랑 태그 가져올수있도록 할것
-        return tripPlanDao.indexTripPlanLikes();
+
+        List<TripPlan> tripPlanList = tripPlanDao.indexTripPlanLikes();
+        for (TripPlan tp : tripPlanList) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+            String strDate = simpleDateFormat.format(tp.getTripPlanRegDate());
+            tp.setStrDate(strDate);
+
+            tp.setTripPlanNickName(userService.getUserById(tp.getTripPlanAuthor()).getNickname());
+        }
+
+        return tripPlanList;
     }
 
     public String fileUpload(MultipartFile file) throws Exception {

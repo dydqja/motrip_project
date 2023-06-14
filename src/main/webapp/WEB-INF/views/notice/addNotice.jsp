@@ -76,8 +76,6 @@
                         <input type="text" name="noticeTitle" id="noticeTitle" placeholder="제목을 입력해주세요" value="${noticeTitle}">
                     </div>
 
-                    <br>
-
                     <div>
                         <!-- 썸머노트 입력란 -->
                         <label for="noticeContents"></label><textarea name="noticeContents" id="noticeContents">${noticeContents}</textarea>

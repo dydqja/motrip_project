@@ -372,58 +372,7 @@
 </main>
 </div>
 
-<footer id="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-7 col-md-3">
-                <h3>Mold Discover</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quia, architecto? A,
-                    reiciendis eveniet! Esse est eaque adipisci natus rerum laudantium accusamus magni.</p>
-            </div>
-            <div class="col-sm-5 col-md-2">
-                <h3>Quick Link</h3>
-                <ul>
-                    <li>Holiday Package</li>
-                    <li>Summer Adventure</li>
-                    <li>Bus and Trasnportation</li>
-                    <li>Ticket and Hotel Booking</li>
-                    <li>Trek and Hikings</li>
-                </ul>
-            </div>
-            <div class="col-sm-7 col-md-4">
-                <h3>Newsletter Signup</h3>
-                <p>Subscribe to our weekly newsletter to get news and update</p>
-                <br>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Your Email">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-5 col-md-2">
-                <h3>Contact Info</h3>
-                <ul>
-                    <li>Mold Discover</li>
-                    <li>info@moldthemes.com</li>
-                </ul>
-                <div class="clearfix">
-                    <div class="social-icon-list">
-                        <ul>
-                            <li>
-                                <a href="https://twitter.com/moldthemes" class="icon-twitter"></a>
-                            </li>
-                            <li>
-                                <a href="mailto:info@moldthemes.com" class="icon-mail"></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="copy"><span>&copy;</span> Copyright Mold Discover, 2017</div>
-</footer>
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
 /////////////////////// 아래는 설정용 스크립트 입니다. ////////////////////////////
 
