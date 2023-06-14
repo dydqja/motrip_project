@@ -107,6 +107,9 @@ public class ChatRoomController {
         System.out.println(ch);
         ChatMember author = chatMemberService.getChatMemberAuthor(chatRoom.getChatRoomNo());
         List<ChatMember> chatMemberList = chatMemberService.chatMemberList(chatRoom.getChatRoomNo());
+        //tripPlan 보내기
+        System.out.println("채팅방에서 tripplan정보 가져오기 테스트:" + tripPlanService.selectTripPlan(ch.getTripPlanNo()));
+        model.addAttribute("tripPlan",tripPlanService.selectTripPlan(ch.getTripPlanNo()));
         model.addAttribute("username",sessionUser.getUserId()); //유저 name으로 userId 전송
 //        model.addAttribute("username",userId); //유저 name으로 userId 전송
         model.addAttribute("chatRoom",ch); //채팅방 객체 전송

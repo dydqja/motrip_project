@@ -25,6 +25,10 @@
 
     <link rel="icon" type="image/png" href="assets/img/favicon.png"/>
     <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
+    <!-- 부트스트랩 지도위  탭 CSS 링크 추가 -->
+    <!-- 부트스트랩 3.4.1 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+    <!-- 부트스트랩 지도위  탭 CSS 링크 추가 -->
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
     <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
@@ -66,7 +70,38 @@
     <script type="text/javascript">
         let markers = []; // 마커 배열
         let maps = []; // 지도 배열
+        let pathInfo = []; // 좌표 저장 배열
     </script>
+
+    <style>
+        /* 지도 탭 스타일 */
+        .nav-tabs {
+            border-bottom: none;
+        }
+
+        .nav-tabs > li {
+            float: none;
+            display: inline-block;
+        }
+
+        .nav-tabs > li > a {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .nav-tabs > li.active > a,
+        .nav-tabs > li.active > a:hover,
+        .nav-tabs > li.active > a:focus {
+            background-color: #f8f8f8;
+            border-color: #ddd;
+        }
+
+        .tab-content {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+
 
     <style>
         #reviewContents {
@@ -75,8 +110,7 @@
     </style>
 
 
-
-        <style>
+    <style>
         .post {
             width: 100%; /* 원하는 너비 설정 */
             height: 620px; /* 원하는 높이 설정 */
@@ -88,7 +122,149 @@
             font-size: 30px; /* 원하는 크기로 설정 */
             font-weight: bold; /* 굵은 글씨체 설정 */
         }
+
+
+        .wrap {
+            position: absolute;
+            left: 0;
+            bottom: 40px;
+            width: 288px;
+            height: 132px;
+            margin-left: -144px;
+            text-align: left;
+            overflow: hidden;
+            font-size: 12px;
+            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+            line-height: 1.5;
+        }
+
+        .wrap * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .wrap .info {
+            width: 286px;
+            height: 120px;
+            border-radius: 5px;
+            border-bottom: 2px solid #ccc;
+            border-right: 1px solid #ccc;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .wrap .info:nth-child(1) {
+            border: 0;
+            box-shadow: 0px 1px 2px #888;
+        }
+
+        .info .title {
+            padding: 5px 0 0 10px;
+            height: 30px;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .info .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #888;
+            width: 17px;
+            height: 17px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+        }
+
+        .info .close:hover {
+            cursor: pointer;
+        }
+
+        .info .body {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info .desc {
+            position: relative;
+            margin: 13px 0 0 90px;
+            height: 75px;
+        }
+
+        .desc .ellipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .desc .category {
+            font-size: 11px;
+            color: #888;
+            margin-top: -2px;
+        }
+
+        .info .img {
+            position: absolute;
+            top: 6px;
+            left: 5px;
+            width: 73px;
+            height: 71px;
+            border: 1px solid #ddd;
+            color: #888;
+            overflow: hidden;
+        }
+
+        .info:after {
+            content: '';
+            position: absolute;
+            margin-left: -12px;
+            left: 50%;
+            bottom: 0;
+            width: 22px;
+            height: 12px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+        }
+
+        .info .link {
+            color: #5085BB;
+        }
+
+        .custom-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .plan-contents {
+            text-align: left;
+            margin-right: 20px;
+        }
+
+        .place-info {
+            text-align: left;
+        }
     </style>
+
+
+
+<style>
+    .btnAddReview {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 0.05em;
+        padding: 14px 30px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        border: none;
+        color: #fff;
+        background-color: #558B2F;
+        border-radius: 6px;
+    }
+
+</style>
 
 
     <style>️ /* 토글스위치 CSS */
@@ -230,9 +406,6 @@ $(document).ready(function () {
 
 
 <body>
-<header class="nav-menu fixed">
-    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
 
 <div class="post-single left">
     <div class="page-img" style="background-image: url('http://placehold.it/1200x400');">
@@ -302,17 +475,43 @@ $(document).ready(function () {
 
                 <c:set var="i" value="0"/>
                 <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
-                    <c:set var="i" value="0"/>
+                    <c:set var="i" value="${i+1}"/>
                 <main class="white">
                     <div class="container">
 
-                        <div class="row" >
-                            <div class="col-sm-12">
-                                <div id="map0" style="width: 100%; height: 400px; border-radius: 15px;" ></div>
+                        <!-- 지도와 탭을 담을 컨테이너 -->
+                        <div class="container">
+                            <!--탭 컨테이너-->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#qwe">QWE</a></li>
+                                        <li><a data-toggle="tab" href="#asd">ASD</a></li>
+                                        <li><a data-toggle="tab" href="#zxc">ZXC</a></li>
+                                    </ul>
+
+
+                                    <div class="tab-content">
+                                        <div id="qwe" class="tab-pane fade in active">
+                                            <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
+                                        </div>
+                                        <div id="asd" class="tab-pane fade">
+                                            <h4>ASD Content</h4>
+                                            <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
+                                        </div>
+                                        <div id="zxc" class="tab-pane fade">
+                                            <h4>ZXC Content</h4>
+                                            <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div style="margin: 5%"></div>
+
+
+
+
 
                         <div class="row">
                             <div class="col-sm-9">
@@ -325,67 +524,13 @@ $(document).ready(function () {
                             <div class="col-sm-3">
 
 
-
-                            <div class="sidebar">
+                                <div class="sidebar">
                                     <div class="input-group">
                                         <div class="input-group-btn">
                                         </div>
                                     </div>
 
-
-                                <div class="border-box">
-                                    <div class="box-title">후기 검색</div>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search Site">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-primary">Search</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="border-box">
-                                    <div class="box-title">최근 등록된 후기</div>
-                                    <div class="recent-post-list">
-                                        <div class="recent-post">
-                                            <div class="author-img">
-                                                <img src="http://placehold.it/50x50" class="media-object" alt="">
-                                            </div>
-                                            <div class="post-summary">
-                                                <p>Lorem ipsum dolor sit amet, cons adipisicing elit.</p>
-                                                <div class="byline">
-                                                    <span class="updated">Aug 24, 2015</span>
-                                                    <span class="dot">·</span>
-                                                    <span class="italic">By</span>&nbsp;
-                                                    <a href="#" rel="author" class="fn">Aaron D. Cullen</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="recent-post">
-                                            <div class="author-img">
-                                                <img src="http://placehold.it/50x50" class="media-object" alt="">
-                                            </div>
-                                            <div class="post-summary">
-                                                <p>Lorem ipsum dolor sit amet, cons adipisicing elit.</p>
-                                                <div class="byline">
-                                                    <span class="updated">Jan 24, 2015</span>
-                                                    <span class="dot">·</span>
-                                                    <span class="italic">By</span>&nbsp;
-                                                    <a href="#" rel="author" class="fn">Keira Hopman</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
-
-
-
-
-
-                                    <div class="border-box">
+                                    <div class="border-box"  >
                                         <div class="box-title">명소리스트
                                             <div class="tag-link" style="text-align: right;">총 이동시간
                                                 : ${dailyPlan.totalTripTime}</div>
@@ -422,6 +567,16 @@ $(document).ready(function () {
                                                 var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
                                                 var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
 
+                                                console.log("placeTags:", placeTags);
+                                                console.log("placePhoneNumber:", placePhoneNumber);
+                                                console.log("placeAddress:", placeAddress);
+                                                console.log("placeCategory:", placeCategory);
+                                                console.log("placeImage:", placeImage);
+                                                console.log("latitude:", latitude);
+                                                console.log("longitude:", longitude);
+                                                console.log("markerPosition:", markerPosition);
+                                                console.log("mapId:", mapId);
+
                                                 // markers 배열에 좌표 및 맵 ID 정보 추가
                                                 markers.push({
                                                     position: markerPosition,
@@ -441,56 +596,15 @@ $(document).ready(function () {
                         </div>
                         </c:forEach> <!-- dailyPlan for end -->
 
-                <div class="form-group"><!--서버에서 처리하는 로직 구현해야 함-->
-                    <div class="col-sm-4 col-sm-offset-1">
-                        <div class="sidebar">
-                            <div class="border-box">
-                                <div class="box-title">후기 검색</div>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search Site">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-primary">Search</button>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="border-box">
-                                <div class="box-title">최근 등록된 후기</div>
-                                <div class="recent-post-list">
-                                    <div class="recent-post">
-                                        <div class="author-img">
-                                            <img src="http://placehold.it/50x50" class="media-object" alt="">
-                                        </div>
-                                        <div class="post-summary">
-                                            <p>Lorem ipsum dolor sit amet, cons adipisicing elit.</p>
-                                            <div class="byline">
-                                                <span class="updated">Aug 24, 2015</span>
-                                                <span class="dot">·</span>
-                                                <span class="italic">By</span>&nbsp;
-                                                <a href="#" rel="author" class="fn">Aaron D. Cullen</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="recent-post">
-                                        <div class="author-img">
-                                            <img src="http://placehold.it/50x50" class="media-object" alt="">
-                                        </div>
-                                        <div class="post-summary">
-                                            <p>Lorem ipsum dolor sit amet, cons adipisicing elit.</p>
-                                            <div class="byline">
-                                                <span class="updated">Jan 24, 2015</span>
-                                                <span class="dot">·</span>
-                                                <span class="italic">By</span>&nbsp;
-                                                <a href="#" rel="author" class="fn">Keira Hopman</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                </div>
+
+
+
+
+
+
+
 
                 <div class="form-group" style="display: none;">
                     <label for="reviewLikes">Review Likes:</label>
@@ -589,8 +703,9 @@ $(document).ready(function () {
 <!-- 아래는 설정용 스크립트입니다. -->
 
 <script type="text/javascript">
-
+    console.log("maps>>>>>>>>>>>>>>>>>>",maps)
     let tripDays = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
+    console.log("tripDays",tripDays);
     $(function () { // 저장되었던 맵의 갯수 만큼 출력하고 세팅
         for (var i = 0; i < tripDays; i++) { // map의 아이디를 동적으로 할당하여 생성
             var mapContainer = document.getElementById('map' + i);
@@ -599,7 +714,6 @@ $(document).ready(function () {
                 level: 3
             };
             var map = new kakao.maps.Map(mapContainer, mapOptions);
-
             maps.push(map);
         }
         $(maps).each(function (index, map) { // 각 지도마다 들어있는 마커를 기준으로 화면 재구성
@@ -631,8 +745,13 @@ $(document).ready(function () {
                 position: markers[i].position,
                 map: maps[mapIndex]
             };
+            console.log("mapId:", mapId);
+            console.log("mapIndex:", mapIndex);
+            console.log("markerOptions:", markerOptions);
+
             var marker = new kakao.maps.Marker(markerOptions);
             marker.setMap(markerOptions.map);
+            console.log("marker", marker);
 
             // 오버레이 정보창
             var content = '<div class="wrap">' +
@@ -733,8 +852,12 @@ $(document).ready(function () {
     });
 
 </script>
+<!-- 부트스트랩 3.4.1 JavaScript 및 종속성 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+<!-- 부트스트랩 3.4.1 JavaScript 및 종속성 -->
 
 <!-- 아래는 템플릿용 스크립트입니다. -->
+
 
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="/vendor/jquery.ui.touch-punch.min.js"></script>

@@ -28,10 +28,6 @@
 --%>
 
 
-<div class="pre-loader">
-    <div class="loading-img"></div>
-</div>
-
 <header class="nav-menu fixed">
     <nav class="navbar normal transparent">
         <div class="container-fluid">
@@ -91,7 +87,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">후기</a>
                         <ul class="dropdown-menu">
-                            <li><a href="/review/getCompletedTripPlanList">후기 작성</a>
+                            <li><a href=/review/getCompletedTripPlanList>후기 작성</a>
                             </li>
                             <li><a href="/review/getReviewList">모든 후기</a>
                             </li>
