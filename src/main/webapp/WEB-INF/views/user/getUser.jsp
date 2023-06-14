@@ -89,10 +89,10 @@
     <div class="profile">
 
         <div class="profile-image">
-            <c:if test="${getUser.userPhoto ne null}">
+            <c:if test="${not empty getUser.userPhoto}">
             <img id="profileUserPhoto" src="${getUser.userPhoto}" style="width: 200px; height: 200px; object-fit: cover;" alt="">
             </c:if>
-            <c:if test="${getUser.userPhoto eq null}">
+            <c:if test="${empty getUser.userPhoto}">
                 <c:if test="${getUser.gender eq 'M'}">
                     <img id="manBasicProfile" src="/images/user/manBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
                 </c:if>
