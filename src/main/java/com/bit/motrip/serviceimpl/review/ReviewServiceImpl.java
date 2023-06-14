@@ -62,6 +62,8 @@ public class ReviewServiceImpl implements ReviewService {
         Search search = (Search) parameters.get("search");
         int totalCount = tripPlanDao.selectTripPlanTotalCount(search);
 
+
+
         User dbUser = (User) parameters.get("user");
         if(dbUser != null) { // 나의 여행플랜
             parameters.put("tripPlanAuthor", dbUser.getUserId());
@@ -80,13 +82,12 @@ public class ReviewServiceImpl implements ReviewService {
             parameters.put("list", updatedTripPlanList);
            // System.out.println("임쁠 parameters>>>>>>"+parameters);
         }
+
         System.out.println("===================여기는 임쁠 지나가요=================");
         parameters.put("totalCount", totalCount);
         return parameters;
     }
-    public TripPlan selectTripPlan(@RequestParam("tripPlanNo") int tripPlanNo,
-                                @RequestParam("tripPlanTitle") String tripPlanTitle,
-                                Model model, HttpSession session) throws Exception{
+    public TripPlan selectTripPlan(@RequestParam("tripPlanNo") int tripPlanNo) throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
         tripPlan.setTripPlanViews(tripPlan.getTripPlanViews() + 1);
         System.out.println("여기는 임쁠 tripPlan>>>>"+tripPlan);

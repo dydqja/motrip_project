@@ -168,9 +168,13 @@
                 <c:set var="i" value="${ i+1 }" />
                 <div class="item-list">
                     <div class="col-sm-5">
-                        <div class="item-img row" style="background-image: url('http://placehold.it/320x250');">
+                        <c:if test="${chatRoom.tripPlanThumbnail != null && chatRoom.tripPlanThumbnail != ''}">
+                        <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${chatRoom.tripPlanThumbnail}');">
+                        </c:if>
+                        <c:if test="${chatRoom.tripPlanThumbnail == ''}">
+                            <div class="item-img row" style="background-image: url('/images/chatRoomImage.jpg');"></div>
+                        </c:if>
                             <div class="item-overlay">
-                                <a href="trip_detail.html"><span class="icon-binocular"></span></a>
                             </div>
                         </div>
                     </div>
@@ -426,7 +430,7 @@
                         console.log(member.name);
                         let profileImageUrl = "https://via.placeholder.com/50";
                         let memberElement = $("<div></div>").text(member.userId);
-                        let profileImage = $("<img>").attr("src", profileImageUrl).attr("style","border-radius: 50%;");
+                        let profileImage = $("<img>").attr("src", profileImageUrl).attr("style","/imagePath");
 
                         memberElement.prepend(profileImage); // 이미지를 요소의 첫 번째 자식으로 추가
                         memberArray.push(memberElement);

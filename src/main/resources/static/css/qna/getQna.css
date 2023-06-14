@@ -58,11 +58,13 @@
 .qLine {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     margin-left:160px;
+    padding-bottom: 50px;
 }
 
 .aLine {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     margin-left:160px;
+    padding-top: 50px;
 }
 
 /* Button effect animation */

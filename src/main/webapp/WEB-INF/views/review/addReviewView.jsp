@@ -422,7 +422,7 @@ $(document).ready(function () {
                         <div class="tripPlanTitle">
                             <p>TripPlan No. ${tripPlanNo}</p>
                             <span style="font-size: 24px;">'</span>
-                            <span id="displayTripPlanTitle" style="font-size: 24px;">${tripPlanTitle}</span>
+                            <span id="displayTripPlanTitle" style="font-size: 24px;">${tripPlan.tripPlanTitle}</span>
                             <span style="font-size: 24px;">'</span>
                             <span>&nbsp;&nbsp;에 대한 후기를 작성합니다. </span>
                         </div>
