@@ -183,7 +183,7 @@
 <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
     </c:if>
         <c:if test="${tripPlan.tripPlanThumbnail != null}">
-        <div class="page-img" style="background-image: url('/images/thumbnail/${tripPlan.tripPlanThumbnail}');">
+        <div class="page-img" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');">
             </c:if>
         <div class="page-img-txt container">
             <div class="row">
