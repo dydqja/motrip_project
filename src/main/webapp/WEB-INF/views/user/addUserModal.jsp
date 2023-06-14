@@ -143,6 +143,7 @@
 
             <div class="col-sm-12">
                 <form id="addUserForm">
+                    <input type="hidden" name="userPhoto" id="userPhoto" value="" />
 
                     <div class="form-group" >
                         <label class="label label-primary">아이디<span style="color:red"> *</span></label>
@@ -257,7 +258,7 @@
                         </div>
 
                         <div id="drop_zone" name="userPhoto" style="margin-top: 10px; font-size: 16px;">사진 파일을 올려주세요</div>
-                        <input type="hidden" name="userPhoto" id="userPhoto" value="" />
+
                     </div>
 
                     <div class="form-group text-left">
