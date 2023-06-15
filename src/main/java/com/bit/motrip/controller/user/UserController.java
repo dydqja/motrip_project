@@ -186,7 +186,7 @@ public class UserController {
     public String getUser( @RequestParam(value="userId", required=false) String userId,
                            @RequestParam(value="nickname", required=false) String nickname,
                            @RequestParam(defaultValue = "1") int currentPage,
-                           @RequestParam(value = "type", defaultValue = "all") String type, Model model, HttpSession session ) throws Exception {
+                           @RequestParam(value = "type", defaultValue = "all") String type, Model model, HttpSession session, HttpServletRequest request ) throws Exception {
 
         System.out.println("/user/getUser : GET");
         System.out.println("userId = [" + userId + "], nickname = [" + nickname + "]");
@@ -196,12 +196,15 @@ public class UserController {
             System.out.println("getUserById로 가져온 user값은 ? " + user);
             // Model 과 View 연결
             model.addAttribute("getUser", user);
+            request.setAttribute("getUser", user);
+
 
         } else if (nickname != null) {
             User user = userService.getUserByNickname(nickname);
             System.out.println("getUserByNickname으로 가져온 user값은 ? " + user);
             // Model 과 View 연결
             model.addAttribute("getUser", user);
+            request.setAttribute("getUser", user);
 
         }
 

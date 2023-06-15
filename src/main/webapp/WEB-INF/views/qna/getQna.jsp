@@ -66,52 +66,53 @@
 
                 <div class="container">
 
-                    <div class="row">
-                        <div class="qLine">
+                    <div class="qLine">
+                        <div >
                             <h3>Q.&nbsp;<span class="category">${qnaGetData.qnaCategory == 0 ? '계정문의' : qnaGetData.qnaCategory == 1 ? '기타문의' : qnaGetData.qnaCategory == 2 ? '여행플랜' : qnaGetData.qnaCategory == 3 ? '채팅' : qnaGetData.qnaCategory == 4 ? '메모' : '후기'}</span></h3>
                             <hr>
                         </div>
 
-                        <div class="col-md-9 qna-content">
+                        <div class="col-md-11 qna-content">
                             ${qnaGetData.qnaContents}
                         </div>
+                    </div>
 
-                        <div class="text-right">
-                            <div class="d-inline-block">
+                    <div class="text-right">
+                        <div class="d-inline-block">
 
-                                <!--유저만 볼 수 있음-->
-                                <c:if test="${sessionScope.user.userId ne 'admin' && not empty sessionScope.user.userId && empty qnaGetData.qnaAnswerContents && sessionScope.user.userId eq qnaGetData.qnaAuthor}">
-                                    <div>
-                                        <button id="updateQnaView" class="btn btn-primary" type="button">내용 수정</button>
-                                    </div>
-                                </c:if>
+                            <!--유저만 볼 수 있음-->
+                            <c:if test="${sessionScope.user.userId ne 'admin' && not empty sessionScope.user.userId && empty qnaGetData.qnaAnswerContents && sessionScope.user.userId eq qnaGetData.qnaAuthor}">
+                                <div>
+                                    <button id="updateQnaView" class="btn btn-primary" type="button">내용 수정</button>
+                                </div>
+                            </c:if>
 
-                                <!--운영자나 유저가 볼 수 있음-->
-                                <c:if test="${sessionScope.user.userId eq 'admin' || not empty sessionScope.user.userId && empty qnaGetData.qnaAnswerContents && sessionScope.user.userId eq qnaGetData.qnaAuthor}">
-                                        <br>
-                                    <div>
-                                        <button id="deleteQna" class="btn btn-danger" type="button">삭제하기</button>
-                                    </div>
-                                </c:if>
+                            <!--운영자나 유저가 볼 수 있음-->
+                            <c:if test="${sessionScope.user.userId eq 'admin' || not empty sessionScope.user.userId && empty qnaGetData.qnaAnswerContents && sessionScope.user.userId eq qnaGetData.qnaAuthor}">
                                     <br>
                                 <div>
-                                    <button id="getQnaList" class="btn btn-secondary" type="button">목록보기</button>
+                                    <button id="deleteQna" class="btn btn-danger" type="button">삭제하기</button>
                                 </div>
-
-                                <!--운영자만 볼 수 있음-->
-                                <c:if test="${sessionScope.user.userId eq 'admin' }">
-                                        <br>
-                                    <div>
-                                        <button id="addQnaAnswer" class="btn btn-primary" type="button">응답 등록</button>
-                                    </div>
-                                </c:if>
-
+                            </c:if>
+                                <br>
+                            <div>
+                                <button id="getQnaList" class="btn btn-secondary" type="button">처음으로</button>
                             </div>
-                        </div>
 
-                        <!--유저만 볼 수 있음-->
-                        <c:if test="${sessionScope.user.userId ne 'admin' && qnaGetData.qnaAnswerContents != null}">
-                            <div class="aLine">
+                            <!--운영자만 볼 수 있음-->
+                            <c:if test="${sessionScope.user.userId eq 'admin' }">
+                                    <br>
+                                <div>
+                                    <button id="addQnaAnswer" class="btn btn-primary" type="button">응답 등록</button>
+                                </div>
+                            </c:if>
+                        </div>
+                    </div>
+
+                    <!--유저만 볼 수 있음-->
+                    <c:if test="${sessionScope.user.userId ne 'admin' && qnaGetData.qnaAnswerContents != null}">
+                        <div class="aLine">
+                            <div>
                                 <h3>A.</h3>
                                 <hr>
                             </div>
@@ -119,11 +120,13 @@
                             <div class="qnaAnswer">
                                 ${qnaGetData.qnaAnswerContents}
                             </div>
-                        </c:if>
+                        </div>
+                    </c:if>
 
-                        <!--운영자만 볼 수 있음-->
-                        <c:if test="${sessionScope.user.userId eq 'admin' }">
-                            <div class="aLine">
+                    <!--운영자만 볼 수 있음-->
+                    <c:if test="${sessionScope.user.userId eq 'admin' }">
+                        <div class="aLine">
+                            <div>
                                 <h3>A.</h3>
                                 <hr>
                             </div>
@@ -131,8 +134,8 @@
                             <div class="qnaAnswerContents">
                                 <label for="qnaAnswerContents"></label><textarea name="qnaAnswerContents" id="qnaAnswerContents">${qnaGetData.qnaAnswerContents}</textarea>
                             </div>
-                        </c:if>
-                    </div>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </form>
@@ -205,8 +208,8 @@
                     ],
                     fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
                     fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
-                    height: 100,
-                    width: 1050,
+                    height: 150,
+                    width: 1010,
                     disableResizeEditor: true
                 });
             });

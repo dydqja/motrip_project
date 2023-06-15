@@ -33,6 +33,8 @@
         let markers = []; // 마커 배열
         let maps = []; // 지도 배열
         let pathInfo = []; // 좌표 저장 배열
+        let tripTime = ""; // 파싱할 시간
+        let totalTripTime = "";
     </script>
 
     <style>
@@ -203,23 +205,23 @@
     </c:if>
         <div class="page-img-txt container">
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-12">
                     <h2>
-                        <div class="author-img">
+                        <div class="author-img" style="margin-top: 2%">
                             <img src="/images/tripImage.jpg" alt="">
                         </div>
                         <div class="author">
-                            <span>${tripPlan.tripPlanTitle}</span>
+                            <span style="font-size: 25px">${tripPlan.tripPlanTitle}</span>
                         </div>
-                    </h2>w
+                    </h2>
                     <p class="byline">
                     <h4>
                         <span class="italic">${tripPlan.tripPlanNickName}</span>
                         <span class="dot">·</span>
                         <span>${tripPlan.strDate}</span>
-                        <span class="dot">·</span>
+                        <span class="icon-hand-like" style="margin-left: 2%"></span>
                         <span id="likes" align="center" width="200">${tripPlan.tripPlanLikes}</span>
-                        <span class="dot">·</span>
+                        <span class="icon-eye" style="margin-left: 1%"></span>
                         <span>${tripPlan.tripPlanViews}</span>&nbsp;&nbsp;
                         <button class="btn btn-primary" id="tripPlanLikes" value="${tripPlan.tripPlanNo}"
                                 style="width: auto; height: auto; box-sizing: border-box; padding: 5px 10px;">추천
@@ -246,7 +248,8 @@
         <div class="container">
 
             <div display="flex;">
-                <span class="icon-map" style="font-size: 50px; "></span><div class="day">${i}일차 여행플랜 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
+                <span class="icon-map" style="font-size: 50px; "></span><div class="day">${i}일차 여행플랜 <button class="icon-locate-map" id="reset${i-1}"
+                                                                                                             style="font-size: 20px; border-radius: 15px; "></button></div>
             </div>
 
             <div class="row" >
@@ -259,7 +262,7 @@
 
             <div class="row">
                 <div class="col-sm-9">
-                    <div class="post" style="height: 400px; overflow: auto; border-radius: 15px;">
+                    <div class="post" style="height: 600px; overflow: auto; border-radius: 15px;">
                         <div>${dailyPlan.dailyPlanContents}</div>
                     </div>
                 </div>
@@ -269,12 +272,28 @@
 
                     <div class="sidebar">
 
-                        <div class="border-box" style="height: 400px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
+                        <div class="border-box" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
                             <div class="box-title">명소리스트
-                                <div class="tag-link" style="text-align: right;">총 이동시간
-                                    : ${dailyPlan.totalTripTime}</div>
+                                <div class="tag-link" style="text-align: right; width 15px; font-size: 10px; color: black;">총 시간
+                                    :
+                                    <c:if test="${dailyPlan.totalTripTime >= 60}">
+                                        <script>
+                                            totalTripTime = ${dailyPlan.totalTripTime};
+                                            var hours = Math.floor(totalTripTime / 60);
+                                            var minutes = totalTripTime % 60;
+                                            var formattedTime = hours + "시간 " + minutes + "분";
+                                            document.write(formattedTime);
+                                        </script>
+                                        ${formattedTime}
+                                    </c:if>
+                                    <c:if test="${dailyPlan.totalTripTime < 60}">
+                                        ${dailyPlan.totalTripTime}분
+                                    </c:if>
+                                </div>
+
                             </div>
                             <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+
                                 <div class="col-12 column" style="text-align: center; ">
                                     <div class="card text-white mb-3"
                                          style="width: auto; height: auto; font-size: 9px;">
@@ -289,7 +308,22 @@
                                     <c:if test="${place.tripTime != null}">
                                     <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"
                                          style="background-color: rgba(188,222,167,0.39); width: auto; height: auto; ">
-                                            <div style=" color: black; display: inline-block;">이동시간: ${place.tripTime}</div>
+                                            <div style=" color: black; display: inline-block;">이동시간:
+                                                <c:if test="${place.tripTime >= 60}">
+                                                    <script>
+                                                        console.log(${place.tripTime});
+                                                        totalTripTime = ${place.tripTime};
+                                                        var hours = Math.floor((parseInt(totalTripTime)) / 60);
+                                                        var minutes = totalTripTime % 60;
+                                                        var formattedTime = hours + "시간 " + minutes + "분";
+                                                        document.write(formattedTime);
+                                                    </script>
+                                                    ${formattedTime}
+                                                </c:if>
+                                                <c:if test="${place.tripTime < 60}">
+                                                    ${place.tripTime} 분
+                                                </c:if>
+                                            </div>
                                     </div>
                                     </c:if>
                                 </div>
@@ -349,58 +383,7 @@
     </main>
 </div>
 
-<footer id="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-7 col-md-3">
-                <h3>Mold Discover</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quia, architecto? A,
-                    reiciendis eveniet! Esse est eaque adipisci natus rerum laudantium accusamus magni.</p>
-            </div>
-            <div class="col-sm-5 col-md-2">
-                <h3>Quick Link</h3>
-                <ul>
-                    <li>Holiday Package</li>
-                    <li>Summer Adventure</li>
-                    <li>Bus and Trasnportation</li>
-                    <li>Ticket and Hotel Booking</li>
-                    <li>Trek and Hikings</li>
-                </ul>
-            </div>
-            <div class="col-sm-7 col-md-4">
-                <h3>Newsletter Signup</h3>
-                <p>Subscribe to our weekly newsletter to get news and update</p>
-                <br>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Your Email">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-5 col-md-2">
-                <h3>Contact Info</h3>
-                <ul>
-                    <li>Mold Discover</li>
-                    <li>info@moldthemes.com</li>
-                </ul>
-                <div class="clearfix">
-                    <div class="social-icon-list">
-                        <ul>
-                            <li>
-                                <a href="https://twitter.com/moldthemes" class="icon-twitter"></a>
-                            </li>
-                            <li>
-                                <a href="mailto:info@moldthemes.com" class="icon-mail"></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="copy"><span>&copy;</span> Copyright Mold Discover, 2017</div>
-</footer>
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
 <!-- 아래는 설정용 스크립트입니다. -->
 

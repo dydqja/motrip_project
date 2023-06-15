@@ -80,8 +80,6 @@
                         <input type="text" name="qnaTitle" id="qnaTitle" placeholder="제목을 입력해주세요" value="${qnaTitle}">
                     </div>
 
-                    <br>
-
                     <div>
                         <!-- 썸머노트 입력란 -->
                         <label for="qnaContents"></label><textarea name="qnaContents" id="qnaContents">${qnaContents}</textarea>
@@ -105,8 +103,7 @@
                                     등록하기
                                 </button>
 
-                                <!-- 목록보기 버튼 -->
-                                <button id="getQnaList" class="btn btn-primary" type="button">목록보기</button>
+                                <button id="getQnaList" class="btn btn-primary" type="button">처음으로</button>
                             </div>
                         </div>
                     </div>

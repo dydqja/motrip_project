@@ -1,7 +1,9 @@
+<%@ page import="com.bit.motrip.domain.User" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
 
 
 <!DOCTYPE html>
@@ -67,6 +69,7 @@
 </head>
 
 <body>
+<% User getUser = (User)request.getAttribute("getUser"); %>
 
 <form><input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}"></form>
 <%--    <%@ include file="/WEB-INF/views/layout/header.jsp" %>--%>
@@ -89,8 +92,40 @@
     <div class="profile">
 
         <div class="profile-image">
+            <%
+                String userPhoto = getUser.getUserPhoto();
+                boolean isUserPhotoPublic = getUser.isUserPhotoPublic();
+                String gender = getUser.getGender();
 
-            <img src="${getUser.userPhoto}" style="width: 200px; height: 200px;" alt="">
+                if(userPhoto != null && !userPhoto.isEmpty()){
+                    if(isUserPhotoPublic) {
+            %>
+            <img id="profileUserPhoto" src="<%=userPhoto%>" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <%
+            } else {
+                if(gender.equals("M")) {
+            %>
+            <img id="manBasicProfile" src="/images/user/manBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <%
+            } else if(gender.equals("F")) {
+            %>
+            <img id="womanBasicProfile" src="/images/user/womanBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <%
+                    }
+                }
+            } else {
+                if(gender.equals("M")) {
+            %>
+            <img id="manBasicProfile" src="/images/user/manBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <%
+            } else if(gender.equals("F")) {
+            %>
+            <img id="womanBasicProfile" src="/images/user/womanBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <%
+                    }
+                }
+            %>
+
 
         </div>
 

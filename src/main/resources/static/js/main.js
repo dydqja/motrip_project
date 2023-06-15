@@ -12,8 +12,8 @@ const fileInput = document.getElementById('uploadFile');
 //console.log(username,room);
 
 //cors 에러 해결
-const socket = io.connect("http://localhost:3000", {
-  cors:{origin:"http://localhost:3000"}//"http://192.168.0.28:3000" "http://localhost:3000"}
+const socket = io.connect("https://chat.motrip.co.kr", {
+  cors:{origin:"https://chat.motrip.co.kr"}//"http://192.168.0.28:3000" "http://localhost:3000"}
 });
 //join chatroom
 socket.emit('joinRoom',{username,room});
@@ -83,6 +83,8 @@ chatForm.addEventListener('submit', (e) => {
     e.target.elements.msg.value = '';
     //e.target.elements.msg.value.focus();
     e.target.elements.uploadFile.value= '';
+    var previewContainer = document.getElementById("image-preview");
+    previewContainer.innerHTML = ""
   });
 });
 //이미지 넣기
@@ -157,10 +159,13 @@ function outputMessage(message){
 };
 //photo
 function outputPhoto(message){
+
   const div = document.createElement('div');
 
   if(username==message.username){
     div.classList.add('message');
+
+
     div.innerHTML = `
     
     <div class="userbox" align="right">
@@ -169,7 +174,7 @@ function outputPhoto(message){
     <img src="https://via.placeholder.com/50x50" style="border-radius: 40%;"/>
     </div>
     <p class="text">
-     <img src="/imagePath/${message.photo}"/><br/>
+     <img src="/imagePath/photos/${chatRoom.tripPlanThumbnail}'"/><br/>
      &nbsp&nbsp
       ${message.text}
     </p>`;
@@ -181,7 +186,7 @@ function outputPhoto(message){
     <p class="chat2">${message.username}</p>
     <span>   ${message.time}</span><br/>
     <p class="text2">
-        <img src="/imagePath/${message.photo}"/>
+        <img src="/imagePath/photos/${chatRoom.tripPlanThumbnail}'"/>
         &nbsp&nbsp
       ${message.text}`;
     document.querySelector('.chat-messages').appendChild(div);
