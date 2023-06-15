@@ -568,7 +568,7 @@
                                 var kickButton = $("<span>")
                                     .addClass("kick")
                                     .attr("data-userid", member.userId)
-                                    .attr("style", "color: red; font-size: 50%;")
+                                    .attr("style", "color: red; border-radius: 50%; font-size: 50%;")
                                     .text("강제 퇴장");
                                 li.append(kickButton);
                             }

@@ -172,7 +172,7 @@
                                     공개<input type="checkbox" id="chbispublic" class="round" value="true" checked="true" disabled/>&nbsp;&nbsp;
                                     비공개<input type="checkbox" id="chbpublic" class="round" value="false" />
                                 </c:if>
-                                <c:if test="!${tripPlan.getisPlanPublic()}">
+                                <c:if test="${!tripPlan.getisPlanPublic()}">
                                     공개<input type="checkbox" id="chbispublic" class="round" value="true" />&nbsp;&nbsp;
                                     비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true" disabled/>
                                 </c:if>
@@ -1115,7 +1115,7 @@
             console.log(idCheck);
 
         } else {
-            alert("하나의 여행플랜의 일정은 10개가 최대입니다. \n추가적인 일정은 새로운 여행플랜을 작성하여 이용해주시기 바랍니다.");
+            alert("하나의 여행플랜의 일정은 5개가 최대입니다. \n추가적인 일정은 새로운 여행플랜을 작성하여 이용해주시기 바랍니다.");
         }
     });
 
