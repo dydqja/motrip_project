@@ -143,7 +143,7 @@
                         <div class="col-sm-7">
                             <div class="item-desc">
                                 <div>
-                                    <h6 class="right">${review.reviewRegDate}</h6>
+                                    <h6 class="right">${review.strDate}</h6>
                                     <h5 class="item-title">${review.reviewTitle} </h5>
                                     <div class="sub-title">
                                         태그는 여기로

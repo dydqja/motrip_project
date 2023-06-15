@@ -98,17 +98,15 @@
     </resultMap>
 
 
-    <select id="getCompletedTripPlanList"  parameterType="Map" resultMap="tripPlanResultMap">
+    <select id="getCompletedTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
         SELECT *
-        FROM trip_plan tp
-                 JOIN chat_room_members cm ON tp.trip_plan_no = cm.trip_plan_no
-        WHERE tp.is_trip_completed = true
-          AND (
-                (tp.is_plan_public = true AND tp.is_plan_deleted = false AND tp.trip_plan_author = #{tripPlanAuthor})
-
-            )
-            LIMIT 0, 10;
+        FROM trip_plan
+        WHERE trip_plan_author = #{user.userId}
+          AND is_plan_public = true
+          AND is_plan_deleted = false
+          AND is_trip_completed = true;
     </select>
+
     <select id="selectTripPlanList" parameterType="Map" resultMap="tripPlanResultMap">
         SELECT tp.trip_plan_no, tp.trip_plan_author, tp.trip_plan_title, tp.trip_plan_thumbnail, tp.trip_days, tp.trip_plan_reg_date,
         tp.trip_plan_del_date, tp.is_plan_deleted, tp.is_plan_public, tp.is_plan_downloadable, tp.is_trip_completed,

@@ -121,6 +121,7 @@ public class ReviewController {
     }
 
 
+
     //2.단순 입력폼에서 정보 입력받음 Get
     @GetMapping(value = "addReviewView")
     public String addReviewView(@RequestParam("tripPlanNo") int tripPlanNo,Review review,
@@ -324,18 +325,16 @@ public class ReviewController {
 
     @GetMapping("/getReview")// 후기 단 1개 조회
     public String getReview(@RequestParam("reviewNo") int reviewNo, Model model, HttpSession session) throws Exception {
-        User dbUser = (User) session.getAttribute("user");
-        if (dbUser == null) {
-            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
-            return "user/login.jsp";
-        }
 
         // 리뷰 상세 조회
         Review review = reviewService.getReview(reviewNo);
+        User user = userService.getUserById(review.getReviewAuthor());
+
 
         // 해당 리뷰와 관련된 여행 계획 정보 가져오기
         TripPlan tripPlan = tripPlanService.selectTripPlan(review.getTripPlanNo());
 
+        model.addAttribute("user", user);
         model.addAttribute("review", review);
         model.addAttribute("tripPlan", tripPlan);
 
