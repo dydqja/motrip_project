@@ -114,8 +114,9 @@
         }
 
         .bg_white {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.5); /* 투명도 조절 */
         }
+
 
         [id^="menu_wrap"] hr {
             display: block;
@@ -139,10 +140,11 @@
     </style>
 
 </head>
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
 <body>
 
-<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+
 
 
 <div class="post-single left">
@@ -150,27 +152,21 @@
     <div class="page-img"
          style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}'); height: 400px;">
         </c:if>
-        <c:if test="${tripPlan.tripPlanThumbnail == ''}">
+        <c:if test="${tripPlan.tripPlanThumbnail == '' || tripPlan.tripPlanThumbnail == null}">
         <div class="page-img" style="background-image: url('/images/tripImage.jpg'); height: 400px;">
             </c:if>
             <div class="page-img-txt container">
                 <div class="row">
-                    <div class="col-sm-8">
+                    <div class="col-sm-12">
                         <div class="author-img">
-                            <img src="/images/tripImage.jpg" alt="">
+                            <img src="${user.userPhoto}" alt="">
                         </div>
                         <h4>
-                            <span class="italic">${tripPlan.tripPlanAuthor}</span>
-                            <span class="dot">·</span>
-                            <span>${tripPlan.tripPlanRegDate}</span>
-                            <span class="dot">·</span>
-                            <span>${tripPlan.tripPlanLikes}</span>
-                            <span class="dot">·</span>
-                            <td id="likes" align="center" width="200">${tripPlan.tripPlanLikes}</td>
+                            <span class="italic">${tripPlan.tripPlanNickName}</span>
                         </h4>
                         <div style="display: flex">
                             <span><h4><input type="text" id="tripPlanTitle" value="${tripPlan.tripPlanTitle}"
-                                             style="color: black; width: 400px; height: 30px; opacity: 0.3;"></h4></span>
+                                             style="color: black; width: 600px; height: 30px; opacity: 0.8;"></h4></span>
                             <h5>
                                 <c:if test="${tripPlan.getisPlanPublic()}">
                                     공개<input type="checkbox" id="chbispublic" class="round" value="true" checked="true" disabled/>&nbsp;&nbsp;
@@ -186,7 +182,7 @@
                     <div class="colsm-4">
                     </div>
                 </div>
-                <button id="tripPlanThumbnail" style="font-size: 10px;">여행플랜 썸네일</button>
+                <button class="btn-default icon-camera" id="tripPlanThumbnail" style="font-size: 5px; margin-left: 0.8%">썸네일</button>
             </div>
         </div>
 
@@ -195,11 +191,13 @@
             <div class="container">
                 <div>
                     <div style="text-align: right;">
-                        <div class="btn btn-sm btn-success btn-default">여행일수</div>
+                        <div class="btn btn-sm btn-success icon-date">여행일수</div>
+                        <div>
                         <button class="btn btn-sm btn-success icon-triangle-up" id="btnAddTripDay"
                                 style="background-color: #558B2F;"></button>
                         <button class="btn btn-sm btn-success icon-triangle-down" id="btnRemoveTripDay"
                                 style="background-color: #558B2F;"></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -210,7 +208,7 @@
             <div class="container" id="container${i-1}">
                 <div display="flex;">
                     <div class="day"> ${i}일차 여행플랜
-                        <button class="icon-locate-map" id="reset${i-1}" onclick="reset(event, ${i-1})"></button>
+                        <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px; border-radius: 15px;" onclick="reset(event, ${i-1})"></button>
                     </div>
                 </div>
 
@@ -222,7 +220,7 @@
                                 <input type="text" class="form-control" id="placeName${i-1}"
                                        onkeypress="handleKeyPress(event, ${i-1})" placeholder="명소 검색">
                                 <button class="btn btn-primary" id="placeSearch${i-1}"
-                                        onclick="handleKeyPress(event, ${i-1})">Search
+                                        onclick="handleKeyPress(event, ${i-1})">검색
                                 </button>
                             </div>
                             <ul id="placesList${i-1}"></ul>
@@ -250,49 +248,62 @@
                     <div class="col-sm-3">
                         <div class="sidebar">
 
-                            <div class="border-box"
-                                 style="height: 400px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
+                            <div class="border-box list${i-1}"
+                                 style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
                                 <div class="box-title">명소리스트
                                     <div class="tag-link" style="text-align: right;"
-                                         id="totalTripTime${i-1}">${dailyPlan.totalTripTime}</div>
+                                         id="totalTripTime${i-1}" style="font-size: 5px;">총 시간:
+                                        <c:if test="${dailyPlan.totalTripTime >= 60}">
+                                            <script>
+                                                var hours = Math.floor(totalTripTime / 60);
+                                                var minutes = totalTripTime % 60;
+                                                var formattedTime = hours + "시간 " + minutes + "분";
+                                                document.write(formattedTime);
+                                            </script>
+                                                ${formattedTime}
+                                        </c:if>
+                                        <c:if test="${dailyPlan.totalTripTime < 60}">
+                                            ${dailyPlan.totalTripTime}분
+                                        </c:if></div>
                                 </div>
 
                                 <c:set var="j" value="0"/>
                                 <c:forEach var="place" items="${dailyPlan.placeResultMap}">
                                 <c:set var="j" value="${ j+1 }"/>
-                                    <%--                <div class="card text-white mb-3" style="width: auto; height: auto; font-size: 9px;">--%>
-                                    <%--                  <label class="deleteBox" name="deleteBox" id="deleteBox${i-1}" data-index="${j-1}">[삭제]</label>--%>
-                                    <%--                  <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">--%>
-                                    <%--                    <h5 class="card-title" name="placeTitle" >--%>
-                                    <%--                      <div style="color: black; width: 100%;">--%>
-                                    <%--                        <span class="icon-locate" style="color: #467cf1; margin-left: -30px;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}--%>
-                                    <%--                      </div>--%>
-                                    <%--                    </h5>--%>
-                                    <%--                  </div>--%>
-                                    <%--                </div>--%>
-                                    <%--                <c:if test="${place.tripTime != null}">--%>
-                                    <%--                <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"--%>
-                                    <%--                     style="background-color: rgba(188,222,167,0.39); width: 100%; height: auto; ">--%>
-                                    <%--                  <div style=" color: black; display: inline-block;">이동시간: ${place.tripTime}</div>--%>
-                                    <%--                </div>--%>
-                                    <%--                </c:if>--%>
 
-                      <ul class="list${i-1}">
-                        <div class="col-12 column" style="text-align: center;">
-                          <div class="card text-white mb-3" style="background-color: rgb(80, 250, 120); width: auto; height: auto; text-align: center;">
-                            <div class="card-header" name="placeCategory" id="placeCategory${i-1}" data-index="${j-1}"></div>
-                            <label class="deleteBox" name="deleteBox" id="deleteBox${i-1}" data-index="${j-1}">[삭제]</label>
-                            <div class="card-body">
-                              <h4 class="card-title" name="placeTitle" id="placeTitle${i-1}" data-index="${j-1}"></h4>
-                                ${place.placeTags}
-                            </div>
-                            <div class="card text-white mb-3" name="tripTime" id="tripTime${i-1}" data-index="${j-1}" style="background-color: white; width: auto; height: auto; text-align: center;">
-                                ${place.tripTime}
-                            </div>
-                          </div>
-                        </div>
-                      </ul>
-
+                                        <div class="col-12 column" style="text-align: center; border: none;">
+                                            <div class="card text-white mb-3"
+                                                 style="width: auto; height: auto; font-size: 9px;">
+                                                <div class="card-header" name="placeCategory" id="placeCategory${i - 1}" data-index="${j - 1}">
+                                                <label class="deleteBox" name="deleteBox" id="deleteBox${i - 1}" data-index="${j - 1}">[삭제]</label>
+                                                </div>
+                                                    <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
+                                                        <h5 class="card-title" name="placeTitle" id="placeTitle${i - 1}" data-index="${j - 1}">
+                                                            <div style="color: black; width: 100%;">
+                                                                 <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
+                                                            </div>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" id="tripTime${i - 1}" data-index="${j - 1}"
+                                                 style="background-color: rgba(188,222,167,0.39); width: auto; height: auto; ">
+                                                <div style=" color: black; display: inline-block;">이동시간:
+                                                    <c:if test="${place.tripTime >= 60}">
+                                                        <script>
+                                                            totalTripTime = ${place.tripTime};
+                                                            var hours = Math.floor(totalTripTime / 60);
+                                                            var minutes = totalTripTime % 60;
+                                                            var formattedTime = hours + "시간 " + minutes + "분";
+                                                            document.write(formattedTime);
+                                                        </script>
+                                                        ${formattedTime}
+                                                    </c:if>
+                                                    <c:if test="${place.tripTime < 60}">
+                                                        ${place.tripTime} 분
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                        </div>
 
                     <script type="text/javascript">
                         var placeTags = "${place.placeTags}";
@@ -374,7 +385,7 @@
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
-/////////////////////// 아래는 설정용 스크립트 입니다. ////////////////////////////
+<!-- 아래는 설정용 스크립트 입니다. -->
 
 <script>
     <!-- 서머노트기본생성 -->
@@ -398,7 +409,7 @@
             ],
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
             fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
-            height: 370,
+            height: 550,
             disableResizeEditor: true
         });
     };
@@ -418,7 +429,7 @@
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
             fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
             focus: true,
-            height: 370,
+            height: 550,
             disableResizeEditor: true
         });
     }
@@ -700,7 +711,6 @@
                                         placePhoneNumber: doc.querySelector('.info .tel').textContent.trim(),
                                         tripPath: null,
                                         tripTime: null,
-                                        tripPath: pathArray[indexCheck][varStatusIndex]
                                     };
                                     allPlaces['map' + indexCheck].push(place);
                                     placeData[indexCheck].push(place);
@@ -714,32 +724,24 @@
                             }
 
                             // 동적 생성
-                            var newListBox = '<div class="col-12 column">' +
-                                '<div class="card text-white mb-3" style="background-color: rgb(80, 250, 120); width: auto; height: auto; text-align: center;">' +
-                                '<div class="card-header" name="placeCategory" id="placeCategory' + indexCheck + '" data-index="' + varStatusIndex + '"></div>' +
-                                '<label class="deleteBox" name="deleteBox" id="deleteBox' + indexCheck + '" data-index="' + varStatusIndex + '"> [삭제]</label>' +
-                                '<div class="card-body">' +
-                                '<h4 class="card-title" name="placeTitle" id="placeTitle' + indexCheck + '" data-index=' + varStatusIndex + '></h4>' + title +
+                            var newListBox = '<div class="col-12 column" style="text-align: center; border: none;">' +
+                                '<div class="card text-white mb-3" style="width: auto; height: auto; font-size: 9px;">' +
+                                '<div class="card-header" name="placeCategory" id="placeCategory' + indexCheck + '" data-index="' + varStatusIndex + '">' +
+                                '<label class="deleteBox" name="deleteBox" id="deleteBox' + indexCheck + '" data-index="' + varStatusIndex + '">[삭제]</label>' +
                                 '</div>' +
-                                '<div class="card text-white mb-3" name="tripTime" id="tripTime' + indexCheck + '" data-index=' + varStatusIndex + ' style="background-color: white; width: auto; height: auto; text-align: center;">tripTime</div>' +
+                                '<div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">' +
+                                '<h5 class="card-title" name="placeTitle" id="placeTitle' + indexCheck + '" data-index="' + varStatusIndex + '">' +
+                                '<div style="color: black; width: 100%;">' +
+                                '<span class="icon-locate" style="color: #467cf1;" value="' + 0 + '"></span>&nbsp;&nbsp;#' + title +
                                 '</div>' +
-                                '<div></div>' +
+                                '</h5>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" id="tripTime' + indexCheck + '" data-index="' + varStatusIndex + '"' +
+                                'style="background-color: rgba(188,222,167,0.39); color: black; width: auto; height: auto; ">' +
+                                '<div style="color: black; display: inline-block;"></div>' +
+                                '</div>' +
                                 '</div>';
-
-                            // var newCard = '<div class="card text-white mb-3" style="width: auto; height: auto; font-size: 9px;">' +
-                            //         '<label class="deleteBox" name="deleteBox" id="deleteBox' + indexCheck + '" data-index="' + varStatusIndex + '">[삭제]</label>' +
-                            //         '<div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">' +
-                            //         '<h5 class="card-title" name="placeTitle">' +
-                            //         '<div style="color: black; width: 100%;">' +
-                            //         '<span class="icon-locate" style="color: #467cf1; margin-left: -30px;" value="' + place.placeCategory + '"></span>&nbsp;&nbsp;#' + place.placeTags +
-                            //         '</div>' +
-                            //         '</h5>' +
-                            //         '</div>' +
-                            //         '</div>' +
-                            //         '<div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" ' +
-                            //         'style="background-color: rgba(188,222,167,0.39); width: 100%; height: auto; ">' +
-                            //         '<div style=" color: black; display: inline-block;">이동시간: ' + place.tripTime + '</div>' +
-                            //         '</div>';
 
                             var newPlaceElement = document.createElement('div');
                             newPlaceElement.setAttribute('id', 'newPlaceElement' + indexCheck);
@@ -809,17 +811,48 @@
 
                         var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (varStatusIndex - 1) + '"]');
                         if (hour == 0) {
-                            tripTimeEl.textContent = minute;
+                            if (minute === 30) {
+                                tripTimeEl.textContent = "30분";
+                            } else {
+                                tripTimeEl.textContent = minute + "분";
+                            }
                             placeData[indexCheck][varStatusIndex-1].tripTime = minute;
                             placeTripTimes['map' + indexCheck].push(minute);
-                            totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
+                            totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck] || 0)) + minute;
                         } else {
-                            tripTimeEl.textContent = (hour * 60) + minute;
+                            var tripTimeText = "";
+                            if (hour > 0) {
+                                tripTimeText += hour + "시간";
+                            }
+                            if (minute > 0) {
+                                if (minute >= 60) {
+                                    hour++; // 분이 60 이상인 경우 시간을 1 증가시킴
+                                    minute -= 60; // 분에서 60을 뺀 나머지를 계산
+                                }
+                                tripTimeText += " " + minute + "분";
+                            }
+                            tripTimeEl.textContent = tripTimeText;
                             placeData[indexCheck][varStatusIndex-1].tripTime = ((hour * 60) + minute);
                             placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
-                            totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
+                            totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck] || 0)) + (hour * 60) + minute;
                         }
-                        $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
+                        $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck]));
+
+                        function formatTime(minutes) {
+                            console.log("돌아갑니다>>>>>>" + minutes)
+                            var hours = Math.floor(minutes / 60);
+                            var remainingMinutes = minutes % 60;
+                            var formattedTime = "";
+
+                            if (hours > 0) {
+                                formattedTime += hours + "시간 ";
+                            }
+                            if (remainingMinutes > 0) {
+                                formattedTime += remainingMinutes + "분";
+                            }
+
+                            return formattedTime;
+                        }
 
                     },
                     error: function (xhr, status, error) {
@@ -893,7 +926,8 @@
 
 </script>
 
-/////////////////////// 아래는 버 클릭시 동작되는 부분입니다 ////////////////////////////
+        <!-- 아래는 버 클릭시 동작되는 부분입니다 -->
+
 <script>
 
     // 지도 화면 초기화
@@ -1023,24 +1057,40 @@
             $("#btnAddTripDay").prop('disabled', false);
         }, 500); // 0.5초 후에 버튼 활성화
 
+        console.log("추가확인용")
+        console.log(markers); // 설정완료 화면 마커들
+        console.log(markersBound) // 설정완료 중앙값
+        console.log(maps)  // 설정완료 맵
+        console.log(placeTripPositions) // 설정완료 좌표
+        console.log(placeTripTimes) // 설정완료 이동시간
+        console.log(allPlaces) // 설정완료 명소 전체정보
+        console.log(totalTripTimes) // 설정완료 전체이동시간
+        console.log(polylineArray) // 설정완료 명소간 이동경로
+        console.log(pathArray) //
+        console.log(placeData)
+        console.log(pathInfo) // 설정완료
+
         // 새로운 요소를 생성
-        if (idCheck < 10) {
+        if (idCheck < 5) {
             console.log("뭐나오는지")
             console.log(idCheck);
 
-            var dynamicHTML = '<hr></hr><div style="margin-top: 3%"></div><div class="container" id="container' + idCheck + '">' +
-                '<div display="flex;">' + '<div class="day">' + (idCheck + 1) + '일차 여행플랜 <button class="icon-locate-map right" id="reset' + idCheck + '" onclick="reset(event, ' + idCheck + ')"></button></div>' +
-                '</div>' + '<div class="row">' + '<div class="col-sm-12">' + '<div id="map' + idCheck + '" style="width: 100%; height: 300px; border-radius: 15px;"></div>' +
+            var dynamicHTML = '<hr></hr><div class="container" id="container' + idCheck + '">' +
+                '<div display="flex;">' + '<div class="day">' + (idCheck + 1) + '일차 여행플랜' +
+                '<button class="icon-locate-map right" id="reset' + idCheck + '" style="font-size: 20px; border-radius: 15px;" onclick="reset(event, ' + idCheck + ')"></button>' +
+                '</div>' + '</div>' + '<div class="row">' + '<div class="col-sm-12">' +
+                '<div id="map' + idCheck + '" style="width: 100%; height: 300px; border-radius: 15px;"></div>' +
                 '<div id="menu_wrap' + idCheck + '" class="bg_white" style="height:90%; overflow:auto; margin: 0%;">' + '<div class="input-group">' +
                 '<input type="text" class="form-control" id="placeName' + idCheck + '" onkeypress="handleKeyPress(event, ' + idCheck + ')" placeholder="명소 검색" style="width: 60%; font-size: 11px">' +
-                '<button class="btn btn-primary" id="placeSearch' + idCheck + '" style="width: 30%; font-size: 9px;" onclick="handleKeyPress(event, ' + idCheck + ')">Search</button>' +
+                '<button class="btn btn-primary" id="placeSearch' + idCheck + '" style="width: 30%; font-size: 9px;" onclick="handleKeyPress(event, ' + idCheck + ')">검색</button>' +
                 '</div>' + '<ul id="placesList' + idCheck + '"></ul>' + '<div id="pagination"></div>' + '</div>' + '</div>' + '</div>' +
                 '<div style="margin-top: 3%"></div>' + '<div class="row">' + '<div class="col-sm-9">' +
                 '<textarea id="dailyPlanContents' + idCheck + '" name="dailyPlanContents" required style="width: 100%;"></textarea>' +
-                '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' + '<div class="border-box" style="height: 400px; overflow: auto;">' +
-                '<div class="box-title">명소리스트' + '<div id="totalTripTime' + idCheck + '"></div>' + '</div>' + '<ul class="list' + idCheck + '" style="text-align: center;"></ul>' +
-                '</div>' + '</div>' + '</div>' + '</div>' + '<div class="addDaily" id="addDaily" style="text-align: right;">' +
-                '</div></div>';
+                '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' +
+                '<div class="border-box list' + idCheck + '" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">' +
+                '<div class="box-title">명소리스트' +
+                '<div class="tag-link" id="totalTripTime' + idCheck + '" style="text-align: right; display: inline-block; border: none;"></div>' +
+                '</div>' + '</div>' + '</div>' + '</div>' + '</div>';
 
 
             // 동적으로 생성한 요소들을 DOM에 추가
@@ -1077,6 +1127,19 @@
         setTimeout(function () {
             $("#btnRemoveTripDay").prop('disabled', false);
         }, 500); // 0.5초 후에 버튼 활성화
+
+        console.log("삭제확인용")
+        console.log(markers); // 설정완료 화면 마커들
+        console.log(markersBound) // 설정완료 중앙값
+        console.log(maps)  // 설정완료 맵
+        console.log(placeTripPositions) // 설정완료 좌표
+        console.log(placeTripTimes) // 설정완료 이동시간
+        console.log(allPlaces) // 설정완료 명소 전체정보
+        console.log(totalTripTimes) // 설정완료 전체이동시간
+        console.log(polylineArray) // 설정완료 명소간 이동경로
+        console.log(pathArray) //
+        console.log(placeData)
+        console.log(pathInfo) // 설정완료
 
         if (idCheck > 1) {
             console.log("뭐나오는지")
@@ -1146,7 +1209,7 @@
         console.log("id : " + indexCheck);
         console.log("index : " + index);
 
-        var prevTripTimeEl = document.querySelector('.card.text-white.mb-3[id="tripTime' + indexCheck + '"][data-index="' + (index) + '"]'); // 명소를 기준으로 이전 시간 리스트박스
+        var prevTripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index) + '"]'); // 명소를 기준으로 이전 시간 리스트박스
         $(prevTripTimeEl).parent().remove();
         $(prevTripTimeEl).remove();
 
@@ -1154,12 +1217,14 @@
 
             console.log("0으로 시작")
 
-            totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index];
+            totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index];
             if(totalTripTimes[indexCheck] == 0) {
                 $("#totalTripTime" + indexCheck).text("");
             } else {
                 $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
             }
+            console.log("000000000")
+            console.log(totalTripTimes[indexCheck]);
 
             placeTripTimes['map' + indexCheck].splice(index, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
             placeTripPositions[indexCheck].splice(index, index + 1); // 삭제된 좌표 인덱스
@@ -1229,13 +1294,15 @@
 
             console.log("0이상의 값으로 시작")
 
-            totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index - 1];
-            totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index];
+            totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index - 1];
+            totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index];
             if(isNaN()) {
                 $("#totalTripTime" + indexCheck).text("");
             } else {
                 $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
             }
+            console.log("1111111111")
+            console.log(totalTripTimes[indexCheck]);
 
             placeTripTimes['map' + indexCheck].splice(index - 1, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
             placeTripPositions[indexCheck].splice(index, index); // 삭제된 좌표 인덱스
@@ -1258,7 +1325,7 @@
             placeData[indexCheck].splice(index, index);
 
             // 이후 남아있는 리스트박스들의 id 값을 업데이트
-            var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
+            var elTripTimes = document.querySelectorAll('[id="tripTime' + indexCheck + '"]');
             console.log(elTripTimes)
             console.log(elTripTimes.length)
             console.log("위에가 남아있는 리스트 크기임")
@@ -1328,17 +1395,18 @@
                     polyline.setMap(maps[indexCheck]);
 
                     var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
+                    console.log("33333333")
                     console.log(tripTimeEl);
                     if (hour == 0) {
                         tripTimeEl.textContent = minute;
                         placeData[indexCheck][index-1].tripTime = minute;
                         placeTripTimes['map' + indexCheck].push(minute);
-                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck]) + minute;
+                        totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck] || 0)) + minute;
                     } else {
                         tripTimeEl.textContent = (hour * 60) + minute;
                         placeData[indexCheck][index-1].tripTime = ((hour * 60) + minute);
                         placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
-                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck]) + (hour * 60) + minute;
+                        totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck] || 0)) + (hour * 60) + minute;
                     }
                     $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
                 },
@@ -1406,7 +1474,7 @@
 
 </script>
 
-/////////////////////// 아래는 템플릿용 스크립트입니다. ////////////////////////////
+<!-- 아래는 템플릿용 스크립트입니다. -->
 
 <!-- <script src="/vendor/jquery/dist/jquery.min.js"></script>  부트스트랩 에러로 인해 봉인 -->
 <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
