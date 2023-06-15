@@ -12,9 +12,10 @@ const fileInput = document.getElementById('uploadFile');
 //console.log(username,room);
 
 //cors 에러 해결
-const socket = io.connect("chat.motrip.co.kr", {
-  cors:{origin:"chat.motrip.co.kr"}//"http://192.168.0.28:3000" "http://localhost:3000"}
+const socket = io.connect("wss://chat.motrip.co.kr", {
+  cors:{origin:"https://chat.motrip.co.kr"}
 });
+//"http://192.168.0.28:3000" "http://localhost:3000"},"chat.motrip.co.kr"
 //join chatroom
 socket.emit('joinRoom',{username,room});
 
@@ -172,7 +173,7 @@ function outputPhoto(message){
     <img src="https://via.placeholder.com/50x50" style="border-radius: 40%;"/>
     </div>
     <p class="text">
-     <img src="/imagePath/photos/${chatRoom.tripPlanThumbnail}'"/><br/>
+     <img src="/imagePath/${message.photo}'"/><br/>
      &nbsp&nbsp
       ${message.text}
     </p>`;
@@ -183,7 +184,7 @@ function outputPhoto(message){
     <p class="chat2">${message.username}</p>
     <span>   ${message.time}</span><br/>
     <p class="text2">
-        <img src="/imagePath/photos/${chatRoom.tripPlanThumbnail}'"/>
+        <img src="/imagePath/${message.photo}'"/>
         &nbsp&nbsp
       ${message.text}`;
     document.querySelector('.chat-messages').appendChild(div);
