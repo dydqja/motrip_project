@@ -167,23 +167,6 @@
                 </button>
 
 
-                  <c:if test="${sessionScope.user.userId == reviewAuthor}">
-                    <button id="btnDelete" class="btn btn-sm btn-danger"
-                            value="${review.reviewNo}">삭제<input type="hidden"
-                                                                    value="${review.reviewNo}"
-                                                                    class="reviewNo"/>
-                    </button>
-                  </c:if>
-
-                  <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                    <button id="btnDelete" class="btn btn-sm btn-info"
-                            value="${review.reviewNo}">복구<input type="hidden"
-                                                                    value="${review.reviewNo}"
-                                                                    class="reviewNo"/>
-                    </button>
-                  </c:if>
-
-
                 <div class="price">
                   <label class="icon-hand-like">${review.reviewLikes}</label>
                   <label></label>

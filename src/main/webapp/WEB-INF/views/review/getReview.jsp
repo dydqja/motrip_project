@@ -35,6 +35,36 @@
         let pathInfo = []; // 좌표 저장 배열
     </script>
 
+
+    <style>
+        /* 지도 탭 스타일 */
+        .nav-tabs {
+            border-bottom: none;
+        }
+
+        .nav-tabs > li {
+            float: none;
+            display: inline-block;
+        }
+
+        .nav-tabs > li > a {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .nav-tabs > li.active > a,
+        .nav-tabs > li.active > a:hover,
+        .nav-tabs > li.active > a:focus {
+            background-color: #f8f8f8;
+            border-color: #ddd;
+        }
+
+        .tab-content {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+
     <style>
         .post {
             width: 100%; /* 원하는 너비 설정 */
@@ -196,7 +226,6 @@
                     <p class="byline">
                     <h4>
                         <span class="italic">${user.nickname}</span>
-                        <span class="dot">·</span>
                         <span>${review.reviewRegDate}</span>
                         <span class="dot">·</span>
                         <span id="likes" align="center" width="200">${review.reviewLikes}</span>
@@ -229,17 +258,29 @@
     <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
     <c:set var="i" value="${ i+1 }"/>
     <main class="white">
+        <!-- 지도와 탭을 담을 컨테이너 -->
         <div class="container">
+            <!--탭 컨테이너-->
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#qwe">Day-1</a></li>
+                        <li><a data-toggle="tab" href="#asd">Day-2</a></li>
+                    </ul>
 
-            <div display="flex;">
-                <span class="icon-map" style="font-size: 50px; "></span><div class="day">${i}일차 여행플랜 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
-            </div>
 
-            <div class="row" >
-                <div class="col-sm-12">
-                    <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
+                    <div class="tab-content">
+                        <div id="qwe" class="tab-pane fade in active">
+                            <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
+                        </div>
+                        <div id="asd" class="tab-pane fade">
+                            <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
+        </div>
 
             <div style="margin: 5%"></div>
 
@@ -550,7 +591,7 @@
                 success: function (data) {
                     console.log(data);
                     if (data == -1) {
-                        alert("이미 추천한 여행플랜입니다.");
+                        alert("이미 추천한 여행 후기 입니다.");
                     } else if (data == 0) {
                         alert("비회원은 추천을 할수없습니다.");
                     } else {
