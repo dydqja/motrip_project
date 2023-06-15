@@ -137,7 +137,7 @@
         <div class="modal-body" style="background-color: #F5F1E3; ">
 
           <form class="form-horizontal" id="updateUserForm" style="margin-right: 20%; margin-left: 20%;" >
-            <input type="hidden" name="userPhoto" id="userPhoto"/>
+            <input type="hidden" name="userPhoto" id="userPhoto" value="${getUser.userPhoto}"/>
 
             <c:if test="${getUser.pwd ne null}">
             <div class="form-group text-center" >
