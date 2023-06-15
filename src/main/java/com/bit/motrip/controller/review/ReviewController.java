@@ -121,6 +121,7 @@ public class ReviewController {
     }
 
 
+
     //2.단순 입력폼에서 정보 입력받음 Get
     @GetMapping(value = "addReviewView")
     public String addReviewView(@RequestParam("tripPlanNo") int tripPlanNo,Review review,
