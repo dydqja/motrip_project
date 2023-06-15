@@ -19,12 +19,13 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/bot/*")
 public class BotRestController {
 
     // NAVER Cloud SpeechToText
-    @CrossOrigin
+
     @RequestMapping("stt")
     public static StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
 
@@ -115,7 +116,6 @@ public class BotRestController {
     }
 
     // NAVER Cloud ChatBot
-    @CrossOrigin
     @RequestMapping("chat")
     public String chatBot(@RequestBody String text) throws Exception {
 
@@ -277,7 +277,6 @@ public class BotRestController {
     }
 
     // NAVER Cloud TextToSpeech
-    @CrossOrigin
     @RequestMapping("tts")
     public static ResponseEntity<byte[]> TextToSpeech(@RequestBody String tts) throws Exception {
 
@@ -374,7 +373,6 @@ public class BotRestController {
     }
 
     // 페이지 내비게이션 서비스
-    @CrossOrigin
     @RequestMapping("navi")
     public ResponseEntity<Map<String, String[]>> pageNavigation(@RequestBody(required = false) Map<String, String[]> data, HttpServletRequest request) throws Exception {
         if (data != null && data.containsKey("url")) {
