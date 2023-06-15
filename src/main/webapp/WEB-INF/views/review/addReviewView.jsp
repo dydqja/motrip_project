@@ -405,17 +405,17 @@ $(document).ready(function () {
 <body>
 
 <div class="post-single left">
-    <div class="page-img" style="background-image: url('http://placehold.it/1200x400');">
+    <div class="page-img" style="background-image: url('/images/tripImage.jpg'); height: 400px;">
         <div class="page-img-txt container">
             <div class="row">
-                <div class="col-sm-8">
-                    <div style="margin: 20px;"></div>
+                <div class="col-sm-12">
+                    <div style="margin: 10px;"></div>
                     <h1 class="main-head">후기 작성</h1>
                     <p class="sub-head">다녀온 여행을 기록하세요.</p>
-                    <form action="/review/addReview" method="post">
+
 
                         <div class="author-img">
-                            <img src="http://placehold.it/70x70" alt="">
+                            <img src="${user.userPhoto}" alt="">
                         </div>
                         <div class="tripPlanTitle">
                             <p>TripPlan No. ${tripPlanNo}</p>
@@ -424,12 +424,8 @@ $(document).ready(function () {
                             <span style="font-size: 24px;">'</span>
                             <span>&nbsp;&nbsp;에 대한 후기를 작성합니다. </span>
                         </div>
-                        <div style="margin: 20px;"></div>
-                        <div class="author">
-                            <c:set var="nickname" value="${user.nickname}"/>
-                            <span>By</span><a href="#"><span id="nickname">
-                            <c:out value="${nickname}"/></span></a>
-                        </div>
+                        <div style="margin: 3px;"></div>
+
 
                         <p class="byline">
                             <span id="currentDate">${date}</span>
@@ -439,8 +435,9 @@ $(document).ready(function () {
                             <a href="#">4 Comments</a>-->
                         </p>
 
-                        <div class="col-sm-4"></div>
-                    </form>
+                        <button class="btn-default icon-camera" id="reviewThumbnail"
+                                style="font-size: 10px; margin-left: 0.8%">썸네일
+                        </button>
                 </div>
             </div>
         </div>
@@ -459,6 +456,8 @@ $(document).ready(function () {
                     </h4>
                 </span>
                 </div>
+
+
 
                 <h5>
                     <label class="switch">
@@ -812,6 +811,61 @@ $(document).ready(function () {
                     console.log(error);
                 }
             });
+        });
+    });
+
+
+
+
+    // 여행플랜 썸네일
+    $("#reviewThumbnail").click(function () {
+        var tripPlanNo = "${tripPlan.tripPlanNo}";
+        Swal.fire({
+            title: "썸네일 업로드",
+            html: '<input type="file" id="fileInput">',
+            showCancelButton: true,
+            confirmButtonText: "저장",
+            cancelButtonText: "취소",
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    var file = document.getElementById("fileInput").files[0];
+                    if (file) {
+                        resolve(file);
+                    } else {
+                        Swal.showValidationMessage("파일을 선택해주세요.");
+                    }
+                });
+            }
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                var uploadedFile = result.value;
+                console.log("파일 업로드 성공:", uploadedFile);
+
+                // FormData 객체 생성
+                var formData = new FormData();
+                formData.append("file", uploadedFile);
+                formData.append("tripPlanNo",tripPlanNo);
+                console.log("tripPlanNo",tripPlanNo)
+
+                // 파일 업로드 AJAX 요청
+                $.ajax({
+                    url: "/review/fileUpload",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log("파일 업로드 성공:", response);
+                        var imagePath = response;
+                        tripPlanThumbnail = imagePath.replace(/^\/imagePath\//, "");
+                        console.log(reviewThumbnail);
+                        $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + reviewThumbnail + "')");
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("파일 업로드 실패:", error);
+                    }
+                });
+            }
         });
     });
 
