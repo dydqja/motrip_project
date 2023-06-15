@@ -36,6 +36,7 @@
         <script src="/assets/js/bootstrap-tabcollapse.js"></script>
         <script src="/assets/js/min/countnumbers.min.js"></script>
         <script src="/assets/js/main.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.3.8/js/jquery.tablesorter.js"></script>
     </head>
 
     <body>
@@ -54,16 +55,16 @@
                 <div class="container">
 
                     <!--테이블 리스트-->
-                    <table class="table table-striped">
+                    <table class="table table-striped tablesorter">
 
                         <thead class="table-header">
 
                             <tr>
-                                <th class="text-center">말머리</th>
-                                <th class="text-center">제목</th>
-                                <th class="text-center">글쓴이</th>
-                                <th class="text-center">작성일</th>
-                                <th class="text-center">조회수</th>
+                                <th class="text-center tablesorter-header">중요도</th>
+                                <th class="text-center tablesorter-header">제목</th>
+                                <th class="text-center tablesorter-header">작성자</th>
+                                <th class="text-center tablesorter-header">작성날짜</th>
+                                <th class="text-center tablesorter-header">조회수</th>
                             </tr>
 
                         </thead>
@@ -79,7 +80,7 @@
                                         <td class="text-center important-row">중요</td>
                                         <td class="important-row">
                                             <a href="#" onclick="viewDetail(${notice.noticeNo})">
-                                                <img src="/images/board/notice1.gif" style="max-width: 25px; max-height: 25px;">
+                                                <img src="/images/board/notice1.gif" style="max-width: 30px; max-height: 30px;">
                                                     ${notice.noticeTitle}
                                             </a>
                                         </td>
@@ -93,7 +94,7 @@
                                     <tr>
                                         <td class="text-center">일반</td>
                                         <td>
-                                            <a href="#" onclick="viewDetail(${notice.noticeNo})"><img src="/images/board/notice2.gif" style="max-width: 25px; max-height: 25px;">${notice.noticeTitle}</a>
+                                            <a href="#" onclick="viewDetail(${notice.noticeNo})"><img src="/images/board/notice2.gif" style="max-width: 30px; max-height: 30px;">${notice.noticeTitle}</a>
                                         </td>
                                         <td class="text-center">${notice.noticeAuthor == 'admin' ? '운영자' : ''}</td>
                                         <td class="text-center">${formattedDate}</td>
@@ -184,8 +185,7 @@
                                     </button>
                                 </c:if>
 
-                                <!-- 목록보기 버튼 -->
-                                <button id="getNoticeList" class="btn btn-primary" type="button">목록보기</button>
+                                <button id="getNoticeList" class="btn btn-primary" type="button">처음으로</button>
                             </div>
                         </div>
                     </div>
@@ -236,6 +236,9 @@
                 });
             })
 
+            $(document).ready(function() {
+                $('.tablesorter').tablesorter();
+            });
         </script>
 
         <%@ include file="/WEB-INF/views/layout/footer.jsp" %>

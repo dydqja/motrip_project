@@ -1,6 +1,5 @@
 .qna-content {
     font-size: 20px;
-    margin-left:160px;
     padding:0;
 }
 
@@ -36,13 +35,11 @@
 }
 
 .qnaAnswerContents{
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    margin-left:160px;
+    margin-top:-10px;
 }
 
 .qnaAnswer{
     font-size: 20px;
-    margin-left:160px;
 }
 
 .category {

@@ -129,6 +129,7 @@
     <div class="main-container text-center" >
 
         <form class="form-horizontal text-center" style="margin-left: 20%; margin-right: 20%;" >
+            <input type="hidden" name="userPhoto" id="userPhoto" value="" />
 
             <div class="pwd-div text-center">
                 <label class="label label-primary">닉네임<span style="color:red"> *</span></label>
@@ -182,7 +183,7 @@
                 </div>
 
                 <div id="drop_zone" name="userPhoto" style="margin-top: 10px;">사진 파일을 올려주세요</div>
-                <input type="hidden" name="userPhoto" id="userPhoto"  />
+
                 <!--
                 <img class="previewImage" id="imagePreview" src="" alt="Image preview">
                 -->
@@ -248,8 +249,15 @@
                 }, 1000);
                 return;
             }
+            swal({
+                title: "회원 가입이 완료되었습니다.",
+                text: "여행을 떠나보세요",
+                icon: "success",
+                button: "확인",
 
-            $("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+            }).then((value) => {
+                $("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+            });
         }
 
 
@@ -332,7 +340,7 @@
         let nicknameChecked = false; // 중복 확인을 거쳤는지 확인
         $(document).ready(function() {
 
-            $("#nickname").keyup(function () { // 아이디를 입력할때 마다 중복검사 실행
+            $("#nickname").keyup(function () { // 닉네임을 입력할때 마다 중복검사 실행
 
                 checkNickname($(this).val())
             })
@@ -358,7 +366,11 @@
                                 'font-size': '10px'
                             });
                             nicknameChecked = false; // id체크 true
-
+                        }else if(result == 1 && nickname.length > 8 ) {
+                            $("#checkNickname").text('닉네임은 8자를 넘을 수 없습니다.').css({
+                                'color': 'red',
+                                'font-size': '10px'
+                            });
                         } else {
                             $("#checkNickname").text('사용 가능한 닉네임입니다.').css({
                                 'color': 'green',
@@ -377,7 +389,6 @@
 
         // Drag & Drop 파일업로드
         $(document).ready(function() {
-
 
             var dropZone = $('#drop_zone');
             dropZone.on('dragover', function (e) {
@@ -405,12 +416,12 @@
                     }
                     selectFile(files)
                 } else {
-                    alert("ERROR");
+                    alert("다시 시도해주세요");
                 }
             });
         });
 
-        var fileRoute;
+
         function selectFile(fileObject) {
             var files = fileObject;
             var file = files[0];
@@ -427,13 +438,9 @@
                 data: formData,
                 type: 'POST',
                 success: function (result) {
-                    console.log(result);
+
+                    $('#drop_zone').html('<img src="'+result+'" style="width: 100%; height: auto; object-fit: cover;">');
                     $('#userPhoto').val(result);
-
-
-
-                    // document.querySelector('#imagePreview').src = result;
-
 
                 }
             });

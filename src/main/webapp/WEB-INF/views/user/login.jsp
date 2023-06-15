@@ -28,10 +28,13 @@
     <div class="form-box">
         <div class="form-head" style="padding: 10px 15px; ">
             <div class="mold-logo" style="margin-top: 10px; margin-bottom: 10px;">
-<%--                <div class="mold">Mold</div>--%>
-<%--                <div class="logo"></div>--%>
-                <img src="/images/motrip-logo.gif" alt="">
-<%--                <div class="logo-txt">MoTrip</div>--%>
+
+                <a href="/">
+                    <img src="/images/motrip-logo.gif" alt="">
+                </a>
+
+
+
             </div>
         </div>
         <div class="form-body">
@@ -53,13 +56,13 @@
                 <div style="display: flex; justify-content: space-between;">
                     <div id="naverIdLogin"></div>
                     <div style="display: flex;">
-                        <button id="login" type="submit" class="btn btn-primary hvr-grow">로그인</button>
+                        <button id="login" type="submit" class="btn btn-primary hvr-grow" style="margin-right: 10px;">로그인</button>
                         <button id="addUser" type="button" class="btn btn-default hvr-grow">회원가입</button>
                     </div>
 
                 </div>
                 <div style="text-align: right;">
-                    <a href="#" data-toggle="modal" data-target="#findIdPwdModal">아이디&비밀번호 찾기</a>
+                    <a href="#" data-toggle="modal" data-target="#findIdPwdModal">아이디 & 비밀번호 찾기</a>
                 </div>
 
                 <input type="hidden" id="idCheck" value="${requestScope.idCheck}"/>

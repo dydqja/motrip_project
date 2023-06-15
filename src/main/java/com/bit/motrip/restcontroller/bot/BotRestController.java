@@ -376,19 +376,16 @@ public class BotRestController {
     // 페이지 내비게이션 서비스
     @CrossOrigin
     @RequestMapping("navi")
-    public ResponseEntity<String[]> pageNavigation(@RequestBody(required = false) String[] text, HttpServletRequest request) throws Exception {
+    public ResponseEntity<Map<String, String[]>> pageNavigation(@RequestBody(required = false) Map<String, String[]> data, HttpServletRequest request) throws Exception {
+        if (data != null && data.containsKey("url")) {
+            String[] urls = data.get("url");
+            if (urls != null && urls.length > 0) {
+                String[] responseData = new String[]{urls[0]};
 
-        if (text != null && text.length > 0) {
-
-            // JSON 배열 생성
-            String[] responseData = new String[]{text[0]};
-
-            // JSON 배열을 클라이언트에게 반환
-            return ResponseEntity.ok().body(responseData);
-
-        } else {
-
-            return ResponseEntity.badRequest().build();
+                return ResponseEntity.ok().body(Collections.singletonMap("url", responseData));
+            }
         }
+
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -80,16 +80,20 @@ public class TripPlanController {
 
     @GetMapping("tripPlanList")
     public String tripPlanList(@RequestParam(defaultValue = "1") int currentPage,
-                               @RequestParam(value = "type", defaultValue = "all") String type, Model model, HttpSession session) throws Exception{
+                               @RequestParam(value = "type", defaultValue = "all") String type,
+                               @RequestParam(value = "planCondition", defaultValue = "newDate") String planCondition,
+                               @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+                               Model model, HttpSession session) throws Exception{
         System.out.println("GET : tripPlanList()");
 
-//        용범 추가부분 시작 ########################################
-
-
-//        용범 추가부분 끝 ##########################################
-
         Search search = new Search();
+
+        if(search.getCurrentPage() == 0){
+            search.setCurrentPage(1);
+        }
         search.setCurrentPage(currentPage);
+        search.setSearchKeyword(searchKeyword);
+        search.setPlanCondition(planCondition);
 
         int pageSize = 5;
         search.setPageSize(pageSize);
@@ -108,8 +112,6 @@ public class TripPlanController {
 
             parameters.put("blacklist", getBlacklistAll); // ==> 추가한부분(용범)
         }
-
-
 
         if (type.equals("my")) {
             User user = (User) session.getAttribute("user");

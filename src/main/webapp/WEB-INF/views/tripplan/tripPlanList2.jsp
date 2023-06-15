@@ -34,6 +34,15 @@
     <script src="/assets/js/min/countnumbers.min.js"></script>
     <script src="/assets/js/main.js"></script>
 
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var radioButtonId = '${search.planCondition}';
+            // 해당 라디오 버튼을 체크 상태로 설정
+            document.getElementById(radioButtonId).checked = true;
+        });
+
+    </script>
 
     <style>
         .center-div {
@@ -48,6 +57,7 @@
         }
 
     </style>
+
 
 </head>
 
@@ -78,7 +88,7 @@
                 </div>
                 <label><br></label>
                 <div class="border-box">
-                    <div class="box-title">Search Condition</div>
+                    <div class="box-title">정렬 조건</div>
                     <div class="center-div" style="width: 100%; height: 100%;">
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="newDate">
@@ -103,11 +113,11 @@
 
                 <div class="sidebar">
                     <div class="border-box">
-                        <div class="box-title">Trip Plan Search</div>
+                        <div class="box-title">여행플랜 검색</div>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Title">
+                            <input type="text" name="searchKeyword" id="searchKeyword" value="" class="form-control" placeholder="여행플랜 타이틀">
                             <div class="input-group-btn">
-                                <button class="btn btn-primary">Search</button>
+                                <button class="btn btn-primary" id="searchButton">검색</button>
                             </div>
                         </div>
                     </div>
@@ -306,6 +316,21 @@
 <script src="/assets/js/min/priceslider.min.js"></script>
 
 <script type="text/javascript">
+
+    // 여행플랜 검색
+    document.getElementById('searchButton').addEventListener('click', function() {
+        var searchKeyword = document.getElementById('searchKeyword').value;
+        var url = '/tripPlan/tripPlanList?searchKeyword=' + encodeURIComponent(searchKeyword);
+        window.location.href = url;
+    });
+
+    document.getElementById('searchKeyword').addEventListener('keypress', function(event) {
+        if (event.keyCode === 13) { // 엔터 키
+            var searchKeyword = document.getElementById('searchKeyword').value;
+            var url = '/tripPlan/tripPlanList?searchKeyword=' + encodeURIComponent(searchKeyword);
+            window.location.href = url;
+        }
+    });
 
     $(document).ready(function () {
 
