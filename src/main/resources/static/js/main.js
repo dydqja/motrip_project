@@ -12,8 +12,8 @@ const fileInput = document.getElementById('uploadFile');
 //console.log(username,room);
 
 //cors 에러 해결
-const socket = io.connect("https://chat.motrip.co.kr", {
-  cors:{origin:"https://chat.motrip.co.kr"}//"http://192.168.0.28:3000" "http://localhost:3000"}
+const socket = io.connect("chat.motrip.co.kr", {
+  cors:{origin:"chat.motrip.co.kr"}//"http://192.168.0.28:3000" "http://localhost:3000"}
 });
 //join chatroom
 socket.emit('joinRoom',{username,room});
@@ -164,8 +164,6 @@ function outputPhoto(message){
 
   if(username==message.username){
     div.classList.add('message');
-
-
     div.innerHTML = `
     
     <div class="userbox" align="right">
@@ -179,7 +177,6 @@ function outputPhoto(message){
       ${message.text}
     </p>`;
     document.querySelector('.chat-messages').appendChild(div);
-
   }else{
     div.classList.add('message2');
     div.innerHTML = `<img src="https://via.placeholder.com/50x50" style="border-radius: 40%;"/>
