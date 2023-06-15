@@ -12,8 +12,8 @@ const fileInput = document.getElementById('uploadFile');
 //console.log(username,room);
 
 //cors 에러 해결
-const socket = io.connect("chat.motrip.co.kr", {
-  cors:{origin:"chat.motrip.co.kr"}//"http://192.168.0.28:3000" "http://localhost:3000"}
+const socket = io.connect("https://chat.motrip.co.kr", {
+  cors:{origin:"https://chat.motrip.co.kr"}//"http://192.168.0.28:3000" "http://localhost:3000"}
 });
 //join chatroom
 socket.emit('joinRoom',{username,room});
