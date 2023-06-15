@@ -80,7 +80,7 @@
                                         <td class="text-center important-row">중요</td>
                                         <td class="important-row">
                                             <a href="#" onclick="viewDetail(${notice.noticeNo})">
-                                                <img src="/images/board/notice1.gif" style="max-width: 25px; max-height: 25px;">
+                                                <img src="/images/board/notice1.gif" style="max-width: 30px; max-height: 30px;">
                                                     ${notice.noticeTitle}
                                             </a>
                                         </td>
@@ -94,7 +94,7 @@
                                     <tr>
                                         <td class="text-center">일반</td>
                                         <td>
-                                            <a href="#" onclick="viewDetail(${notice.noticeNo})"><img src="/images/board/notice2.gif" style="max-width: 25px; max-height: 25px;">${notice.noticeTitle}</a>
+                                            <a href="#" onclick="viewDetail(${notice.noticeNo})"><img src="/images/board/notice2.gif" style="max-width: 30px; max-height: 30px;">${notice.noticeTitle}</a>
                                         </td>
                                         <td class="text-center">${notice.noticeAuthor == 'admin' ? '운영자' : ''}</td>
                                         <td class="text-center">${formattedDate}</td>
