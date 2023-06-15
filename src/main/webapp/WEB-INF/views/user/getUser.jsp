@@ -93,22 +93,39 @@
 
         <div class="profile-image">
             <%
-                if(getUser.getUserPhoto() != null && !getUser.getUserPhoto().isEmpty()) {
+                String userPhoto = getUser.getUserPhoto();
+                boolean isUserPhotoPublic = getUser.isUserPhotoPublic();
+                String gender = getUser.getGender();
+
+                if(userPhoto != null && !userPhoto.isEmpty()){
+                    if(isUserPhotoPublic) {
             %>
-            <img id="profileUserPhoto" src="<%=getUser.getUserPhoto()%>" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <img id="profileUserPhoto" src="<%=userPhoto%>" style="width: 200px; height: 200px; object-fit: cover;" alt="">
             <%
             } else {
-                if(getUser.getGender().equals("M")) {
+                if(gender.equals("M")) {
             %>
             <img id="manBasicProfile" src="/images/user/manBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
             <%
-            } else if(getUser.getGender().equals("F")) {
+            } else if(gender.equals("F")) {
+            %>
+            <img id="womanBasicProfile" src="/images/user/womanBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <%
+                    }
+                }
+            } else {
+                if(gender.equals("M")) {
+            %>
+            <img id="manBasicProfile" src="/images/user/manBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
+            <%
+            } else if(gender.equals("F")) {
             %>
             <img id="womanBasicProfile" src="/images/user/womanBasicProfile.png" style="width: 200px; height: 200px; object-fit: cover;" alt="">
             <%
                     }
                 }
             %>
+
 
         </div>
 
