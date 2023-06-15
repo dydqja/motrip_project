@@ -143,17 +143,17 @@
                 <div>
                   <h6 class="right">${review.reviewRegDate}</h6>
                   <h5 class="item-title">${review.reviewTitle} </h5>
-                  <div class="sub-title">
+                  <div class="sub-title"  style="display: none;">
                    태그는 여기로
                   </div>
                 </div>
 
                 <div class="right">
                   <h4>${review.reviewAuthor}</h4>
-                  <div class="right"><span class="icon-date"></span>
+                  <div class="right"  style="display: none;"><span class="icon-date"></span>
                    몇 박 몇일은 여기에
                   </div>
-                  <div>
+                  <div style="display: none;">
                  버튼 넣고 싶으면 여기에
                   </div>
                 </div>

@@ -5,7 +5,6 @@ import com.bit.motrip.dao.review.ReviewDao;
 import com.bit.motrip.dao.tripplan.DailyPlanDao;
 import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
-import com.bit.motrip.dao.chatroom.ChatMemberDao;
 import com.bit.motrip.domain.*;
 import com.bit.motrip.service.review.ReviewService;
 import com.bit.motrip.service.user.UserService;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,13 +80,16 @@ public class ReviewServiceImpl implements ReviewService {
                 updatedTripPlanList.add(tripPlan);
             }
             parameters.put("list", updatedTripPlanList);
-           // System.out.println("임쁠 parameters>>>>>>"+parameters);
+            // System.out.println("임쁠 parameters>>>>>>"+parameters);
         }
 
         System.out.println("===================여기는 임쁠 지나가요=================");
         parameters.put("totalCount", totalCount);
         return parameters;
     }
+
+
+
     public TripPlan selectTripPlan(@RequestParam("tripPlanNo") int tripPlanNo) throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
         tripPlan.setTripPlanViews(tripPlan.getTripPlanViews() + 1);
@@ -142,6 +145,9 @@ public class ReviewServiceImpl implements ReviewService {
                 updatedReviewList.add(review);
             }
 
+
+
+
             int totalCount = reviewDao.selectReviewTotalCount(search);
             System.out.println("totalCount : " + totalCount);
 
@@ -163,6 +169,8 @@ public class ReviewServiceImpl implements ReviewService {
     public Review getReview(int reviewNo) throws Exception {
         Review review = reviewDao.getReview(reviewNo);
         review.setViewCount(review.getViewCount() + 1);
+
+
         TripPlan tripPlan = tripPlanDao.selectTripPlan(review.getTripPlanNo());
         System.out.println("tripPlan 임쁠>>>>>"+tripPlan);
 

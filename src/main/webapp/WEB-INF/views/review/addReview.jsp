@@ -36,6 +36,36 @@
     </script>
 
     <style>
+        /* 지도 탭 스타일 */
+        .nav-tabs {
+            border-bottom: none;
+        }
+
+        .nav-tabs > li {
+            float: none;
+            display: inline-block;
+        }
+
+        .nav-tabs > li > a {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .nav-tabs > li.active > a,
+        .nav-tabs > li.active > a:hover,
+        .nav-tabs > li.active > a:focus {
+            background-color: #f8f8f8;
+            border-color: #ddd;
+        }
+
+        .tab-content {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+
+
+    <style>
         .post {
             width: 100%; /* 원하는 너비 설정 */
             height: 620px; /* 원하는 높이 설정 */
@@ -228,17 +258,34 @@
     <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
     <c:set var="i" value="${ i+1 }"/>
     <main class="white">
+        <div display="flex;">
+            <span class="icon-map" style="font-size: 40px; "></span><div class="day">${i}일차에 대한 후기 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
+        </div>
+        <div style="margin: 5%"></div>
+
+        <!-- 지도와 탭을 담을 컨테이너 -->
         <div class="container">
+            <!--탭 컨테이너-->
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#qwe">Day-1</a></li>
+                        <li><a data-toggle="tab" href="#asd">Day-2</a></li>
+                    </ul>
 
-            <div display="flex;">
-                <span class="icon-map" style="font-size: 50px; "></span><div class="day">${i}일차 여행플랜 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
-            </div>
 
-            <div class="row" >
-                <div class="col-sm-12">
-                    <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
+                    <div class="tab-content">
+                        <div id="qwe" class="tab-pane fade in active">
+                            <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
+                        </div>
+                        <div id="asd" class="tab-pane fade">
+                            <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
+        </div>
 
             <div style="margin: 5%"></div>
 
@@ -333,59 +380,7 @@
         </div>
     </main>
 </div>
-
-<footer id="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-7 col-md-3">
-                <h3>Mold Discover</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quia, architecto? A,
-                    reiciendis eveniet! Esse est eaque adipisci natus rerum laudantium accusamus magni.</p>
-            </div>
-            <div class="col-sm-5 col-md-2">
-                <h3>Quick Link</h3>
-                <ul>
-                    <li>Holiday Package</li>
-                    <li>Summer Adventure</li>
-                    <li>Bus and Trasnportation</li>
-                    <li>Ticket and Hotel Booking</li>
-                    <li>Trek and Hikings</li>
-                </ul>
-            </div>
-            <div class="col-sm-7 col-md-4">
-                <h3>Newsletter Signup</h3>
-                <p>Subscribe to our weekly newsletter to get news and update</p>
-                <br>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Your Email">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-5 col-md-2">
-                <h3>Contact Info</h3>
-                <ul>
-                    <li>Mold Discover</li>
-                    <li>info@moldthemes.com</li>
-                </ul>
-                <div class="clearfix">
-                    <div class="social-icon-list">
-                        <ul>
-                            <li>
-                                <a href="https://twitter.com/moldthemes" class="icon-twitter"></a>
-                            </li>
-                            <li>
-                                <a href="mailto:info@moldthemes.com" class="icon-mail"></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="copy"><span>&copy;</span> Copyright Mold Discover, 2017</div>
-</footer>
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
 <!-- 아래는 설정용 스크립트입니다. -->
 

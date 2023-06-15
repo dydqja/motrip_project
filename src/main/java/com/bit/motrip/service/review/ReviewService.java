@@ -11,7 +11,7 @@ public interface ReviewService {
 
 
     // 완료된 여행플랜 목록 가져오기
-    public Map<String, Object> getCompletedTripPlanList(Map<String, Object> parameters) throws Exception ;
+    public Map<String, Object> getCompletedTripPlanList(Map<String, Object> parameters) throws Exception;
     //후기 목록 조회
     public Map<String, Object> selectReviewList(Map<String, Object> parameters) throws Exception;
 
