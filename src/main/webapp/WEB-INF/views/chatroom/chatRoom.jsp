@@ -565,9 +565,10 @@
                                 // li.append('<img src="/imagePath/masetHat.png"/>'); // 방장
                             }
                             if (author === username && author !== member.userId) {
-                                var kickButton = $("<button>")
-                                    .addClass("kick btn")
-                                    .attr("data-userid", member.userId).attr("style","border-radius: 50%;")
+                                var kickButton = $("<span>")
+                                    .addClass("kick")
+                                    .attr("data-userid", member.userId)
+                                    .attr("style", "color: red; border-radius: 50%; font-size: 50%;")
                                     .text("강제 퇴장");
                                 li.append(kickButton);
                             }
