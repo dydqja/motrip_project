@@ -21,6 +21,16 @@
 
     <link rel="stylesheet" href="/css/style.css">
     <style>
+        .chat-main {
+            position: relative;
+        }
+
+        #image-preview {
+            position: absolute;
+            bottom: 0;
+            width: 300px;
+            height: 300px;
+        }
         #uploadFile {
             display: none; /* 실제 파일 업로드 필드를 숨김 */
         }
@@ -555,11 +565,11 @@
                                 // li.append('<img src="/imagePath/masetHat.png"/>'); // 방장
                             }
                             if (author === username && author !== member.userId) {
-                                var kickButton = $("<button>")
+                                var kickButton = $("<span>")
                                     .addClass("kick")
                                     .attr("data-userid", member.userId)
+                                    .attr("style", "color: red; font-size: 50%;")
                                     .text("강제 퇴장");
-
                                 li.append(kickButton);
                             }
                             chatUsers.append(li);
@@ -600,7 +610,26 @@
         function fncDeleteChatroom(){
             $("#chat-room").attr("method","get").attr("action","/chatRoom/deleteChatRoom?userId="+username+"&chatRoomNo="+chatRoomNo).submit();
         }
-        $(function() {$("#delete").on("click", function() {fncDeleteChatroom();});});
+        $(function() {$("#delete").on("click", function() {
+            swal.fire({
+                title: "채팅방 삭제",
+                text: "채팅방을 삭제하시겠습니까?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "확인",
+                cancelButtonText: "취소"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 확인을 선택한 경우 실행할 코드
+                    fncDeleteChatroom()
+                } else {
+                    // 취소를 선택한 경우 실행을 취소할 코드
+                    swal.fire("실행을 취소합니다.");
+                }
+            });
+            console.log("취소 이후 실행되는 코드입니다.");
+            });
+        });
 
         $(function() {
             //updateStatus
@@ -697,10 +726,10 @@
                 <div></div>
                 <div class="users" style="text-align: left; border-bottom: #00b3ee"><h3>현재 참여 목록</h3></div>
                 <ul id="users"></ul>
-                <div class="dbUsers" style="text-align: left"><h3>채팅방 멤버</h3></div>
+                <div class="dbUsers" style="text-align: left;color: #5bc0de"><h3>채팅방 멤버</h3></div>
                 <ul id="chatUsers"></ul>
             </div>
-            <div class="chat-messages"></div>
+            <div class="chat-messages">  <div id="image-preview"style="width:30%;height: 30%"></div></div>
             <div class="chat-trip" style="position: relative;">
                 <div id="call">
                     <div id="myStream" align="center">
@@ -797,9 +826,8 @@
 
 <%--    <div id="image-preview"style="width:250px"></div> <!-- Container for image preview -->--%>
     <div class="chat-form-container">
-
         <form id="chat-form" enctype="multipart/form-data">
-            <div id="image-preview"style="width:250px;height: 45px"></div>
+
             <input type="file" id="uploadFile" name="uploadFile">
             <label for="uploadFile" class="file-label">+</label>
             <input

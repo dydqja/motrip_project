@@ -121,6 +121,12 @@
 		<if test="gender != null">
 			AND gender = #{gender}
 		</if>
+<!--		<if test="minAge != null">-->
+<!--			AND minAge &gt;= #{minAge}-->
+<!--		</if>-->
+<!--		<if test="maxAge != null">-->
+<!--			AND maxAge &lt;= #{maxAge}-->
+<!--		</if>-->
 <!--		<if test="searchTravelStartDate != null">-->
 <!--			AND DATE_FORMAT(travel_start_date, 'yyyy-mm-dd') = #{searchTravelStartDate}-->
 <!--		</if>-->
@@ -142,6 +148,12 @@
 		<if test="gender != null">
 			AND gender = #{gender}
 		</if>
+<!--		<if test="minAge != null">-->
+<!--			AND minAge &gt;= #{minAge}-->
+<!--		</if>-->
+<!--		<if test="maxAge != null">-->
+<!--			AND maxAge &lt;= #{maxAge}-->
+<!--		</if>-->
 <!--		<if test="searchTravelStartDate != null">-->
 <!--			AND DATE_FORMAT(travel_start_date, 'yyyy-mm-dd') = #{searchTravelStartDate}-->
 <!--		</if>-->

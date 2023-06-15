@@ -66,7 +66,7 @@
                 <label>START DATE</label>
                 <div class="input-group">
                     <div class="input-group-addon icon-date"></div>
-                    <input type="text" name="travelStartDate" class="form-control" id="datepicker" required >
+                    <input type="text" name="travelStartDate" class="form-control" id="datepicker" placeholder="날짜입력하세요" required >
                 </div>
             </div>
 <%--            <div class="form-group">--%>

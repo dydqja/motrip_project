@@ -492,10 +492,8 @@
                     }else{Swal.fire({title:"채팅방 입장 실패",
                         text: "채팅방 멤버가 아닙니다!",
                         icon: 'error',
-                        showCancelButton: true,  // 취소 버튼 활성화
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        cancelButtonText: '취소'});}
+                        confirmButtonColor: '#75ff66',
+                        });}
                 },
                 error: function(xhr, status, error) {
                     console.log('AJAX Error:', error);
