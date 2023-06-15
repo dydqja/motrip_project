@@ -14,6 +14,7 @@
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
     <link rel="stylesheet" href="/css/tripplan/tripplan.css">
+    <%--    <link rel="stylesheet" href="/css/tripplan/overlay.css">--%>
     <!-- jqurey -->
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
@@ -32,9 +33,6 @@
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-    <!-- sortable -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
 
     <!-- 설정용 변수 -->
@@ -86,143 +84,61 @@
             cursor: pointer;
         }
 
-        .wrap {
-            position: absolute;
-            left: 0;
-            bottom: 40px;
-            width: 288px;
-            height: 132px;
-            margin-left: -144px;
-            text-align: left;
-            overflow: hidden;
-            font-size: 12px;
-            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
-            line-height: 1.5;
-        }
-
-        .wrap * {
-            padding: 0;
+        .map_wrap * {
             margin: 0;
+            padding: 0;
+            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+            font-size: 12px;
         }
 
-        .wrap .info {
-            width: 286px;
-            height: 120px;
-            border-radius: 5px;
-            border-bottom: 2px solid #ccc;
-            border-right: 1px solid #ccc;
-            overflow: hidden;
-            background: #fff;
+        .map_wrap a, .map_wrap a:hover, .map_wrap a:active {
+            color: #000;
+            text-decoration: none;
         }
 
-        .wrap .info:nth-child(1) {
-            border: 0;
-            box-shadow: 0px 1px 2px #888;
-        }
-
-        .info .title {
-            padding: 5px 0 0 10px;
-            height: 30px;
-            background: #eee;
-            border-bottom: 1px solid #ddd;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .info .close {
+        [id^="menu_wrap"] {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #888;
-            width: 17px;
-            height: 17px;
-            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
-        }
-
-        .info .close:hover {
-            cursor: pointer;
-        }
-
-        .info .body {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .info .desc {
-            position: relative;
-            margin: 13px 0 0 90px;
-            height: 75px;
-        }
-
-        .desc .ellipsis {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .desc .category {
-            font-size: 11px;
-            color: #888;
-            margin-top: -2px;
-        }
-
-        .info .img {
-            position: absolute;
-            top: 6px;
-            left: 5px;
-            width: 73px;
-            height: 71px;
-            border: 1px solid #ddd;
-            color: #888;
-            overflow: hidden;
-        }
-
-        .info:after {
-            content: '';
-            position: absolute;
-            margin-left: -12px;
-            left: 50%;
+            top: 0;
+            left: 0;
             bottom: 0;
-            width: 22px;
-            height: 12px;
-            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+            width: 250px;
+            margin: 10px 0 30px 10px;
+            padding: 5px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.7);
+            z-index: 1;
+            font-size: 12px;
+            border-radius: 10px;
         }
 
-        .info .link {
-            color: #5085BB;
+        .bg_white {
+            background: rgba(255, 255, 255, 0.5); /* 투명도 조절 */
         }
 
-        .custom-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+        [id^="menu_wrap"] hr {
+            display: block;
+            height: 1px;
+            border: 0;
+            border-top: 2px solid #5F5F5F;
+            margin: 3px 0;
         }
 
-        .plan-contents {
-            text-align: left;
-            margin-right: 20px;
+        [id^="menu_wrap"] .option {
+            text-align: center;
         }
 
-        .place-info {
-            text-align: left;
+        [id^="menu_wrap"] .option p {
+            margin: 10px 0;
         }
 
-
-        .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
-        .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
-        [id^="menu_wrap"] {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
-        .bg_white {background:#fff;}
-        [id^="menu_wrap"] hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
-        [id^="menu_wrap"] .option{text-align: center;}
-        [id^="menu_wrap"] .option p {margin:10px 0;}
-        [id^="menu_wrap"] .option button {margin-left:5px;}
+        [id^="menu_wrap"] .option button {
+            margin-left: 5px;
+        }
 
     </style>
 
 </head>
-
-    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
 <body>
 
@@ -231,21 +147,25 @@
         <div class="page-img-txt container">
             <div class="row">
                 <div style="margin-top: 5%"></div>
-                <div class="col-sm-8">
+                <div class="col-sm-12">
                     <div class="author">
                         <div class="author-img">
-                            <img src="/images/tripImage.jpg" alt="">
+                            <img src="${user.userPhoto}" alt="">
                         </div>
                         <h4><span class="italic">${user.nickname}</span></h4>
                         <div style="display: flex">
-                            <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목" style="color: black; width: 400px; height: 30px; opacity: 0.3;"></h4></span>
+                            <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목을 입력해주세요"
+                                             style="color: black; width: 600px; height: 30px; opacity: 0.8;"></h4></span>
                             <h5>
                                 공개<input type="checkbox" id="chbispublic" class="round" value="true"/>&nbsp;&nbsp;
-                                비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true" disabled/>
+                                비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true"
+                                          disabled/>
                             </h5>
                         </div>
                     </div>
-                    <button id="tripPlanThumbnail" style="font-size: 10px;">여행플랜 썸네일</button>
+                    <button class="btn-default icon-camera" id="tripPlanThumbnail"
+                            style="font-size: 5px; margin-left: 0.8%">썸네일
+                    </button>
                 </div>
             </div>
         </div>
@@ -253,20 +173,25 @@
 
     <main class="white">
         <div class="container">
-            <div >
+            <div>
                 <div style="text-align: right;">
-                    <div class="btn btn-sm btn-success btn-default">여행일수</div>
-                    <button class="btn btn-sm btn-success icon-triangle-up" id="btnAddTripDay"
-                            style="background-color: #558B2F;"></button>
-                    <button class="btn btn-sm btn-success icon-triangle-down" id="btnRemoveTripDay"
-                            style="background-color: #558B2F;"></button>
+                    <div class="btn btn-sm btn-success icon-date">여행일수</div>
+                    <div>
+                        <button class="btn btn-sm btn-success icon-triangle-up" id="btnAddTripDay"
+                                style="background-color: #558B2F;"></button>
+                        <button class="btn btn-sm btn-success icon-triangle-down" id="btnRemoveTripDay"
+                                style="background-color: #558B2F;"></button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="container" id="container0">
             <div display="flex;">
-                <div class="day"> 1일차 여행플랜 <button class="icon-locate-map right" id="reset0" onclick="reset(event, 0)"></button></div>
+                <div class="day"> 1일차 여행플랜
+                    <button class="icon-locate-map right" id="reset0" style="font-size: 20px; border-radius: 15px;"
+                            onclick="reset(event, 0)"></button>
+                </div>
             </div>
 
 
@@ -276,13 +201,14 @@
                     <div id="menu_wrap0" class="bg_white" style="height:90%; overflow:auto; margin: 0%;">
                         <div class="input-group">
                             <input type="text" class="form-control" id="placeName0"
-                                   onkeypress="handleKeyPress(event, 0)" placeholder="명소 검색" style="width: 60%; font-size: 11px">
+                                   onkeypress="handleKeyPress(event, 0)" placeholder="명소 검색"
+                                   style="width: 60%; font-size: 11px">
                             <button class="btn btn-primary" id="placeSearch0" style="width: 30%; font-size: 9px;"
-                                    onclick="handleKeyPress(event, 0)">Search
+                                    onclick="handleKeyPress(event, 0)">검색
                             </button>
                         </div>
                         <ul id="placesList0"></ul>
-                        <div id="pagination" ></div>
+                        <div id="pagination"></div>
                     </div>
                 </div>
             </div>
@@ -297,13 +223,14 @@
                 <div class="col-sm-3">
                     <div class="sidebar">
 
-                        <div class="border-box" style="height: 400px; overflow: auto;" >
-                            <div class="box-title " >명소리스트
-                                <div id="totalTripTime0"></div>
+                        <div class="border-box list0"
+                             style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
+                            <div class="box-title ">명소리스트
+                                <div class="tag-link"
+                                     id="totalTripTime0"
+                                     style="text-align: right; display: inline-block; border: none;"></div>
                             </div>
-                            <ul class="list0" style="text-align: center;">
 
-                            </ul>
                         </div>
 
                     </div>
@@ -339,7 +266,7 @@
             ],
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
             fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
-            height: 370,
+            height: 550,
             disableResizeEditor: true
         });
     });
@@ -359,7 +286,7 @@
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
             fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
             focus: true,
-            height: 370,
+            height: 550,
             disableResizeEditor: true
         });
     }
@@ -503,7 +430,7 @@
                             if (!pathArray[indexCheck]) {
                                 pathArray[indexCheck] = [];
                             }
-                            if(!placeData[indexCheck]) {
+                            if (!placeData[indexCheck]) {
                                 placeData[indexCheck] = [];
                             }
 
@@ -532,16 +459,16 @@
                                 data: {
                                     query: title
                                 },
-                                beforeSend: function(xhr) {
+                                beforeSend: function (xhr) {
                                     xhr.setRequestHeader('Authorization', 'KakaoAK ' + '6e3c7aaa8069d3ffebbb72c6865fb977');
                                 },
-                                success: function(response) {
+                                success: function (response) {
                                     if (response.documents.length > 0) {
                                         var placeImage = response.documents[0].thumbnail_url;
                                         console.log(placeImage);
 
                                         // 이미지를 받아온 후에 다음 작업을 진행
-                                        setTimeout(function() {
+                                        setTimeout(function () {
                                             var place = {
                                                 placeTags: doc.querySelector('.info h5').textContent.trim(),
                                                 placeAddress: doc.querySelector('.info span:not(.tel)').textContent.trim(),
@@ -562,7 +489,7 @@
                                         placeImage = '';
                                     }
                                 },
-                                error: function(xhr, status, error) {
+                                error: function (xhr, status, error) {
                                     console.error(error); // 에러 발생시에도 이미지를 제외하고 저장해야함
                                     var place = {
                                         placeTags: doc.querySelector('.info h5').textContent.trim(),
@@ -588,16 +515,23 @@
                             }
 
                             // 동적 생성
-                            var newListBox = '<div class="col-12 column">' +
-                                '<div class="card text-white mb-3" style="background-color: rgb(80, 250, 120); width: auto; height: auto; text-align: center;">' +
-                                '<div class="card-header" name="placeCategory" id="placeCategory' + indexCheck + '" data-index="' + varStatusIndex + '"></div>' +
-                                '<label class="deleteBox" name="deleteBox" id="deleteBox' + indexCheck + '" data-index="' + varStatusIndex + '"> [삭제]</label>' +
-                                '<div class="card-body">' +
-                                '<h4 class="card-title" name="placeTitle" id="placeTitle' + indexCheck + '" data-index=' + varStatusIndex + '></h4>' + title +
+                            var newListBox = '<div class="col-12 column" style="text-align: center; border: none;">' +
+                                '<div class="card text-white mb-3" style="width: auto; height: auto; font-size: 9px;">' +
+                                '<div class="card-header" name="placeCategory" id="placeCategory' + indexCheck + '" data-index="' + varStatusIndex + '">' +
+                                '<label class="deleteBox" name="deleteBox" id="deleteBox' + indexCheck + '" data-index="' + varStatusIndex + '">[삭제]</label>' +
                                 '</div>' +
-                                '<div class="card text-white mb-3" name="tripTime" id="tripTime' + indexCheck + '" data-index=' + varStatusIndex + ' style="background-color: white; width: auto; height: auto; text-align: center;">tripTime</div>' +
+                                '<div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">' +
+                                '<h5 class="card-title" name="placeTitle" id="placeTitle' + indexCheck + '" data-index="' + varStatusIndex + '">' +
+                                '<div style="color: black; width: 100%;">' +
+                                '<span class="icon-locate" style="color: #467cf1;" value="' + 0 + '"></span>&nbsp;&nbsp;#' + title +
                                 '</div>' +
-                                '<div></div>' +
+                                '</h5>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" id="tripTime' + indexCheck + '" data-index="' + varStatusIndex + '"' +
+                                'style="background-color: rgba(188,222,167,0.39); color: black; width: auto; height: auto; ">' +
+                                '<div style="color: black; display: inline-block;"></div>' +
+                                '</div>' +
                                 '</div>';
 
                             var newPlaceElement = document.createElement('div');
@@ -652,7 +586,7 @@
                         });
                         pathArray[indexCheck].push(path);
                         console.log("여기가 문제여 문제~~~~")
-                        placeData[indexCheck][varStatusIndex-1].tripPath = JSON.stringify(path);
+                        placeData[indexCheck][varStatusIndex - 1].tripPath = JSON.stringify(path);
                         console.log("세번째확인");
                         console.log(placeData[indexCheck]);
 
@@ -670,17 +604,47 @@
 
                         var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (varStatusIndex - 1) + '"]');
                         if (hour == 0) {
-                            tripTimeEl.textContent = minute + "분";
-                            placeData[indexCheck][varStatusIndex-1].tripTime = minute;
+                            if (minute === 30) {
+                                tripTimeEl.textContent = "30분";
+                            } else {
+                                tripTimeEl.textContent = minute + "분";
+                            }
+                            placeData[indexCheck][varStatusIndex - 1].tripTime = minute;
                             placeTripTimes['map' + indexCheck].push(minute);
-                            totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + minute;
+                            totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck] || 0)) + minute;
                         } else {
-                            tripTimeEl.textContent = (hour * 60) + minute;
-                            placeData[indexCheck][varStatusIndex-1].tripTime = ((hour * 60) + minute);
+                            var tripTimeText = "";
+                            if (hour > 0) {
+                                tripTimeText += hour + "시간";
+                            }
+                            if (minute > 0) {
+                                if (minute >= 60) {
+                                    hour++; // 분이 60 이상인 경우 시간을 1 증가시킴
+                                    minute -= 60; // 분에서 60을 뺀 나머지를 계산
+                                }
+                                tripTimeText += " " + minute + "분";
+                            }
+                            tripTimeEl.textContent = tripTimeText;
+                            placeData[indexCheck][varStatusIndex - 1].tripTime = ((hour * 60) + minute);
                             placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
-                            totalTripTimes[indexCheck] = (totalTripTimes[indexCheck] || 0) + (hour * 60) + minute;
+                            totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck] || 0)) + (hour * 60) + minute;
                         }
-                        $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
+                        $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck]));
+
+                        function formatTime(minutes) {
+                            var hours = Math.floor(minutes / 60);
+                            var remainingMinutes = minutes % 60;
+                            var formattedTime = "";
+
+                            if (hours > 0) {
+                                formattedTime += hours + "시간 ";
+                            }
+                            if (remainingMinutes > 0) {
+                                formattedTime += remainingMinutes + "분";
+                            }
+
+                            return formattedTime;
+                        }
 
                     },
                     error: function (xhr, status, error) {
@@ -859,7 +823,7 @@
             var placeInfo = [] // 명소를 저장하는 배열
             var placeSum = 0; // 명소의 갯수 파악
 
-            if(($('#dailyPlanContents' + i).val() != "" && $('#dailyPlanContents' + i).val() != null) && (allPlaces['map' + i] != undefined && allPlaces['map' + i] != null && allPlaces['map' + i].length != 0)) {
+            if (($('#dailyPlanContents' + i).val() != "" && $('#dailyPlanContents' + i).val() != null) && (allPlaces['map' + i] != undefined && allPlaces['map' + i] != null && allPlaces['map' + i].length != 0)) {
 
                 dailyPlanContent = $('#dailyPlanContents' + i).val();
                 totalTripTime = totalTripTimes[i];
@@ -945,28 +909,45 @@
             $("#btnAddTripDay").prop('disabled', false);
         }, 500); // 0.5초 후에 버튼 활성화
 
-        if(($('#dailyPlanContents' + (idCheck-1)).val() == "" || $('#dailyPlanContents' + (idCheck-1)).val() == null) || (allPlaces['map' + (idCheck-1)] == undefined || allPlaces['map' + (idCheck-1)] == null || allPlaces['map' + (idCheck-1)].length == 0)) {
+        if (($('#dailyPlanContents' + (idCheck - 1)).val() == "" || $('#dailyPlanContents' + (idCheck - 1)).val() == null) || (allPlaces['map' + (idCheck - 1)] == undefined || allPlaces['map' + (idCheck - 1)] == null || allPlaces['map' + (idCheck - 1)].length == 0)) {
             alert("이전 여행플랜에 내용이 없다면 새로운 여행플랜을 작성할 수 없습니다.")
             return;
         }
 
         console.log(idCheck);
         // 새로운 요소를 생성
-        if (idCheck < 10) {
+        if (idCheck < 5) {
 
-            var dynamicHTML = '<hr></hr><div style="margin-top: 3%"></div><div class="container" id="container' + idCheck +'">' +
-                '<div display="flex;">' + '<div class="day">' + (idCheck+1)  + '일차 여행플랜 <button class="icon-locate-map right" id="reset' + idCheck + '" onclick="reset(event, ' + idCheck + ')"></button></div>' +
-                '</div>' + '<div class="row">' + '<div class="col-sm-12">' + '<div id="map' + idCheck + '" style="width: 100%; height: 300px; border-radius: 15px;"></div>' +
+            // var dynamicHTML = '<hr></hr><div style="margin-top: 3%"></div><div class="container" id="container' + idCheck + '">' +
+            //     '<div display="flex;">' + '<div class="day">' + (idCheck + 1) + '일차 여행플랜 <button class="icon-locate-map right" id="reset' + idCheck + '" onclick="reset(event, ' + idCheck + ')"></button></div>' +
+            //     '</div>' + '<div class="row">' + '<div class="col-sm-12">' + '<div id="map' + idCheck + '" style="width: 100%; height: 300px; border-radius: 15px;"></div>' +
+            //     '<div id="menu_wrap' + idCheck + '" class="bg_white" style="height:90%; overflow:auto; margin: 0%;">' + '<div class="input-group">' +
+            //     '<input type="text" class="form-control" id="placeName' + idCheck + '" onkeypress="handleKeyPress(event, ' + idCheck + ')" placeholder="명소 검색" style="width: 60%; font-size: 11px">' +
+            //     '<button class="btn btn-primary" id="placeSearch' + idCheck + '" style="width: 30%; font-size: 9px;" onclick="handleKeyPress(event, ' + idCheck + ')">검색</button>' +
+            //     '</div>' + '<ul id="placesList' + idCheck + '"></ul>' + '<div id="pagination"></div>' + '</div>' + '</div>' + '</div>' +
+            //     '<div style="margin-top: 3%"></div>' + '<div class="row">' + '<div class="col-sm-9">' +
+            //     '<textarea id="dailyPlanContents' + idCheck + '" name="dailyPlanContents" required style="width: 100%;"></textarea>' +
+            //     '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' + '<div class="border-box" style="height: 400px; overflow: auto;">' +
+            //     '<div class="box-title">명소리스트' + '<div id="totalTripTime' + idCheck + '"></div>' + '</div>' + '<ul class="list' + idCheck + '" style="text-align: center;"></ul>' +
+            //     '</div>' + '</div>' + '</div>' + '</div>' + '<div class="addDaily" id="addDaily" style="text-align: right;">' +
+            //     '</div></div>';
+
+            var dynamicHTML = '<hr></hr><div class="container" id="container' + idCheck + '">' +
+                '<div display="flex;">' + '<div class="day">' + (idCheck + 1) + '일차 여행플랜' +
+                '<button class="icon-locate-map right" id="reset' + idCheck + '" style="font-size: 20px; border-radius: 15px;" onclick="reset(event, ' + idCheck + ')"></button>' +
+                '</div>' + '</div>' + '<div class="row">' + '<div class="col-sm-12">' +
+                '<div id="map' + idCheck + '" style="width: 100%; height: 300px; border-radius: 15px;"></div>' +
                 '<div id="menu_wrap' + idCheck + '" class="bg_white" style="height:90%; overflow:auto; margin: 0%;">' + '<div class="input-group">' +
                 '<input type="text" class="form-control" id="placeName' + idCheck + '" onkeypress="handleKeyPress(event, ' + idCheck + ')" placeholder="명소 검색" style="width: 60%; font-size: 11px">' +
-                '<button class="btn btn-primary" id="placeSearch' + idCheck + '" style="width: 30%; font-size: 9px;" onclick="handleKeyPress(event, ' + idCheck + ')">Search</button>' +
+                '<button class="btn btn-primary" id="placeSearch' + idCheck + '" style="width: 30%; font-size: 9px;" onclick="handleKeyPress(event, ' + idCheck + ')">검색</button>' +
                 '</div>' + '<ul id="placesList' + idCheck + '"></ul>' + '<div id="pagination"></div>' + '</div>' + '</div>' + '</div>' +
                 '<div style="margin-top: 3%"></div>' + '<div class="row">' + '<div class="col-sm-9">' +
                 '<textarea id="dailyPlanContents' + idCheck + '" name="dailyPlanContents" required style="width: 100%;"></textarea>' +
-                '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' + '<div class="border-box" style="height: 400px; overflow: auto;">' +
-                '<div class="box-title">명소리스트' + '<div id="totalTripTime' + idCheck +'"></div>' + '</div>' + '<ul class="list' + idCheck + '" style="text-align: center;"></ul>' +
-                '</div>' + '</div>' + '</div>' + '</div>' + '<div class="addDaily" id="addDaily" style="text-align: right;">' +
-                '</div></div>';
+                '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' +
+                '<div class="border-box list' + idCheck + '" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">' +
+                '<div class="box-title">명소리스트' +
+                '<div class="tag-link" id="totalTripTime' + idCheck + '" style="text-align: right; display: inline-block; border: none;"></div>' +
+                '</div>' + '</div>' + '</div>' + '</div>' + '</div>';
 
             // 동적으로 생성한 요소들을 DOM에 추가
             var newElement = document.createElement('div');
@@ -1025,7 +1006,7 @@
                     if (confirm("작성중인 내용이 있습니다 삭제하시겠습니까?")) {
                         elementToRemove.parentNode.removeChild(elementToRemove);
                         delDailyPlan((idCheck - 1))
-                        idCheck --; // idCheck 감소
+                        idCheck--; // idCheck 감소
                         console.log("idCheck 감소하였음");
                     }
                 } else {
@@ -1084,12 +1065,12 @@
         $(prevTripTimeEl).parent().remove();
         $(prevTripTimeEl).remove();
 
-        if(index == 0){
+        if (index == 0) {
 
             console.log("0으로 시작")
 
-            totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index];
-            if(totalTripTimes[indexCheck] == 0 && totalTripTimes[indexCheck] == NaN) {
+            totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index];
+            if (totalTripTimes[indexCheck] == 0 && totalTripTimes[indexCheck] == NaN) {
                 $("#totalTripTime" + indexCheck).text("");
             } else {
                 $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
@@ -1105,13 +1086,13 @@
             markers[indexCheck].splice(index, index + 1); // 마커 삭제
 
             var polyline = polylineArray[indexCheck][index]
-            if(polyline != null) {
+            if (polyline != null) {
                 polyline.setMap(null);
             }
             polylineArray[indexCheck].splice(index, index + 1); // 폴리라인 삭제
 
             console.log("지웠을때 어디인지 확인해야하고 고치자")
-            placeData[indexCheck].splice(index , index+1); // 최종 데이터값인데 처음부터 이걸로할걸...
+            placeData[indexCheck].splice(index, index + 1); // 최종 데이터값인데 처음부터 이걸로할걸...
             console.log(placeData[indexCheck]);
 
             // 이후 남아있는 리스트박스들의 id 값을 업데이트
@@ -1120,7 +1101,7 @@
             console.log(elTripTimes.length)
             console.log("위에가 남아있는 리스트 크기임")
 
-            if(elTripTimes.length == 0){
+            if (elTripTimes.length == 0) {
                 $("#totalTripTime" + indexCheck).text("");
                 elTripTimes.textContent = "";
                 return
@@ -1165,10 +1146,10 @@
 
             console.log("0이상의 값으로 시작")
 
-            totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index - 1];
-            totalTripTimes[indexCheck] = totalTripTimes[indexCheck] - placeTripTimes['map' + indexCheck][index];
+            totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index - 1];
+            totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index];
             console.log(totalTripTimes[indexCheck])
-            if(isNaN()) {
+            if (isNaN()) {
                 $("#totalTripTime" + indexCheck).text("");
             } else {
                 $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
@@ -1177,20 +1158,20 @@
             placeTripTimes['map' + indexCheck].splice(index - 1, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
             placeTripPositions[indexCheck].splice(index, index); // 삭제된 좌표 인덱스
             allPlaces['map' + indexCheck].splice(index, index); // 삭제된 명소정보
-            pathArray[indexCheck].splice(index -1, index + 1);
+            pathArray[indexCheck].splice(index - 1, index + 1);
 
             var marker = markers[indexCheck][index];
             marker.setMap(null); // 마커를 지도에서 제거
             markers[indexCheck].splice(index, index); // 마커 삭제
 
-            var polyline = polylineArray[indexCheck][index -1] // 앞뒤로 지우기
-            if(polylineArray[indexCheck][index] != null) {
+            var polyline = polylineArray[indexCheck][index - 1] // 앞뒤로 지우기
+            if (polylineArray[indexCheck][index] != null) {
                 var polyline2 = polylineArray[indexCheck][index]
                 polyline2.setMap(null);
             }
             polyline.setMap(null);
 
-            polylineArray[indexCheck].splice(index-1 , index + 1); // 폴리라인 삭제
+            polylineArray[indexCheck].splice(index - 1, index + 1); // 폴리라인 삭제
 
             console.log("지웠을때 어디인지 확인해야하고 고치자")
             placeData[indexCheck].splice(index, index); // 최종 데이터값인데 처음부터 이걸로할걸...
@@ -1254,7 +1235,7 @@
                     });
                     pathArray[indexCheck].push(path);
                     console.log("여기가 문제여 문제~~~~")
-                    placeData[indexCheck][index-1].tripPath = JSON.stringify(path);
+                    placeData[indexCheck][index - 1].tripPath = JSON.stringify(path);
 
 
                     var polyline = new kakao.maps.Polyline({
@@ -1272,17 +1253,43 @@
                     var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
                     console.log(tripTimeEl);
                     if (hour == 0) {
-                        tripTimeEl.textContent = minute;
-                        placeData[indexCheck][index-1].tripTime = minute;
+                        if (minute === 30) {
+                            tripTimeEl.textContent = "30분";
+                        } else {
+                            tripTimeEl.textContent = minute + "분";
+                        }
+                        placeData[indexCheck][index - 1].tripTime = minute;
                         placeTripTimes['map' + indexCheck].push(minute);
-                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck]) + minute;
+                        totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck] || 0)) + minute;
                     } else {
-                        tripTimeEl.textContent = (hour * 60) + minute;
-                        placeData[indexCheck][index-1].tripTime = ((hour * 60) + minute);
+                        if (minute > 0) {
+                            if (minute >= 60) {
+                                hour++; // 분이 60 이상인 경우 시간을 1 증가시킴
+                                minute -= 60; // 분에서 60을 뺀 나머지를 계산
+                            }
+                            tripTimeText += " " + minute + "분";
+                        }
+                        tripTimeEl.textContent = tripTimeText;
+                        placeData[indexCheck][index - 1].tripTime = ((hour * 60) + minute);
                         placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
-                        totalTripTimes[indexCheck] = (totalTripTimes[indexCheck]) + (hour * 60) + minute;
+                        totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck] || 0)) + (hour * 60) + minute;
                     }
-                    $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
+                    $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck]));
+
+                    function formatTime(minutes) {
+                        var hours = Math.floor(minutes / 60);
+                        var remainingMinutes = minutes % 60;
+                        var formattedTime = "";
+
+                        if (hours > 0) {
+                            formattedTime += hours + "시간 ";
+                        }
+                        if (remainingMinutes > 0) {
+                            formattedTime += remainingMinutes + "분";
+                        }
+
+                        return formattedTime;
+                    }
 
                     console.log("가운데 값 지우니까 난리나네 하")
                     console.log(placeData[indexCheck]);
@@ -1295,15 +1302,15 @@
     });
 
     // 여행플랜 썸네일
-    $("#tripPlanThumbnail").click(function() {
+    $("#tripPlanThumbnail").click(function () {
         Swal.fire({
             title: "썸네일 업로드",
             html: '<input type="file" id="fileInput">',
             showCancelButton: true,
             confirmButtonText: "저장",
             cancelButtonText: "취소",
-            preConfirm: function() {
-                return new Promise(function(resolve) {
+            preConfirm: function () {
+                return new Promise(function (resolve) {
                     var file = document.getElementById("fileInput").files[0];
                     if (file) {
                         resolve(file);
@@ -1312,7 +1319,7 @@
                     }
                 });
             }
-        }).then(function(result) {
+        }).then(function (result) {
             if (result.isConfirmed) {
                 var uploadedFile = result.value;
                 console.log("파일 업로드 성공:", uploadedFile);
@@ -1328,14 +1335,14 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function(response) {
+                    success: function (response) {
                         console.log("파일 업로드 성공:", response);
                         var imagePath = response;
                         tripPlanThumbnail = imagePath.replace(/^\/imagePath\//, "");
                         console.log(tripPlanThumbnail);
                         $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + tripPlanThumbnail + "')");
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.log("파일 업로드 실패:", error);
                     }
                 });
