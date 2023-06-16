@@ -13,11 +13,12 @@ public interface ReviewService {
 
     // 완료된 여행플랜 목록 가져오기
     public Map<String, Object> getCompletedTripPlanList(Map<String, Object> parameters) throws Exception;
-    //후기 목록 조회
-    public Map<String, Object> selectReviewList(Map<String, Object> parameters) throws Exception;
 
     //INSERT C 후기 등록
     public void addReview(Review review) throws Exception;
+    //후기 목록 조회
+    public Map<String, Object> selectReviewList(Map<String, Object> parameters) throws Exception;
+
 
     //SELECT ONE R 특정 후기 조회
     public Review getReview(int reviewNo) throws Exception;

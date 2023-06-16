@@ -630,7 +630,7 @@ $(document).ready(function () {
                     <input type="date" id="reviewDelDate" name="reviewDelDate"><br><br>
                 </div>
                 <div class="col-sm-offset-4 col-sm-4 text-center">
-                    <button type="submit" class="btnAddReview" onclick="fncAddReview()">작성완료</button>
+                    <button type="btnAddReview" class="btnAddReview" onclick="fncAddReview()">작성완료</button>
                 </div>
         </form>
     </main>
@@ -857,7 +857,7 @@ $(document).ready(function () {
                     success: function (response) {
                         console.log("파일 업로드 성공:", response);
                         var imagePath = response;
-                        tripPlanThumbnail = imagePath.replace(/^\/imagePath\//, "");
+                        reviewThumbnail = imagePath.replace(/^\/imagePath\//, "");
                         console.log(reviewThumbnail);
                         $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + reviewThumbnail + "')");
                     },
