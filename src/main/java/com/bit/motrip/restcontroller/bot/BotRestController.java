@@ -37,7 +37,7 @@ public class BotRestController {
     }
 
     // NAVER Cloud SpeechToText
-    @RequestMapping("stt")
+    @RequestMapping("json/stt")
     public StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
 
         // 최종 결과값 리턴 시 사용할 인스턴스 선언
@@ -120,7 +120,7 @@ public class BotRestController {
     }
 
     // NAVER Cloud ChatBot
-    @RequestMapping("chat")
+    @RequestMapping("json/chat")
     public String chatBot(@RequestBody String text) throws Exception {
 
         // 최종 결과값 리턴시 사용할 변수 선언
@@ -265,7 +265,7 @@ public class BotRestController {
     }
 
     // NAVER Cloud TextToSpeech
-    @RequestMapping("tts")
+    @RequestMapping("json/tts")
     public static ResponseEntity<byte[]> textToSpeech(@RequestBody String tts) throws Exception {
 
         String apiUrl = config.getProperty("api.tts.url");
@@ -355,7 +355,7 @@ public class BotRestController {
     }
 
     // 페이지 내비게이션 서비스
-    @RequestMapping("navi")
+    @RequestMapping("json/navi")
     public ResponseEntity<Map<String, String[]>> pageNavigation(@RequestBody(required = false) Map<String, String[]> data, HttpServletRequest request) throws Exception {
         if (data != null && data.containsKey("url")) {
             String[] urls = data.get("url");
