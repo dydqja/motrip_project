@@ -5,8 +5,12 @@
 
 <html>
 <head>
+
     <title>MoTrip 로그인</title>
+
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
     <link rel="stylesheet" href="/assets/css/bootstrap.css" media="all">
+    <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">
     <link rel="stylesheet" href="/vendor/animate-css/animate.css" media="all">
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
@@ -16,6 +20,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
     <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>
+
+
 </head>
 
 <body class="login" style="background-image: url('/images/user/login.jpg'); opacity: 1;">
@@ -28,13 +34,9 @@
     <div class="form-box">
         <div class="form-head" style="padding: 10px 15px; ">
             <div class="mold-logo" style="margin-top: 10px; margin-bottom: 10px;">
-
                 <a href="/">
                     <img src="/images/motrip-logo.gif" alt="">
                 </a>
-
-
-
             </div>
         </div>
         <div class="form-body">
@@ -62,7 +64,7 @@
 
                 </div>
                 <div style="text-align: right;">
-                    <a href="#" data-toggle="modal" data-target="#findIdPwdModal">아이디 & 비밀번호 찾기</a>
+                    <a href="#" class="fineIdPwdModalShow" >아이디 & 비밀번호 찾기</a>
                 </div>
 
                 <input type="hidden" id="idCheck" value="${requestScope.idCheck}"/>
@@ -82,6 +84,12 @@
 <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="/vendor/jquery.ui.touch-punch.min.js"></script>
 <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
+<script src="/vendor/owlcarousel/owl.carousel.min.js"></script>
+<script src="/vendor/jquery.imageScroll.min.js"></script>
+<script src="/assets/js/min/responsivetable.min.js"></script>
+<script src="/assets/js/bootstrap-tabcollapse.js"></script>
+<script src="/assets/js/min/countnumbers.min.js"></script>
 
 <script src="/vendor/retina.min.js"></script>
 <script src="/assets/js/main.js"></script>
@@ -174,8 +182,8 @@
     //아이디&비밀번호 찾기
     $( function() {
 
-        //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-        $("#findIdPwd").on("click", function () {
+        $(".fineIdPwdModalShow").on("click", function (event) {
+            event.preventDefault();
 
             $('#findIdPwdModal').modal('show');
         });

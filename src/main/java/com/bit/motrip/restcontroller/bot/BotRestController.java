@@ -11,9 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -23,20 +23,25 @@ import java.util.*;
 @RestController
 @RequestMapping("/bot/*")
 public class BotRestController {
+    private static Properties config;
+    public BotRestController() {
+        // Load API configuration properties
+        try {
+            FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
+            config = new Properties();
+            config.load(fis);
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     // NAVER Cloud SpeechToText
-
     @RequestMapping("stt")
-    public static StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
+    public StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
 
         // 최종 결과값 리턴 시 사용할 인스턴스 선언
         StringBuffer response = new StringBuffer();
-
-        // NAVER Cloud API 인증 정보 불러오기
-        FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
-
-        Properties config = new Properties();
-        config.load(fis);
 
         String apiUrl = config.getProperty("api.stt.url");
         String clientId = config.getProperty("api.stt.client.id");
@@ -44,15 +49,10 @@ public class BotRestController {
 
         try {
 
-            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
-            con.setUseCaches(false);
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            con.setConnectTimeout(10000);
-            con.setReadTimeout(10000);
             con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Length", String.valueOf(audioFile));
+            con.setRequestProperty("Content-Length", String.valueOf(audioFile.getSize()));
             con.setRequestProperty("Content-Type", "application/octet-stream");
             con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
             con.setRequestProperty("X-NCP-APIGW-API-KEY", clientSecret);
@@ -74,7 +74,6 @@ public class BotRestController {
             outputStream.flush();
             outputStream.close();
             inputStream.close();
-            fis.close();
 
             BufferedReader br;
             String inputLine;
@@ -83,12 +82,12 @@ public class BotRestController {
 
             if(responseCode == 200) {	// 정상 호출
 
-                br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+                br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 
             }	else {					// 오류 발생
 
                 System.out.println("error!!!!!!! responseCode= " + responseCode);
-                br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
             }
 
             if(br != null) {
@@ -122,12 +121,6 @@ public class BotRestController {
         // 최종 결과값 리턴시 사용할 변수 선언
         String chatbotMessage = "";
 
-        // NAVER Cloud API 인증 정보 불러오기
-        FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
-
-        Properties config = new Properties();
-        config.load(fis);
-
         String apiUrl = config.getProperty("api.bot.url");
         String secretKey = config.getProperty("api.bot.client.secret");
 
@@ -141,23 +134,17 @@ public class BotRestController {
 
         try {
 
-            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
-            con.setUseCaches(false);
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            con.setConnectTimeout(10000);
-            con.setReadTimeout(10000);
             con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json;UTF-8");
+            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             con.setRequestProperty("X-NCP-CHATBOT_SIGNATURE", encodeBase64String);
 
             OutputStream outputStream = con.getOutputStream();
 
-            outputStream.write(message.getBytes("UTF-8"));
+            outputStream.write(message.getBytes(StandardCharsets.UTF_8));
             outputStream.flush();
             outputStream.close();
-            fis.close();
 
             BufferedReader br;
             String decodedString;
@@ -166,12 +153,12 @@ public class BotRestController {
 
             if(responseCode == 200) {	// 정상 호출
 
-                br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+                br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 
             }	else {					// 오류 발생
 
                 System.out.println("error!!!!!!! responseCode= " + responseCode);
-                br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
             }
 
             if(br != null) {
@@ -198,9 +185,6 @@ public class BotRestController {
 
     public static String makeSignature(String message, String secretKey) {
 
-        /// 최종 결과값 리턴시 사용할 변수 선언
-        String encodeBase64String = "";
-
         try {
             byte[] secrete_key_bytes = secretKey.getBytes(StandardCharsets.UTF_8);
 
@@ -208,18 +192,12 @@ public class BotRestController {
             Mac mac = Mac.getInstance("HmacSHA256");
             mac.init(signingKey);
 
-            byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
-//          encodeBase64String = Base64.encodeToString(rawHmac, Base64.NO_WRAP);
-            encodeBase64String = Base64.getEncoder().encodeToString(rawHmac);
-
-            return encodeBase64String;
-
-        } catch (Exception e){
-
-            System.out.println(e);
+            byte[] rawHmac = mac.doFinal(message.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(rawHmac);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        return encodeBase64String;
+        return "";
     }
 
     public static String getReqMessage(String text) {
@@ -278,13 +256,7 @@ public class BotRestController {
 
     // NAVER Cloud TextToSpeech
     @RequestMapping("tts")
-    public static ResponseEntity<byte[]> TextToSpeech(@RequestBody String tts) throws Exception {
-
-        // NAVER Cloud API 인증 정보 불러오기
-        FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
-
-        Properties config = new Properties();
-        config.load(fis);
+    public static ResponseEntity<byte[]> textToSpeech(@RequestBody String tts) throws Exception {
 
         String apiUrl = config.getProperty("api.tts.url");
         String clientId = config.getProperty("api.tts.client.id");
@@ -296,13 +268,8 @@ public class BotRestController {
 
         try {
 
-            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
-            con.setUseCaches(false);
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            con.setConnectTimeout(10000);
-            con.setReadTimeout(10000);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
@@ -383,7 +350,6 @@ public class BotRestController {
                 return ResponseEntity.ok().body(Collections.singletonMap("url", responseData));
             }
         }
-
         return ResponseEntity.badRequest().build();
     }
 }
