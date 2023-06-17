@@ -107,6 +107,9 @@
         #reviewContents {
             display: none;/*텍스트에리아 안보이게 */
         }
+        main {
+            padding: 10px 0px;
+        }
     </style>
     <style>
         .post {
@@ -276,17 +279,17 @@
         appearance: none;
         position: relative;
         border: max(2px, 0.1em) solid gray;
-        border-radius: 1.25em;
-        width: 2.25em;
-        height: 1.25em;
+        border-radius: 1.75em; /* 크기를 조정한 부분입니다 */
+        width: 3em; /* 크기를 조정한 부분입니다 */
+        height: 1.75em; /* 크기를 조정한 부분입니다 */
     }
 
     [type="checkbox"]::before {
         content: "";
         position: absolute;
         left: 0;
-        width: 1em;
-        height: 1em;
+        width: 1.25em; /* 크기를 조정한 부분입니다 */
+        height: 1.25em; /* 크기를 조정한 부분입니다 */
         border-radius: 50%;
         transform: scale(0.8);
         background-color: gray;
@@ -295,7 +298,7 @@
 
     [type="checkbox"]:checked::before {
         background-color: white;
-        left: 1em;
+        left: 1.25em; /* 크기를 조정한 부분입니다 */
     }
 
     [type="checkbox"]:checked {
@@ -331,25 +334,48 @@
         content: "";
         position: absolute;
         left: 0;
-        width: 1em;
-        height: 1em;
+        width: 1.25em; /* 크기를 조정한 부분입니다 */
+        height: 1.25em; /* 크기를 조정한 부분입니다 */
         border-radius: 50%;
         transform: scale(0.8);
         background-color: gray;
         transition: left 250ms linear;
     }
 
+    /* 툴팁 스타일 */
+    .switch-label[title]:hover::before {
+        content: attr(title);
+        position: absolute;
+        top: -24px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 4px 8px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        font-size: 12px;
+        white-space: nowrap;
+        border-radius: 4px;
+    }
+    /* 공개여부 글자 정렬 */
+    .switch-label span {
+        display: block;
+        line-height: 1;
+        margin-top: -55px;
+    }
+
+
     /* 토글스위치 CSS 끝*/
+
+    </style>
+
+    <style>
+        #reviewThumbnail {
+            transform: scale(1.3);
+        }
     </style>
 
 
-</head>
 
-
-
-<header class="nav-menu fixed">
-    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
 
 
 <script type="text/javascript">
@@ -402,14 +428,30 @@ $(document).ready(function () {
 </script>
 
 
+
+
+</head>
+
+
 <body>
 
+
+<header class="nav-menu fixed">
+    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+</header>
+
 <div class="post-single left">
-    <div class="page-img" style="background-image: url('/images/tripImage.jpg'); height: 400px;">
+    <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">
+    <div class="page-img" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">
+        </c:if>
+<c:if test="${review.reviewThumbnail == ''}">
+            <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
+                </c:if>
         <div class="page-img-txt container">
             <div class="row">
                 <div class="col-sm-12">
-                    <div style="margin: 10px;"></div>
+                    <div>
+
                     <h1 class="main-head">후기 작성</h1>
                     <p class="sub-head">다녀온 여행을 기록하세요.</p>
 
@@ -447,34 +489,34 @@ $(document).ready(function () {
 
     <main class="white">
         <form action="/review/addReview" method="post">
-            <div class="container">
-                <div class="form-group">
-                <span>
-                    <h4>
-                        <input type="text" id="reviewTitle" name="reviewTitle" placeholder="제목을 입력하세요."
-                               style="color: black; width: 57%; height: 40px; opacity: 0.5;">
-                    </h4>
-                </span>
+            <div class="container" style="margin: 30px;">
+                <div class="form-group" style="margin-left: 30px;">
+                    <div>
+        <span>
+            <h4>
+                <input type="text" id="reviewTitle" name="reviewTitle" placeholder="제목을 입력하세요."
+                       style="color: black; width: 82%; height: 40px; opacity: 0.5;">
+            </h4>
+        </span>
+                    </div>
+
+                    <h5>
+                        <label class="switch" title="타 회원에게 공개할지 비공개할지 설정할 수 있어요.">
+                            <input class="isReviewPublic" type="checkbox" name="isReviewPublic" checked="checked" />
+                            <span class="switch-label" data-on="True" data-off="False"></span>
+                            <span>공개여부</span>
+                            <span class="switch-handle"></span>
+                        </label>
+                        <!--<button type="button" class="btn btn-primary" id="checkStatusBtn">상태 확인</button>-->
+                    </h5>
+
                 </div>
 
 
-
-                <h5>
-                    <label class="switch">
-                        <input class="isReviewPublic" type="checkbox" name="isReviewPublic" checked="checked" />
-                        <span class="switch-label" data-on="True" data-off="False"></span>
-                        <span>공개여부</span>
-                        <span class="switch-handle"></span>
-                    </label>
-                    <!--<button type="button" class="btn btn-primary" id="checkStatusBtn">상태 확인</button>-->
-                </h5>
-
-
-                <c:set var="i" value="0"/>
+            <c:set var="i" value="0"/>
                 <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
                     <c:set var="i" value="${i+1}"/>
                 <main class="white">
-                    <div class="container">
 
                         <!-- 지도와 탭을 담을 컨테이너 -->
                         <div class="container">
@@ -482,30 +524,23 @@ $(document).ready(function () {
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul class="nav nav-tabs">
-                                        <li class="active"><a data-toggle="tab" href="#qwe">Day-1</a></li>
-                                        <li><a data-toggle="tab" href="#asd">Day-2</a></li>
+                                        <li class="active"><a data-toggle="tab" href="#day1">Day-1</a></li>
+                                        <li><a data-toggle="tab" href="#day2">Day-2</a></li>
                                     </ul>
 
-
                                     <div class="tab-content">
-                                        <div id="qwe" class="tab-pane fade in active">
+                                        <div id="day1" class="tab-pane fade in active">
                                             <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
                                         </div>
-                                        <div id="asd" class="tab-pane fade">
+                                        <div id="day2" class="tab-pane fade">
                                             <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-
-
-
-
-
-                        <div class="row">
+                        <div class="row" style="margin: 30px;">
                             <div class="col-sm-9">
                                 <div>
                                     <textarea id="reviewContents" name="reviewContents" required></textarea>
@@ -586,7 +621,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                         </c:forEach> <!-- dailyPlan for end -->
-
+                </main>
 
 
 
