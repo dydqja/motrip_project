@@ -64,7 +64,7 @@
 
                 </div>
                 <div style="text-align: right;">
-                    <a href="javascript:void(0);" >아이디 & 비밀번호 찾기</a>
+                    <a href="#" class="fineIdPwdModalShow" >아이디 & 비밀번호 찾기</a>
                 </div>
 
                 <input type="hidden" id="idCheck" value="${requestScope.idCheck}"/>
@@ -182,8 +182,7 @@
     //아이디&비밀번호 찾기
     $( function() {
 
-        //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-        $("#findIdPwd").on("click", function (event) {
+        $(".fineIdPwdModalShow").on("click", function (event) {
             event.preventDefault();
 
             $('#findIdPwdModal').modal('show');
