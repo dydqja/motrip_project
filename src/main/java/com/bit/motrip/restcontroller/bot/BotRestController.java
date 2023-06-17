@@ -51,6 +51,11 @@ public class BotRestController {
 
             HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
+            con.setUseCaches(false);
+            con.setDoOutput(true);
+            con.setDoInput(true);
+            con.setConnectTimeout(10000);
+            con.setReadTimeout(10000);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Length", String.valueOf(audioFile.getSize()));
             con.setRequestProperty("Content-Type", "application/octet-stream");
@@ -133,6 +138,11 @@ public class BotRestController {
 
             HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
+            con.setUseCaches(false);
+            con.setDoOutput(true);
+            con.setDoInput(true);
+            con.setConnectTimeout(10000);
+            con.setReadTimeout(10000);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             con.setRequestProperty("X-NCP-CHATBOT_SIGNATURE", encodeBase64String);
@@ -267,6 +277,11 @@ public class BotRestController {
 
             HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
+            con.setUseCaches(false);
+            con.setDoOutput(true);
+            con.setDoInput(true);
+            con.setConnectTimeout(10000);
+            con.setReadTimeout(10000);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
