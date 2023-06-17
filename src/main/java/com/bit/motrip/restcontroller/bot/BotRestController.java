@@ -90,21 +90,18 @@ public class BotRestController {
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
             }
 
-            if(br != null) {
+            while ((inputLine = br.readLine()) != null) {
 
-                while ((inputLine = br.readLine()) != null) {
-
-                    response.append(inputLine);
-                }
-
-                br.close();
-
-                // 음성변환 텍스트 결과 출력
-                System.out.println("::");
-                System.out.println("::");
-                System.out.println("::");
-                System.out.println("음성변환: " + response);
+                response.append(inputLine);
             }
+
+            br.close();
+
+            // 음성변환 텍스트 결과 출력
+            System.out.println("::");
+            System.out.println("::");
+            System.out.println("::");
+            System.out.println("음성변환: " + response);
 
         }	catch (Exception e) {
 
