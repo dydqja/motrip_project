@@ -64,7 +64,7 @@
 
                 </div>
                 <div style="text-align: right;">
-                    <a href="#" data-toggle="modal" data-target="#findIdPwdModal">아이디 & 비밀번호 찾기</a>
+                    <a href="javascript:void(0);" >아이디 & 비밀번호 찾기</a>
                 </div>
 
                 <input type="hidden" id="idCheck" value="${requestScope.idCheck}"/>
