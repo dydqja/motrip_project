@@ -120,10 +120,10 @@ public class BotRestController {
 
     // NAVER Cloud ChatBot
     @RequestMapping("chat")
-    public String chatBot(@RequestBody String text) throws Exception {
+    public ResponseEntity<String> chatBot(@RequestBody String text) throws Exception {
 
         // 최종 결과값 리턴시 사용할 변수 선언
-        String chatbotMessage = "";
+        JSONObject chatbotMessage = new JSONObject();
 
         String apiUrl = config.getProperty("api.bot.url");
         String secretKey = config.getProperty("api.bot.client.secret");
@@ -171,25 +171,23 @@ public class BotRestController {
             }
 
             if(br != null) {
-
+                StringBuilder response = new StringBuilder();
                 while ((decodedString = br.readLine()) != null) {
-
-                    chatbotMessage = decodedString;
+                    response.append(decodedString);
                 }
-
                 br.close();
 
                 // 챗봇 텍스트 결과 출력
                 System.out.println("::");
-                logger.info("챗봇 응답: " + chatbotMessage);
+                logger.info("챗봇 응답: " + response.toString());
+
+                chatbotMessage = new JSONObject(response.toString());
             }
-
-        }	catch (Exception e) {
-
+        } catch (Exception e) {
             logger.error("Failed to perform chatbot request", e);
         }
 
-        return chatbotMessage;
+        return ResponseEntity.ok(chatbotMessage.toString());
     }
 
     public static String makeSignature(String message, String secretKey) {
