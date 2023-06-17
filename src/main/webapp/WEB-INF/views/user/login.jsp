@@ -183,7 +183,8 @@
     $( function() {
 
         //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-        $("#findIdPwd").on("click", function () {
+        $("#findIdPwd").on("click", function (event) {
+            event.preventDefault();
 
             $('#findIdPwdModal').modal('show');
         });
