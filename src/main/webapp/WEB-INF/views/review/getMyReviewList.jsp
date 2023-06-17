@@ -59,7 +59,7 @@
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 <%--</header>--%>
 
-<<div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
+<div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
     <div class="container">
         <div class="col-sm-8">
             <h1 class="main-head">내가  작성한 후기 </h1>

@@ -1,5 +1,7 @@
 package com.bit.motrip.restcontroller.bot;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpHeaders;
@@ -11,19 +13,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/bot/*")
 public class BotRestController {
+    private static final Logger logger = LoggerFactory.getLogger(BotRestController.class);
     private static Properties config;
+
     public BotRestController() {
         // Load API configuration properties
         try {
@@ -32,12 +35,12 @@ public class BotRestController {
             config.load(fis);
             fis.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Failed to load API configuration properties", e);
         }
     }
 
     // NAVER Cloud SpeechToText
-    @RequestMapping("json/stt")
+    @RequestMapping("stt")
     public StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
 
         // 최종 결과값 리턴 시 사용할 인스턴스 선언
@@ -49,7 +52,7 @@ public class BotRestController {
 
         try {
 
-            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
             con.setUseCaches(false);
             con.setDoOutput(true);
@@ -95,32 +98,28 @@ public class BotRestController {
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
             }
 
-            if(br != null) {
+            while ((inputLine = br.readLine()) != null) {
 
-                while ((inputLine = br.readLine()) != null) {
-
-                    response.append(inputLine);
-                }
-
-                br.close();
-
-                // 음성변환 텍스트 결과 출력
-                System.out.println("::");
-                System.out.println("::");
-                System.out.println("::");
-                System.out.println("음성변환: " + response);
+                response.append(inputLine);
             }
+
+            br.close();
+
+            // 음성변환 텍스트 결과 출력
+            System.out.println("::");
+            logger.info("음성 변환 결과: " + response);
+
 
         }	catch (Exception e) {
 
-            System.out.println(e);
+            logger.error("Failed to perform speech-to-text conversion", e);
         }
 
         return response;
     }
 
     // NAVER Cloud ChatBot
-    @RequestMapping("json/chat")
+    @RequestMapping("chat")
     public String chatBot(@RequestBody String text) throws Exception {
 
         // 최종 결과값 리턴시 사용할 변수 선언
@@ -133,13 +132,13 @@ public class BotRestController {
         String message = getReqMessage(text);
 
         System.out.println("::");
-        System.out.println("입력질문: " + message);
+        logger.info("입력 질문: " + message);
 
         String encodeBase64String = makeSignature(message, secretKey);
 
         try {
 
-            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
             con.setUseCaches(false);
             con.setDoOutput(true);
@@ -167,7 +166,7 @@ public class BotRestController {
 
             }	else {					// 오류 발생
 
-                System.out.println("error!!!!!!! responseCode= " + responseCode);
+                logger.error("API request failed with response code: " + responseCode);
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
             }
 
@@ -182,12 +181,12 @@ public class BotRestController {
 
                 // 챗봇 텍스트 결과 출력
                 System.out.println("::");
-                System.out.println("챗봇응답: " + chatbotMessage);
+                logger.info("챗봇 응답: " + chatbotMessage);
             }
 
         }	catch (Exception e) {
 
-            System.out.println(e);
+            logger.error("Failed to perform chatbot request", e);
         }
 
         return chatbotMessage;
@@ -205,7 +204,7 @@ public class BotRestController {
             byte[] rawHmac = mac.doFinal(message.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(rawHmac);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed to generate signature", e);
         }
         return "";
     }
@@ -225,7 +224,7 @@ public class BotRestController {
             long timestamp = new Date().getTime();
 
             System.out.println("::");
-            System.out.println("대화시간: "+timestamp);
+            logger.info("대화 시간: " + timestamp);
 
             obj.put("version", "v2");
             obj.put("userId", userId);
@@ -259,13 +258,13 @@ public class BotRestController {
 
         } catch (Exception e){
 
-            System.out.println("## Exception : " + e);
+            logger.error("Failed to create the request message", e);
         }
         return requestBody;
     }
 
     // NAVER Cloud TextToSpeech
-    @RequestMapping("json/tts")
+    @RequestMapping("tts")
     public static ResponseEntity<byte[]> textToSpeech(@RequestBody String tts) throws Exception {
 
         String apiUrl = config.getProperty("api.tts.url");
@@ -278,7 +277,7 @@ public class BotRestController {
 
         try {
 
-            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
             con.setUseCaches(false);
             con.setDoOutput(true);
@@ -355,7 +354,7 @@ public class BotRestController {
     }
 
     // 페이지 내비게이션 서비스
-    @RequestMapping("json/navi")
+    @RequestMapping("navi")
     public ResponseEntity<Map<String, String[]>> pageNavigation(@RequestBody(required = false) Map<String, String[]> data, HttpServletRequest request) throws Exception {
         if (data != null && data.containsKey("url")) {
             String[] urls = data.get("url");

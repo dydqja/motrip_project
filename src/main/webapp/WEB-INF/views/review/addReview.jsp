@@ -206,31 +206,44 @@
 
 <body>
 
-<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<header class="nav-menu fixed">
+    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+</header>
 
 
 <div class="post-single left">
-    <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
-        <div class="page-img-txt container">
-            <div class="row">
-                <div class="col-sm-8">
-                    <div style="margin: 70px;"></div>
-                    <h2>
-                        <div class="author-img">
-                            <img src="/images/tripImage.jpg" alt="">
-                        </div>
-                        <div class="author">
-                            <span>${review.reviewTitle}</span>
-                        </div>
-                    </h2>
+    <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">
+    <div class="page-img" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');">
+        </c:if>
+        <c:if test="${review.reviewThumbnail == ''}">
+        <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
+            </c:if>
+                <div class="page-img-txt container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h2>
+                                <div class="author-img" style="margin-top: 2%">
+                                    <img src="/images/tripImage.jpg" alt="">
+                                </div>
+                                <div class="author">
+                                    <span style="font-size: 25px">${review.reviewTitle}</span>
+                                </div>
+                            </h2>
                     <p class="byline">
                     <h4>
-                    <div style="margin: 40px;"></div>
+                    <div style="margin: 4px;"></div>
                     <span>By</span><span id="nickname">
                             <c:out value="${user.nickname}"/></span></a>
                         <span class="italic"></span>
                         <span>${review.reviewRegDate}</span>
-
+                            <span>${review.strDate}</span>
+                            <span class="icon-hand-like" style="margin-left: 2%"></span>
+                            <span id="likes" align="center" width="200">${review.reviewLikes}</span>
+                            <span class="icon-eye" style="margin-left: 1%"></span>
+                            <span>${review.viewCount}</span>&nbsp;&nbsp;
+                            <button class="btn btn-primary" id="reviewLikes" value="${review.reviewNo}"
+                                    style="width: auto; height: auto; box-sizing: border-box; padding: 5px 10px;">추천
+                            </button>
 
 
 
@@ -258,10 +271,10 @@
     <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
     <c:set var="i" value="${ i+1 }"/>
     <main class="white">
-        <div display="flex;">
-            <span class="icon-map" style="font-size: 40px; "></span><div class="day">${i}일차에 대한 후기 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
+        <div display="flex;"style="margin-left: 40px">
+            <span class="icon-map" style="font-size: 40px; " ></span><div class="day">${i}일차 이동경로 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
         </div>
-        <div style="margin: 5%"></div>
+        <div style="margin: 11%"></div>
 
         <!-- 지도와 탭을 담을 컨테이너 -->
         <div class="container">
