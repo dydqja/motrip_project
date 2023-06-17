@@ -23,7 +23,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/bot/*")
 public class BotRestController {
-
     private static Properties config;
     public BotRestController() {
         // Load API configuration properties
@@ -39,13 +38,10 @@ public class BotRestController {
 
     // NAVER Cloud SpeechToText
     @RequestMapping("stt")
-    public static StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
+    public StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
 
         // 최종 결과값 리턴 시 사용할 인스턴스 선언
         StringBuffer response = new StringBuffer();
-
-        // NAVER Cloud API 인증 정보 불러오기
-        FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
 
         String apiUrl = config.getProperty("api.stt.url");
         String clientId = config.getProperty("api.stt.client.id");
@@ -83,7 +79,6 @@ public class BotRestController {
             outputStream.flush();
             outputStream.close();
             inputStream.close();
-            fis.close();
 
             BufferedReader br;
             String inputLine;
@@ -131,9 +126,6 @@ public class BotRestController {
         // 최종 결과값 리턴시 사용할 변수 선언
         String chatbotMessage = "";
 
-        // NAVER Cloud API 인증 정보 불러오기
-        FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
-
         String apiUrl = config.getProperty("api.bot.url");
         String secretKey = config.getProperty("api.bot.client.secret");
 
@@ -163,7 +155,6 @@ public class BotRestController {
             outputStream.write(message.getBytes(StandardCharsets.UTF_8));
             outputStream.flush();
             outputStream.close();
-            fis.close();
 
             BufferedReader br;
             String decodedString;
@@ -276,9 +267,6 @@ public class BotRestController {
     // NAVER Cloud TextToSpeech
     @RequestMapping("tts")
     public static ResponseEntity<byte[]> textToSpeech(@RequestBody String tts) throws Exception {
-
-        // NAVER Cloud API 인증 정보 불러오기
-        FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
 
         String apiUrl = config.getProperty("api.tts.url");
         String clientId = config.getProperty("api.tts.client.id");
