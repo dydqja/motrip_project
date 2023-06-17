@@ -189,6 +189,19 @@
                 -->
             </div>
 
+            <div class="form-group text-left">
+                <label for="drop_zone" class="label label-primary">SMS수신동의</label>
+
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                        <input type="radio" name="gettingSmsAlarm" id="SmsAlarmYes" value="true" autocomplete="off" checked> 동의
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="gettingSmsAlarm" id="SmsAlarmNo" value="false" autocomplete="off"> 비동의
+                    </label>
+                </div>
+            </div>
+
 
             <input type="hidden" name="userId" value="${user.userId}">
             <input type="hidden" name="userName" value="${user.userName}">
