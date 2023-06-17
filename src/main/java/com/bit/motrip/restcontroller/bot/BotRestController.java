@@ -19,7 +19,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/bot/*")
 public class BotRestController {
