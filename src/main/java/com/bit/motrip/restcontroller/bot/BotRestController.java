@@ -3,7 +3,6 @@ package com.bit.motrip.restcontroller.bot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -366,22 +365,5 @@ public class BotRestController {
             }
         }
         return ResponseEntity.badRequest().build();
-    }
-
-    // 예외 처리를 위한 전역 예외 처리기 설정
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e, HttpServletRequest request) throws JSONException {
-        logger.error("An error occurred while processing the request", e);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        JSONObject errorResponse = new JSONObject();
-        errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        errorResponse.put("error", "Internal Server Error");
-        errorResponse.put("message", "An error occurred while processing the request");
-        errorResponse.put("path", request.getRequestURI());
-
-        return new ResponseEntity<>(errorResponse.toString(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
