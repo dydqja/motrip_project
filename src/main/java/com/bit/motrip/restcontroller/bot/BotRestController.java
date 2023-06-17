@@ -11,9 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -37,7 +37,7 @@ public class BotRestController {
     }
 
     // NAVER Cloud SpeechToText
-    @RequestMapping("json/stt")
+    @RequestMapping("stt")
     public StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
 
         // 최종 결과값 리턴 시 사용할 인스턴스 선언
@@ -49,7 +49,7 @@ public class BotRestController {
 
         try {
 
-            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
             con.setUseCaches(false);
             con.setDoOutput(true);
@@ -120,7 +120,7 @@ public class BotRestController {
     }
 
     // NAVER Cloud ChatBot
-    @RequestMapping("json/chat")
+    @RequestMapping("chat")
     public String chatBot(@RequestBody String text) throws Exception {
 
         // 최종 결과값 리턴시 사용할 변수 선언
@@ -139,7 +139,7 @@ public class BotRestController {
 
         try {
 
-            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
             con.setUseCaches(false);
             con.setDoOutput(true);
@@ -265,7 +265,7 @@ public class BotRestController {
     }
 
     // NAVER Cloud TextToSpeech
-    @RequestMapping("json/tts")
+    @RequestMapping("tts")
     public static ResponseEntity<byte[]> textToSpeech(@RequestBody String tts) throws Exception {
 
         String apiUrl = config.getProperty("api.tts.url");
@@ -278,7 +278,7 @@ public class BotRestController {
 
         try {
 
-            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
 
             con.setUseCaches(false);
             con.setDoOutput(true);
@@ -355,7 +355,7 @@ public class BotRestController {
     }
 
     // 페이지 내비게이션 서비스
-    @RequestMapping("json/navi")
+    @RequestMapping("navi")
     public ResponseEntity<Map<String, String[]>> pageNavigation(@RequestBody(required = false) Map<String, String[]> data, HttpServletRequest request) throws Exception {
         if (data != null && data.containsKey("url")) {
             String[] urls = data.get("url");
