@@ -393,6 +393,7 @@
             alert("후기 본문을 반드시 입력하여야 합니다.");
             return;
         }
+
         $("form")
             .attr("method", "post")
             .attr("action", "/review/addReview?tripPlanNo=" + tripPlanNo +
@@ -614,15 +615,6 @@ $(document).ready(function () {
                             </c:forEach> <!-- dailyPlan for end -->
                         </main>
 
-
-
-
-
-
-
-
-
-
                         <div class="form-group" style="display: none;">
                             <label for="reviewLikes">Review Likes:</label>
                             <input type="number" id="reviewLikes" name="reviewLikes" value="0"><br><br>
@@ -826,7 +818,7 @@ $(document).ready(function () {
                 success: function (data) {
                     console.log(data);
                     if (data == -1) {
-                        alert("이미 추천한 여행플랜입니다.");
+                        alert("이미 추천한 후기입니다.");
                     } else if (data == 0) {
                         alert("비회원은 추천을 할수없습니다.");
                     } else {
@@ -887,6 +879,26 @@ $(document).ready(function () {
                         reviewThumbnail = imagePath.replace(/^\/imagePath\//, "");
                         console.log(reviewThumbnail);
                         $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + reviewThumbnail + "')");
+
+                        // 여행플랜 썸네일 저장하는 AJAX 요청
+                        $.ajax({
+                            url: "/review/reviewThumbnail", // DB에 썸네일 저장하는 엔드포인트 경로로 변경해야 합니다.
+                            type: "POST",
+                            data: {
+                                tripPlanNo: tripPlanNo,
+                                reviewThumbnail: reviewThumbnail,
+                            },
+                            success: function (response) {
+                                console.log("썸네일 저장 성공:", response);
+                                // 저장 성공 후 필요한 동작 수행
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("썸네일 저장 실패:", error);
+                            },
+                        });
+
+
+
                     },
                     error: function (xhr, status, error) {
                         console.log("파일 업로드 실패:", error);

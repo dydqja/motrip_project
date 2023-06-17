@@ -255,6 +255,7 @@
             <div class="row" >
                 <div class="col-sm-12">
                     <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
+                    <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
                 </div>
             </div>
 

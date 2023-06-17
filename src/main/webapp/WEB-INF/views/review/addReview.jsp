@@ -64,7 +64,6 @@
         }
     </style>
 
-
     <style>
         .post {
             width: 100%; /* 원하는 너비 설정 */
@@ -202,6 +201,8 @@
         }
     </style>
 
+
+
 </head>
 
 <body>
@@ -211,31 +212,31 @@
 </header>
 
 
-<div class="post-single left">
+<div class="post-single left" style="margin-bottom: 70px">
     <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">
-    <div class="page-img" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');">
+    <div class="page-img" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');"  height: 400px;">
         </c:if>
         <c:if test="${review.reviewThumbnail == ''}">
-        <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
+        <div class="page-img" style="background-image: url('/images/tripImage.jpg');"  height: 400px;">
             </c:if>
-                <div class="page-img-txt container">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h2>
-                                <div class="author-img" style="margin-top: 2%">
-                                    <img src="/images/tripImage.jpg" alt="">
-                                </div>
-                                <div class="author">
-                                    <span style="font-size: 25px">${review.reviewTitle}</span>
-                                </div>
-                            </h2>
-                    <p class="byline">
-                    <h4>
-                    <div style="margin: 4px;"></div>
-                    <span>By</span><span id="nickname">
-                            <c:out value="${user.nickname}"/></span></a>
-                        <span class="italic"></span>
-                        <span>${review.reviewRegDate}</span>
+            <div class="page-img-txt container">
+                <div class="row">
+                    <div class="col-sm-12"style="margin-top: 74px">
+                        <h2>
+                            <div class="author-img" style="margin-top: 2%">
+                                <img src="${user.userPhoto}" alt="">
+                            </div>
+                            <div class="author">
+                                <span style="font-size: 25px">${review.reviewTitle}</span>
+                            </div>
+                        </h2>
+                        <p class="byline">
+                        <h4>
+                            <div style="margin: 4px;"></div>
+                            <span>By</span>
+                            <span><c:out value="${user.nickname}"/></span></a>
+                            <span class="italic"></span>
+                            <span>${review.reviewRegDate}</span>
                             <span>${review.strDate}</span>
                             <span class="icon-hand-like" style="margin-left: 2%"></span>
                             <span id="likes" align="center" width="200">${review.reviewLikes}</span>
@@ -246,136 +247,128 @@
                             </button>
 
 
-
-
-                    </h4>
-                    </p>
-                </div>
-                <div class="colsm-4">
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-    <c:set var="i" value="0"/>
-    <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
-    <c:set var="i" value="${ i+1 }"/>
-    <main class="white">
-        <div display="flex;"style="margin-left: 40px">
-            <span class="icon-map" style="font-size: 40px; " ></span><div class="day">${i}일차 이동경로 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
-        </div>
-        <div style="margin: 11%"></div>
-
-        <!-- 지도와 탭을 담을 컨테이너 -->
-        <div class="container">
-            <!--탭 컨테이너-->
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#qwe">Day-1</a></li>
-                        <li><a data-toggle="tab" href="#asd">Day-2</a></li>
-                    </ul>
-
-
-                    <div class="tab-content">
-                        <div id="qwe" class="tab-pane fade in active">
-                            <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
-                        </div>
-                        <div id="asd" class="tab-pane fade">
-                            <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
-                        </div>
-
+                        </h4>
+                        </p>
+                    </div>
+                    <div class="colsm-4">
                     </div>
                 </div>
             </div>
         </div>
 
-            <div style="margin: 5%"></div>
+        <c:set var="i" value="0"/>
+        <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
+        <c:set var="i" value="${ i+1 }"/>
+        <main class="white">
+            <div display="flex;"style="margin-left: 40px">
+                <span class="icon-map" style="font-size: 40px; " ></span><div class="day">${i}일차 이동경로 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
+            </div>
+            <div style="margin: 11%"></div>
 
-            <div class="row">
-                <div class="col-sm-9">
-                    <div class="post" style="height: 400px; overflow: auto; border-radius: 15px;">
-                        <div>${review.reviewContents}</div>
-                    </div>
-                </div>
+            <!-- 지도와 탭을 담을 컨테이너 -->
+            <div class="container">
+                <!--탭 컨테이너-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#qwe">Day-1</a></li>
+                            <li><a data-toggle="tab" href="#asd">Day-2</a></li>
+                        </ul>
 
 
-                <div class="col-sm-3">
-
-                    <div class="sidebar">
-
-                        <div class="border-box" style="height: 400px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
-                            <div class="box-title">명소리스트
-                                <div class="tag-link" style="text-align: right;">총 이동시간
-                                    : ${dailyPlan.totalTripTime}</div>
+                        <div class="tab-content">
+                            <div id="qwe" class="tab-pane fade in active">
+                                <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
                             </div>
-                            <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                                <div class="col-12 column" style="text-align: center; ">
-                                    <div class="card text-white mb-3"
-                                         style="width: auto; height: auto; font-size: 9px;">
-                                        <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
-                                            <h5 class="card-title" name="placeTitle">
-                                                <div style="color: black; width: 100%;">
-                                                    <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
-                                                </div>
-                                            </h5>
-                                        </div>
-                                    </div>
-                                    <c:if test="${place.tripTime != null}">
-                                        <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"
-                                             style="background-color: rgba(188,222,167,0.39); width: auto; height: auto; ">
-                                            <div style=" color: black; display: inline-block;">이동시간: ${place.tripTime}</div>
-                                        </div>
-                                    </c:if>
+                            <div id="asd" class="tab-pane fade">
+                                <div id="map${i-1}" style="align-items: center; width: 100%; height: 400px; border-radius: 15px;" ></div>
+                            </div>
+
+                        </div>
+                        <div style="margin: 5%"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div class="post" style="height: 600px; overflow: auto; border-radius: 15px;">
+                            <div>${review.reviewContents}</div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-sm-3">
+
+                        <div class="sidebar">
+
+                            <div class="border-box" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
+                                <div class="box-title">명소리스트
+                                    <div class="tag-link" style="text-align: right;">총 이동시간
+                                        : ${dailyPlan.totalTripTime}</div>
                                 </div>
+                                <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                                    <div class="col-12 column" style="text-align: center; ">
+                                        <div class="card text-white mb-3"
+                                             style="width: auto; height: auto; font-size: 9px;">
+                                            <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
+                                                <h5 class="card-title" name="placeTitle">
+                                                    <div style="color: black; width: 100%;">
+                                                        <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
+                                                    </div>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                        <c:if test="${place.tripTime != null}">
+                                            <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"
+                                                 style="background-color: rgba(188,222,167,0.39); width: auto; height: auto; ">
+                                                <div style=" color: black; display: inline-block;">이동시간: ${place.tripTime}</div>
+                                            </div>
+                                        </c:if>
+                                    </div>
 
-                                <!-- place 반복문이 내부에있어서 해당 장소에 선언하였으며 마커와 오버레이를 보여주기 위한 스크립트 -->
+                                    <!-- place 반복문이 내부에있어서 해당 장소에 선언하였으며 마커와 오버레이를 보여주기 위한 스크립트 -->
 
-                                <script type="text/javascript">
-                                    var placeTags = "${place.placeTags}";
-                                    var placePhoneNumber = "${place.placePhoneNumber}";
-                                    var placeAddress = "${place.placeAddress}";
-                                    var placeCategory = "${place.placeCategory}";
-                                    var placeImage = "${place.placeImage}";
-                                    var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
-                                    var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
-                                    var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
-                                    var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
-                                    var tripPath = '${place.tripPath}';
+                                    <script type="text/javascript">
+                                        var placeTags = "${place.placeTags}";
+                                        var placePhoneNumber = "${place.placePhoneNumber}";
+                                        var placeAddress = "${place.placeAddress}";
+                                        var placeCategory = "${place.placeCategory}";
+                                        var placeImage = "${place.placeImage}";
+                                        var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
+                                        var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
+                                        var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
+                                        var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
+                                        var tripPath = '${place.tripPath}';
 
-                                    var index = ${i-1};
-                                    if(!pathInfo[index]) {
-                                        pathInfo[index] = [];
-                                    }
-                                    pathInfo[index].push(tripPath);
+                                        var index = ${i-1};
+                                        if(!pathInfo[index]) {
+                                            pathInfo[index] = [];
+                                        }
+                                        pathInfo[index].push(tripPath);
 
-                                    // markers 배열에 좌표 및 맵 ID 정보 추가
-                                    markers.push({
-                                        position: markerPosition,
-                                        mapId: mapId,
-                                        placeTags: placeTags,
-                                        placePhoneNumber: placePhoneNumber,
-                                        placeAddress: placeAddress,
-                                        placeCategory: placeCategory,
-                                        placeImage: placeImage
-                                    });
+                                        // markers 배열에 좌표 및 맵 ID 정보 추가
+                                        markers.push({
+                                            position: markerPosition,
+                                            mapId: mapId,
+                                            placeTags: placeTags,
+                                            placePhoneNumber: placePhoneNumber,
+                                            placeAddress: placeAddress,
+                                            placeCategory: placeCategory,
+                                            placeImage: placeImage
+                                        });
 
-                                </script>
-                            </c:forEach> <!-- place for end -->
+                                    </script>
+                                </c:forEach> <!-- place for end -->
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
+
+
+
+
             <hr/>
             </c:forEach> <!-- dailyPlan for end -->
 
@@ -390,7 +383,7 @@
                 </div>
             </div>
 
-        </div>
+    </div>
     </main>
 </div>
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
