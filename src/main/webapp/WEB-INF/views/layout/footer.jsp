@@ -1,4 +1,3 @@
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <%--
   Created by IntelliJ IDEA.
   User: bitcamp
