@@ -54,7 +54,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Qualifier("userServiceImpl")
     private UserService userService;
 
-
     @Value(value = "${filePath}thumbnail")
     private Path fileStorageLocation; // 썸네일 경로
 
