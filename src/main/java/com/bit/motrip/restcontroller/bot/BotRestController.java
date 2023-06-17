@@ -1,6 +1,9 @@
 package com.bit.motrip.restcontroller.bot;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +25,9 @@ import java.util.*;
 @RestController
 @RequestMapping("/bot/*")
 public class BotRestController {
+    private static final Logger logger = LoggerFactory.getLogger(BotRestController.class);
     private static Properties config;
+
     public BotRestController() {
         // Load API configuration properties
         try {
@@ -31,7 +36,7 @@ public class BotRestController {
             config.load(fis);
             fis.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Failed to load API configuration properties", e);
         }
     }
 
@@ -103,13 +108,12 @@ public class BotRestController {
 
             // 음성변환 텍스트 결과 출력
             System.out.println("::");
-            System.out.println("::");
-            System.out.println("::");
-            System.out.println("음성변환: " + response);
+            logger.info("음성 변환 결과: " + response);
+
 
         }	catch (Exception e) {
 
-            System.out.println(e);
+            logger.error("Failed to perform speech-to-text conversion", e);
         }
 
         return response;
@@ -129,7 +133,7 @@ public class BotRestController {
         String message = getReqMessage(text);
 
         System.out.println("::");
-        System.out.println("입력질문: " + message);
+        logger.info("입력 질문: " + message);
 
         String encodeBase64String = makeSignature(message, secretKey);
 
@@ -163,7 +167,7 @@ public class BotRestController {
 
             }	else {					// 오류 발생
 
-                System.out.println("error!!!!!!! responseCode= " + responseCode);
+                logger.error("API request failed with response code: " + responseCode);
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
             }
 
@@ -178,12 +182,12 @@ public class BotRestController {
 
                 // 챗봇 텍스트 결과 출력
                 System.out.println("::");
-                System.out.println("챗봇응답: " + chatbotMessage);
+                logger.info("챗봇 응답: " + chatbotMessage);
             }
 
         }	catch (Exception e) {
 
-            System.out.println(e);
+            logger.error("Failed to perform chatbot request", e);
         }
 
         return chatbotMessage;
@@ -201,7 +205,7 @@ public class BotRestController {
             byte[] rawHmac = mac.doFinal(message.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(rawHmac);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed to generate signature", e);
         }
         return "";
     }
@@ -221,7 +225,7 @@ public class BotRestController {
             long timestamp = new Date().getTime();
 
             System.out.println("::");
-            System.out.println("대화시간: "+timestamp);
+            logger.info("대화 시간: " + timestamp);
 
             obj.put("version", "v2");
             obj.put("userId", userId);
@@ -255,7 +259,7 @@ public class BotRestController {
 
         } catch (Exception e){
 
-            System.out.println("## Exception : " + e);
+            logger.error("Failed to create the request message", e);
         }
         return requestBody;
     }
@@ -362,5 +366,22 @@ public class BotRestController {
             }
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    // 예외 처리를 위한 전역 예외 처리기 설정
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e, HttpServletRequest request) throws JSONException {
+        logger.error("An error occurred while processing the request", e);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        JSONObject errorResponse = new JSONObject();
+        errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorResponse.put("error", "Internal Server Error");
+        errorResponse.put("message", "An error occurred while processing the request");
+        errorResponse.put("path", request.getRequestURI());
+
+        return new ResponseEntity<>(errorResponse.toString(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
