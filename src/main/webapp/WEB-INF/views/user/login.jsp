@@ -182,6 +182,8 @@
     //아이디&비밀번호 찾기
     $( function() {
 
+
+
         $(".fineIdPwdModalShow").on("click", function (event) {
             event.preventDefault();
 
