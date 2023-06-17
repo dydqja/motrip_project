@@ -37,7 +37,8 @@
         <script src="/assets/js/min/countnumbers.min.js"></script>
         <script src="/assets/js/main.js"></script>
         <script src="/assets/js/min/home.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.3.8/js/jquery.tablesorter.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.
+        tablesorter/2.3.8/js/jquery.tablesorter.js"></script>
     </head>
 
     <body>

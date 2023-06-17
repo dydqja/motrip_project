@@ -108,7 +108,6 @@
             display: none;/*텍스트에리아 안보이게 */
         }
     </style>
-
     <style>
         .post {
             width: 100%; /* 원하는 너비 설정 */
@@ -245,7 +244,6 @@
             text-align: left;
         }
     </style>
-
 
 
 <style>
@@ -407,16 +405,17 @@ $(document).ready(function () {
 <body>
 
 <div class="post-single left">
-    <div class="page-img" style="background-image: url('http://placehold.it/1200x400');">
+    <div class="page-img" style="background-image: url('/images/tripImage.jpg'); height: 400px;">
         <div class="page-img-txt container">
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-12">
+                    <div style="margin: 10px;"></div>
                     <h1 class="main-head">후기 작성</h1>
                     <p class="sub-head">다녀온 여행을 기록하세요.</p>
-                    <form action="/review/addReview" method="post">
+
 
                         <div class="author-img">
-                            <img src="http://placehold.it/70x70" alt="">
+                            <img src="${user.userPhoto}" alt="">
                         </div>
                         <div class="tripPlanTitle">
                             <p>TripPlan No. ${tripPlanNo}</p>
@@ -425,12 +424,8 @@ $(document).ready(function () {
                             <span style="font-size: 24px;">'</span>
                             <span>&nbsp;&nbsp;에 대한 후기를 작성합니다. </span>
                         </div>
-                        <div style="margin: 20px;"></div>
-                        <div class="author">
-                            <c:set var="nickname" value="${user.nickname}"/>
-                            <span>By</span><a href="#"><span id="nickname">
-                            <c:out value="${nickname}"/></span></a>
-                        </div>
+                        <div style="margin: 3px;"></div>
+
 
                         <p class="byline">
                             <span id="currentDate">${date}</span>
@@ -440,8 +435,9 @@ $(document).ready(function () {
                             <a href="#">4 Comments</a>-->
                         </p>
 
-                        <div class="col-sm-4"></div>
-                    </form>
+                        <button class="btn-default icon-camera" id="reviewThumbnail"
+                                style="font-size: 10px; margin-left: 0.8%">썸네일
+                        </button>
                 </div>
             </div>
         </div>
@@ -460,6 +456,8 @@ $(document).ready(function () {
                     </h4>
                 </span>
                 </div>
+
+
 
                 <h5>
                     <label class="switch">
@@ -524,32 +522,34 @@ $(document).ready(function () {
                                         </div>
                                     </div>
 
-                                    <div class="border-box"  >
+
+                                    <div class="border-box" style="height: 400px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
                                         <div class="box-title">명소리스트
                                             <div class="tag-link" style="text-align: right;">총 이동시간
                                                 : ${dailyPlan.totalTripTime}</div>
                                         </div>
                                         <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                                            <div class="col-12 column">
+                                            <div class="col-12 column" style="text-align: center; ">
                                                 <div class="card text-white mb-3"
-                                                     style="background-color: rgb(80, 250, 120); width: auto; height: auto;">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title" name="placeTitle">
-                                                            <div style="text-align: center;"><span class="icon-locate"
-                                                                                                   value="${place.placeCategory}"></span>&nbsp;&nbsp;&nbsp;#${place.placeTags}
+                                                     style="width: auto; height: auto; font-size: 9px;">
+                                                    <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
+                                                        <h5 class="card-title" name="placeTitle">
+                                                            <div style="color: black; width: 100%;">
+                                                                <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
                                                             </div>
-                                                        </h4>
+                                                        </h5>
                                                     </div>
                                                 </div>
-                                                <div class="card text-white mb-3" name="tripTime"
-                                                     style="background-color: rgb(132, 200, 224); width: auto; height: auto;">
-                                                    <c:if test="${place.tripTime != null}">
-                                                        <div style="text-align: center;">이동시간: ${place.tripTime}</div>
-                                                    </c:if>
-                                                </div>
+                                                <c:if test="${place.tripTime != null}">
+                                                    <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"
+                                                         style="background-color: rgba(188,222,167,0.39); width: auto; height: auto; ">
+                                                        <div style=" color: black; display: inline-block;">이동시간: ${place.tripTime}</div>
+                                                    </div>
+                                                </c:if>
                                             </div>
 
                                             <!-- place 반복문이 내부에있어서 해당 장소에 선언하였으며 마커와 오버레이를 보여주기 위한 스크립트 -->
+
                                             <script type="text/javascript">
                                                 var placeTags = "${place.placeTags}";
                                                 var placePhoneNumber = "${place.placePhoneNumber}";
@@ -561,16 +561,6 @@ $(document).ready(function () {
                                                 var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
                                                 var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
                                                 var tripPath = '${place.tripPath}';
-
-                                                console.log("placeTags:", placeTags);
-                                                console.log("placePhoneNumber:", placePhoneNumber);
-                                                console.log("placeAddress:", placeAddress);
-                                                console.log("placeCategory:", placeCategory);
-                                                console.log("placeImage:", placeImage);
-                                                console.log("latitude:", latitude);
-                                                console.log("longitude:", longitude);
-                                                console.log("markerPosition:", markerPosition);
-                                                console.log("mapId:", mapId);
 
                                                 var index = ${i-1};
                                                 if(!pathInfo[index]) {
@@ -588,8 +578,8 @@ $(document).ready(function () {
                                                     placeCategory: placeCategory,
                                                     placeImage: placeImage
                                                 });
-                                            </script>
 
+                                            </script>
                                         </c:forEach> <!-- place for end -->
                                     </div>
                                 </div>
@@ -640,67 +630,13 @@ $(document).ready(function () {
                     <input type="date" id="reviewDelDate" name="reviewDelDate"><br><br>
                 </div>
                 <div class="col-sm-offset-4 col-sm-4 text-center">
-                    <button type="submit" class="btnAddReview" onclick="fncAddReview()">작성완료</button>
+                    <button type="btnAddReview" class="btnAddReview" onclick="fncAddReview()">작성완료</button>
                 </div>
         </form>
     </main>
 </div>
 
-
-
-
-    <footer id="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-7 col-md-3">
-                    <h3>Mold Discover</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quia, architecto? A,
-                        reiciendis eveniet! Esse est eaque adipisci natus rerum laudantium accusamus magni.</p>
-                </div>
-                <div class="col-sm-5 col-md-2">
-                    <h3>Quick Link</h3>
-                    <ul>
-                        <li>Holiday Package</li>
-                        <li>Summer Adventure</li>
-                        <li>Bus and Trasnportation</li>
-                        <li>Ticket and Hotel Booking</li>
-                        <li>Trek and Hikings</li>
-                    </ul>
-                </div>
-                <div class="col-sm-7 col-md-4">
-                    <h3>Newsletter Signup</h3>
-                    <p>Subscribe to our weekly newsletter to get news and update</p>
-                    <br>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Your Email">
-                        <div class="input-group-btn">
-                            <button class="btn btn-primary">Subscribe</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-5 col-md-2">
-                    <h3>Contact Info</h3>
-                    <ul>
-                        <li>Mold Discover</li>
-                        <li>info@moldthemes.com</li>
-                    </ul>
-                    <div class="clearfix">
-                        <div class="social-icon-list">
-                            <ul>
-                                <li>
-                                    <a href="https://twitter.com/moldthemes" class="icon-twitter"></a>
-                                </li>
-                                <li>
-                                    <a href="mailto:info@moldthemes.com" class="icon-mail"></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="copy"><span>&copy;</span> Copyright Mold Discover, 2017</div>
-    </footer>
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 <!-- 아래는 설정용 스크립트입니다. -->
 
 <script type="text/javascript">
@@ -875,6 +811,61 @@ $(document).ready(function () {
                     console.log(error);
                 }
             });
+        });
+    });
+
+
+
+
+    // 여행플랜 썸네일
+    $("#reviewThumbnail").click(function () {
+        var tripPlanNo = "${tripPlan.tripPlanNo}";
+        Swal.fire({
+            title: "썸네일 업로드",
+            html: '<input type="file" id="fileInput">',
+            showCancelButton: true,
+            confirmButtonText: "저장",
+            cancelButtonText: "취소",
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    var file = document.getElementById("fileInput").files[0];
+                    if (file) {
+                        resolve(file);
+                    } else {
+                        Swal.showValidationMessage("파일을 선택해주세요.");
+                    }
+                });
+            }
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                var uploadedFile = result.value;
+                console.log("파일 업로드 성공:", uploadedFile);
+
+                // FormData 객체 생성
+                var formData = new FormData();
+                formData.append("file", uploadedFile);
+                formData.append("tripPlanNo",tripPlanNo);
+                console.log("tripPlanNo",tripPlanNo)
+
+                // 파일 업로드 AJAX 요청
+                $.ajax({
+                    url: "/review/fileUpload",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log("파일 업로드 성공:", response);
+                        var imagePath = response;
+                        reviewThumbnail = imagePath.replace(/^\/imagePath\//, "");
+                        console.log(reviewThumbnail);
+                        $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + reviewThumbnail + "')");
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("파일 업로드 실패:", error);
+                    }
+                });
+            }
         });
     });
 

@@ -206,7 +206,7 @@ public class ChatRoomController {
         ChatRoom NewchatRoom = chatRoomService.getChatRoom(chatRoomService.addChatRoom(chatRoom,userId,tripPlanNo));
         model.addAttribute("chatRoom", NewchatRoom);
         model.addAttribute("chatMember",chatMemberService.getChatMember(NewchatRoom.getChatRoomNo()));
-        return "chatroom/addChatRoomView.jsp";
+        return "redirect:/chatRoom/chatRoomList";
     }//채팅방 생성 후
 
     @GetMapping("updateChatRoom")

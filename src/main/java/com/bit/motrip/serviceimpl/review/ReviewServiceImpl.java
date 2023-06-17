@@ -5,7 +5,6 @@ import com.bit.motrip.dao.review.ReviewDao;
 import com.bit.motrip.dao.tripplan.DailyPlanDao;
 import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
-import com.bit.motrip.dao.chatroom.ChatMemberDao;
 import com.bit.motrip.domain.*;
 import com.bit.motrip.service.review.ReviewService;
 import com.bit.motrip.service.user.UserService;
@@ -14,14 +13,19 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service("reviewServiceImpl")
 public class ReviewServiceImpl implements ReviewService {
@@ -49,6 +53,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
+
+
+    @Value(value = "${filePath}thumbnail")
+    private Path fileStorageLocation; // 썸네일 경로
 
     public ReviewServiceImpl() {
     }
@@ -80,13 +88,16 @@ public class ReviewServiceImpl implements ReviewService {
                 updatedTripPlanList.add(tripPlan);
             }
             parameters.put("list", updatedTripPlanList);
-           // System.out.println("임쁠 parameters>>>>>>"+parameters);
+            // System.out.println("임쁠 parameters>>>>>>"+parameters);
         }
 
         System.out.println("===================여기는 임쁠 지나가요=================");
         parameters.put("totalCount", totalCount);
         return parameters;
     }
+
+
+
     public TripPlan selectTripPlan(@RequestParam("tripPlanNo") int tripPlanNo) throws Exception{
         TripPlan tripPlan = tripPlanDao.selectTripPlan(tripPlanNo);
         tripPlan.setTripPlanViews(tripPlan.getTripPlanViews() + 1);
@@ -142,6 +153,9 @@ public class ReviewServiceImpl implements ReviewService {
                 updatedReviewList.add(review);
             }
 
+
+
+
             int totalCount = reviewDao.selectReviewTotalCount(search);
             System.out.println("totalCount : " + totalCount);
 
@@ -163,6 +177,8 @@ public class ReviewServiceImpl implements ReviewService {
     public Review getReview(int reviewNo) throws Exception {
         Review review = reviewDao.getReview(reviewNo);
         review.setViewCount(review.getViewCount() + 1);
+
+
         TripPlan tripPlan = tripPlanDao.selectTripPlan(review.getTripPlanNo());
         System.out.println("tripPlan 임쁠>>>>>"+tripPlan);
 
@@ -217,6 +233,45 @@ public class ReviewServiceImpl implements ReviewService {
     public int reviewCount() throws Exception {
         return reviewDao.reviewCount();
     }
+
+
+    public String fileUpload(MultipartFile file) throws Exception {
+
+        System.out.println("reviewfileUpload");
+        // 파일이 비어있는지 체크
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("파일이 없습니다.");
+        }
+
+//        @Value(value = "${filePath}")
+//        private Path fileStorageLocation;
+
+        System.out.println("받은 파일의 경로는 => : " + file.getOriginalFilename());
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        System.out.println("파일경로에서 파일이름만 뽑은 값은 => : " + fileName);
+
+        String uniqueFileName = UUID.randomUUID().toString() + "_" + fileName;
+        System.out.println("파일이름+UUID해서 준 임의파일이름은? => : " + uniqueFileName);
+
+        /*파일이 저장될 기본 경로(this.fileStorageLocation)에 파일이름(uniqueFileName) 을 추가(resolve) 하여,
+        새로운 경로 생성(Path targetLocation)*/
+        Path targetLocation = this.fileStorageLocation.resolve(uniqueFileName);
+        System.out.println("기본경로+파일이름으로 생성된 새로운경로는? => : " + targetLocation);
+
+        System.out.println("업로드파일 데이터스트림 => : "+ file.getInputStream());
+        /*업로드된 파일의 데이터 스트림을 가져오고(file.getInputStream()) 이 데이터 스트림을 지정된 경로(targetLocation)로 복사(Files.copy)한다.
+        복사한 위치에 동일한 이름의 파일이 있다면 기존 파일을 새 파일로 대체(StandardCopyOption.REPLACE_EXISTING)한다. */
+        try (InputStream is = file.getInputStream()) {
+            Files.copy(is, targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("파일 저장에 실패했습니다. 파일 이름: " + fileName, e);
+        }
+
+        return uniqueFileName;
+    }
+
 }
 
 

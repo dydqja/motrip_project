@@ -24,6 +24,8 @@ public class Review {
     @DateTimeFormat(pattern = "yyyyMMdd")
     private Date reviewDelDate;
 
+    private String strDate;
+
 
 
     // 생성자, getter 및 setter 메서드
@@ -48,6 +50,8 @@ public class Review {
     public String getReviewAuthor() {
         return reviewAuthor;
     }
+
+
 
     public void setReviewAuthor(String reviewAuthor) {
         this.reviewAuthor = reviewAuthor;
@@ -141,6 +145,13 @@ public class Review {
         }
     }
 
+    public String getStrDate() {
+        return strDate;
+    }
+
+    public void setStrDate(String strDate) {
+        this.strDate = strDate;
+    }
 
     @Override
     public String toString() {
