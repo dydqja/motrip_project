@@ -189,7 +189,7 @@
                 -->
             </div>
 
-            <div class="form-group text-left">
+            <div class="form-group text-center">
                 <label for="drop_zone" class="label label-primary">SMS수신동의</label>
 
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
