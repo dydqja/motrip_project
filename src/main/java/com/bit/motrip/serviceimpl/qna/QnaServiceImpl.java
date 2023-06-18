@@ -54,7 +54,7 @@ public class QnaServiceImpl implements QnaService {
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put("list", list );
-        map.put("totalCount", new Integer(qnaTotalCount));
+        map.put("totalCount", qnaTotalCount);
 
         return map;
     }

@@ -1,9 +1,7 @@
 package com.bit.motrip.dao.notice;
 
-import com.bit.motrip.common.Page;
 import com.bit.motrip.common.Search;
 import com.bit.motrip.domain.Notice;
-import com.bit.motrip.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

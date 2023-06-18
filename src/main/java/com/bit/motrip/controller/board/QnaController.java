@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -81,8 +78,6 @@ public class QnaController {
 
     @RequestMapping("getQna")
     public String getQna(@RequestParam("qnaNo") int qnaNo, Model model, HttpSession session) throws Exception {
-
-        Qna qna = new Qna();
 
         System.out.println("::");
         System.out.println("[QnaController] 질의응답 상세 조회 서비스를 실행합니다.");

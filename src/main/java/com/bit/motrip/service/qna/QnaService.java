@@ -1,7 +1,6 @@
 package com.bit.motrip.service.qna;
 
 import com.bit.motrip.common.Search;
-import com.bit.motrip.domain.Notice;
 import com.bit.motrip.domain.Qna;
 
 import java.util.Map;

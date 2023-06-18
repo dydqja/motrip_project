@@ -16,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>아이디&비밀번호 찾기</title>
+    <title>아이디 & 비밀번호 찾기</title>
 
 
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
@@ -572,6 +572,7 @@
                 $("#updatePwdConfirmCheck").text("");
                 return; // 아직 입력된 상태가 아니라면 아무런 문구를 출력하지 않는다
             }
+            var passwordRegEx = /^(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
 
             if($('#updatePwd').val()!=$('#updatePwdConfirm').val()){
                 // 만약 pw1과 pw2가 일치하지 않는다면
@@ -582,8 +583,16 @@
                 $('#updatePwdConfirm').val(''); // 값을 비움
                 $('#updatePwdConfirm').focus(); // 포인터를 pw2 로 맞춘다
                 updatePwdConfirmChecked=false;
-            }
-            else{
+            } else if($('#updatePwd').val()==$('#updatePwdConfirm').val() && !passwordRegEx.test($('#updatePwdConfirm').val()) ) {
+
+                $("#updatePwdConfirmCheck").text('특수문자 포함 8자 이상 입력해주세요.').css({
+                    'color': 'red',
+                    'font-size': '10px' // 문구 출력
+                });
+                $('#updatePwdConfirm').val(''); // 값을 비움
+                $('#updatePwdConfirm').focus(); // 포인터를 pw2 로 맞춘다
+                updatePwdConfirmChecked=false;
+            }else{
                 $("#updatePwdConfirmCheck").text('비밀번호가 일치합니다').css({
                     'color': 'green',
                     'font-size': '10px' // 문구 출력
