@@ -568,6 +568,26 @@
         return marker;
     }
 
+    function historyMarker(position, idx) {
+
+        var markerPosition = position.n;
+
+        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
+        var imageSize = new kakao.maps.Size(36, 37);
+        var imgOptions = {
+            spriteSize: new kakao.maps.Size(36, 691),
+            spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10),
+            offset: new kakao.maps.Point(13, 37)
+        };
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+        var marker = new kakao.maps.Marker({
+            position: markerPosition,
+            image: markerImage
+        });
+
+        return marker;
+    }
+
     function handleKeyPress(event, indexCheck) {
         console.log(indexCheck)
         if (event.type === 'click' || event.keyCode === 13) {
@@ -1261,9 +1281,21 @@
             allPlaces['map' + indexCheck].splice(index, index + 1); // 삭제된 명소정보
             pathArray[indexCheck].splice(index, index + 1); // 폴리라인 경로 삭제
 
-            var marker = markers[indexCheck][index];
-            marker.setMap(null); // 마커를 지도에서 제거
+            // var marker = markers[indexCheck][index];
+            // marker.setMap(null); // 마커를 지도에서 제거
+            // markers[indexCheck].splice(index, index + 1); // 마커 삭제
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 지도상 모든 마커 제거
+                var marker = markers[indexCheck][i]
+                marker.setMap(null)
+            }
             markers[indexCheck].splice(index, index + 1); // 마커 삭제
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 새롭게 번호를 붙혀서 생성
+                var marker = historyMarker(markers[indexCheck][i], i);
+                marker.setMap(maps[indexCheck]);
+                console.log(marker);
+            }
 
             var polyline = polylineArray[indexCheck][index]
             if (polyline != null) {
@@ -1349,9 +1381,22 @@
             allPlaces['map' + indexCheck].splice(index, index); // 삭제된 명소정보
             pathArray[indexCheck].splice(index - 1, index + 1);
 
-            var marker = markers[indexCheck][index];
-            marker.setMap(null); // 마커를 지도에서 제거
-            markers[indexCheck].splice(index, index); // 마커 삭제
+            // var marker = markers[indexCheck][index];
+            // marker.setMap(null); // 마커를 지도에서 제거
+            // markers[indexCheck].splice(index, index); // 마커 삭제
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 지도상 모든 마커 제거
+                var marker = markers[indexCheck][i]
+                marker.setMap(null)
+            }
+
+            markers[indexCheck].splice(index, 1); // 마커 삭제
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 새롭게 번호를 붙혀서 생성
+                var marker = historyMarker(markers[indexCheck][i], i);
+                marker.setMap(maps[indexCheck]);
+                console.log(marker);
+            }
 
             var polyline = polylineArray[indexCheck][index - 1] // 앞뒤로 지우기
             if (polylineArray[indexCheck][index] != null) {
@@ -1360,9 +1405,9 @@
             }
             polyline.setMap(null);
 
-            polylineArray[indexCheck].splice(index - 1, index + 1); // 폴리라인 삭제
+            polylineArray[indexCheck].splice(index - 1, 2); // 폴리라인 삭제
 
-            placeData[indexCheck].splice(index, index);
+            placeData[indexCheck].splice(index, 1);
 
             // 이후 남아있는 리스트박스들의 id 값을 업데이트
             var elTripTimes = document.querySelectorAll('[id="tripTime' + indexCheck + '"]');

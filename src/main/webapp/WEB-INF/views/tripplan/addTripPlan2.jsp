@@ -55,7 +55,7 @@
         };
 
         let idCheck = 1; // 늘어나거나 줄어나는 id의 값을 체크
-        let isPlanPublic = false; // 공유여부
+        let isPlanPublic = true; // 공유여부
         let isPlanDownloadable = false; // 가져가기여부 (미구현)
         let tripPlanThumbnail = "";
     </script>
@@ -157,9 +157,8 @@
                             <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목을 입력해주세요"
                                              style="color: black; width: 600px; height: 30px; opacity: 0.8;"></h4></span>
                             <h5>
-                                공개<input type="checkbox" id="chbispublic" class="round" value="true"/>&nbsp;&nbsp;
-                                비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true"
-                                          disabled/>
+                                공개<input type="checkbox" id="chbispublic" class="round" value="true" checked="true" disabled/>&nbsp;&nbsp;
+                                비공개<input type="checkbox" id="chbpublic" class="round" value="false"/>
                             </h5>
                         </div>
                     </div>
@@ -1114,9 +1113,24 @@
             allPlaces['map' + indexCheck].splice(index, index + 1); // 삭제된 명소정보
             pathArray[indexCheck].splice(index, index + 1); // 폴리라인 경로 삭제
 
-            var marker = markers[indexCheck][index];
-            marker.setMap(null); // 마커를 지도에서 제거
+            console.log("이제 마커를 수정해보자")
+            console.log(markers[indexCheck]);
+            console.log(maps[indexCheck]);
+
+            // var marker = markers[indexCheck][index];
+            // marker.setMap(null); // 마커를 지도에서 제거
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 지도상 모든 마커 제거
+                var marker = markers[indexCheck][i]
+                marker.setMap(null)
+            }
             markers[indexCheck].splice(index, index + 1); // 마커 삭제
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 새롭게 번호를 붙혀서 생성
+                var marker = saveMarker(markers[indexCheck][i], i);
+                marker.setMap(maps[indexCheck]);
+                console.log(marker);
+            }
 
             var polyline = polylineArray[indexCheck][index]
             if (polyline != null) {
@@ -1198,14 +1212,27 @@
                 $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck])); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
             }
 
-            placeTripTimes['map' + indexCheck].splice(index - 1, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
-            placeTripPositions[indexCheck].splice(index, index); // 삭제된 좌표 인덱스
-            allPlaces['map' + indexCheck].splice(index, index); // 삭제된 명소정보
-            pathArray[indexCheck].splice(index - 1, index + 1);
+            placeTripTimes['map' + indexCheck].splice(index - 1, 2); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
+            placeTripPositions[indexCheck].splice(index, 1); // 삭제된 좌표 인덱스
+            allPlaces['map' + indexCheck].splice(index, 1); // 삭제된 명소정보
+            pathArray[indexCheck].splice(index - 1, 2);
 
-            var marker = markers[indexCheck][index];
-            marker.setMap(null); // 마커를 지도에서 제거
-            markers[indexCheck].splice(index, index); // 마커 삭제
+            // var marker = markers[indexCheck][index];
+            // marker.setMap(null); // 마커를 지도에서 제거
+            // markers[indexCheck].splice(index, index); // 마커 삭제
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 지도상 모든 마커 제거
+                var marker = markers[indexCheck][i]
+                marker.setMap(null)
+            }
+
+            markers[indexCheck].splice(index, 1); // 마커 삭제
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 새롭게 번호를 붙혀서 생성
+                var marker = saveMarker(markers[indexCheck][i], i);
+                marker.setMap(maps[indexCheck]);
+                console.log(marker);
+            }
 
             var polyline = polylineArray[indexCheck][index - 1] // 앞뒤로 지우기
             if (polylineArray[indexCheck][index] != null) {
@@ -1214,9 +1241,9 @@
             }
             polyline.setMap(null);
 
-            polylineArray[indexCheck].splice(index - 1, index + 1); // 폴리라인 삭제
+            polylineArray[indexCheck].splice(index - 1, 2); // 폴리라인 삭제
 
-            placeData[indexCheck].splice(index, index); // 최종 데이터값인데 처음부터 이걸로할걸...
+            placeData[indexCheck].splice(index, 1); // 최종 데이터값인데 처음부터 이걸로할걸...
 
             // 이후 남아있는 리스트박스들의 id 값을 업데이트
             var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
@@ -1353,6 +1380,26 @@
         }
 
         return formattedTime;
+    }
+
+    function saveMarker(position, idx) {
+
+        var markerPosition = position.n;
+
+        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
+        var imageSize = new kakao.maps.Size(36, 37);
+        var imgOptions = {
+            spriteSize: new kakao.maps.Size(36, 691),
+            spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10),
+            offset: new kakao.maps.Point(13, 37)
+        };
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+        var marker = new kakao.maps.Marker({
+            position: markerPosition,
+            image: markerImage
+        });
+
+        return marker;
     }
 
     // 여행플랜 썸네일
