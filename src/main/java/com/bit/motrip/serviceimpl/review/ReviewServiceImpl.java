@@ -190,6 +190,9 @@ public class ReviewServiceImpl implements ReviewService {
     //후기 수정
     @Override
     public void updateReview(Review review) throws Exception {
+        review.getReviewNo();
+
+        reviewDao.updateReview(review);
     }
 
     //후기 삭제

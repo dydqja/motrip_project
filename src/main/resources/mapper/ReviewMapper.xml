@@ -240,7 +240,6 @@
         SET review_title = #{reviewTitle},
             review_contents = #{reviewContents},
             review_thumbnail = #{reviewThumbnail},
-            insta_post_link = #{instaPostLink},
             is_review_public = #{isReviewPublic}
         WHERE review_no = #{reviewNo}
     </update>
