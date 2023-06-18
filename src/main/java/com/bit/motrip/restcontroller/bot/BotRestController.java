@@ -30,7 +30,8 @@ public class BotRestController {
     public BotRestController() {
         // Load API configuration properties
         try {
-            FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
+            String filePath = Objects.requireNonNull(getClass().getClassLoader().getResource("application.properties")).getFile();
+            FileInputStream fis = new FileInputStream(filePath);
             config = new Properties();
             config.load(fis);
             fis.close();
@@ -115,7 +116,7 @@ public class BotRestController {
     }
 
     // NAVER Cloud ChatBot
-    @PostMapping("chat")
+    @RequestMapping(value = "chat", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<String> chatBot(@RequestBody String text) {
 
         // 최종 결과값 리턴시 사용할 변수 선언
