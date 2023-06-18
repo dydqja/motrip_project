@@ -437,7 +437,7 @@
 
       var userPhoto = "${getUser.userPhoto}";
 
-      alert("폼데이타겟유져포토는? :: " +formData.get('userPhoto'));
+      // alert("폼데이타겟유져포토는? :: " +formData.get('userPhoto'));
       if (formData.get('userPhoto') == null) {
         formData.set('UserPhoto', userPhoto)
       };

@@ -13,9 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +30,8 @@ public class BotRestController {
     public BotRestController() {
         // Load API configuration properties
         try {
-            FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
+            String filePath = Objects.requireNonNull(getClass().getClassLoader().getResource("application.properties")).getFile();
+            FileInputStream fis = new FileInputStream(filePath);
             config = new Properties();
             config.load(fis);
             fis.close();
@@ -40,7 +41,7 @@ public class BotRestController {
     }
 
     // NAVER Cloud SpeechToText
-    @RequestMapping("stt")
+    @PostMapping("stt")
     public StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
 
         // 최종 결과값 리턴 시 사용할 인스턴스 선언
@@ -52,13 +53,9 @@ public class BotRestController {
 
         try {
 
-            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
+            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
 
-            con.setUseCaches(false);
             con.setDoOutput(true);
-            con.setDoInput(true);
-            con.setConnectTimeout(10000);
-            con.setReadTimeout(10000);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Length", String.valueOf(audioFile.getSize()));
             con.setRequestProperty("Content-Type", "application/octet-stream");
@@ -119,11 +116,11 @@ public class BotRestController {
     }
 
     // NAVER Cloud ChatBot
-    @RequestMapping("chat")
-    public String chatBot(@RequestBody String text) throws Exception {
+    @RequestMapping(value = "chat", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<String> chatBot(@RequestBody String text) {
 
         // 최종 결과값 리턴시 사용할 변수 선언
-        String chatbotMessage = "";
+        JSONObject chatbotMessage = new JSONObject();
 
         String apiUrl = config.getProperty("api.bot.url");
         String secretKey = config.getProperty("api.bot.client.secret");
@@ -131,20 +128,15 @@ public class BotRestController {
         // 사용자 질문 텍스트 Request
         String message = getReqMessage(text);
 
-        System.out.println("::");
         logger.info("입력 질문: " + message);
 
         String encodeBase64String = makeSignature(message, secretKey);
 
         try {
 
-            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
+            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
 
-            con.setUseCaches(false);
             con.setDoOutput(true);
-            con.setDoInput(true);
-            con.setConnectTimeout(10000);
-            con.setReadTimeout(10000);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             con.setRequestProperty("X-NCP-CHATBOT_SIGNATURE", encodeBase64String);
@@ -160,53 +152,49 @@ public class BotRestController {
 
             int responseCode = con.getResponseCode();
 
-            if(responseCode == 200) {	// 정상 호출
-
+            if (responseCode == 200) {    // 정상 호출
                 br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
-
-            }	else {					// 오류 발생
-
+            } else {                    // 오류 발생
                 logger.error("API request failed with response code: " + responseCode);
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
+
+                // 예외 처리 후 바로 반환
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("API request failed with response code: " + responseCode);
             }
 
-            if(br != null) {
-
-                while ((decodedString = br.readLine()) != null) {
-
-                    chatbotMessage = decodedString;
-                }
-
-                br.close();
-
-                // 챗봇 텍스트 결과 출력
-                System.out.println("::");
-                logger.info("챗봇 응답: " + chatbotMessage);
+            StringBuilder response = new StringBuilder();
+            while ((decodedString = br.readLine()) != null) {
+                response.append(decodedString);
             }
+            br.close();
 
-        }	catch (Exception e) {
+            // 챗봇 텍스트 결과 출력
+            logger.info("챗봇 응답: " + response);
 
+            chatbotMessage = new JSONObject(response.toString());
+        } catch (Exception e) {
             logger.error("Failed to perform chatbot request", e);
+
+            // 예외 처리 후 바로 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to perform chatbot request");
         }
 
-        return chatbotMessage;
+        return ResponseEntity.ok(chatbotMessage.toString());
     }
 
     public static String makeSignature(String message, String secretKey) {
-
         try {
-            byte[] secrete_key_bytes = secretKey.getBytes(StandardCharsets.UTF_8);
+            byte[] secretKeyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
 
-            SecretKeySpec signingKey  = new SecretKeySpec(secrete_key_bytes, "HmacSHA256");
+            SecretKeySpec signingKey = new SecretKeySpec(secretKeyBytes, "HmacSHA256");
             Mac mac = Mac.getInstance("HmacSHA256");
             mac.init(signingKey);
 
             byte[] rawHmac = mac.doFinal(message.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(rawHmac);
         } catch (Exception e) {
-            logger.error("Failed to generate signature", e);
+            throw new RuntimeException("Failed to generate signature", e);
         }
-        return "";
     }
 
     public static String getReqMessage(String text) {
@@ -237,34 +225,28 @@ public class BotRestController {
             JSONObject data_obj = new JSONObject();
             data_obj.put("description", text);
 
-            bubbles_obj.put("type", "text");
             bubbles_obj.put("data", data_obj);
 
             JSONArray bubbles_array = new JSONArray();
             bubbles_array.put(bubbles_obj);
 
             obj.put("bubbles", bubbles_array);
-            //obj.put("event", "send");
 
-            if(Objects.equals(text, "동영상 보여줘")) {
-
+            if (Objects.equals(text, "동영상 보여줘")) {
                 obj.put("event", "open");
-
             } else {
-
                 obj.put("event", "send");
             }
             requestBody = obj.toString();
-
-        } catch (Exception e){
-
+        } catch (Exception e) {
             logger.error("Failed to create the request message", e);
         }
         return requestBody;
     }
 
+
     // NAVER Cloud TextToSpeech
-    @RequestMapping("tts")
+    @PostMapping("tts")
     public static ResponseEntity<byte[]> textToSpeech(@RequestBody String tts) throws Exception {
 
         String apiUrl = config.getProperty("api.tts.url");
@@ -277,13 +259,9 @@ public class BotRestController {
 
         try {
 
-            HttpsURLConnection con = (HttpsURLConnection) new URL(apiUrl).openConnection();
+            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
 
-            con.setUseCaches(false);
             con.setDoOutput(true);
-            con.setDoInput(true);
-            con.setConnectTimeout(10000);
-            con.setReadTimeout(10000);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
