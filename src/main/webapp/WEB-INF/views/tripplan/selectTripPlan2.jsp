@@ -255,7 +255,6 @@
             <div class="row" >
                 <div class="col-sm-12">
                     <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
-                    <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
                 </div>
             </div>
 
@@ -629,6 +628,39 @@
     $(function () { // 이전으로 돌아가기
         $("#history").on("click", function () {
             window.history.back();
+        });
+    });
+
+    // 유저닉네임, 프로필 클릭시 이동
+    $(document).ready(function() {
+        $('.author-img').hover(
+            function() {
+                $(this).css('cursor', 'pointer');
+                /* 마우스를 올렸을 때의 스타일 변경 */
+            },
+            function() {
+                $(this).css('cursor', 'auto');
+                /* 마우스가 벗어났을 때의 스타일 변경 */
+            }
+        );
+
+        $('.italic').hover(
+            function() {
+                $(this).css('cursor', 'pointer');
+                /* 마우스를 올렸을 때의 스타일 변경 */
+            },
+            function() {
+                $(this).css('cursor', 'auto');
+                /* 마우스가 벗어났을 때의 스타일 변경 */
+            }
+        );
+
+        $('.author-img').click(function() {
+            window.location.href = '/user/getUser?userId=${tripPlan.tripPlanAuthor}';
+        });
+
+        $('.italic').click(function() {
+            window.location.href = '/user/getUser?userId=${tripPlan.tripPlanAuthor}';
         });
     });
 
