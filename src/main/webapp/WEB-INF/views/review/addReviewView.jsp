@@ -383,7 +383,7 @@
         var reviewTitle = $("input[name='reviewTitle']").val();
         var reviewContents = $("textarea[name='reviewContents']").val();
         var tripPlanNo = "<c:out value='${tripPlanNo}' />";
-
+        var reviewNo = "<c:out value='${reviewNo}' />";
 
         if (reviewTitle == null || reviewTitle.length < 1) {
             alert("후기 제목을 반드시 입력하여야 합니다.");
@@ -393,10 +393,10 @@
             alert("후기 본문을 반드시 입력하여야 합니다.");
             return;
         }
+
         $("form")
             .attr("method", "post")
-            .attr("action", "/review/addReview?tripPlanNo=" + tripPlanNo +
-                "&tripPlanTitle=" + encodeURIComponent("${tripPlanTitle}"))
+            .attr("action", "/review/getReview?reviewNo=" + reviewNo);
             .submit();
     }
 
@@ -478,30 +478,31 @@ $(document).ready(function () {
 
 
 
-            <main class="white">
-                <form action="/review/addReview" method="post">
-                    <div class="container" style="margin: 30px;">
-                        <div class="form-group" style="margin-left: 30px;">
-                            <div>
-        <span>
+<main class="white">
+    <form action="/review/addReview" method="post">
+        <div class="container" style="margin: 30px;">
+            <div class="form-group" style="margin-left: 30px;">
+                <div>
+                                <span>
             <h4>
                 <input type="text" id="reviewTitle" name="reviewTitle" placeholder="제목을 입력하세요."
                        style="color: black; width: 82%; height: 40px; opacity: 0.5;">
             </h4>
         </span>
-                            </div>
 
-                            <h5>
-                                <label class="switch" title="타 회원에게 공개할지 비공개할지 설정할 수 있어요.">
-                                    <input class="isReviewPublic" type="checkbox" name="isReviewPublic" checked="checked" />
-                                    <span class="switch-label" data-on="True" data-off="False"></span>
-                                    <span>공개여부</span>
-                                    <span class="switch-handle"></span>
-                                </label>
-                                <!--<button type="button" class="btn btn-primary" id="checkStatusBtn">상태 확인</button>-->
-                            </h5>
+                </div>
 
-                        </div>
+                <h5>
+                    <label class="switch" title="타 회원에게 공개할지 비공개할지 설정할 수 있어요.">
+                        <input class="isReviewPublic" type="checkbox" name="isReviewPublic" checked="checked" />
+                        <span class="switch-label" data-on="True" data-off="False"></span>
+                        <span>공개여부</span>
+                        <span class="switch-handle"></span>
+                    </label>
+                    <!--<button type="button" class="btn btn-primary" id="checkStatusBtn">상태 확인</button>-->
+                </h5>
+
+            </div>
 
 
                         <c:set var="i" value="0"/>
@@ -529,98 +530,91 @@ $(document).ready(function () {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row" style="margin: 30px;">
-                                <div class="col-sm-9">
-                                    <div>
-                                        <textarea id="reviewContents" name="reviewContents" required></textarea>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-sm-3">
-
-
-                                    <div class="sidebar">
-                                        <div class="input-group">
-                                            <div class="input-group-btn">
-                                            </div>
+                                <div class="row"  style="margin: 30px;">
+                                    <div class="col-sm-9" >
+                                        <div>
+                                            <textarea id="reviewContents" name="reviewContents" required></textarea>
                                         </div>
+                                    </div>
 
 
-                                        <div class="border-box" style="height: 400px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
-                                            <div class="box-title">명소리스트
-                                                <div class="tag-link" style="text-align: right;">총 이동시간
-                                                    : ${dailyPlan.totalTripTime}</div>
-                                            </div>
-                                            <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                                                <div class="col-12 column" style="text-align: center; ">
-                                                    <div class="card text-white mb-3"
-                                                         style="width: auto; height: auto; font-size: 9px;">
-                                                        <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
-                                                            <h5 class="card-title" name="placeTitle">
-                                                                <div style="color: black; width: 100%;">
-                                                                    <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
-                                                                </div>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                    <c:if test="${place.tripTime != null}">
-                                                        <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"
-                                                             style="background-color: rgba(188,222,167,0.39); width: auto; height: auto; ">
-                                                            <div style=" color: black; display: inline-block;">이동시간: ${place.tripTime}</div>
-                                                        </div>
-                                                    </c:if>
+                                    <div class="col-sm-3">
+
+
+                                        <div class="sidebar">
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
                                                 </div>
+                                            </div>
 
-                                                <!-- place 반복문이 내부에있어서 해당 장소에 선언하였으며 마커와 오버레이를 보여주기 위한 스크립트 -->
 
-                                                <script type="text/javascript">
-                                                    var placeTags = "${place.placeTags}";
-                                                    var placePhoneNumber = "${place.placePhoneNumber}";
-                                                    var placeAddress = "${place.placeAddress}";
-                                                    var placeCategory = "${place.placeCategory}";
-                                                    var placeImage = "${place.placeImage}";
-                                                    var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
-                                                    var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
-                                                    var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
-                                                    var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
-                                                    var tripPath = '${place.tripPath}';
+                                            <div class="border-box" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
+                                                <div class="box-title">명소리스트
+                                                    <div class="tag-link" style="text-align: right;">총 이동시간
+                                                        : ${dailyPlan.totalTripTime}</div>
+                                                </div>
+                                                <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                                                    <div class="col-12 column" style="text-align: center; ">
+                                                        <div class="card text-white mb-3"
+                                                             style="width: auto; height: auto; font-size: 9px;">
+                                                            <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
+                                                                <h5 class="card-title" name="placeTitle">
+                                                                    <div style="color: black; width: 100%;">
+                                                                        <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
+                                                                    </div>
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                        <c:if test="${place.tripTime != null}">
+                                                            <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"
+                                                                 style="background-color: rgba(188,222,167,0.39); width: auto; height: auto; ">
+                                                                <div style=" color: black; display: inline-block;">이동시간: ${place.tripTime}</div>
+                                                            </div>
+                                                        </c:if>
+                                                    </div>
 
-                                                    var index = ${i-1};
-                                                    if(!pathInfo[index]) {
-                                                        pathInfo[index] = [];
-                                                    }
-                                                    pathInfo[index].push(tripPath);
+                                                    <!-- place 반복문이 내부에있어서 해당 장소에 선언하였으며 마커와 오버레이를 보여주기 위한 스크립트 -->
 
-                                                    // markers 배열에 좌표 및 맵 ID 정보 추가
-                                                    markers.push({
-                                                        position: markerPosition,
-                                                        mapId: mapId,
-                                                        placeTags: placeTags,
-                                                        placePhoneNumber: placePhoneNumber,
-                                                        placeAddress: placeAddress,
-                                                        placeCategory: placeCategory,
-                                                        placeImage: placeImage
-                                                    });
+                                                    <script type="text/javascript">
+                                                        var placeTags = "${place.placeTags}";
+                                                        var placePhoneNumber = "${place.placePhoneNumber}";
+                                                        var placeAddress = "${place.placeAddress}";
+                                                        var placeCategory = "${place.placeCategory}";
+                                                        var placeImage = "${place.placeImage}";
+                                                        var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
+                                                        var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
+                                                        var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
+                                                        var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
+                                                        var tripPath = '${place.tripPath}';
 
-                                                </script>
-                                            </c:forEach> <!-- place for end -->
+                                                        var index = ${i-1};
+                                                        if(!pathInfo[index]) {
+                                                            pathInfo[index] = [];
+                                                        }
+                                                        pathInfo[index].push(tripPath);
+
+                                                        // markers 배열에 좌표 및 맵 ID 정보 추가
+                                                        markers.push({
+                                                            position: markerPosition,
+                                                            mapId: mapId,
+                                                            placeTags: placeTags,
+                                                            placePhoneNumber: placePhoneNumber,
+                                                            placeAddress: placeAddress,
+                                                            placeCategory: placeCategory,
+                                                            placeImage: placeImage
+                                                        });
+
+                                                    </script>
+                                                </c:forEach> <!-- place for end -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            </c:forEach> <!-- dailyPlan for end -->
+                                </c:forEach> <!-- dailyPlan for end -->
                         </main>
 
-
-
-
-
-
-
-
+        </div>
 
 
                         <div class="form-group" style="display: none;">
@@ -826,7 +820,7 @@ $(document).ready(function () {
                 success: function (data) {
                     console.log(data);
                     if (data == -1) {
-                        alert("이미 추천한 여행플랜입니다.");
+                        alert("이미 추천한 후기입니다.");
                     } else if (data == 0) {
                         alert("비회원은 추천을 할수없습니다.");
                     } else {
@@ -887,6 +881,26 @@ $(document).ready(function () {
                         reviewThumbnail = imagePath.replace(/^\/imagePath\//, "");
                         console.log(reviewThumbnail);
                         $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + reviewThumbnail + "')");
+
+                        // 여행플랜 썸네일 저장하는 AJAX 요청
+                        $.ajax({
+                            url: "/review/reviewThumbnail", // DB에 썸네일 저장하는 엔드포인트 경로로 변경해야 합니다.
+                            type: "POST",
+                            data: {
+                                tripPlanNo: tripPlanNo,
+                                reviewThumbnail: reviewThumbnail,
+                            },
+                            success: function (response) {
+                                console.log("썸네일 저장 성공:", response);
+                                // 저장 성공 후 필요한 동작 수행
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("썸네일 저장 실패:", error);
+                            },
+                        });
+
+
+
                     },
                     error: function (xhr, status, error) {
                         console.log("파일 업로드 실패:", error);
@@ -896,12 +910,6 @@ $(document).ready(function () {
         });
     });
 
-    $(function () { // 업데이트 하러가기
-        $("button[id='updateTripPlan']").on("click", function () {
-            var tripPlanNo = "${tripPlan.tripPlanNo}";
-            window.location.href = "/tripPlan/updateTripPlanView?tripPlanNo=" + tripPlanNo;
-        });
-    });
 
     $(function () { // 이전으로 돌아가기
         $("#history").on("click", function () {

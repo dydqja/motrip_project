@@ -205,7 +205,9 @@ public class TripPlanController {
         User dbUser = userService.getUserById(tripPlan.getTripPlanAuthor()); // 해당 여행플랜에 작성자 닉네임을 위해 정보를 가져옴
 
         model.addAttribute("tripPlan", tripPlan);
-        model.addAttribute("nickName", dbUser.getNickname()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
+        model.addAttribute("userPhoto", dbUser.getUserPhoto()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
+
+        System.out.println(dbUser.getUserPhoto());
 
         return "tripplan/selectTripPlan2.jsp";
     }
@@ -227,12 +229,5 @@ public class TripPlanController {
         return "tripplan/updateTripPlan2.jsp";
     }
 
-
-    @GetMapping("testPlan")
-    public String testPlan() throws Exception {
-        System.out.println("GET : selectTripPlan()");
-
-        return "tripplan/selectTripPlan2.jsp";
-    }
 
 }

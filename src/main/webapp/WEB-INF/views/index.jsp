@@ -47,6 +47,26 @@
   <!-- Current Page JS -->
   <script src="/assets/js/min/home.min.js"></script>
   <script>
+    // user 닉네임 클릭시 마이페이지 이동
+    $(document).ready(function() {
+      $('.right h4').hover(
+          function() {
+            $(this).css('cursor', 'pointer');
+            /* 마우스를 올렸을 때의 스타일 변경 */
+          },
+          function() {
+            $(this).css('cursor', 'auto');
+            /* 마우스가 벗어났을 때의 스타일 변경 */
+          }
+      );
+
+      $('[class^="author"]').click(function() {
+        var tripPlanAuthor = $(this).find('.hidden').val()  // h4 요소의 텍스트를 가져옵니다.
+        window.location.href = '/user/getUser?userId=' + tripPlanAuthor;
+      });
+
+    });
+
     $(document).ready(function() {
       // AJAX 요청을 보내고 채팅방의 수를 가져오는 함수
       function listChatRoomCounter() {
@@ -150,6 +170,8 @@
               $(".title" + i + "").text(indexTripPlan[i].tripPlanTitle);
               $(".day" + i + "").text(indexTripPlan[i].tripDays + " Days");
               $(".author" + i + "").text(indexTripPlan[i].tripPlanNickName);
+              $(".author" + i + "").append('<input type="hidden" class="hidden" value="' + indexTripPlan[i].tripPlanAuthor + '">');
+
               var tripPlanThumbnail = indexTripPlan[i].tripPlanThumbnail;
               $("#item-img" + i).css("background-image", "url('/imagePath/thumbnail/" + tripPlanThumbnail + "')");
 
