@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<%--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">--%>
 
 </head>
 
@@ -66,7 +66,7 @@
 
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<%--  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>--%>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="/vendor/jquery/dist/jquery.min.js"></script>
   <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>

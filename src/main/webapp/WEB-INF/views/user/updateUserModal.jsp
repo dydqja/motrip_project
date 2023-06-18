@@ -226,12 +226,12 @@
 
                 <label for="selfIntro" class="label label-primary">자기소개</label>
 
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-secondary active">
-                    <input type="radio" name="selfIntroPublic" id="selfIntroPublicButton" value="true" autocomplete="off" checked> 공개
+                <div class="btn-group" data-toggle="buttons">
+                  <label class="btn btn-primary active" style="margin-right: 0;">
+                    <input type="radio" name="selfIntroPublic" id="selfIntroPublicButton" autocomplete="off" value="true" autocomplete="off" checked> 공개
                   </label>
-                  <label class="btn btn-secondary">
-                    <input type="radio" name="selfIntroPublic" id="selfIntroPrivateButton" value="false" autocomplete="off"> 비공개
+                  <label class="btn btn-primary">
+                    <input type="radio" name="selfIntroPublic" id="selfIntroPrivateButton" autocomplete="off" value="false" autocomplete="off"> 비공개
                   </label>
                 </div>
 
@@ -243,11 +243,11 @@
             <div class="form-group text-center">
               <label for="drop_zone" class="label label-primary">회원사진등록</label>
 
-              <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-secondary active">
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary active" style="margin-right: 0;">
                   <input type="radio" name="userPhotoPublic" id="userPhotoPublicButton" value="true" autocomplete="off" checked> 공개
                 </label>
-                <label class="btn btn-secondary">
+                <label class="btn btn-primary">
                   <input type="radio" name="userPhotoPublic" id="userPhotoPrivateButton" value="false" autocomplete="off"> 비공개
                 </label>
               </div>
@@ -259,11 +259,11 @@
             <div class="form-group text-center">
               <label for="drop_zone" class="label label-primary">SMS수신동의</label>
 
-              <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-secondary active">
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary active" style="margin-right: 0;">
                   <input type="radio" name="gettingSmsAlarm" id="SmsAlarmYes" value="true" autocomplete="off" checked> 동의
                 </label>
-                <label class="btn btn-secondary">
+                <label class="btn btn-primary">
                   <input type="radio" name="gettingSmsAlarm" id="SmsAlarmNo" value="false" autocomplete="off"> 비동의
                 </label>
               </div>
@@ -321,7 +321,7 @@
 
     $(document).ready(function() {
       // 모달 창이 숨겨질 때 실행될 이벤트를 설정합니다.
-      $('#findIdPwdModal').on('hidden.bs.modal', function () {
+      $('#updateUserModal').on('hidden.bs.modal', function () {
         // 모달 내의 모든 입력 필드를 초기화합니다.
         $(this).find('input').val('');
         location.reload();
@@ -575,7 +575,7 @@
       }
     });
 
-    //변경비밀번호와 변경비밀번호 일치하는지 체크
+    //변경비밀번호와 변경비밀번호확인 일치하는지 체크
     let updatePwdConfirmChecked=false;
     $(document).ready(function() {
 
@@ -718,7 +718,7 @@
     $(document).ready(function() {
       var smsConfirmNum = null;
 
-      $("#phoneNumber").on("input", function() {
+      $("#phone").on("input", function() {
         isPhoneNumberVerified = false;
       });
 

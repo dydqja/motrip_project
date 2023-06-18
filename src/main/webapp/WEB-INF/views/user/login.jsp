@@ -24,6 +24,8 @@
 
 </head>
 
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+
 <body class="login" style="background-image: url('/images/user/login.jpg'); opacity: 1;">
 <%--<%@ include file="/WEB-INF/views/layout/header.jsp" %>--%>
 <div class="pre-loader">

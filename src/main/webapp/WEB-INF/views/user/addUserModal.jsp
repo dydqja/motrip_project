@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/font/font-awesome/css/font-awesome.css" media="all">
     <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<%--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">--%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"/>
 
@@ -139,7 +139,7 @@
           <h3 class="modal-title" style="margin-right: 0; color: white;">MoTrip 회원가입</h3>
               <button type="button" class="close hvr-grow" data-dismiss="modal" aria-hidden="true" style="color: #8B2955;">×</button>
         </div>
-        <div class="modal-body" style="display: flex; margin : 0% 15%;">
+        <div class="modal-body" style="display: flex; margin : 0% 20%;">
 
             <div class="col-sm-12">
                 <form id="addUserForm">
@@ -231,11 +231,11 @@
                         <div style="margin-right: 20%; ">
                             <label for="selfIntro" class="label label-primary">자기소개</label>
 
-                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                <label class="btn btn-secondary active">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-primary active">
                                     <input type="radio" name="selfIntroPublic" id="selfIntroPublic" value="true" autocomplete="off" checked> 공개
                                 </label>
-                                <label class="btn btn-secondary">
+                                <label class="btn btn-primary">
                                     <input type="radio" name="selfIntroPublic" id="selfIntroPrivate" value="false" autocomplete="off"> 비공개
                                 </label>
                             </div>
@@ -248,11 +248,11 @@
                     <div class="form-group text-left">
                         <label for="drop_zone" class="label label-primary">회원사진등록</label>
 
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-secondary active">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary active">
                                 <input type="radio" name="userPhotoPublic" id="userPhotoPublic" value="true" autocomplete="off" checked> 공개
                             </label>
-                            <label class="btn btn-secondary">
+                            <label class="btn btn-primary">
                                 <input type="radio" name="userPhotoPublic" id="userPhotoPrivate" value="false" autocomplete="off"> 비공개
                             </label>
                         </div>
@@ -264,11 +264,11 @@
                     <div class="form-group text-left">
                         <label for="drop_zone" class="label label-primary">SMS수신동의</label>
 
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-secondary active">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary active">
                                 <input type="radio" name="gettingSmsAlarm" id="SmsAlarmYes" value="true" autocomplete="off" checked> 동의
                             </label>
-                            <label class="btn btn-secondary">
+                            <label class="btn btn-primary">
                                 <input type="radio" name="gettingSmsAlarm" id="SmsAlarmNo" value="false" autocomplete="off"> 비동의
                             </label>
                         </div>
@@ -287,7 +287,7 @@
 
 <%--<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>--%>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<%--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>--%>
 <script src="/vendor/jquery/dist/jquery.min.js"></script>
 <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="/vendor/jquery.ui.touch-punch.min.js"></script>

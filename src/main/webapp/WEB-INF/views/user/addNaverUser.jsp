@@ -214,7 +214,7 @@
 
         <div class="footer text-center" style="margin-top: 10px; background-color: #003049;">
             <button type="button" class="pwd-btn" id="commit" style="background-color: #FFB347;">가입</button>
-            <button type="button" class="pwd-btn" style="background-color: #8B2955;" data-dismiss="modal">취소</button>
+            <button type="button" class="pwd-btn" id="cancle" style="background-color: #8B2955;">취소</button>
         </div>
     </div>
 
@@ -246,6 +246,14 @@
 
             $( "#commit" ).on("click" , function() {
                 fncAddUser();
+            });
+        });
+
+        //취소
+        $(function() {
+
+            $( "#cancle" ).on("click" , function() {
+                window.location.href = "/";
             });
         });
 
