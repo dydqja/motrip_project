@@ -66,6 +66,7 @@
             font-weight: bold; /* 굵은 글씨체 설정 */
         }
     </style>
+
     <style>
         /* 리스트 css */
         .column {
@@ -137,6 +138,50 @@
 
     </style>
 
+    <style>
+        /* 버튼 스타일 조정 */
+        .scroll-button {
+            position: fixed;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* 첫 번째 버튼 위치 조정 */
+        .scroll-button:first-child {
+            top: calc(50% - 20px);
+        }
+
+        .fixed-div {
+            position: fixed;
+            top: 30%;
+            right: 10px;
+            transform: translateY(-50%);
+            background-color: #558B2F;
+            color: #fff;
+            padding: 2px 2px;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            var scrollButtonTop = document.querySelectorAll('.scroll-button')[0];
+            var scrollButtonBottom = document.querySelectorAll('.scroll-button')[1];
+
+            // 맨 위로 이동 버튼 클릭 시
+            scrollButtonTop.addEventListener('click', function() {
+                window.scrollTo(0, 0);
+            });
+
+            // 맨 아래로 이동 버튼 클릭 시
+            scrollButtonBottom.addEventListener('click', function() {
+                window.scrollTo(0, document.documentElement.scrollHeight || document.body.scrollHeight);
+            });
+        });
+    </script>
+
 </head>
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
@@ -174,12 +219,14 @@
         <div class="container">
             <div>
                 <div style="text-align: right;">
-                    <div class="btn btn-sm btn-success icon-date">여행일수</div>
+                    <div class="fixed-div btn btn-sm btn-success icon-date">여행일수
                     <div>
                         <button class="btn btn-sm btn-success icon-triangle-up" id="btnAddTripDay"
                                 style="background-color: #558B2F;"></button>
                         <button class="btn btn-sm btn-success icon-triangle-down" id="btnRemoveTripDay"
                                 style="background-color: #558B2F;"></button>
+                    </div>
+                        <div>추가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제거</div>
                     </div>
                 </div>
             </div>
@@ -242,6 +289,11 @@
 
         </div>
     </main>
+
+    <div style="display: flex">
+        <button class="scroll-button btn btn-sm btn-success" style="width: 70px">up</button>
+        <button class="scroll-button btn btn-sm btn-success" style="width: 70px">down</button>
+    </div>
 </div>
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
