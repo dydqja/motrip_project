@@ -40,83 +40,8 @@ public class BotRestController {
         }
     }
 
-    // NAVER Cloud SpeechToText
-    @PostMapping("stt")
-    public StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
-
-        // 최종 결과값 리턴 시 사용할 인스턴스 선언
-        StringBuffer response = new StringBuffer();
-
-        String apiUrl = config.getProperty("api.stt.url");
-        String clientId = config.getProperty("api.stt.client.id");
-        String clientSecret = config.getProperty("api.stt.client.secret");
-
-        try {
-
-            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
-
-            con.setDoOutput(true);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Length", String.valueOf(audioFile.getSize()));
-            con.setRequestProperty("Content-Type", "application/octet-stream");
-            con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
-            con.setRequestProperty("X-NCP-APIGW-API-KEY", clientSecret);
-
-            //Client에서 넘어온 바이너리 음성 데이터 타입 변환
-            InputStream inputStream = audioFile.getInputStream();
-
-            // 네이버 API 로 바이너리 음성 파일 전송 준비
-            OutputStream outputStream = con.getOutputStream();
-
-            byte[] buffer = new byte[4096];
-            int bytesRead = -1;
-
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-
-            //네이버 API 로 바이너리 음성 파일 전송
-            outputStream.flush();
-            outputStream.close();
-            inputStream.close();
-
-            BufferedReader br;
-            String inputLine;
-
-            int responseCode = con.getResponseCode();
-
-            if(responseCode == 200) {	// 정상 호출
-
-                br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
-
-            }	else {					// 오류 발생
-
-                System.out.println("error!!!!!!! responseCode= " + responseCode);
-                br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
-            }
-
-            while ((inputLine = br.readLine()) != null) {
-
-                response.append(inputLine);
-            }
-
-            br.close();
-
-            // 음성변환 텍스트 결과 출력
-            System.out.println("::");
-            logger.info("음성 변환 결과: " + response);
-
-
-        }	catch (Exception e) {
-
-            logger.error("Failed to perform speech-to-text conversion", e);
-        }
-
-        return response;
-    }
-
     // NAVER Cloud ChatBot
-    @PostMapping("chat")
+    @RequestMapping("chat")
     public ResponseEntity<String> chatBot(@RequestBody String text) {
 
         // 최종 결과값 리턴시 사용할 변수 선언
@@ -245,8 +170,83 @@ public class BotRestController {
     }
 
 
+    // NAVER Cloud SpeechToText
+    @RequestMapping("stt")
+    public StringBuffer speechToText(@RequestPart("audio")MultipartFile audioFile) throws Exception {
+
+        // 최종 결과값 리턴 시 사용할 인스턴스 선언
+        StringBuffer response = new StringBuffer();
+
+        String apiUrl = config.getProperty("api.stt.url");
+        String clientId = config.getProperty("api.stt.client.id");
+        String clientSecret = config.getProperty("api.stt.client.secret");
+
+        try {
+
+            HttpURLConnection con = (HttpURLConnection) new URL(apiUrl).openConnection();
+
+            con.setDoOutput(true);
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Length", String.valueOf(audioFile.getSize()));
+            con.setRequestProperty("Content-Type", "application/octet-stream");
+            con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
+            con.setRequestProperty("X-NCP-APIGW-API-KEY", clientSecret);
+
+            //Client에서 넘어온 바이너리 음성 데이터 타입 변환
+            InputStream inputStream = audioFile.getInputStream();
+
+            // 네이버 API 로 바이너리 음성 파일 전송 준비
+            OutputStream outputStream = con.getOutputStream();
+
+            byte[] buffer = new byte[4096];
+            int bytesRead = -1;
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            //네이버 API 로 바이너리 음성 파일 전송
+            outputStream.flush();
+            outputStream.close();
+            inputStream.close();
+
+            BufferedReader br;
+            String inputLine;
+
+            int responseCode = con.getResponseCode();
+
+            if(responseCode == 200) {	// 정상 호출
+
+                br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+
+            }	else {					// 오류 발생
+
+                System.out.println("error!!!!!!! responseCode= " + responseCode);
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
+            }
+
+            while ((inputLine = br.readLine()) != null) {
+
+                response.append(inputLine);
+            }
+
+            br.close();
+
+            // 음성변환 텍스트 결과 출력
+            System.out.println("::");
+            logger.info("음성 변환 결과: " + response);
+
+
+        }	catch (Exception e) {
+
+            logger.error("Failed to perform speech-to-text conversion", e);
+        }
+
+        return response;
+    }
+
     // NAVER Cloud TextToSpeech
-    @PostMapping("tts")
+    @RequestMapping("tts")
     public static ResponseEntity<byte[]> textToSpeech(@RequestBody String tts) throws Exception {
 
         String apiUrl = config.getProperty("api.tts.url");
@@ -332,7 +332,7 @@ public class BotRestController {
     }
 
     // 페이지 내비게이션 서비스
-    @PostMapping("navi")
+    @RequestMapping("navi")
     public ResponseEntity<Map<String, String[]>> pageNavigation(@RequestBody(required = false) Map<String, String[]> data, HttpServletRequest request) throws Exception {
         if (data != null && data.containsKey("url")) {
             String[] urls = data.get("url");
