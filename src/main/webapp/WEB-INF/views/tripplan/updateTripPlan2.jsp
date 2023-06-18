@@ -251,8 +251,8 @@
                             <div class="border-box list${i-1}"
                                  style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
                                 <div class="box-title">명소리스트
-                                    <div class="tag-link" style="text-align: right;"
-                                         id="totalTripTime${i-1}" style="font-size: 5px;">총 시간:
+                                    <div class="card text-white mb-3 btn btn-sm btn-info" style="background-color: rgb(255,254,255); color: black; text-align: right;"
+                                         id="totalTripTime${i-1}" style="font-size: 5px;">
                                         <c:if test="${dailyPlan.totalTripTime >= 60}">
                                             <script>
                                                 var hours = Math.floor(totalTripTime / 60);
@@ -286,8 +286,8 @@
                                                     </div>
                                                 </div>
                                             <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" id="tripTime${i - 1}" data-index="${j - 1}"
-                                                 style="background-color: rgba(188,222,167,0.39); width: auto; height: auto; ">
-                                                <div style=" color: black; display: inline-block;">이동시간:
+                                                 style="background-color: rgb(255,255,255); color: black; width: auto; height: auto; ">
+                                                <div style=" color: black; display: inline-block;">
                                                     <c:if test="${place.tripTime >= 60}">
                                                         <script>
                                                             totalTripTime = ${place.tripTime};
@@ -299,7 +299,7 @@
                                                         ${formattedTime}
                                                     </c:if>
                                                     <c:if test="${place.tripTime < 60}">
-                                                        ${place.tripTime} 분
+                                                        ${place.tripTime}분
                                                     </c:if>
                                                 </div>
                                             </div>
@@ -376,11 +376,12 @@
 </div>
 <hr />
 </c:forEach>
-<div class="addDaily" id="addDaily" style="text-align: right;">
-    <button class="btn btn-primary" id="btnUpdateTripPlan">수정</button>
-    <button class="btn btn-primary" id="history">취소</button>
+
 </div>
-</div>
+    <div class="addDaily" id="addDaily" style="text-align: right;">
+        <button class="btn btn-primary" id="btnUpdateTripPlan">수정</button>
+        <button class="btn btn-primary" id="history">취소</button>
+    </div>
 </main>
 </div>
 
@@ -765,7 +766,7 @@
                                 '</div>' +
                                 '</div>' +
                                 '<div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" id="tripTime' + indexCheck + '" data-index="' + varStatusIndex + '"' +
-                                'style="background-color: rgba(188,222,167,0.39); color: black; width: auto; height: auto; ">' +
+                                'style="background-color: rgb(255,255,255); color: black; width: auto; height: auto; ">' +
                                 '<div style="color: black; display: inline-block;"></div>' +
                                 '</div>' +
                                 '</div>';
@@ -835,6 +836,9 @@
                         polylineArray[indexCheck].push(polyline);
 
                         polyline.setMap(maps[indexCheck]);
+
+                        console.log("총시간확인")
+                        console.log(totalTripTimes[indexCheck]);
 
                         var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (varStatusIndex - 1) + '"]');
                         if (hour == 0) {
@@ -995,14 +999,6 @@
 
                 console.log(allPlaces['map' + i])
 
-                // for (var j = 0; j < placeSum; j++) {
-                //   var placeText = allPlaces['map' + i][j];
-                //   var tripTimeText = placeTripTimes['map' + i][j];
-                //   var place = placeText;
-                //   place.tripTime = tripTimeText; // 시간 값을 할당
-                //   placeInfo.push(JSON.stringify(placeText));
-                // }
-
                 for (var j = 0; j < placeSum; j++) {
                     placeInfo.push(JSON.stringify(allPlaces['map' + i][j]));
                 }
@@ -1124,7 +1120,7 @@
                 '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' +
                 '<div class="border-box list' + idCheck + '" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">' +
                 '<div class="box-title">명소리스트' +
-                '<div class="tag-link" id="totalTripTime' + idCheck + '" style="text-align: right; display: inline-block; border: none;"></div>' +
+                '<div class="card text-white mb-3 btn btn-sm btn-info" id="totalTripTime' + idCheck + '" style="background-color: rgb(255,254,255); color: black; text-align: right; display: inline-block; border: none;"></div>' +
                 '</div>' + '</div>' + '</div>' + '</div>' + '</div><hr/>';
 
 
@@ -1256,9 +1252,8 @@
             if(totalTripTimes[indexCheck] == 0) {
                 $("#totalTripTime" + indexCheck).text("");
             } else {
-                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+                $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck])); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
             }
-            console.log("000000000")
             console.log(totalTripTimes[indexCheck]);
 
             placeTripTimes['map' + indexCheck].splice(index, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
@@ -1329,14 +1324,24 @@
 
             console.log("0이상의 값으로 시작")
 
+            // 이부분은 맨마지막 항목을 제외했을때에도 체크하기 위해서 급하게 작성되었음
+            var safeTripTime = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
+            var content = safeTripTime.innerHTML;
+            var numbers = content.match(/\d+/g);
+            var minutes = parseInt(numbers[0]);
+
+            var safeTotalTripTime = (totalTripTimes[indexCheck] - minutes); // 맨마지막 항목을 제외했을때 비교하는
+            console.log(safeTotalTripTime);
+
+
             totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index - 1];
             totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index];
             if(isNaN()) {
                 $("#totalTripTime" + indexCheck).text("");
             } else {
-                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+                $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck])); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
             }
-            console.log("1111111111")
+            console.log("여기서 다시한번 총시간 체크")
             console.log(totalTripTimes[indexCheck]);
 
             placeTripTimes['map' + indexCheck].splice(index - 1, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
@@ -1397,6 +1402,21 @@
 
             console.log(start)
             console.log(end)
+
+            if(end == null){
+
+                allPlaces['map' + indexCheck][index-1].tripTime = "";
+                allPlaces['map' + indexCheck][index-1].tripPath = "";
+
+                console.log("이부분체크필요함")
+                console.log(allPlaces['map' + indexCheck])
+
+                $("#totalTripTime" + indexCheck).text(formatTime(safeTotalTripTime));
+                var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
+                tripTimeEl.textContent = "";
+                totalTripTimes[indexCheck] = safeTotalTripTime;
+            }
+
         }
 
         if (end !== null && start !== null && start !== end && end !== undefined && start !== undefined && end !== 'undefined' && start !== 'undefined') { // 마지막 값이 없거나 명소가 같을 경우에는 찾지않음
@@ -1433,17 +1453,29 @@
                     console.log("33333333")
                     console.log(tripTimeEl);
                     if (hour == 0) {
-                        tripTimeEl.textContent = minute;
+                        if (minute === 30) {
+                            tripTimeEl.textContent = "30분";
+                        } else {
+                            tripTimeEl.textContent = minute + "분";
+                        }
                         placeData[indexCheck][index-1].tripTime = minute;
                         placeTripTimes['map' + indexCheck].push(minute);
                         totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck] || 0)) + minute;
                     } else {
-                        tripTimeEl.textContent = (hour * 60) + minute;
+                        if (minute > 0) {
+                            if (minute >= 60) {
+                                hour++; // 분이 60 이상인 경우 시간을 1 증가시킴
+                                minute -= 60; // 분에서 60을 뺀 나머지를 계산
+                            }
+                            tripTimeText += " " + minute + "분";
+                        }
+                        tripTimeEl.textContent = tripTimeText;
                         placeData[indexCheck][index-1].tripTime = ((hour * 60) + minute);
                         placeTripTimes['map' + indexCheck].push((hour * 60) + minute);
                         totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck] || 0)) + (hour * 60) + minute;
                     }
-                    $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]);
+                    $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck]));
+
                 },
                 error: function (xhr, status, error) {
                     console.log(error);
@@ -1451,6 +1483,21 @@
             });
         }
     });
+
+    function formatTime(minutes) {
+        var hours = Math.floor(minutes / 60);
+        var remainingMinutes = minutes % 60;
+        var formattedTime = "";
+
+        if (hours > 0) {
+            formattedTime += hours + "시간 ";
+        }
+        if (remainingMinutes > 0) {
+            formattedTime += remainingMinutes + "분";
+        }
+
+        return formattedTime;
+    }
 
     $(function () { // 이전으로 돌아가기
         $("#history").on("click", function () {

@@ -226,9 +226,9 @@
                         <div class="border-box list0"
                              style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
                             <div class="box-title ">명소리스트
-                                <div class="tag-link"
+                                <div class="card text-white mb-3 btn btn-sm btn-info"
                                      id="totalTripTime0"
-                                     style="text-align: right; display: inline-block; border: none;"></div>
+                                     style="background-color: rgb(255,254,255); color: black; text-align: right; display: inline-block; border: none;"></div>
                             </div>
 
                         </div>
@@ -532,7 +532,7 @@
                                 '</div>' +
                                 '</div>' +
                                 '<div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" id="tripTime' + indexCheck + '" data-index="' + varStatusIndex + '"' +
-                                'style="background-color: rgba(188,222,167,0.39); color: black; width: auto; height: auto; ">' +
+                                'style="background-color: rgb(255,255,255); color: black; width: auto; height: auto; ">' +
                                 '<div style="color: black; display: inline-block;"></div>' +
                                 '</div>' +
                                 '</div>';
@@ -979,7 +979,7 @@
                 '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' +
                 '<div class="border-box list' + idCheck + '" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">' +
                 '<div class="box-title">명소리스트' +
-                '<div class="tag-link" id="totalTripTime' + idCheck + '" style="text-align: right; display: inline-block; border: none;"></div>' +
+                '<div class="card text-white mb-3 btn btn-sm btn-info" id="totalTripTime' + idCheck + '" style="background-color: rgb(255,254,255); color: black; text-align: right; display: inline-block; border: none;"></div>' +
                 '</div>' + '</div>' + '</div>' + '</div>' + '</div>';
 
             // 동적으로 생성한 요소들을 DOM에 추가
@@ -1106,7 +1106,7 @@
             if (totalTripTimes[indexCheck] == 0 && totalTripTimes[indexCheck] == NaN) {
                 $("#totalTripTime" + indexCheck).text("");
             } else {
-                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+                $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck])); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
             }
 
             placeTripTimes['map' + indexCheck].splice(index, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
@@ -1179,13 +1179,23 @@
 
             console.log("0이상의 값으로 시작")
 
+            // 이부분은 맨마지막 항목을 제외했을때에도 체크하기 위해서 급하게 작성되었음
+            var safeTripTime = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
+            var content = safeTripTime.innerHTML;
+            var numbers = content.match(/\d+/g);
+            var minutes = parseInt(numbers[0]);
+
+            var safeTotalTripTime = (totalTripTimes[indexCheck] - minutes); // 맨마지막 항목을 제외했을때 비교하는
+            console.log(safeTotalTripTime);
+
+
             totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index - 1];
             totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index];
             console.log(totalTripTimes[indexCheck])
             if (isNaN()) {
                 $("#totalTripTime" + indexCheck).text("");
             } else {
-                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+                $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck])); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
             }
 
             placeTripTimes['map' + indexCheck].splice(index - 1, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
@@ -1206,9 +1216,7 @@
 
             polylineArray[indexCheck].splice(index - 1, index + 1); // 폴리라인 삭제
 
-            console.log("지웠을때 어디인지 확인해야하고 고치자")
             placeData[indexCheck].splice(index, index); // 최종 데이터값인데 처음부터 이걸로할걸...
-            console.log(placeData[indexCheck]);
 
             // 이후 남아있는 리스트박스들의 id 값을 업데이트
             var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
@@ -1248,6 +1256,20 @@
 
             console.log(start)
             console.log(end)
+
+            if(end == null){
+
+                allPlaces['map' + indexCheck][index-1].tripTime = "";
+                allPlaces['map' + indexCheck][index-1].tripPath = "";
+
+                console.log("이부분체크필요함")
+                console.log(allPlaces['map' + indexCheck])
+
+                $("#totalTripTime" + indexCheck).text(formatTime(safeTotalTripTime));
+                var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
+                tripTimeEl.textContent = "";
+                totalTripTimes[indexCheck] = safeTotalTripTime;
+            }
         }
 
 
@@ -1309,22 +1331,6 @@
                     }
                     $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck]));
 
-                    function formatTime(minutes) {
-                        var hours = Math.floor(minutes / 60);
-                        var remainingMinutes = minutes % 60;
-                        var formattedTime = "";
-
-                        if (hours > 0) {
-                            formattedTime += hours + "시간 ";
-                        }
-                        if (remainingMinutes > 0) {
-                            formattedTime += remainingMinutes + "분";
-                        }
-
-                        return formattedTime;
-                    }
-
-                    console.log("가운데 값 지우니까 난리나네 하")
                     console.log(placeData[indexCheck]);
                 },
                 error: function (xhr, status, error) {
@@ -1333,6 +1339,21 @@
             });
         }
     });
+
+    function formatTime(minutes) {
+        var hours = Math.floor(minutes / 60);
+        var remainingMinutes = minutes % 60;
+        var formattedTime = "";
+
+        if (hours > 0) {
+            formattedTime += hours + "시간 ";
+        }
+        if (remainingMinutes > 0) {
+            formattedTime += remainingMinutes + "분";
+        }
+
+        return formattedTime;
+    }
 
     // 여행플랜 썸네일
     $("#tripPlanThumbnail").click(function () {

@@ -281,7 +281,8 @@
 
                         <div class="border-box" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px; ">
                             <div class="box-title">명소리스트
-                                <div class="card text-white mb-3 btn btn-sm btn-info" style="background-color: rgba(218,218,218,0.22); text-align: right; font-size: 11px; color: black; pointer-events: none;">총 이동시간
+                                <c:if test="${dailyPlan.totalTripTime != 0 && dailyPlan.totalTripTime != null}">
+                                <div class="card text-white mb-3 btn btn-sm btn-info" style="background-color: rgb(255,254,255); text-align: right; font-size: 11px; color: black; pointer-events: none;">총 이동시간
                                     :
                                     <c:if test="${dailyPlan.totalTripTime >= 60}">
                                         <script>
@@ -297,7 +298,7 @@
                                         ${dailyPlan.totalTripTime}분
                                     </c:if>
                                 </div>
-
+                                </c:if>
                             </div>
                             <c:set var="j" value="0"/>
                             <c:forEach var="place" items="${dailyPlan.placeResultMap}">
@@ -314,11 +315,11 @@
                                             </h5>
                                         </div>
                                     </div>
-                                    <c:if test="${place.tripTime != null}">
+                                    <c:if test="${place.tripTime != 0 && place.tripTime != null}">
                                     <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"
-                                         style="background-color: rgba(218,218,218,0.22); width: auto; height: auto; pointer-events: none;">
+                                         style="background-color: rgb(255,255,255); width: auto; height: auto; pointer-events: none;">
                                             <label class="icon-arrow-down" style=" color: #88e0c6; font-size: 15px;"></label>
-                                            <div style=" color: black; display: inline-block; font-size: 7px;">이동시간:
+                                            <div style=" color: black; display: inline-block; font-size: 7px;">
                                                 <c:if test="${place.tripTime >= 60}">
                                                     <script>
                                                         console.log(${place.tripTime});
@@ -331,7 +332,7 @@
                                                     ${formattedTime}
                                                 </c:if>
                                                 <c:if test="${place.tripTime < 60}">
-                                                    ${place.tripTime} 분
+                                                    ${place.tripTime}분
                                                 </c:if>
                                             </div>
                                     </div>
