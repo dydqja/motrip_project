@@ -14,7 +14,7 @@
     <!-- 구분선 -->
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
-<%--    <link rel="stylesheet" href="/css/tripplan/tripplan.css">--%>
+    <link rel="stylesheet" href="/css/tripplan/tripplan.css">
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
     <link rel="stylesheet" href="/summernote/summernote.css">
@@ -272,9 +272,9 @@
 
                     <div class="sidebar">
 
-                        <div class="border-box" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
+                        <div class="border-box" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px; ">
                             <div class="box-title">명소리스트
-                                <div class="tag-link" style="text-align: right; width 15px; font-size: 10px; color: black;">총 시간
+                                <div class="card text-white mb-3 btn btn-sm btn-info" style="background-color: rgba(218,218,218,0.22); text-align: right; font-size: 11px; color: black; pointer-events: none;">총 이동시간
                                     :
                                     <c:if test="${dailyPlan.totalTripTime >= 60}">
                                         <script>
@@ -292,13 +292,15 @@
                                 </div>
 
                             </div>
+                            <c:set var="j" value="0"/>
                             <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                                <c:set var="j" value="${ j+1 }"/>
 
                                 <div class="col-12 column" style="text-align: center; ">
-                                    <div class="card text-white mb-3"
+                                    <div class="card text-white mb-3" id="tripTitle${i-1}"
                                          style="width: auto; height: auto; font-size: 9px;">
                                         <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
-                                            <h5 class="card-title" name="placeTitle">
+                                            <h5 class="card-title${i-1}" name="placeTitle" data-index="${j-1}">
                                                 <div style="color: black; width: 100%;">
                                                     <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
                                                 </div>
@@ -307,8 +309,9 @@
                                     </div>
                                     <c:if test="${place.tripTime != null}">
                                     <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"
-                                         style="background-color: rgba(188,222,167,0.39); width: auto; height: auto; ">
-                                            <div style=" color: black; display: inline-block;">이동시간:
+                                         style="background-color: rgba(218,218,218,0.22); width: auto; height: auto; pointer-events: none;">
+                                            <label class="icon-arrow-down" style=" color: #88e0c6; font-size: 15px;"></label>
+                                            <div style=" color: black; display: inline-block; font-size: 7px;">이동시간:
                                                 <c:if test="${place.tripTime >= 60}">
                                                     <script>
                                                         console.log(${place.tripTime});
@@ -390,6 +393,7 @@
 <script type="text/javascript">
 
     let tripDays = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
+    let indexCheck = [];
 
     $(function () { // 저장되었던 맵의 갯수 만큼 출력하고 세팅
 
@@ -430,34 +434,48 @@
                 return marker.mapId === mapId;
             });
 
+            if (!indexCheck[mapId]) {
+                indexCheck[mapId] = [];
+            }
+
             $(mapMarkers).each(function (index, marker) {
-                var markerOptions = {
-                    position: marker.position,
-                    map: map
-                };
-                var marker = new kakao.maps.Marker(markerOptions);
-                marker.setMap(map);
-                bounds.extend(markerOptions.position);
+                var newMarker = addMarker(marker.position, index);
+                newMarker.setMap(map);
+
+                indexCheck[mapId].push(index);
+                bounds.extend(marker.position);
             });
 
-            // 바운드의 범위를 한 단계만 더 가깝게 설정
-            var extraPadding = 0.1; // 조절 가능한 추가 간격 (0.1은 10%를 의미)
-            var ne = bounds.getNorthEast();
-            var sw = bounds.getSouthWest();
-            var deltaX = (ne.getLng() - sw.getLng()) * extraPadding;
-            var deltaY = (ne.getLat() - sw.getLat()) * extraPadding;
-            var extendedNE = new kakao.maps.LatLng(ne.getLat() + deltaY, ne.getLng() + deltaX);
-            var extendedSW = new kakao.maps.LatLng(sw.getLat() - deltaY, sw.getLng() - deltaX);
-            bounds.extend(extendedNE);
-            bounds.extend(extendedSW);
+            console.log("test")
+            console.log(indexCheck);
 
             map.setBounds(bounds);
         });
 
     });
 
+    function addMarker(position, idx) {
+        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
+        var imageSize = new kakao.maps.Size(36, 37);
+        var imgOptions = {
+            spriteSize: new kakao.maps.Size(36, 691),
+            spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10),
+            offset: new kakao.maps.Point(13, 37)
+        };
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+        var marker = new kakao.maps.Marker({
+            position: position,
+            image: markerImage
+        });
+
+        return marker;
+    }
+
     $(function () { // 오버레이 표시
         var overlays = [];
+        var position = [];
+        var makerIndex = 0;
+
         for (var i = 0; i < markers.length; i++) { // 각 지도에 맞춰서 마커들을 표시
             var mapId = markers[i].mapId;
             var mapIndex = parseInt(mapId.replace("map", ""));
@@ -465,8 +483,20 @@
                 position: markers[i].position,
                 map: maps[mapIndex]
             };
-            var marker = new kakao.maps.Marker(markerOptions);
+
+            var marker = addMarker(markerOptions.position, makerIndex);
             marker.setMap(markerOptions.map);
+
+            makerIndex++;
+            if (makerIndex >= indexCheck[mapId].length) {
+                makerIndex = 0;  // index가 indexCheck[mapId].length보다 크거나 같으면 0으로 초기화
+            }
+
+            if (!position[mapIndex]) {
+                position[mapIndex] = [];
+            }
+
+            position[mapIndex].push(marker);
 
             var category = '';
             if (markers[i].placeCategory == 0) {
@@ -490,7 +520,7 @@
                 '           </div>' +
                 '            <div class="desc">' +
                 '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
-                '                <div class="category">(카테고리) ' + category + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
+                '                <div class="category">(전화번호) ' + markers[i].placePhoneNumber + '</div>' +
                 '    </div></div></div></div>';
 
             var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
@@ -507,7 +537,7 @@
 
                 // 마커를 클릭했을 때 오버레이 표시
                 kakao.maps.event.addListener(marker, 'click', function () {
-                    maps[mapIndex].setLevel(3); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
+                    maps[mapIndex].setLevel(5); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
                     maps[mapIndex].panTo(marker.getPosition()); // 해당 마커 위치로 지도 이동
                     overlay.setMap(maps[mapIndex]);
                 });
@@ -515,6 +545,20 @@
                 // 지도상 어디든 클릭했을 때 오버레이 숨김
                 kakao.maps.event.addListener(maps[mapIndex], 'click', function () {
                     overlay.setMap(null);
+                });
+
+                $('.card-title' + mapIndex).click(function() {
+
+                    var dataIndex = parseInt($(this).attr('data-index'));
+                    console.log(dataIndex);
+                    console.log(position[mapIndex][dataIndex]);
+
+                    // 해당 마커를 클릭한 것처럼 동작
+                    maps[mapIndex].setLevel(5);
+                    maps[mapIndex].panTo(position[mapIndex][dataIndex].getPosition());
+                    overlay.setMap(null);
+                    overlay.setMap(maps[mapIndex]);
+
                 });
 
                 // 화면 초기화
@@ -528,6 +572,18 @@
                             bounds.extend(markers[j].position);
                         }
                     }
+
+                    // // 확장할 수 있는 마진 값을 지정합니다.
+                    // var margin = 0.001; // 예시로 0.1(10%)로 설정하였습니다.
+                    // var southWest = bounds.getSouthWest();
+                    // var northEast = bounds.getNorthEast();
+                    // var latDiff = northEast.getLat() - southWest.getLat();
+                    // var lngDiff = northEast.getLng() - southWest.getLng();
+                    //
+                    // // 확장된 영역으로 bounds를 설정합니다.
+                    // bounds.extend(new kakao.maps.LatLng(southWest.getLat() - latDiff * margin, southWest.getLng() - lngDiff * margin));
+                    // bounds.extend(new kakao.maps.LatLng(northEast.getLat() + latDiff * margin, northEast.getLng() + lngDiff * margin));
+
                     maps[mapIndex].setBounds(bounds);
                 });
 

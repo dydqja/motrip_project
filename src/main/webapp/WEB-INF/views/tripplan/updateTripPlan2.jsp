@@ -374,6 +374,7 @@
             </div>
     </div>
 </div>
+<hr />
 </c:forEach>
 <div class="addDaily" id="addDaily" style="text-align: right;">
     <button class="btn btn-primary" id="btnUpdateTripPlan">수정</button>
@@ -519,14 +520,20 @@
             });
 
             $(mapMarkers).each(function (index, marker) {
-                var markerOptions = {
-                    position: marker.position,
-                    map: map
-                };
-                var marker = new kakao.maps.Marker(markerOptions);
-                marker.setMap(map);
-                bounds.extend(markerOptions.position);
-                markers[count].push(marker);
+                // var markerOptions = {
+                //     position: marker.position,
+                //     map: map
+                // };
+                // var marker = new kakao.maps.Marker(markerOptions);
+                // marker.setMap(map);
+                // bounds.extend(marker.position);
+
+                var newMarker = saveMarker(marker.position, index);
+                newMarker.setMap(map);
+
+                bounds.extend(marker.position);
+
+                markers[count].push(newMarker);
             });
             markersBound[index] = bounds;
 
@@ -542,6 +549,23 @@
             count++;
         });
     });
+
+    function saveMarker(position, idx) {
+        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
+        var imageSize = new kakao.maps.Size(36, 37);
+        var imgOptions = {
+            spriteSize: new kakao.maps.Size(36, 691),
+            spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10),
+            offset: new kakao.maps.Point(13, 37)
+        };
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+        var marker = new kakao.maps.Marker({
+            position: position,
+            image: markerImage
+        });
+
+        return marker;
+    }
 
     function handleKeyPress(event, indexCheck) {
         console.log(indexCheck)
@@ -577,6 +601,11 @@
 
             // 검색 결과 목록과 마커를 표출하는 함수입니다
             function displayPlaces(places) {
+
+                if (!allPlaces['map' + indexCheck]) {
+                    allPlaces['map' + indexCheck] = [];
+                }
+
                 var listEl = document.getElementById('placesList' + indexCheck),
                     menuEl = document.getElementById('menu_wrap' + indexCheck),
                     fragment = document.createDocumentFragment(),
@@ -588,7 +617,7 @@
                 for (var i = 0; i < places.length; i++) {
                     // 마커를 생성하고 지도에 표시
                     var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-                        marker = addMarker(placePosition),
+                        marker = addMarker(placePosition, allPlaces['map' + indexCheck].length),
                         itemEl = getListItem(i, places[i]);
 
                     positions.push({coordinates: placePosition.La + "," + placePosition.Ma}); // 반복문에 출력되는 위도+경도 저장
@@ -623,9 +652,7 @@
                             if (!placeTripPositions[indexCheck]) {
                                 placeTripPositions[indexCheck] = [];
                             }
-                            if (!allPlaces['map' + indexCheck]) {
-                                allPlaces['map' + indexCheck] = [];
-                            }
+
                             if (!placeTripTimes['map' + indexCheck]) {
                                 placeTripTimes['map' + indexCheck] = [];
                             }
@@ -861,10 +888,20 @@
                 });
             }
 
-            function addMarker(position) {  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-                marker = new kakao.maps.Marker({
-                    position: position
-                });
+            function addMarker(position, idx) {  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+                var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+                    imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+                    imgOptions =  {
+                        spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                        spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                        offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+                    },
+                    markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                    marker = new kakao.maps.Marker({
+                        position: position, // 마커의 위치
+                        image: markerImage
+                    });
+
                 return marker;
             }
 
@@ -1075,7 +1112,7 @@
             console.log("뭐나오는지")
             console.log(idCheck);
 
-            var dynamicHTML = '<hr></hr><div class="container" id="container' + idCheck + '">' +
+            var dynamicHTML = '<div class="container" id="container' + idCheck + '">' +
                 '<div display="flex;">' + '<div class="day">' + (idCheck + 1) + '일차 여행플랜' +
                 '<button class="icon-locate-map right" id="reset' + idCheck + '" style="font-size: 20px; border-radius: 15px;" onclick="reset(event, ' + idCheck + ')"></button>' +
                 '</div>' + '</div>' + '<div class="row">' + '<div class="col-sm-12">' +
@@ -1090,7 +1127,7 @@
                 '<div class="border-box list' + idCheck + '" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">' +
                 '<div class="box-title">명소리스트' +
                 '<div class="tag-link" id="totalTripTime' + idCheck + '" style="text-align: right; display: inline-block; border: none;"></div>' +
-                '</div>' + '</div>' + '</div>' + '</div>' + '</div>';
+                '</div>' + '</div>' + '</div>' + '</div>' + '</div><hr/>';
 
 
             // 동적으로 생성한 요소들을 DOM에 추가

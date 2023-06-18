@@ -238,7 +238,7 @@
             </div>
             <div class="addDaily" id="addDaily" style="text-align: right;">
                 <button class="btn btn-primary" id="btnAddTripPlan" style="text-align: right;">저장</button>
-                <button class="btn btn-primary" id="history" style="text-align: right;">이전</button>
+                <button class="btn btn-primary" id="history" style="text-align: right;">취소</button>
             </div>
 
         </div>
@@ -369,6 +369,11 @@
 
             // 검색 결과 목록과 마커를 표출하는 함수입니다
             function displayPlaces(places) {
+
+                if (!allPlaces['map' + indexCheck]) {
+                    allPlaces['map' + indexCheck] = [];
+                }
+
                 var listEl = document.getElementById('placesList' + indexCheck),
                     menuEl = document.getElementById('menu_wrap' + indexCheck),
                     fragment = document.createDocumentFragment(),
@@ -380,7 +385,7 @@
                 for (var i = 0; i < places.length; i++) {
                     // 마커를 생성하고 지도에 표시
                     var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-                        marker = addMarker(placePosition),
+                        marker = addMarker(placePosition, allPlaces['map' + indexCheck].length),
                         itemEl = getListItem(i, places[i]);
 
                     positions.push({coordinates: placePosition.La + "," + placePosition.Ma}); // 반복문에 출력되는 위도+경도 저장
@@ -415,9 +420,7 @@
                             if (!placeTripPositions[indexCheck]) {
                                 placeTripPositions[indexCheck] = [];
                             }
-                            if (!allPlaces['map' + indexCheck]) {
-                                allPlaces['map' + indexCheck] = [];
-                            }
+
                             if (!placeTripTimes['map' + indexCheck]) {
                                 placeTripTimes['map' + indexCheck] = [];
                             }
@@ -653,10 +656,20 @@
                 });
             }
 
-            function addMarker(position) {  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-                marker = new kakao.maps.Marker({
-                    position: position,
-                });
+            function addMarker(position, idx, title) {  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+                var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+                    imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+                    imgOptions =  {
+                        spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                        spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                        offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+                    },
+                    markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                    marker = new kakao.maps.Marker({
+                        position: position, // 마커의 위치
+                        image: markerImage
+                    });
+
                 return marker;
             }
 
@@ -896,7 +909,7 @@
 
     $(function () { // 이전으로 돌아가기
         $("#history").on("click", function () {
-            window.history.back();
+            window.location.href = "/tripPlan/tripPlanList?type=all";
         });
     });
 
@@ -917,20 +930,6 @@
         console.log(idCheck);
         // 새로운 요소를 생성
         if (idCheck < 5) {
-
-            // var dynamicHTML = '<hr></hr><div style="margin-top: 3%"></div><div class="container" id="container' + idCheck + '">' +
-            //     '<div display="flex;">' + '<div class="day">' + (idCheck + 1) + '일차 여행플랜 <button class="icon-locate-map right" id="reset' + idCheck + '" onclick="reset(event, ' + idCheck + ')"></button></div>' +
-            //     '</div>' + '<div class="row">' + '<div class="col-sm-12">' + '<div id="map' + idCheck + '" style="width: 100%; height: 300px; border-radius: 15px;"></div>' +
-            //     '<div id="menu_wrap' + idCheck + '" class="bg_white" style="height:90%; overflow:auto; margin: 0%;">' + '<div class="input-group">' +
-            //     '<input type="text" class="form-control" id="placeName' + idCheck + '" onkeypress="handleKeyPress(event, ' + idCheck + ')" placeholder="명소 검색" style="width: 60%; font-size: 11px">' +
-            //     '<button class="btn btn-primary" id="placeSearch' + idCheck + '" style="width: 30%; font-size: 9px;" onclick="handleKeyPress(event, ' + idCheck + ')">검색</button>' +
-            //     '</div>' + '<ul id="placesList' + idCheck + '"></ul>' + '<div id="pagination"></div>' + '</div>' + '</div>' + '</div>' +
-            //     '<div style="margin-top: 3%"></div>' + '<div class="row">' + '<div class="col-sm-9">' +
-            //     '<textarea id="dailyPlanContents' + idCheck + '" name="dailyPlanContents" required style="width: 100%;"></textarea>' +
-            //     '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' + '<div class="border-box" style="height: 400px; overflow: auto;">' +
-            //     '<div class="box-title">명소리스트' + '<div id="totalTripTime' + idCheck + '"></div>' + '</div>' + '<ul class="list' + idCheck + '" style="text-align: center;"></ul>' +
-            //     '</div>' + '</div>' + '</div>' + '</div>' + '<div class="addDaily" id="addDaily" style="text-align: right;">' +
-            //     '</div></div>';
 
             var dynamicHTML = '<hr></hr><div class="container" id="container' + idCheck + '">' +
                 '<div display="flex;">' + '<div class="day">' + (idCheck + 1) + '일차 여행플랜' +

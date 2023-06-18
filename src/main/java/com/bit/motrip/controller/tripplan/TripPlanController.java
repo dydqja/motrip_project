@@ -228,11 +228,4 @@ public class TripPlanController {
     }
 
 
-    @GetMapping("testPlan")
-    public String testPlan() throws Exception {
-        System.out.println("GET : selectTripPlan()");
-
-        return "tripplan/selectTripPlan2.jsp";
-    }
-
 }
