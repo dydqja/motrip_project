@@ -18,7 +18,7 @@
     <meta name="author" content="">
 
     <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<%--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">--%>
     <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <link rel="stylesheet" href="/assets/font/iconfont/iconstyle.css" media="all">
     <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">
@@ -53,7 +53,7 @@
 <%--    <script src="/assets/js/min/countnumbers.min.js"></script>--%>
     <%--<script src="/assets/js/main.js"></script>--%>
 <%--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>--%>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<%--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>--%>
 <%--    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>--%>
 <%--    <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="UTF-8"></script>--%>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -291,7 +291,7 @@
                                         </div>
                                         <div class="item-book">
 
-                                            <button class="btn btn-sm btn-success" name="tripPlanNo"
+                                            <button class="btn btn-sm btn-success" id="getTripPlanDetail" name="tripPlanNo"
                                                     value="${tripPlan.tripPlanNo}">조회<input type="hidden"
                                                                                             value="${tripPlan.tripPlanNo}"
                                                                                             class="tripPlanNo"/>
@@ -509,7 +509,7 @@
                                             </div>
                                         </div>
                                         <div class="item-book">
-                                            <button class="btn btn-sm btn-success" name="reviewNo"
+                                            <button class="btn btn-sm btn-success" id="getReviewDetail" name="reviewNo"
                                                     value="${review.reviewNo}">조회<input type="hidden"
                                                                                         value="${review.reviewNo}"
                                                                                         class="reviewNo"/>
@@ -584,7 +584,7 @@
             $(target).addClass('active');
         });
 
-        $("#tripPlanListTab").click(function () {
+        $("#tripPlanListTab").on("click", function () {
 
             console.log("여행플랜목록 클릭됨. = 내용초기화");
 
@@ -593,7 +593,7 @@
             $('#reviewListTab').removeClass('active');
         });
 
-        $("#chatRoomListTab").click(function () {
+        $("#chatRoomListTab").on("click", function () {
 
             console.log("후기목록 클릭됨. = 내용초기화");
 
@@ -601,6 +601,16 @@
             $('#tripPlanListTab').removeClass('active');
             $('#reviewListTab').removeClass('active');
         });
+
+        $("#reviewListTab").on("click", function () {
+
+            console.log("후기목록 클릭됨. = 내용초기화");
+
+            $(this).addClass('active');
+            $('#tripPlanListTab').removeClass('active');
+            $('#reviewListTab').removeClass('active');
+        });
+
     });
 
     //페이지가 로드될 시 실행되어 좋아요,싫어요 버튼 state 값을 가져온다.
@@ -953,7 +963,7 @@
 
         // 버튼의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
         $(function () {
-            $(".btn.btn-sm.btn-success").on("click", function () {
+            $("#getTripPlanDetail").on("click", function () {
                 var tripPlanNo = $(this).find(".tripPlanNo").val();
                 if (tripPlanNo == 0) {
                     // 삭제된 플랜을 눌렀을 때 아무 작업도 하지 않음
@@ -1150,6 +1160,19 @@
 
 //     후기목록부분 시작#####################################################################
 
+    $(function () {
+        $("#getReviewDetail").on("click", function () {
+
+            var reviewNo = $(this).find(".reviewNo").val();
+            if (reviewNo == 0) {
+                // 삭제된 플랜을 눌렀을 때 아무 작업도 하지 않음
+            } else {
+
+                window.location.href = "/review/getReview?reviewNo=" + reviewNo;
+            }
+        });
+    });
+
 </script>
 
 <!-- 회원정보수정 모달 인클루드 -->
@@ -1159,7 +1182,7 @@
 <jsp:include page="listBlackModal.jsp"/>
 
 <!-- 회원탈퇴확인 모달 인클루드 -->
-<jsp:include page="secessionUserModal.jsp"/>
+<%--<jsp:include page="secessionUserModal.jsp"/>--%>
 
 
 </body>
