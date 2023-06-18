@@ -345,15 +345,67 @@ public class ReviewController {
 
 
 
-    @PostMapping(value = "updateReview")//후기 수정
-    public String updateReview(@ModelAttribute("review") Review review, Model model) throws Exception {
-        System.out.println("/review/updateReview : POST");
-        reviewService.updateReview(review);
-        model.addAttribute("review", review);
-        System.out.println();
+    @GetMapping(value = "/updateReviewView")//후기 수정
+    public String updateReviewView(@RequestParam("reviewNo") int reviewNo,
+                                   @RequestParam("tripPlanNo") int tripPlanNo,Model model, HttpSession session) throws Exception {
+        System.out.println("/review/updateReviewView : GET");
 
-        return "review/updateReview.jsp";
+        // 세션에서 로그인된 사용자 정보를 가져옴
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
+            return "user/login.jsp";
+        }
+        System.out.println("userId>>>"+user.getUserId());
+        String reviewAuthor = user.getUserId();
+
+        TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
+        Review review = reviewService.getReview(reviewNo);
+
+        // 가져온 userId 값을 review 객체의 reviewAuthor에 설정
+        review.setReviewAuthor(reviewAuthor);
+
+        System.out.println("reviewAuthor>>>"+reviewAuthor);
+
+        model.addAttribute("reviewAuthor", reviewAuthor);
+        model.addAttribute("review", review);
+        model.addAttribute("tripPlan", tripPlan);
+
+        return "review/updateReviewView.jsp";
     }
+
+    @RequestMapping(method = RequestMethod.POST)//후기 수정
+    public String updateReview(@ModelAttribute("review") Review review,
+                               @RequestParam("reviewNo") int reviewNo,
+                               @RequestParam("tripPlanTitle") String tripPlanTitle,
+                               Model model, HttpSession session) throws Exception {
+        System.out.println("/review/updateReview : POST");
+
+        reviewService.updateReview(review);
+
+        // 세션에서 로그인된 사용자 정보를 가져옴
+        User user = (User) session.getAttribute("user");
+        System.out.println("userId>>>"+user.getUserId());
+        String reviewAuthor = user.getUserId();
+
+        // 가져온 userId 값을 review 객체의 reviewAuthor에 설정
+        review.setReviewAuthor(reviewAuthor);
+        System.out.println("reviewAuthor>>>"+reviewAuthor);
+
+
+        model.addAttribute("tripPlanTitle", tripPlanTitle);
+        System.out.println("3.tripPlanTitle>>>>" + model.addAttribute("tripPlanTitle", tripPlanTitle));
+        model.addAttribute("reviewAuthor", reviewAuthor);
+        model.addAttribute("review", review);
+
+        return "redirect:/review/getReview?reviewNo=" + reviewNo;
+
+    }
+
+
+
+
+
     @PostMapping(value = "deleteReview")//후기완전삭제
     public String deleteReview(@RequestParam("reviewNo") int reviewNo) {
         System.out.println("/review/deleteReview : POST");

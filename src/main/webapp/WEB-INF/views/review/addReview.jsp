@@ -565,10 +565,14 @@
         });
     });
 
-    $(function () { // 업데이트 하러가기
-        $("button[id='updateTripPlan']").on("click", function () {
+    $(function () { // 수정 하러가기
+        $("button[id='updateReview']").on("click", function () {
+            var reviewNo = "${review.reviewNo}";
             var tripPlanNo = "${tripPlan.tripPlanNo}";
-            window.location.href = "/tripPlan/updateTripPlanView?tripPlanNo=" + tripPlanNo;
+            window.location.href = "/review/updateReviewView?reviewNo="+reviewNo+"tripPlanNo="+tripPlanNo;
+            console.log("수정 버튼 reviewNo",reviewNo);
+            console.log("수정 버튼 tripPlanNo",tripPlanNo);
+
         });
     });
 
