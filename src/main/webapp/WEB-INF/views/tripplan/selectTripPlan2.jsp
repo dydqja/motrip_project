@@ -207,9 +207,16 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h2>
-                        <div class="author-img" style="margin-top: 2%">
-                            <img src="/images/tripImage.jpg" alt="">
-                        </div>
+                        <c:if test="${userPhoto == null}">
+                            <div class="author-img" style="margin-top: 2%">
+                                <img src="/images/tripImage.jpg" alt="">
+                            </div>
+                        </c:if>
+                        <c:if test="${userPhoto != null}">
+                            <div class="author-img" style="margin-top: 2%">
+                                <img src="${userPhoto}" alt="">
+                            </div>
+                        </c:if>
                         <div class="author">
                             <span style="font-size: 25px">${tripPlan.tripPlanTitle}</span>
                         </div>

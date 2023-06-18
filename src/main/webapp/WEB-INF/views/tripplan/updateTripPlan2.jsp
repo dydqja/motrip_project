@@ -1048,38 +1048,36 @@
         };
 
 
-        <%--var tripPlan = {--%>
-        <%--  tripPlanNo: ${tripPlan.tripPlanNo},--%>
-        <%--  tripPlanTitle: tripPlanTitle,--%>
-        <%--  tripDays: idCheck,--%>
-        <%--  isPlanPublic: isPlanPublic,--%>
-        <%--  isPlanDownloadable: isPlanDownloadable,--%>
-        <%--  dailyplanResultMap: dailyPlanContents.map(function (dailyPlan) {--%>
-        <%--    return {--%>
-        <%--      dailyPlanContents: dailyPlan.dailyPlanContents,--%>
-        <%--      totalTripTime: dailyPlan.totalTripTime,--%>
-        <%--      placeResultMap: dailyPlan.placesInfo.map(function (place) {--%>
-        <%--        return JSON.parse(place); // JSON 문자열을 객체로 변환--%>
-        <%--      }),--%>
-        <%--    };--%>
-        <%--  }),--%>
-        <%--};--%>
-
         console.log("저장전 확인");
         console.log(tripPlan);
 
 
-        $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
-          url: "/tripPlan/updateTripPlan",
-          type: "POST",
-          data: JSON.stringify(tripPlan),
-          contentType: "application/json; charset=utf-8",
-          success: function () {
-            window.location.href = "/tripPlan/tripPlanList?type=my";
-          },
-          error: function (xhr, status, error) {
-            console.log(error);
-          }
+        Swal.fire({
+            title: '여행플랜 수정',
+            text: '변경사항을 저장하시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '업데이트',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
+                    url: "/tripPlan/updateTripPlan",
+                    type: "POST",
+                    data: JSON.stringify(tripPlan),
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+                        Swal.fire('수정 완료', '여행플랜이 성공적으로 수정되었습니다.', 'success')
+                            .then(() => {
+                                window.location.href = "/tripPlan/tripPlanList?type=my";
+                            });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                        Swal.fire('수정 실패', '여행플랜 수정 중 오류가 발생했습니다.', 'error');
+                    }
+                });
+            }
         });
 
     });
@@ -1456,7 +1454,18 @@
 
     $(function () { // 이전으로 돌아가기
         $("#history").on("click", function () {
-            window.history.back();
+            Swal.fire({
+                title: '이전으로 돌아가기',
+                text: '변경사항을 저장하지 않고 돌아가시겠습니까?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: '네',
+                cancelButtonText: '아니오'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.history.back();
+                }
+            });
         });
     });
 

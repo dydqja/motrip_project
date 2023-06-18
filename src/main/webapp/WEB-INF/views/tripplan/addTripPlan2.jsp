@@ -892,24 +892,58 @@
         console.log("저장전 확인");
         console.log(tripPlan);
 
-        $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
-            url: "/tripPlan/addTripPlan",
-            type: "POST",
-            data: JSON.stringify(tripPlan),
-            contentType: "application/json; charset=utf-8",
-            success: function () {
-                window.location.href = "/tripPlan/tripPlanList";
-            },
-            error: function (xhr, status, error) {
-                console.log(error);
+        Swal.fire({
+            title: '작성한 여행플랜을 저장합니다.',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: '저장',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
+                    url: "/tripPlan/addTripPlan",
+                    type: "POST",
+                    data: JSON.stringify(tripPlan),
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+                        Swal.fire({
+                            title: '저장 완료',
+                            text: '여행플랜이 성공적으로 저장되었습니다.',
+                            icon: 'success',
+                            confirmButtonText: '확인'
+                        }).then(() => {
+                            window.location.href = "/tripPlan/tripPlanList";
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                        Swal.fire({
+                            title: '저장 실패',
+                            text: '여행플랜 저장 중에 오류가 발생했습니다.',
+                            icon: 'error',
+                            confirmButtonText: '확인'
+                        });
+                    }
+                });
             }
         });
 
     });
 
-    $(function () { // 이전으로 돌아가기
+    $(function () {
         $("#history").on("click", function () {
-            window.location.href = "/tripPlan/tripPlanList?type=all";
+            Swal.fire({
+                title: '이전으로 돌아가시겠습니까?',
+                text: '지금까지 입력한 내용은 저장되지 않습니다.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: '이동',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/tripPlan/tripPlanList?type=all";
+                }
+            });
         });
     });
 

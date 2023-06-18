@@ -454,7 +454,7 @@
 
                 swal.fire({
                     title: "여행완료",
-                    text: "여행을 완료하면 후기를 작성할 수 있습니다(수정,삭제 불가능)",
+                    text: "여행을 완료하면 후기를 작성할 수 있습니다(삭제 불가능)",
                     icon: "question",
                     showCancelButton: true,
                     confirmButtonText: "확인",
