@@ -133,14 +133,12 @@
             <scope>compile</scope>
         </dependency>
 
-		<!-- bot api 관련 추가함 -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
 		</dependency>
-
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
