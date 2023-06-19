@@ -207,9 +207,16 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h2>
-                        <div class="author-img" style="margin-top: 2%">
-                            <img src="/images/tripImage.jpg" alt="">
-                        </div>
+                        <c:if test="${userPhoto == null}">
+                            <div class="author-img" style="margin-top: 2%">
+                                <img src="/images/tripImage.jpg" alt="">
+                            </div>
+                        </c:if>
+                        <c:if test="${userPhoto != null}">
+                            <div class="author-img" style="margin-top: 2%">
+                                <img src="${userPhoto}" alt="">
+                            </div>
+                        </c:if>
                         <div class="author">
                             <span style="font-size: 25px">${tripPlan.tripPlanTitle}</span>
                         </div>
@@ -255,7 +262,6 @@
             <div class="row" >
                 <div class="col-sm-12">
                     <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
-                    <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
                 </div>
             </div>
 
@@ -275,7 +281,8 @@
 
                         <div class="border-box" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px; ">
                             <div class="box-title">명소리스트
-                                <div class="card text-white mb-3 btn btn-sm btn-info" style="background-color: rgba(218,218,218,0.22); text-align: right; font-size: 11px; color: black; pointer-events: none;">총 이동시간
+                                <c:if test="${dailyPlan.totalTripTime != 0 && dailyPlan.totalTripTime != null}">
+                                <div class="card text-white mb-3 btn btn-sm btn-info" style="background-color: rgb(255,254,255); text-align: right; font-size: 11px; color: black; pointer-events: none;">총 이동시간
                                     :
                                     <c:if test="${dailyPlan.totalTripTime >= 60}">
                                         <script>
@@ -291,7 +298,7 @@
                                         ${dailyPlan.totalTripTime}분
                                     </c:if>
                                 </div>
-
+                                </c:if>
                             </div>
                             <c:set var="j" value="0"/>
                             <c:forEach var="place" items="${dailyPlan.placeResultMap}">
@@ -308,11 +315,11 @@
                                             </h5>
                                         </div>
                                     </div>
-                                    <c:if test="${place.tripTime != null}">
+                                    <c:if test="${place.tripTime != 0 && place.tripTime != null}">
                                     <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime"
-                                         style="background-color: rgba(218,218,218,0.22); width: auto; height: auto; pointer-events: none;">
+                                         style="background-color: rgb(255,255,255); width: auto; height: auto; pointer-events: none;">
                                             <label class="icon-arrow-down" style=" color: #88e0c6; font-size: 15px;"></label>
-                                            <div style=" color: black; display: inline-block; font-size: 7px;">이동시간:
+                                            <div style=" color: black; display: inline-block; font-size: 7px;">
                                                 <c:if test="${place.tripTime >= 60}">
                                                     <script>
                                                         console.log(${place.tripTime});
@@ -325,7 +332,7 @@
                                                     ${formattedTime}
                                                 </c:if>
                                                 <c:if test="${place.tripTime < 60}">
-                                                    ${place.tripTime} 분
+                                                    ${place.tripTime}분
                                                 </c:if>
                                             </div>
                                     </div>
@@ -629,6 +636,39 @@
     $(function () { // 이전으로 돌아가기
         $("#history").on("click", function () {
             window.history.back();
+        });
+    });
+
+    // 유저닉네임, 프로필 클릭시 이동
+    $(document).ready(function() {
+        $('.author-img').hover(
+            function() {
+                $(this).css('cursor', 'pointer');
+                /* 마우스를 올렸을 때의 스타일 변경 */
+            },
+            function() {
+                $(this).css('cursor', 'auto');
+                /* 마우스가 벗어났을 때의 스타일 변경 */
+            }
+        );
+
+        $('.italic').hover(
+            function() {
+                $(this).css('cursor', 'pointer');
+                /* 마우스를 올렸을 때의 스타일 변경 */
+            },
+            function() {
+                $(this).css('cursor', 'auto');
+                /* 마우스가 벗어났을 때의 스타일 변경 */
+            }
+        );
+
+        $('.author-img').click(function() {
+            window.location.href = '/user/getUser?userId=${tripPlan.tripPlanAuthor}';
+        });
+
+        $('.italic').click(function() {
+            window.location.href = '/user/getUser?userId=${tripPlan.tripPlanAuthor}';
         });
     });
 

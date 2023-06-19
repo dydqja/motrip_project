@@ -179,7 +179,7 @@
                                 </div>
 
                                 <div class="right">
-                                    <h4>${tripPlan.tripPlanNickName}</h4>
+                                    <h4>${tripPlan.tripPlanNickName}<div class="hidden">${tripPlan.tripPlanAuthor}</div></h4>
                                     <div class="right"><span class="icon-date"></span>
                                         <c:if test="${tripPlan.tripDays == 1}">
                                             ${tripPlan.tripDays}일
@@ -332,6 +332,24 @@
         }
     });
 
+    $(document).ready(function() {
+        $('.right h4').hover(
+            function() {
+                $(this).css('cursor', 'pointer');
+                /* 마우스를 올렸을 때의 스타일 변경 */
+            },
+            function() {
+                $(this).css('cursor', 'auto');
+                /* 마우스가 벗어났을 때의 스타일 변경 */
+            }
+        );
+
+        $('.right h4').click(function() {
+            var tripPlanAuthor = $(this).find('.hidden').text();  // h4 요소의 텍스트를 가져옵니다.
+            window.location.href = '/user/getUser?userId=' + tripPlanAuthor;
+        });
+    });
+
     $(document).ready(function () {
 
         // 사진의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
@@ -363,43 +381,66 @@
                 var button = $(this); // 클릭한 버튼을 변수에 저장
                 console.log(button)
 
-                $.ajax({
-                    url: "/tripPlan/tripPlanDeleted",
-                    type: "GET",
-                    data: {"tripPlanNo": tripPlanNo},
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        if (data.isPlanDeleted) {
-                            button
-                                .removeClass("btn-warning")
-                                .addClass("btn-info")
-                                .html("복구");
+                var swalTitle = "삭제";
+                var swalText = "정말로 여행플랜을 삭제하겠습니까? 삭제된 여행플랜은 임시보관되며 복구할수있습니다.";
+                var successMessage = "삭제되었습니다.";
+                var cancelButtonText = "취소";
 
-                            $("#tripPlanView" + tripPlanNo).hide(); // 조회 버튼 숨기기
-                            $("#addChatRoom" + tripPlanNo).hide(); // 채팅방 생성 버튼 숨기기
-                            $("#tripPlanComplete" + tripPlanNo).hide(); // 여행완료 버튼 숨기기
-                            $("#btnTripPlanDelete" + tripPlanNo).show();
-                            $("#tripPlanImage" + tripPlanNo).val(0);
+                if (button.hasClass("btn-info")) {
+                    swalTitle = "복구";
+                    swalText = "여행플랜을 복구하겠습니까?";
+                    successMessage = "복구되었습니다.";
+                    cancelButtonText = "취소";
+                }
 
-                            alert("삭제되었습니다.");
-                        } else {
-                            button
-                                .removeClass("btn-info")
-                                .addClass("btn-warning")
-                                .html("삭제");
+                Swal.fire({
+                    title: swalTitle,
+                    text: swalText,
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "확인",
+                    cancelButtonText: cancelButtonText
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/tripPlan/tripPlanDeleted",
+                            type: "GET",
+                            data: { "tripPlanNo": tripPlanNo },
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "JSON",
+                            success: function (data) {
+                                if (data.isPlanDeleted) {
+                                    button
+                                        .removeClass("btn-warning")
+                                        .addClass("btn-info")
+                                        .html("복구");
 
-                            $("#tripPlanView" + tripPlanNo).show(); // 조회 버튼 숨기기
-                            $("#addChatRoom" + tripPlanNo).show(); // 채팅방 생성 버튼 숨기기
-                            $("#tripPlanComplete" + tripPlanNo).show(); // 여행완료 버튼 숨기기
-                            $("#btnTripPlanDelete" + tripPlanNo).hide();
-                            $("#tripPlanImage" + tripPlanNo).val(tripPlanNo);
+                                    $("#tripPlanView" + tripPlanNo).hide(); // 조회 버튼 숨기기
+                                    $("#addChatRoom" + tripPlanNo).hide(); // 채팅방 생성 버튼 숨기기
+                                    $("#tripPlanComplete" + tripPlanNo).hide(); // 여행완료 버튼 숨기기
+                                    $("#btnTripPlanDelete" + tripPlanNo).show();
+                                    $("#tripPlanImage" + tripPlanNo).val(0);
 
-                            alert("복구되었습니다.");
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("여행플랜 삭제 실패");
+                                    Swal.fire(successMessage, "", "success");
+                                } else {
+                                    button
+                                        .removeClass("btn-info")
+                                        .addClass("btn-warning")
+                                        .html("삭제");
+
+                                    $("#tripPlanView" + tripPlanNo).show(); // 조회 버튼 숨기기
+                                    $("#addChatRoom" + tripPlanNo).show(); // 채팅방 생성 버튼 숨기기
+                                    $("#tripPlanComplete" + tripPlanNo).show(); // 여행완료 버튼 숨기기
+                                    $("#btnTripPlanDelete" + tripPlanNo).hide();
+                                    $("#tripPlanImage" + tripPlanNo).val(tripPlanNo);
+
+                                    Swal.fire(successMessage, "", "success");
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("여행플랜 삭제 실패");
+                            }
+                        });
                     }
                 });
             });
@@ -411,18 +452,31 @@
                 var tripPlanNo = $(this).val();
                 console.log(tripPlanNo);
 
-                $.ajax({
-                    url: "/tripPlan/tripPlanCompleted",
-                    type: "GET",
-                    data: {"tripPlanNo": tripPlanNo},
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        alert("여행이 완료되었습니다 이제 후기를 작성할수있습니다.")
-                        location.reload();
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("여행플랜 완료 실패");
+                swal.fire({
+                    title: "여행완료",
+                    text: "여행을 완료하면 후기를 작성할 수 있습니다(삭제 불가능)",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "확인",
+                    cancelButtonText: "취소"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // 확인 버튼을 눌렀을 때의 동작
+                        $.ajax({
+                            url: "/tripPlan/tripPlanCompleted",
+                            type: "GET",
+                            data: { "tripPlanNo": tripPlanNo },
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "JSON",
+                            success: function (data) {
+                                swal.fire("여행 완료", "여행이 완료되어 공개여부를 제외하고 수정,삭제가 불가능합니다.", "success").then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("여행 플랜 완료 실패");
+                            }
+                        });
                     }
                 });
             });
@@ -434,19 +488,30 @@
                 var tripPlanNo = $(this).val();
                 console.log(tripPlanNo);
 
-                alert("정말로 데이터를 삭제하겠습니까? \n 다시는 복구할수없습니다.");
-
-                $.ajax({
-                    url: "/tripPlan/tripPlanDrop",
-                    type: "GET",
-                    data: {"tripPlanNo": tripPlanNo},
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        alert("여행플랜을 완전히 삭제하였습니다.")
-                        location.reload();
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("여행플랜 완전 삭제 실패");
+                swal.fire({
+                    title: "여행플랜 삭제",
+                    text: "정말로 여행플랜을 완전삭제하겠습니까? 다시는 복구할 수 없습니다.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "확인",
+                    cancelButtonText: "취소"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // 확인 버튼을 눌렀을 때의 동작
+                        $.ajax({
+                            url: "/tripPlan/tripPlanDrop",
+                            type: "GET",
+                            data: { "tripPlanNo": tripPlanNo },
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                swal.fire("삭제 완료", "여행 플랜을 완전히 삭제하였습니다.", "success").then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("여행 플랜 완전 삭제 실패");
+                            }
+                        });
                     }
                 });
             });

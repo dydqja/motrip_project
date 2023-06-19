@@ -55,7 +55,7 @@
         };
 
         let idCheck = 1; // 늘어나거나 줄어나는 id의 값을 체크
-        let isPlanPublic = false; // 공유여부
+        let isPlanPublic = true; // 공유여부
         let isPlanDownloadable = false; // 가져가기여부 (미구현)
         let tripPlanThumbnail = "";
     </script>
@@ -66,6 +66,7 @@
             font-weight: bold; /* 굵은 글씨체 설정 */
         }
     </style>
+
     <style>
         /* 리스트 css */
         .column {
@@ -137,6 +138,50 @@
 
     </style>
 
+    <style>
+        /* 버튼 스타일 조정 */
+        .scroll-button {
+            position: fixed;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* 첫 번째 버튼 위치 조정 */
+        .scroll-button:first-child {
+            top: calc(50% - 20px);
+        }
+
+        .fixed-div {
+            position: fixed;
+            top: 30%;
+            right: 10px;
+            transform: translateY(-50%);
+            background-color: #558B2F;
+            color: #fff;
+            padding: 2px 2px;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            var scrollButtonTop = document.querySelectorAll('.scroll-button')[0];
+            var scrollButtonBottom = document.querySelectorAll('.scroll-button')[1];
+
+            // 맨 위로 이동 버튼 클릭 시
+            scrollButtonTop.addEventListener('click', function() {
+                window.scrollTo(0, 0);
+            });
+
+            // 맨 아래로 이동 버튼 클릭 시
+            scrollButtonBottom.addEventListener('click', function() {
+                window.scrollTo(0, document.documentElement.scrollHeight || document.body.scrollHeight);
+            });
+        });
+    </script>
+
 </head>
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
@@ -157,9 +202,8 @@
                             <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목을 입력해주세요"
                                              style="color: black; width: 600px; height: 30px; opacity: 0.8;"></h4></span>
                             <h5>
-                                공개<input type="checkbox" id="chbispublic" class="round" value="true"/>&nbsp;&nbsp;
-                                비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true"
-                                          disabled/>
+                                공개<input type="checkbox" id="chbispublic" class="round" value="true" checked="true" disabled/>&nbsp;&nbsp;
+                                비공개<input type="checkbox" id="chbpublic" class="round" value="false"/>
                             </h5>
                         </div>
                     </div>
@@ -175,12 +219,14 @@
         <div class="container">
             <div>
                 <div style="text-align: right;">
-                    <div class="btn btn-sm btn-success icon-date">여행일수</div>
+                    <div class="fixed-div btn btn-sm btn-success icon-date">여행일수
                     <div>
                         <button class="btn btn-sm btn-success icon-triangle-up" id="btnAddTripDay"
                                 style="background-color: #558B2F;"></button>
                         <button class="btn btn-sm btn-success icon-triangle-down" id="btnRemoveTripDay"
                                 style="background-color: #558B2F;"></button>
+                    </div>
+                        <div>추가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제거</div>
                     </div>
                 </div>
             </div>
@@ -226,9 +272,9 @@
                         <div class="border-box list0"
                              style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
                             <div class="box-title ">명소리스트
-                                <div class="tag-link"
+                                <div class="card text-white mb-3 btn btn-sm btn-info"
                                      id="totalTripTime0"
-                                     style="text-align: right; display: inline-block; border: none;"></div>
+                                     style="background-color: rgb(255,254,255); color: black; text-align: right; display: inline-block; border: none;"></div>
                             </div>
 
                         </div>
@@ -243,6 +289,11 @@
 
         </div>
     </main>
+
+    <div style="display: flex">
+        <button class="scroll-button btn btn-sm btn-success" style="width: 70px">up</button>
+        <button class="scroll-button btn btn-sm btn-success" style="width: 70px">down</button>
+    </div>
 </div>
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
@@ -532,7 +583,7 @@
                                 '</div>' +
                                 '</div>' +
                                 '<div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" id="tripTime' + indexCheck + '" data-index="' + varStatusIndex + '"' +
-                                'style="background-color: rgba(188,222,167,0.39); color: black; width: auto; height: auto; ">' +
+                                'style="background-color: rgb(255,255,255); color: black; width: auto; height: auto; ">' +
                                 '<div style="color: black; display: inline-block;"></div>' +
                                 '</div>' +
                                 '</div>';
@@ -892,24 +943,58 @@
         console.log("저장전 확인");
         console.log(tripPlan);
 
-        $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
-            url: "/tripPlan/addTripPlan",
-            type: "POST",
-            data: JSON.stringify(tripPlan),
-            contentType: "application/json; charset=utf-8",
-            success: function () {
-                window.location.href = "/tripPlan/tripPlanList";
-            },
-            error: function (xhr, status, error) {
-                console.log(error);
+        Swal.fire({
+            title: '작성한 여행플랜을 저장합니다.',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: '저장',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({ // JSON 형태로 저장하여 RestContoller로 ajax통신
+                    url: "/tripPlan/addTripPlan",
+                    type: "POST",
+                    data: JSON.stringify(tripPlan),
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+                        Swal.fire({
+                            title: '저장 완료',
+                            text: '여행플랜이 성공적으로 저장되었습니다.',
+                            icon: 'success',
+                            confirmButtonText: '확인'
+                        }).then(() => {
+                            window.location.href = "/tripPlan/tripPlanList";
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                        Swal.fire({
+                            title: '저장 실패',
+                            text: '여행플랜 저장 중에 오류가 발생했습니다.',
+                            icon: 'error',
+                            confirmButtonText: '확인'
+                        });
+                    }
+                });
             }
         });
 
     });
 
-    $(function () { // 이전으로 돌아가기
+    $(function () {
         $("#history").on("click", function () {
-            window.location.href = "/tripPlan/tripPlanList?type=all";
+            Swal.fire({
+                title: '이전으로 돌아가시겠습니까?',
+                text: '지금까지 입력한 내용은 저장되지 않습니다.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: '이동',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/tripPlan/tripPlanList?type=all";
+                }
+            });
         });
     });
 
@@ -945,7 +1030,7 @@
                 '</div>' + '<div class="col-sm-3">' + '<div class="sidebar">' +
                 '<div class="border-box list' + idCheck + '" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">' +
                 '<div class="box-title">명소리스트' +
-                '<div class="tag-link" id="totalTripTime' + idCheck + '" style="text-align: right; display: inline-block; border: none;"></div>' +
+                '<div class="card text-white mb-3 btn btn-sm btn-info" id="totalTripTime' + idCheck + '" style="background-color: rgb(255,254,255); color: black; text-align: right; display: inline-block; border: none;"></div>' +
                 '</div>' + '</div>' + '</div>' + '</div>' + '</div>';
 
             // 동적으로 생성한 요소들을 DOM에 추가
@@ -1072,7 +1157,7 @@
             if (totalTripTimes[indexCheck] == 0 && totalTripTimes[indexCheck] == NaN) {
                 $("#totalTripTime" + indexCheck).text("");
             } else {
-                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+                $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck])); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
             }
 
             placeTripTimes['map' + indexCheck].splice(index, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
@@ -1080,9 +1165,24 @@
             allPlaces['map' + indexCheck].splice(index, index + 1); // 삭제된 명소정보
             pathArray[indexCheck].splice(index, index + 1); // 폴리라인 경로 삭제
 
-            var marker = markers[indexCheck][index];
-            marker.setMap(null); // 마커를 지도에서 제거
+            console.log("이제 마커를 수정해보자")
+            console.log(markers[indexCheck]);
+            console.log(maps[indexCheck]);
+
+            // var marker = markers[indexCheck][index];
+            // marker.setMap(null); // 마커를 지도에서 제거
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 지도상 모든 마커 제거
+                var marker = markers[indexCheck][i]
+                marker.setMap(null)
+            }
             markers[indexCheck].splice(index, index + 1); // 마커 삭제
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 새롭게 번호를 붙혀서 생성
+                var marker = saveMarker(markers[indexCheck][i], i);
+                marker.setMap(maps[indexCheck]);
+                console.log(marker);
+            }
 
             var polyline = polylineArray[indexCheck][index]
             if (polyline != null) {
@@ -1145,23 +1245,46 @@
 
             console.log("0이상의 값으로 시작")
 
+            // 이부분은 맨마지막 항목을 제외했을때에도 체크하기 위해서 급하게 작성되었음
+            var safeTripTime = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
+            var content = safeTripTime.innerHTML;
+            var numbers = content.match(/\d+/g);
+            var minutes = parseInt(numbers[0]);
+
+            var safeTotalTripTime = (totalTripTimes[indexCheck] - minutes); // 맨마지막 항목을 제외했을때 비교하는
+            console.log(safeTotalTripTime);
+
+
             totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index - 1];
             totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index];
             console.log(totalTripTimes[indexCheck])
             if (isNaN()) {
                 $("#totalTripTime" + indexCheck).text("");
             } else {
-                $("#totalTripTime" + indexCheck).text(totalTripTimes[indexCheck]); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
+                $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck])); // 앞뒤 시간을 모두 삭제하고 새롭게 표시
             }
 
-            placeTripTimes['map' + indexCheck].splice(index - 1, index + 1); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
-            placeTripPositions[indexCheck].splice(index, index); // 삭제된 좌표 인덱스
-            allPlaces['map' + indexCheck].splice(index, index); // 삭제된 명소정보
-            pathArray[indexCheck].splice(index - 1, index + 1);
+            placeTripTimes['map' + indexCheck].splice(index - 1, 2); // 시간 다시 구해서 넣기 위해 앞뒤로 지워야함
+            placeTripPositions[indexCheck].splice(index, 1); // 삭제된 좌표 인덱스
+            allPlaces['map' + indexCheck].splice(index, 1); // 삭제된 명소정보
+            pathArray[indexCheck].splice(index - 1, 2);
 
-            var marker = markers[indexCheck][index];
-            marker.setMap(null); // 마커를 지도에서 제거
-            markers[indexCheck].splice(index, index); // 마커 삭제
+            // var marker = markers[indexCheck][index];
+            // marker.setMap(null); // 마커를 지도에서 제거
+            // markers[indexCheck].splice(index, index); // 마커 삭제
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 지도상 모든 마커 제거
+                var marker = markers[indexCheck][i]
+                marker.setMap(null)
+            }
+
+            markers[indexCheck].splice(index, 1); // 마커 삭제
+
+            for(var i=0; i<markers[indexCheck].length; i++){ // 새롭게 번호를 붙혀서 생성
+                var marker = saveMarker(markers[indexCheck][i], i);
+                marker.setMap(maps[indexCheck]);
+                console.log(marker);
+            }
 
             var polyline = polylineArray[indexCheck][index - 1] // 앞뒤로 지우기
             if (polylineArray[indexCheck][index] != null) {
@@ -1170,11 +1293,9 @@
             }
             polyline.setMap(null);
 
-            polylineArray[indexCheck].splice(index - 1, index + 1); // 폴리라인 삭제
+            polylineArray[indexCheck].splice(index - 1, 2); // 폴리라인 삭제
 
-            console.log("지웠을때 어디인지 확인해야하고 고치자")
-            placeData[indexCheck].splice(index, index); // 최종 데이터값인데 처음부터 이걸로할걸...
-            console.log(placeData[indexCheck]);
+            placeData[indexCheck].splice(index, 1); // 최종 데이터값인데 처음부터 이걸로할걸...
 
             // 이후 남아있는 리스트박스들의 id 값을 업데이트
             var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
@@ -1214,6 +1335,20 @@
 
             console.log(start)
             console.log(end)
+
+            if(end == null){
+
+                allPlaces['map' + indexCheck][index-1].tripTime = "";
+                allPlaces['map' + indexCheck][index-1].tripPath = "";
+
+                console.log("이부분체크필요함")
+                console.log(allPlaces['map' + indexCheck])
+
+                $("#totalTripTime" + indexCheck).text(formatTime(safeTotalTripTime));
+                var tripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
+                tripTimeEl.textContent = "";
+                totalTripTimes[indexCheck] = safeTotalTripTime;
+            }
         }
 
 
@@ -1275,22 +1410,6 @@
                     }
                     $("#totalTripTime" + indexCheck).text(formatTime(totalTripTimes[indexCheck]));
 
-                    function formatTime(minutes) {
-                        var hours = Math.floor(minutes / 60);
-                        var remainingMinutes = minutes % 60;
-                        var formattedTime = "";
-
-                        if (hours > 0) {
-                            formattedTime += hours + "시간 ";
-                        }
-                        if (remainingMinutes > 0) {
-                            formattedTime += remainingMinutes + "분";
-                        }
-
-                        return formattedTime;
-                    }
-
-                    console.log("가운데 값 지우니까 난리나네 하")
                     console.log(placeData[indexCheck]);
                 },
                 error: function (xhr, status, error) {
@@ -1299,6 +1418,41 @@
             });
         }
     });
+
+    function formatTime(minutes) {
+        var hours = Math.floor(minutes / 60);
+        var remainingMinutes = minutes % 60;
+        var formattedTime = "";
+
+        if (hours > 0) {
+            formattedTime += hours + "시간 ";
+        }
+        if (remainingMinutes > 0) {
+            formattedTime += remainingMinutes + "분";
+        }
+
+        return formattedTime;
+    }
+
+    function saveMarker(position, idx) {
+
+        var markerPosition = position.n;
+
+        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
+        var imageSize = new kakao.maps.Size(36, 37);
+        var imgOptions = {
+            spriteSize: new kakao.maps.Size(36, 691),
+            spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10),
+            offset: new kakao.maps.Point(13, 37)
+        };
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+        var marker = new kakao.maps.Marker({
+            position: markerPosition,
+            image: markerImage
+        });
+
+        return marker;
+    }
 
     // 여행플랜 썸네일
     $("#tripPlanThumbnail").click(function () {
