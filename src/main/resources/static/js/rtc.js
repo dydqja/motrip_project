@@ -205,14 +205,16 @@ function handleAddStream(data){
     console.log("peer's stream",data.stream);
     console.log("myStream",myStream);
     peersFace.srcObject = data.stream;
+    count += 1;
+
     // count += 1;
-    //     var video = document.createElement('video');
-    //     video.autoplay = true;
-    //     video.playsinline = true;
-    //     video.width = 300;
-    //     video.height = 300;
-    //     video.id = `peersFace${count}`;
-    //     var div = document.getElementById('myStream');
-    //     div.appendChild(video);
+    var video = document.createElement('video');
+    video.autoplay = true;
+    video.playsinline = true;
+    video.width = 300;
+    video.height = 300;
+    video.id = `peersFace${count}`;
+    var div = document.getElementById('myStream');
+    div.appendChild(video);
 
 }

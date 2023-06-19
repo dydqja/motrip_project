@@ -157,8 +157,9 @@
   <script>
     const username = "${username}";
     const room = "${chatRoom.chatRoomNo}";
-    const author = "${author.userId}"
-    const chatRoomNo = "${chatRoom.chatRoomNo}"
+    const author = "${author.userId}";
+    const chatRoomNo = "${chatRoom.chatRoomNo}";
+   // const image = "${image}";
   </script>
   <title>ChatCord App</title>
 
