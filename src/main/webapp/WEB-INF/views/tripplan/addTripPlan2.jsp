@@ -321,9 +321,9 @@
             var isChecked = $(this).prop("checked");
             console.log(isChecked);
             if (isChecked) {
-                $("#isPlanPublic").val("True");
+                $("#isPlanPublic").val("true");
             } else {
-                $("#isPlanPublic").val("False");
+                $("#isPlanPublic").val("false");
             }
         });
 
@@ -358,7 +358,7 @@
                             <h5>
                                 <label class="switch" title="타 회원에게 공개할지 비공개할지 설정할 수 있어요.">
                                     <input class="isPlanPublic" id="isPlanPublic" type="checkbox" name="isPlanPublic" checked="checked" />
-                                    <span class="switch-label" data-on="True" data-off="False"></span>
+                                    <span class="switch-label" data-on="true" data-off="false"></span>
                                     <span>공개여부</span>
                                     <span class="switch-handle"></span>
                                 </label>
@@ -1041,7 +1041,7 @@
 
         var tripPlanTitle = $('#tripPlanTitle').val(); // 여행플랜 제목
         var dailyPlanContents = []; // 일차별 여행플랜 본문과 명소들을 모두 저장하는곳
-        isPlanPublic = $("#isPlanPublic").val();
+        isPlanPublic = $("#isPlanPublic").prop("checked");
         console.log(isPlanPublic);
 
         for (var i = 0; i < idCheck; i++) {

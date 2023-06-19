@@ -1212,7 +1212,7 @@
 
             var tripPlanTitle = $('#tripPlanTitle').val(); // 여행플랜 제목
             var dailyPlanContents = []; // 일차별 여행플랜 본문과 명소들을 모두 저장하는곳
-            isPlanPublic = $("#isPlanPublic").val();
+            isPlanPublic = $("#isPlanPublic").prop("checked");
             console.log(isPlanPublic);
 
             for (var i = 0; i < idCheck; i++) {
