@@ -17,7 +17,7 @@ const socket = io.connect("chat.motrip.co.kr", {
 });
 //"http://192.168.0.28:3000" "http://localhost:3000"},"chat.motrip.co.kr"
 //join chatroom
-socket.emit('joinRoom',{username,room}); //,image
+socket.emit('joinRoom',{username,room,images}); //,image
 
 //get room and users
 socket.on('roomUsers', ({ room, users }) => {
@@ -173,7 +173,7 @@ function outputPhoto(message){
   
     </div>
     <p class="text">
-     <img src="/imagePath/photos/${message.photo}"/><br/>
+     <img src="/Users/sean/Desktop/moimages/${message.photo}"/><br/>
      &nbsp&nbsp
       ${message.text}
     </p>`;
@@ -184,7 +184,7 @@ function outputPhoto(message){
     <p class="chat2">${message.username}</p>
     <span>   ${message.time}</span><br/>
     <p class="text2">
-        <img src="/imagePath/photos/${message.photo}"/>
+        <img src="/Users/sean/Desktop/moimages/${message.photo}"/>
         &nbsp&nbsp
       ${message.text}`;
     document.querySelector('.chat-messages').appendChild(div);
