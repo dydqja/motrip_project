@@ -95,7 +95,7 @@
                                             ${qna.qnaTitle}
                                         </a>
                                     </td>
-                                    <td class="text-center">${qna.qnaAuthor}</td>
+                                    <td class="text-center">${qna.nickName}</td>
                                     <td class="text-center">${formattedDate}</td>
                                     <td class="text-center">${qna.qnaViews}</td>
                                 </tr>

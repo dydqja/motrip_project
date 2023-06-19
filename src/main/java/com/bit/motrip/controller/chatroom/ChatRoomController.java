@@ -108,6 +108,7 @@ public class ChatRoomController {
         System.out.println(ch);
         ChatMember author = chatMemberService.getChatMemberAuthor(chatRoom.getChatRoomNo());
         List<ChatMember> chatMemberList = chatMemberService.chatMemberList(chatRoom.getChatRoomNo());
+        System.out.println("images::"+userService.getUserById(sessionUser.getUserId()).getUserPhoto());
         //tripPlan 보내기
         System.out.println("채팅방에서 tripplan정보 가져오기 테스트:" + tripPlanService.selectTripPlan(ch.getTripPlanNo()));
         model.addAttribute("tripPlan",tripPlanService.selectTripPlan(ch.getTripPlanNo()));
@@ -117,6 +118,7 @@ public class ChatRoomController {
         model.addAttribute("chatRoom",ch); //채팅방 객체 전송
         model.addAttribute("chatMembers",chatMemberList);
         model.addAttribute("author",author);
+        model.addAttribute("images",userService.getUserById(sessionUser.getUserId()).getUserPhoto());
         System.out.println("chatRoomNo"+chatRoom.getChatRoomNo());
         System.out.println(author.getUserId());
         int flag = 0;
