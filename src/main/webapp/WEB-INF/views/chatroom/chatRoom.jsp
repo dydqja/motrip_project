@@ -456,6 +456,7 @@
         const author = "${author.userId}"
         const chatRoomNo = "${chatRoom.chatRoomNo}"
         const images = "${images}";
+
         //업데이트 컨트롤러로 이동
         function fncUpdateChatroom(){
             $("#chat-room").attr("method","get").attr("action","/chatRoom/updateChatRoom?chatRoomNo="+chatRoomNo).submit();
