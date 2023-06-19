@@ -45,7 +45,7 @@
 
 <div class="form-box">
     <div class="form-head">
-        <img src="/images/motrip-logo.png"/>
+        <img src="/images/motrip-logo.gif"/>
         <hr>
         <div class="txt">Create ChatRoom</div>
     </div>
