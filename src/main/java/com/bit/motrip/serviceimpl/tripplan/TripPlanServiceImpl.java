@@ -8,6 +8,7 @@ import com.bit.motrip.dao.tripplan.PlaceDao;
 import com.bit.motrip.dao.tripplan.TripPlanDao;
 import com.bit.motrip.domain.*;
 import com.bit.motrip.service.alarm.AlarmService;
+import com.bit.motrip.service.chatroom.ChatMemberService;
 import com.bit.motrip.service.tripplan.TripPlanService;
 import com.bit.motrip.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,9 @@ public class TripPlanServiceImpl implements TripPlanService {
     @Qualifier("userServiceImpl")
     private UserService userService;
     @Autowired
+    @Qualifier("chatMemberServiceImpl")
+    private ChatMemberService chatMemberService;
+    @Autowired
     @Qualifier("imageSaveService")
     ImageSaveService imageSaveService;
     @Autowired
@@ -68,12 +72,16 @@ public class TripPlanServiceImpl implements TripPlanService {
         System.out.println("서비스 임플로 들어왔을떄 : " + parameters);
 
         List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(parameters);
+
         for (TripPlan tp : tripPlanList) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
             String strDate = simpleDateFormat.format(tp.getTripPlanRegDate());
             tp.setStrDate(strDate);
-
             tp.setTripPlanNickName(userService.getUserById(tp.getTripPlanAuthor()).getNickname());
+            List<ChatMember> chatMembers = chatMemberService.getChatRoomNumber(tp.getTripPlanNo());
+            for(ChatMember cm : chatMembers) {
+                tp.setChatRoomNo(cm.getChatRoomNo());
+            }
         }
         int totalCount = tripPlanDao.selectTripPlanTotalCount(search);
         System.out.println("totalCount : " + totalCount);

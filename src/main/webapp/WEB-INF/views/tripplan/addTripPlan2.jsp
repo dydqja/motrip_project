@@ -65,27 +65,6 @@
             font-size: 30px; /* 원하는 크기로 설정 */
             font-weight: bold; /* 굵은 글씨체 설정 */
         }
-
-        /* 툴팁 스타일 */
-        .switch-label[title]:hover::before {
-            content: attr(title);
-            position: absolute;
-            top: -24px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 4px 8px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            font-size: 12px;
-            white-space: nowrap;
-            border-radius: 4px;
-        }
-        /* 공개여부 글자 정렬 */
-        .switch-label span {
-            display: block;
-            line-height: 1;
-            margin-top: -55px;
-        }
     </style>
 
     <style>
@@ -166,6 +145,7 @@
             right: 10px;
             padding: 4px 8px;
             font-size: 12px;
+            z-index: 9999; /* 맨 앞으로 배치 */
         }
 
         /* 첫 번째 버튼 위치 조정 */
@@ -200,6 +180,7 @@
             color: #fff;
             padding: 2px 2px;
             border-radius: 5px;
+            z-index: 9999; /* 맨 앞으로 배치 */
         }
     </style>
     <script>
@@ -382,12 +363,12 @@
                                     <span class="switch-handle"></span>
                                 </label>
                             </h5>
-
+                            <button class="btn-warning icon-camera" id="tripPlanThumbnail"
+                                    style="height: 25px; margin-top: 1.2%">
+                            </button>
                         </div>
                     </div>
-                    <button class="btn-default icon-camera" id="tripPlanThumbnail"
-                            style="font-size: 5px; margin-left: 0.8%">썸네일
-                    </button>
+
                 </div>
             </div>
         </div>
@@ -497,7 +478,7 @@
             ],
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
             fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
-            height: 550,
+            height: 530,
             disableResizeEditor: true
         });
     });
@@ -517,7 +498,7 @@
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
             fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
             focus: true,
-            height: 550,
+            height: 530,
             disableResizeEditor: true
         });
     }

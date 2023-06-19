@@ -174,6 +174,85 @@
         }
     </style>
 
+    <style>
+        /* 버튼 스타일 조정 */
+        .scroll-button {
+            position: fixed;
+            right: 10px;
+            padding: 4px 8px;
+            font-size: 12px;
+            z-index: 9999; /* 맨 앞으로 배치 */
+        }
+
+        /* 첫 번째 버튼 위치 조정 */
+        .scroll-button:first-child {
+            top: 45%;
+            transform: translateY(0%);
+        }
+
+        /* 중간 버튼 위치 조정 */
+        .scroll-button:nth-child(2) {
+            top: 45%;
+            transform: translateY(100%);
+        }
+
+        .scroll-button:nth-child(3) {
+            top: 45%;
+            transform: translateY(200%);
+        }
+
+        /* 마지막 버튼 위치 조정 */
+        .scroll-button:last-child {
+            top: 45%;
+            transform: translateY(300%);
+        }
+
+        .fixed-div {
+            position: fixed;
+            top: 30%;
+            right: 10px;
+            transform: translateY(-50%);
+            background-color: #558B2F;
+            color: #fff;
+            padding: 2px 2px;
+            border-radius: 5px;
+        }
+
+    </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            var scrollButtonTop = document.querySelectorAll('.scroll-button')[0];
+            var scrollButtonBottom = document.querySelectorAll('.scroll-button')[3];
+            var scrollMiddleButtonUp = document.querySelectorAll('.scroll-button')[1]; // 중간 위로 이동 버튼
+            var scrollMiddleButtonDown = document.querySelectorAll('.scroll-button')[2]; // 중간 아래로 이동 버튼
+
+            // 맨 위로 이동 버튼 클릭 시
+            scrollButtonTop.addEventListener('click', function () {
+                window.scrollTo(0, 0);
+            });
+
+            // 맨 아래로 이동 버튼 클릭 시
+            scrollButtonBottom.addEventListener('click', function () {
+                window.scrollTo(0, document.documentElement.scrollHeight || document.body.scrollHeight);
+            });
+
+            // 중간 위로 이동 버튼 클릭 시
+            scrollMiddleButtonUp.addEventListener('click', function () {
+                var windowHeight = window.innerHeight; // 브라우저 창의 높이
+                var scrollPosition = window.scrollY || window.pageYOffset;
+                window.scrollTo(0, scrollPosition - windowHeight * 0.7); // 70% 만큼 위로 이동
+            });
+
+            // 중간 아래로 이동 버튼 클릭 시
+            scrollMiddleButtonDown.addEventListener('click', function () {
+                var windowHeight = window.innerHeight; // 브라우저 창의 높이
+                var scrollPosition = window.scrollY || window.pageYOffset;
+                window.scrollTo(0, scrollPosition + windowHeight * 0.7); // 70% 만큼 아래로 이동
+            });
+
+        });
+    </script>
+
 
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
@@ -261,7 +340,7 @@
 
             <div class="row" >
                 <div class="col-sm-12">
-                    <div id="map${i-1}" style="width: 100%; height: 300px; border-radius: 15px;" ></div>
+                    <div id="map${i-1}" style="width: 100%; height: 400px; border-radius: 15px;" ></div>
                 </div>
             </div>
 
@@ -269,7 +348,7 @@
 
             <div class="row">
                 <div class="col-sm-9">
-                    <div class="post" style="height: 600px; overflow: auto; border-radius: 15px;">
+                    <div class="post" style="height: 600px; overflow: auto; border-radius: 15px; ">
                         <div>${dailyPlan.dailyPlanContents}</div>
                     </div>
                 </div>
@@ -392,6 +471,13 @@
 
         </div>
     </main>
+
+            <div style="display: flex">
+                <button class="scroll-button btn btn-sm btn-success icon-arrow-up" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+                <button class="scroll-button btn btn-sm btn-success icon-arr-up" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+                <button class="scroll-button btn btn-sm btn-success icon-arr-down" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+                <button class="scroll-button btn btn-sm btn-success icon-arrow-down" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+            </div>
 </div>
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
