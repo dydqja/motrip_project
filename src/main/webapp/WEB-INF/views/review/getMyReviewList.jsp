@@ -36,6 +36,17 @@
     <script src="/assets/js/min/countnumbers.min.js"></script>
     <script src="/assets/js/main.js"></script>
 
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var radioButtonId = '${search.planCondition}';
+            // 해당 라디오 버튼을 체크 상태로 설정
+            document.getElementById(radioButtonId).checked = true;
+        });
+
+    </script>
+
+
 
     <style>
         .center-div {
@@ -75,12 +86,12 @@
             <div class="col-sm-4">
                 <div class="sort-title counter-div right">
                     <div class="sort-title counter-div"><span class="icon-map counter" style="color: green"
-                                                              id="reviewCounter"></span>Review
+                                                              id="reviewCounter">${page.totalCount}</span>Review
                     </div>
                 </div>
                 <label><br></label>
                 <div class="border-box">
-                    <div class="box-title">Search Condition</div>
+                    <div class="box-title">정렬 조건</div>
                     <div class="center-div" style="width: 100%; height: 100%;">
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="newDate">
@@ -91,12 +102,12 @@
                             </label>
                             <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="views">
                                 <h4><span class="icon-eye"></span>&nbsp<input type="radio" name="options"
-                                                                              id="views" value="views" OnClick="window.location.href='/review/reviewList?type=${condition}&reviewCondition=views'"></h4>
+                                                                              id="views" value="views" OnClick="window.location.href='/review/getReviewList?type=${condition}&reviewCondition=views'"></h4>
                                 <h5>조회수</h5>
                             </label>
                             <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="likes">
                                 <h4><span class="icon-hand-like"></span>&nbsp<input type="radio" name="options"
-                                                                                    id="likes" value="likes" OnClick="window.location.href='/review/reviewList?type=${condition}&reviewCondition=likes'"></h4>
+                                                                                    id="likes" value="likes" OnClick="window.location.href='/review/getReviewList?type=${condition}&reviewCondition=likes'"></h4>
                                 <h5>추천수</h5>
                             </label>
                         </div>
@@ -177,7 +188,7 @@
                                     </button>
                                 </c:if>
 
-                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
+                                <c:if test="${sessionScope.user.userId == reviewAuthor}">
                                     <button id="btnDelete" class="btn btn-sm btn-info"
                                             value="${review.reviewNo}">복구<input type="hidden"
                                                                                 value="${review.reviewNo}"
@@ -245,6 +256,24 @@
 <script src="/assets/js/min/priceslider.min.js"></script>
 
 <script type="text/javascript">
+
+    // 여행후기 검색
+    document.getElementById('searchButton').addEventListener('click', function() {
+        var searchKeyword = document.getElementById('searchKeyword').value;
+        var url = '/review/getReviewList?searchKeyword=' + encodeURIComponent(searchKeyword);
+        window.location.href = url;
+    });
+
+    document.getElementById('searchKeyword').addEventListener('keypress', function(event) {
+        if (event.keyCode === 13) { // 엔터 키
+            var searchKeyword = document.getElementById('searchKeyword').value;
+            var url = '/review/getReviewList?searchKeyword=' + encodeURIComponent(searchKeyword);
+            window.location.href = url;
+        }
+    });
+
+
+
     $(document).ready(function () {
 
         // 사진의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
@@ -273,39 +302,9 @@
             });
         });
 
-        // // 여행플랜 삭제하기 버튼
-        // $(function () {
-        //     $("button[id='btnDelete']").on("click", function () {
-        //         var reviewNo = this.value;
-        //         var delTripPlan = $(this).closest("tr");
-        //
-        //         console.log(reviewNo);
-        //
-        //         $.ajax({
-        //             url: "/review/reviewDeleted",
-        //             type: "GET",
-        //             data: {"reviewNo": reviewNo},
-        //             contentType: "application/json; charset=utf-8",
-        //             dataType: "JSON",
-        //             success: function (data) {
-        //                 if (data.isReviewDeleted) {
-        //                     delTripPlan.css("background-color", "gray");
-        //                     delTripPlan.class("btn btn-sm btn-info");
-        //                     delTripPlan.find(".btn btn-sm btn-info").val(0); // 숨겨진 요소의 값을 업데이트
-        //                     delTripPlan.find(".btnDelete").text("복구"); // 버튼 텍스트 업데이트
-        //                 } else {
-        //                     delTripPlan.css("background-color", "white");
-        //                     delTripPlan.class("btn btn-sm btn-danger");
-        //                     delTripPlan.find(".btn btn-sm btn-danger").val(data.reviewNo); // 숨겨진 요소의 값을 업데이트
-        //                     delTripPlan.find(".btnDelete").text("삭제"); // 버튼 텍스트 업데이트
-        //                 }
-        //             },
-        //             error: function (xhr, status, error) {
-        //                 console.log("여행플랜 삭제 실패");
-        //             }
-        //         });
-        //     });
-        // });
+
+
+
 
         // AJAX 요청을 보내고 여행플랜의 수를 가져오는 함수
         function listCounter() {

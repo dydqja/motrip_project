@@ -238,13 +238,6 @@
                             <span class="italic"></span>
                             <span>${review.reviewRegDate}</span>
                             <span>${review.strDate}</span>
-                            <span class="icon-hand-like" style="margin-left: 2%"></span>
-                            <span id="likes" align="center" width="200">${review.reviewLikes}</span>
-                            <span class="icon-eye" style="margin-left: 1%"></span>
-                            <span>${review.viewCount}</span>&nbsp;&nbsp;
-                            <button class="btn btn-primary" id="reviewLikes" value="${review.reviewNo}"
-                                    style="width: auto; height: auto; box-sizing: border-box; padding: 5px 10px;">추천
-                            </button>
 
 
                         </h4>
@@ -540,30 +533,7 @@
 
     <!-- 아래는 버튼클릭시 동작되는 부분입니다 -->
 
-    $(function () {
-        $("button[id='tripPlanLikes']").on("click", function () {
-            var tripPlanNo = "${tripPlan.tripPlanNo}";
-            $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
-                url: "/tripPlan/tripPlanLikes",
-                type: "GET",
-                data: {"tripPlanNo": tripPlanNo},
-                success: function (data) {
-                    console.log(data);
-                    if (data == -1) {
-                        alert("이미 추천한 여행플랜입니다.");
-                    } else if (data == 0) {
-                        alert("비회원은 추천을 할수없습니다.");
-                    } else {
-                        alert("추천 완료");
-                        $("#likes").text(data);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log(error);
-                }
-            });
-        });
-    });
+
 
     $(function () { // 수정 하러가기
         $("button[id='updateReview']").on("click", function () {
@@ -576,9 +546,9 @@
         });
     });
 
-    $(function () { // 모든 후기 목록으로가기
+    $(function () { // 나의 목록으로가기 : 비공개 설정하고 등록하면 모든 목록에서 조회되지 않으므로
         $("#history").on("click", function () {
-            window.location.href = "/review/getReviewList";
+            window.location.href = "/review/getMyReviewList";
         });
     });
 
@@ -601,10 +571,7 @@
 <script src="/assets/js/min/countnumbers.min.js"></script>
 <script src="/assets/js/main.js"></script>
 
-<div class="button-container">
-    <a href="getReviewList">모든 후기 목록</a>
-    <a href="getMyReviewList">나의 후기 목록</a>
-</div>
+
 </div>
 </body>
 </html>

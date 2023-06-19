@@ -12,12 +12,12 @@ const fileInput = document.getElementById('uploadFile');
 //console.log(username,room);
 
 //cors 에러 해결
-const socket = io.connect("wss://chat.motrip.co.kr", {
-  cors:{origin:"https://chat.motrip.co.kr"}
+const socket = io.connect("chat.motrip.co.kr", {
+  cors:{origin:"chat.motrip.co.kr"}
 });
 //"http://192.168.0.28:3000" "http://localhost:3000"},"chat.motrip.co.kr"
 //join chatroom
-socket.emit('joinRoom',{username,room});
+socket.emit('joinRoom',{username,room,images}); //,image
 
 //get room and users
 socket.on('roomUsers', ({ room, users }) => {
@@ -118,7 +118,7 @@ function outputMessage(message){
       div.innerHTML = `
       <div class="userbox" align="right">
       <span>${message.time}</span><p class="chat">${message.username}</p>
-      <img src="https://via.placeholder.com/50x50" style="border-radius: 40%;"/>
+      <img src="${message.images}" style="border-radius: 40%;"/>
       </div>
       <p class="text">
         ${message.text}
@@ -138,7 +138,7 @@ function outputMessage(message){
       messageTime = message.time;
       beforeUserName=message.username;
     }else{
-    div.innerHTML = `<img src="https://via.placeholder.com/50x50" style="border-radius: 40%;"/>
+    div.innerHTML = `<img src="${message.images}" style="border-radius: 40%;"/>
     <p class="chat2">${message.username}</p><span>   ${message.time}</span><br/>
     <p class="text2">
       ${message.text}
@@ -170,21 +170,21 @@ function outputPhoto(message){
     <div class="userbox" align="right">
     <span>   ${message.time}</span>
     <p class="chat">${message.username}</p>
-    <img src="https://via.placeholder.com/50x50" style="border-radius: 40%;"/>
+  
     </div>
     <p class="text">
-     <img src="/imagePath/${message.photo}'"/><br/>
+     <img src="/Users/sean/Desktop/moimages/${message.photo}"/><br/>
      &nbsp&nbsp
       ${message.text}
     </p>`;
     document.querySelector('.chat-messages').appendChild(div);
   }else{
     div.classList.add('message2');
-    div.innerHTML = `<img src="https://via.placeholder.com/50x50" style="border-radius: 40%;"/>
+    div.innerHTML = `
     <p class="chat2">${message.username}</p>
     <span>   ${message.time}</span><br/>
     <p class="text2">
-        <img src="/imagePath/${message.photo}'"/>
+        <img src="/Users/sean/Desktop/moimages/${message.photo}"/>
         &nbsp&nbsp
       ${message.text}`;
     document.querySelector('.chat-messages').appendChild(div);
@@ -192,7 +192,8 @@ function outputPhoto(message){
   }
 };
 
-
+//  <img src="${message.images}" style="border-radius: 40%;"/>
+//<img src="${message.images}" style="border-radius: 40%;"/>
 //방이름 더하기
 function outputRoomName(room) {
   roomName.innerText = room;

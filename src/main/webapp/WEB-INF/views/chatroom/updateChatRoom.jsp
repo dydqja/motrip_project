@@ -20,6 +20,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
 
+
         function fncAddChatroom(){
             $("form").attr("method","POST").attr("action","updateChatRoom").submit();
         }
@@ -38,6 +39,7 @@
 
 
     </script>
+
 </head>
 
 <body class="login" style="background-image: url('http://placehold.it/1200x800');">
@@ -47,7 +49,7 @@
 
 <div class="form-box">
     <div class="form-head">
-        <img src="/images/motrip-logo.png"/>
+        <img src="/images/motrip-logo.gif"/>
         <hr>
         <div class="txt">Update ChatRoom</div>
     </div>
@@ -63,14 +65,14 @@
                 <label>CHATROOM TITLE</label>
                 <div class="input-group">
                     <div class="input-group-addon icon-backpack"></div>
-                    <input type="text" name="chatRoomTitle" class="form-control"  required />
+                    <input type="text" name="chatRoomTitle" class="form-control" value="${chatRoom.chatRoomTitle}" required />
                 </div>
             </div>
             <div class="form-group">
                 <label>START DATE</label>
                 <div class="input-group">
                     <div class="input-group-addon icon-date"></div>
-                    <input type="text" name="travelStartDate" class="form-control" id="datepicker" required >
+                    <input type="text" name="travelStartDate" class="form-control" value="${chatRoom.strDate}" id="datepicker" required >
                 </div>
             </div>
             <%--            <div class="form-group">--%>
@@ -84,14 +86,29 @@
                 <label>MEMBERS</label>
                 <div class="input-group">
                     <div class="input-group-addon icon-user"></div>
-                    <input type="number" name="maxPersons" min="1" max="10" class="form-control">
+                    <input type="number" name="maxPersons" min="1" max="10" value="${chatRoom.maxPersons}" class="form-control">
                 </div>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var genderValue = '${chatRoom.gender}';
+                    var radioBtn = document.querySelector('input[value="' + genderValue + '"]');
+
+                    if (radioBtn !== null) {
+                        radioBtn.checked = true;
+
+                        var selectedLabel = radioBtn.parentNode;
+                        selectedLabel.classList.add('active');
+                    }
+                });
+            </script>
+
             <div class="form-group">
                 <label>GENDER</label><br/>
                 <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default active" data-toggle="tooltip" data-placement="bottom" title="venus-mars">
-                        <input type="radio" name="gender" id="option1" value="MF" checked>
+                    <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="venus-mars">
+                        <input type="radio" name="gender" id="option1" value="MF">
                         <span class="fa fa-venus-mars"></span>
                     </label>
                     <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="mars">
@@ -114,10 +131,11 @@
             <%--                </div>--%>
             <%--            </div>--%>
 
+
             <div class="form-group">
                 <label>AGE</label>
                 <div id="price-slider"></div>
-                <div id="amount-min" class="pull-left"></div>
+                <div id="amount-min" class="pull-left" v></div>
                 <div id="amount-max" class="pull-right"></div>
             </div>
 
@@ -151,6 +169,33 @@
 <script src="/assets/js/min/login.min.js"></script>
 <script src="/assets/js/min/jqueryuipage.min.js"></script>
 <script src="/assets/js/min/priceslider.min.js"></script>
+
+<script>
+    $(document).ready(function(e) {
+        var minAge = ${chatRoom.minAge}; // 변경할 최소 나이 값
+        var maxAge = ${chatRoom.maxAge}; // 변경할 최대 나이 값
+
+        var priceSlider = e("#price-slider");
+        priceSlider.slider({
+            range: true,
+            min: 0,
+            max: 100,
+            values: [minAge, maxAge],
+            slide: function(event, ui) {
+                e("#amount-min").html("age : " + ui.values[0]);
+                e("#amount-max").html("age : " + ui.values[1]);
+            }
+        });
+
+        // 초기값 변경
+        priceSlider.slider("values", 0, minAge);
+        priceSlider.slider("values", 1, maxAge);
+        e("#amount-min").html("age : " + minAge);
+        e("#amount-max").html("age : " + maxAge);
+    });
+</script>
+
+
 </body>
 
 </html>

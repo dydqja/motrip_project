@@ -250,7 +250,7 @@
 
 
   <style>
-    .btnAddReview {
+    .btnUpdateReview {
       font-family: 'Open Sans', sans-serif;
       font-size: 18px;
       font-weight: bold;
@@ -379,7 +379,7 @@
 
 
   <script type="text/javascript">
-    function fncAddReview() {
+    function fncUpdateReview() {
       var reviewTitle = $("input[name='reviewTitle']").val();
       var reviewContents = $("textarea[name='reviewContents']").val();
       var reviewNo = ${reviewNo};
@@ -400,9 +400,9 @@
     }
 
     $(function () {
-      $("#btnAddReview").on("click", function () {
+      $("#btnUpdateReview").on("click", function () {
         console.log("수정완료버튼을 눌렀습니다.");
-        fncAddReview();
+        fncUpdateReview();
       });
 
       $("a[href='#']").on("click", function () {
@@ -458,13 +458,13 @@
               <span style="font-size: 24px;">'</span>
               <span id="displayTripPlanTitle" style="font-size: 24px;">${tripPlan.tripPlanTitle}</span>
               <span style="font-size: 24px;">'</span>
-              <span>&nbsp;&nbsp;에 대한 후기를 수정합니다. </span>
+              <span>&nbsp;&nbsp;에 대해 작성한 후기를 수정합니다. </span>
             </div>
             <div style="margin: 3px;"></div>
 
 
             <p class="byline">
-              <span id="currentDate">${date}</span>
+              <span id="currentDate">${review.reviewRegDate}</span>
 
               <!--<a href="#">Adventure</a>, <a href="#">Asia</a>
               <span class="dot">·</span>
@@ -653,7 +653,7 @@
       <input type="date" id="reviewDelDate" name="reviewDelDate"><br><br>
     </div>
     <div class="col-sm-offset-4 col-sm-4 text-center">
-      <button type="btnAddReview" class="btnAddReview" onclick="fncAddReview()">작성완료</button>
+      <button type="btnUpdateReview" class="btnUpdateReview" onclick="fncUpdateReview()">수정완료</button>
     </div>
   </form>
 </main>

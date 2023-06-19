@@ -383,7 +383,6 @@
         var reviewTitle = $("input[name='reviewTitle']").val();
         var reviewContents = $("textarea[name='reviewContents']").val();
         var tripPlanNo = "<c:out value='${tripPlanNo}' />";
-        var reviewNo = "<c:out value='${reviewNo}' />";
 
         if (reviewTitle == null || reviewTitle.length < 1) {
             alert("후기 제목을 반드시 입력하여야 합니다.");
@@ -396,7 +395,8 @@
 
         $("form")
             .attr("method", "post")
-            .attr("action", "/review/getReview?reviewNo=" + reviewNo);
+            .attr("action", "/review/addReview?tripPlanNo=" + tripPlanNo +
+                "&tripPlanTitle=" + encodeURIComponent("${tripPlanTitle}"))
             .submit();
     }
 
@@ -810,33 +810,6 @@ $(document).ready(function () {
 
     <!-- 아래는 버튼클릭시 동작되는 부분입니다 -->
 
-    $(function () {
-        $("button[id='tripPlanLikes']").on("click", function () {
-            var tripPlanNo = "${tripPlan.tripPlanNo}";
-            $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
-                url: "/tripPlan/tripPlanLikes",
-                type: "GET",
-                data: {"tripPlanNo": tripPlanNo},
-                success: function (data) {
-                    console.log(data);
-                    if (data == -1) {
-                        alert("이미 추천한 후기입니다.");
-                    } else if (data == 0) {
-                        alert("비회원은 추천을 할수없습니다.");
-                    } else {
-                        alert("추천 완료");
-                        $("#likes").text(data);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log(error);
-                }
-            });
-        });
-    });
-
-
-
 
     // 여행플랜 썸네일
     $("#reviewThumbnail").click(function () {
@@ -888,7 +861,7 @@ $(document).ready(function () {
                             type: "POST",
                             data: {
                                 tripPlanNo: tripPlanNo,
-                                reviewThumbnail: reviewThumbnail,
+                                reviewThumbnail: reviewThumbnail
                             },
                             success: function (response) {
                                 console.log("썸네일 저장 성공:", response);
@@ -898,7 +871,6 @@ $(document).ready(function () {
                                 console.log("썸네일 저장 실패:", error);
                             },
                         });
-
 
 
                     },

@@ -75,7 +75,7 @@
       <div class="col-sm-4">
         <div class="sort-title counter-div right">
           <div class="sort-title counter-div"><span class="icon-map counter" style="color: green"
-                                                    id="reviewCounter"></span>Review
+                                                    id="reviewCounter">${page.totalCount}</span>Review
           </div>
         </div>
         <label><br></label>
@@ -161,10 +161,46 @@
               <div class="item-book">
 
                 <button class="btn btn-sm btn-success" name="reviewNo"
+                        <c:if test="${review.isReviewDeleted}">
+                          style="display: none;"
+                        </c:if>
+                        id="reviewView${review.reviewNo}"
                         value="${review.reviewNo}">조회<input type="hidden"
                                                                 value="${review.reviewNo}"
                                                                 class="reviewNo"/>
                 </button>
+
+
+                <c:if test="${not empty sessionScope.user.userId && review.isReviewDeleted }">
+                  <c:if test="${sessionScope.user.userId == reviewAuthor}">
+                    <button id="btnDelete${review.reviewNo}" class="btn btn-sm btn-info btnDelete"
+                            value="${review.reviewNo}">복구<input type="hidden"
+                                                                    value="${review.reviewNo}"
+                                                                    class="reviewNo"/>
+                    </button>
+                  </c:if>
+                </c:if>
+
+                <c:if test="${not empty sessionScope.user.userId && review.isReviewDeleted }">
+                  <c:if test="${sessionScope.user.userId == reviewAuthor}">
+                    <button id="btnDelete${review.reviewNo}" class="btn btn-sm btn-warning btnDelete"
+                            value="${review.reviewNo}">삭제<input type="hidden"
+                                                                    value="${tripPlan.reviewNo}"
+                                                                    class="reviewNo"/>
+                    </button>
+                  </c:if>
+                </c:if>
+
+                <c:if test="${sessionScope.user.userId == reviewAuthor}">
+                  <button id="btnTripPlanDelete${review.reviewNo}" class="btn btn-sm btn-danger btnTripPlanDelete"
+                          <c:if test="${!review.isReviewDeleted}">
+                            style="display: none;"
+                          </c:if>
+                          value="${review.reviewNo}">완전삭제<input type="hidden"
+                                                                    value="${review.reviewNo}"
+                                                                    class="reviewNo"/>
+                  </button>
+                </c:if>
 
 
                 <div class="price">
@@ -185,7 +221,7 @@
 
             <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
 
-              <a class="page-link" href="/review/getReviewList?type=${condition}&currentPage=${page.currentPage - 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"
+              <a class="page-link" href="/review/getReviewList?type=${condition}&currentPage=${page.currentPage - 1}&reviewCondition=${search.reviewCondition}&searchKeyword=${search.searchKeyword}"
                  aria-label="Previous">
                 &laquo;
               </a>
@@ -196,7 +232,7 @@
 
               <li class="page-item ${i == page.currentPage ? 'active' : ''}">
 
-                <a class="page-link" href="/review/getReviewList?type=${condition}&currentPage=${i}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}">${i}</a>
+                <a class="page-link" href="/review/getReviewList?type=${condition}&currentPage=${i}&reviewCondition=${search.reviewCondition}&searchKeyword=${search.searchKeyword}">${i}</a>
 
               </li>
 
@@ -204,7 +240,7 @@
 
             <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-              <a class="page-link" href="/review/getReviewList?type=${condition}&currentPage=${page.currentPage + 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"
+              <a class="page-link" href="/review/getReviewList?type=${condition}&currentPage=${page.currentPage + 1}&reviewCondition=${search.reviewCondition}&searchKeyword=${search.searchKeyword}"
                  aria-label="Next">
                 &raquo;
               </a>
