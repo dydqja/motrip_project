@@ -13,10 +13,10 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 public class WebConfig implements WebMvcConfigurer {
 //
 //    private String connectPath = "/imagePath/**";
-    private String resourcePath ="/Users/sean/Desktop/moimages";
+  //  private String resourcePath ="/Users/sean/Desktop/moimages";
     //private String resourcePath = "file:///home/uploadedImage";
     private String connectPath = "/imagePath/**";
-//    private String resourcePath = "file:///images/";
+    private String resourcePath = "file:///images/";
 // 무조건 푸시하기전에 아래꺼!!
 
     @Override
