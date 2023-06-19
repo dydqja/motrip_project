@@ -65,6 +65,27 @@
             font-size: 30px; /* 원하는 크기로 설정 */
             font-weight: bold; /* 굵은 글씨체 설정 */
         }
+
+        /* 툴팁 스타일 */
+        .switch-label[title]:hover::before {
+            content: attr(title);
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 4px 8px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 12px;
+            white-space: nowrap;
+            border-radius: 4px;
+        }
+        /* 공개여부 글자 정렬 */
+        .switch-label span {
+            display: block;
+            line-height: 1;
+            margin-top: -55px;
+        }
     </style>
 
     <style>
@@ -142,16 +163,32 @@
         /* 버튼 스타일 조정 */
         .scroll-button {
             position: fixed;
-            top: 50%;
             right: 10px;
-            transform: translateY(-50%);
             padding: 4px 8px;
             font-size: 12px;
         }
 
         /* 첫 번째 버튼 위치 조정 */
         .scroll-button:first-child {
-            top: calc(50% - 20px);
+            top: 45%;
+            transform: translateY(0%);
+        }
+
+        /* 중간 버튼 위치 조정 */
+        .scroll-button:nth-child(2) {
+            top: 45%;
+            transform: translateY(100%);
+        }
+
+        .scroll-button:nth-child(3) {
+            top: 45%;
+            transform: translateY(200%);
+        }
+
+        /* 마지막 버튼 위치 조정 */
+        .scroll-button:last-child {
+            top: 45%;
+            transform: translateY(300%);
         }
 
         .fixed-div {
@@ -168,18 +205,149 @@
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
             var scrollButtonTop = document.querySelectorAll('.scroll-button')[0];
-            var scrollButtonBottom = document.querySelectorAll('.scroll-button')[1];
+            var scrollButtonBottom = document.querySelectorAll('.scroll-button')[3];
+            var scrollMiddleButtonUp = document.querySelectorAll('.scroll-button')[1]; // 중간 위로 이동 버튼
+            var scrollMiddleButtonDown = document.querySelectorAll('.scroll-button')[2]; // 중간 아래로 이동 버튼
 
             // 맨 위로 이동 버튼 클릭 시
-            scrollButtonTop.addEventListener('click', function() {
+            scrollButtonTop.addEventListener('click', function () {
                 window.scrollTo(0, 0);
             });
 
             // 맨 아래로 이동 버튼 클릭 시
-            scrollButtonBottom.addEventListener('click', function() {
+            scrollButtonBottom.addEventListener('click', function () {
                 window.scrollTo(0, document.documentElement.scrollHeight || document.body.scrollHeight);
             });
+
+            // 중간 위로 이동 버튼 클릭 시
+            scrollMiddleButtonUp.addEventListener('click', function () {
+                var windowHeight = window.innerHeight; // 브라우저 창의 높이
+                var scrollPosition = window.scrollY || window.pageYOffset;
+                window.scrollTo(0, scrollPosition - windowHeight * 0.7); // 70% 만큼 위로 이동
+            });
+
+            // 중간 아래로 이동 버튼 클릭 시
+            scrollMiddleButtonDown.addEventListener('click', function () {
+                var windowHeight = window.innerHeight; // 브라우저 창의 높이
+                var scrollPosition = window.scrollY || window.pageYOffset;
+                window.scrollTo(0, scrollPosition + windowHeight * 0.7); // 70% 만큼 아래로 이동
+            });
+
         });
+    </script>
+
+    <style>️ /* 토글스위치 CSS */
+    label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    [type="checkbox"] {
+        appearance: none;
+        position: relative;
+        border: max(2px, 0.1em) solid gray;
+        border-radius: 1.75em; /* 크기를 조정한 부분입니다 */
+        width: 3em; /* 크기를 조정한 부분입니다 */
+        height: 1.75em; /* 크기를 조정한 부분입니다 */
+    }
+
+    [type="checkbox"]::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 1.25em; /* 크기를 조정한 부분입니다 */
+        height: 1.25em; /* 크기를 조정한 부분입니다 */
+        border-radius: 50%;
+        transform: scale(0.8);
+        background-color: gray;
+        transition: left 250ms linear;
+    }
+
+    [type="checkbox"]:checked::before {
+        background-color: white;
+        left: 1.25em; /* 크기를 조정한 부분입니다 */
+    }
+
+    [type="checkbox"]:checked {
+        background-color: #5eb95f;
+        border-color: #5eb95f;
+    }
+
+    [type="checkbox"]:disabled {
+        border-color: lightgray;
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    [type="checkbox"]:disabled:before {
+        background-color: lightgray;
+    }
+
+    [type="checkbox"]:disabled + span {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    [type="checkbox"]:focus-visible {
+        outline-offset: max(2px, 0.1em);
+        outline: max(2px, 0.1em) solid #0c7a0d;
+    }
+
+    [type="checkbox"]:enabled:hover {
+        box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
+    }
+
+    [type="checkbox"]::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 1.25em; /* 크기를 조정한 부분입니다 */
+        height: 1.25em; /* 크기를 조정한 부분입니다 */
+        border-radius: 50%;
+        transform: scale(0.8);
+        background-color: gray;
+        transition: left 250ms linear;
+    }
+
+    /* 툴팁 스타일 */
+    .switch-label[title]:hover::before {
+        content: attr(title);
+        position: absolute;
+        top: -24px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 4px 8px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        font-size: 12px;
+        white-space: nowrap;
+        border-radius: 4px;
+    }
+    /* 공개여부 글자 정렬 */
+    .switch-label span {
+        display: block;
+        line-height: 1;
+        margin-top: -55px;
+    }
+
+    /* 토글스위치 CSS 끝*/
+    </style>
+    <script>//토글 스위치 작동 함수
+    $(document).ready(function () {
+        $(".isPlanPublic").change(function () {
+            var isChecked = $(this).prop("checked");
+            console.log(isChecked);
+            if (isChecked) {
+                $("#isPlanPublic").val("True");
+            } else {
+                $("#isPlanPublic").val("False");
+            }
+        });
+
+    });
+    //토글 스위치 작동 함수
     </script>
 
 </head>
@@ -201,10 +369,20 @@
                         <div style="display: flex">
                             <span><h4><input type="text" id="tripPlanTitle" placeholder="여행플랜 제목을 입력해주세요"
                                              style="color: black; width: 600px; height: 30px; opacity: 0.8;"></h4></span>
+                            <%--                            <h5>--%>
+                            <%--                                공개<input type="checkbox" id="chbispublic" class="round" value="true" checked="true" disabled/>&nbsp;&nbsp;--%>
+                            <%--                                비공개<input type="checkbox" id="chbpublic" class="round" value="false"/>--%>
+                            <%--                            </h5>--%>
+
                             <h5>
-                                공개<input type="checkbox" id="chbispublic" class="round" value="true" checked="true" disabled/>&nbsp;&nbsp;
-                                비공개<input type="checkbox" id="chbpublic" class="round" value="false"/>
+                                <label class="switch" title="타 회원에게 공개할지 비공개할지 설정할 수 있어요.">
+                                    <input class="isPlanPublic" id="isPlanPublic" type="checkbox" name="isPlanPublic" checked="checked" />
+                                    <span class="switch-label" data-on="True" data-off="False"></span>
+                                    <span>공개여부</span>
+                                    <span class="switch-handle"></span>
+                                </label>
                             </h5>
+
                         </div>
                     </div>
                     <button class="btn-default icon-camera" id="tripPlanThumbnail"
@@ -220,12 +398,12 @@
             <div>
                 <div style="text-align: right;">
                     <div class="fixed-div btn btn-sm btn-success icon-date">여행일수
-                    <div>
-                        <button class="btn btn-sm btn-success icon-triangle-up" id="btnAddTripDay"
-                                style="background-color: #558B2F;"></button>
-                        <button class="btn btn-sm btn-success icon-triangle-down" id="btnRemoveTripDay"
-                                style="background-color: #558B2F;"></button>
-                    </div>
+                        <div>
+                            <button class="btn btn-sm btn-success icon-triangle-up" id="btnAddTripDay"
+                                    style="background-color: #558B2F;"></button>
+                            <button class="btn btn-sm btn-success icon-triangle-down" id="btnRemoveTripDay"
+                                    style="background-color: #558B2F;"></button>
+                        </div>
                         <div>추가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제거</div>
                     </div>
                 </div>
@@ -283,16 +461,18 @@
                 </div>
             </div>
             <div class="addDaily" id="addDaily" style="text-align: right;">
-                <button class="btn btn-primary" id="btnAddTripPlan" style="text-align: right;">저장</button>
                 <button class="btn btn-primary" id="history" style="text-align: right;">취소</button>
+                <button class="btn btn-primary" id="btnAddTripPlan" style="text-align: right;">저장</button>
             </div>
 
         </div>
     </main>
 
     <div style="display: flex">
-        <button class="scroll-button btn btn-sm btn-success" style="width: 70px">up</button>
-        <button class="scroll-button btn btn-sm btn-success" style="width: 70px">down</button>
+        <button class="scroll-button btn btn-sm btn-success icon-arrow-up" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+        <button class="scroll-button btn btn-sm btn-success icon-arr-up" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+        <button class="scroll-button btn btn-sm btn-success icon-arr-down" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+        <button class="scroll-button btn btn-sm btn-success icon-arrow-down" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
     </div>
 </div>
 
@@ -342,36 +522,36 @@
         });
     }
 
-    <!-- 체크박스 true, false -->
-    $("#chbispublic").click(function () {
-
-        isPlanPublic = this.value;
-        console.log(isPlanPublic);
-
-        var chbispublic = $(this);
-        var chbpublic = $("#chbpublic");
-
-        if (chbispublic.prop("checked")) {
-            chbispublic.prop("disabled", true);
-            chbpublic.prop("disabled", false);
-            chbpublic.prop("checked", false);
-        }
-    });
-
-    // 비공개 체크박스 클릭 이벤트 핸들러
-    $("#chbpublic").click(function () {
-        isPlanPublic = this.value;
-        console.log(isPlanPublic);
-
-        var chbpublic = $(this);
-        var chbispublic = $("#chbispublic");
-
-        if (chbpublic.prop("checked")) {
-            chbpublic.prop("disabled", true);
-            chbispublic.prop("disabled", false);
-            chbispublic.prop("checked", false);
-        }
-    });
+    // <!-- 체크박스 true, false -->
+    // $("#chbispublic").click(function () {
+    //
+    //     isPlanPublic = this.value;
+    //     console.log(isPlanPublic);
+    //
+    //     var chbispublic = $(this);
+    //     var chbpublic = $("#chbpublic");
+    //
+    //     if (chbispublic.prop("checked")) {
+    //         chbispublic.prop("disabled", true);
+    //         chbpublic.prop("disabled", false);
+    //         chbpublic.prop("checked", false);
+    //     }
+    // });
+    //
+    // // 비공개 체크박스 클릭 이벤트 핸들러
+    // $("#chbpublic").click(function () {
+    //     isPlanPublic = this.value;
+    //     console.log(isPlanPublic);
+    //
+    //     var chbpublic = $(this);
+    //     var chbispublic = $("#chbispublic");
+    //
+    //     if (chbpublic.prop("checked")) {
+    //         chbpublic.prop("disabled", true);
+    //         chbispublic.prop("disabled", false);
+    //         chbispublic.prop("checked", false);
+    //     }
+    // });
 
 </script>
 
@@ -880,6 +1060,8 @@
 
         var tripPlanTitle = $('#tripPlanTitle').val(); // 여행플랜 제목
         var dailyPlanContents = []; // 일차별 여행플랜 본문과 명소들을 모두 저장하는곳
+        isPlanPublic = $("#isPlanPublic").val();
+        console.log(isPlanPublic);
 
         for (var i = 0; i < idCheck; i++) {
             var dailyPlanContent; // 일차별 여행플랜 본문

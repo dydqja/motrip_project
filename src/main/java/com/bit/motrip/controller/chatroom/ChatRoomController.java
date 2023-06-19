@@ -101,7 +101,7 @@ public class ChatRoomController {
 //                       @RequestParam("userId") String userId,
                        HttpSession session
             , Model model) throws Exception{
-                User sessionUser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
         System.out.println(sessionUser);
         ChatRoom ch = chatRoomService.getChatRoom(chatRoom.getChatRoomNo());
         System.out.println(ch);
@@ -112,6 +112,7 @@ public class ChatRoomController {
         model.addAttribute("tripPlan",tripPlanService.selectTripPlan(ch.getTripPlanNo()));
         model.addAttribute("username",sessionUser.getUserId()); //유저 name으로 userId 전송
 //        model.addAttribute("username",userId); //유저 name으로 userId 전송
+        model.addAttribute("usernickname",sessionUser.getNickname()); //유저 name으로 userId 전송
         model.addAttribute("chatRoom",ch); //채팅방 객체 전송
         model.addAttribute("chatMembers",chatMemberList);
         model.addAttribute("author",author);
@@ -140,7 +141,7 @@ public class ChatRoomController {
     @GetMapping("getChat")
     public String getChat(@RequestParam("chatRoomNo") String chatRoomNo,
                           HttpSession session,
-                        Model model) throws Exception{
+                          Model model) throws Exception{
         System.out.println("getChat이 돌았습니다.");
         User sessionUser = (User) session.getAttribute("user");
         System.out.println(sessionUser);
@@ -196,7 +197,7 @@ public class ChatRoomController {
     public String addChatRoom(@ModelAttribute("chatRoom") ChatRoom chatRoom,
                               @RequestParam("userId") String userId,
                               @RequestParam("tripPlanNo") int tripPlanNo,
-                             // @RequestParam("travelStartDateHtml") String travelStartDateHtml,
+                              // @RequestParam("travelStartDateHtml") String travelStartDateHtml,
                               Model model) throws Exception{
         System.out.println("/chatRoom/addChatRoom/POST");
         //System.out.println(travelStartDateHtml);
@@ -214,6 +215,11 @@ public class ChatRoomController {
                                  Model model) throws Exception{
         System.out.println("getUpdateChatRoom");
         ChatRoom chatRoom = chatRoomService.getChatRoom(chatRoomNo); //chatroomno => chatroom
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String strDate = simpleDateFormat.format(chatRoom.getTravelStartDate());
+        chatRoom.setStrDate(strDate);
+
         int tripPlanNo = chatRoom.getTripPlanNo(); // chatroom => gettripplanno => chatmember에 삽입
         model.addAttribute("chatRoom",chatRoom);
         model.addAttribute("tripPlanNo",tripPlanNo);
@@ -231,7 +237,7 @@ public class ChatRoomController {
 
     @GetMapping("deleteChatRoom")
     public String deleteChatRoom(@RequestParam("userId") String userId,
-                                  @RequestParam("chatRoomNo") int chatRoomNo ) throws Exception{
+                                 @RequestParam("chatRoomNo") int chatRoomNo ) throws Exception{
         //방장이고 채팅방 번호가 같다면 delete chatRoomNo => 멤버도 같이 삭제
         System.out.println("deleteChatRoomController");
         int flag = chatRoomService.deleteChatRoom(chatRoomNo,userId);
@@ -245,7 +251,7 @@ public class ChatRoomController {
 
     @GetMapping("video")
     public String video(@ModelAttribute("chatRoom") ChatRoom chatRoom,
-                      // @RequestParam("userId") String userId,
+                        // @RequestParam("userId") String userId,
                         Model model) throws Exception{
 //        ChatRoom ch2 = chatRoomService.getChatRoom(chatRoom.getChatRoomNo());
 //        System.out.println(ch2);
@@ -277,7 +283,7 @@ public class ChatRoomController {
 
     @GetMapping("myChatRoomList")
     public String myChatRoomList( @ModelAttribute("search") Search search, HttpSession session
-                                    ,Model model) throws Exception{
+            ,Model model) throws Exception{
         User sessionUser = (User) session.getAttribute("user");
         System.out.println(sessionUser);
 
