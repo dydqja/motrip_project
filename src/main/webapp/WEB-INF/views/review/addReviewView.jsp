@@ -383,7 +383,6 @@
         var reviewTitle = $("input[name='reviewTitle']").val();
         var reviewContents = $("textarea[name='reviewContents']").val();
         var tripPlanNo = "<c:out value='${tripPlanNo}' />";
-        var reviewNo = "<c:out value='${reviewNo}' />";
 
         if (reviewTitle == null || reviewTitle.length < 1) {
             alert("후기 제목을 반드시 입력하여야 합니다.");
@@ -396,7 +395,8 @@
 
         $("form")
             .attr("method", "post")
-            .attr("action", "/review/getReview?reviewNo=" + reviewNo);
+            .attr("action", "/review/addReview?tripPlanNo=" + tripPlanNo +
+                "&tripPlanTitle=" + encodeURIComponent("${tripPlanTitle}"))
             .submit();
     }
 

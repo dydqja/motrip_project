@@ -241,6 +241,7 @@ public class ReviewController {
         int maxPage = page.getMaxPage(); // 총 페이지 수
         int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
         int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
+        String reviewAuthor = (String) parameters.get("reviewAuthor");
 
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("page", page);
@@ -248,6 +249,7 @@ public class ReviewController {
         model.addAttribute("beginUnitPage", beginUnitPage);
         model.addAttribute("endUnitPage", endUnitPage);
         model.addAttribute("search", search);
+        model.addAttribute("reviewAuthor", reviewAuthor);
         System.out.println("컨트롤러 reviewList >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + reviewList);
         System.out.println(page);
         System.out.println(maxPage);
@@ -278,8 +280,10 @@ public class ReviewController {
             model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
             return "user/login.jsp";
         }
+        // 사용자의 userId를 세션에 저장
+        session.setAttribute("userId", dbUser.getUserId());
 
-       Map<String, Object> parameters = new HashMap<>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put("search", search);
         parameters.put("user", dbUser);
         parameters.put("condition", "myReviewList"); // 나의 후기 목록을 조회하기 위한 조건 설정
@@ -299,8 +303,10 @@ public class ReviewController {
         int maxPage = page.getMaxPage(); // 총 페이지 수
         int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
         int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
+        String reviewAuthor = (String) parameters.get("reviewAuthor");
 
         model.addAttribute("myReviewList", myReviewList);
+        model.addAttribute("reviewAuthor", reviewAuthor);
         model.addAttribute("page", page);
         model.addAttribute("maxPage", maxPage);
         model.addAttribute("beginUnitPage", beginUnitPage);
@@ -325,7 +331,7 @@ public class ReviewController {
 
     @GetMapping("/getReview")// 후기 단 1개 조회
     public String getReview(@RequestParam("reviewNo") int reviewNo, Model model, HttpSession session) throws Exception {
-
+        System.out.println("getReview (): GET ");
         // 리뷰 상세 조회
         Review review = reviewService.getReview(reviewNo);
         User user = userService.getUserById(review.getReviewAuthor());

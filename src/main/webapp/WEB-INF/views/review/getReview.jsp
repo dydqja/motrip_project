@@ -231,7 +231,7 @@
                         <span id="likes" align="center" width="200">${review.reviewLikes}</span>
                         <span class="dot">·</span>
                         <span>${review.viewCount}</span>&nbsp;&nbsp;
-                        <button class="btn btn-primary" id="tripPlanLikes" value="${review.reviewNo}"
+                        <button class="btn btn-primary" id="reviewLikes" value="${review.reviewNo}"
                                 style="width: auto; height: auto; box-sizing: border-box; padding: 5px 10px;">추천
                         </button>
 
@@ -582,12 +582,12 @@
     <!-- 아래는 버튼클릭시 동작되는 부분입니다 -->
 
     $(function () {
-        $("button[id='tripPlanLikes']").on("click", function () {
-            var tripPlanNo = "${tripPlan.tripPlanNo}";
+        $("button[id='reviewLikes']").on("click", function () {
+            var reviewNo = "${review.reviewNo}";
             $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
-                url: "/tripPlan/tripPlanLikes",
+                url: "/review/reviewLikes",
                 type: "GET",
-                data: {"tripPlanNo": tripPlanNo},
+                data: {"reviewNo": reviewNo},
                 success: function (data) {
                     console.log(data);
                     if (data == -1) {
