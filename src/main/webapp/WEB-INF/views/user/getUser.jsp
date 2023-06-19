@@ -68,7 +68,9 @@
 
 </head>
 
-<body>
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+
+<body style="padding-top: 0; background-image: url('/images/user/myPageBody.jpg');">
 <% User getUser = (User)request.getAttribute("getUser"); %>
 
 <form><input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}"></form>
@@ -83,10 +85,17 @@
 
 
 <!--  화면구성 div Start /////////////////////////////////////-->
-<div class="container">
+
+<div class="page-img" style="background-image: url('/images/user/myPageBody.jpg');">
+    <div class="container">
+        <h1 class="main-head text-center board-title Zooming">마이페이지</h1>
+    </div>
+</div>
+
+<div class="container" style="background-color: #F1F2F8;">
 
     <div class="page-header">
-        <h3  style="background-color: #558B2F; color: #F5F1E3;">MyPage</h3>
+        <h3  style="background-color: #558B2F; color: #F5F1E3;">profile</h3>
     </div>
 
     <div class="profile">
