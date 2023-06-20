@@ -384,8 +384,7 @@
         var reviewTitle = $("input[name='reviewTitle']").val();
         var reviewContents = $("textarea[name='reviewContents']").val();
         var tripPlanNo = "<c:out value='${tripPlanNo}' />";
-        reviewThumbnail = $("input[name='reviewThumbnail']").val();
-        console.log("썸네일>>>",reviewThumbnail);
+
 
         if (reviewTitle == null || reviewTitle.length < 1) {
             alert("후기 제목을 반드시 입력하여야 합니다.");
@@ -469,12 +468,10 @@ $(document).ready(function () {
                                 <a href="#">4 Comments</a>-->
                             </p>
 
-                            <button class="btn-default icon-camera" id="reviewThumbnailInput"
+                            <button class="btn-default icon-camera" id="reviewThumbnailbtn"
                                     style="font-size: 10px; margin-left: 0.8%">썸네일
                             </button>
                         </div>
-                        <input type="hidden" id="reviewThumbnail" name="reviewThumbnail" value="">
-
                     </div>
                 </div>
             </div>
@@ -490,10 +487,12 @@ $(document).ready(function () {
                 <div>
                                 <span>
             <h4>
+                <input type="text" id="reviewThumbnail" name="reviewThumbnail" value="">
                 <input type="text" id="reviewTitle" name="reviewTitle" placeholder="제목을 입력하세요."
                        style="color: black; width: 82%; height: 40px; opacity: 0.5;">
             </h4>
         </span>
+
 
                 </div>
 
@@ -817,7 +816,7 @@ $(document).ready(function () {
 
 
     // 여행플랜 썸네일
-    $("#reviewThumbnailInput").click(function () {
+    $("#reviewThumbnailbtn").click(function () {
         var tripPlanNo = "${tripPlan.tripPlanNo}";
         Swal.fire({
             title: "썸네일 업로드",
@@ -844,7 +843,6 @@ $(document).ready(function () {
                 var formData = new FormData();
                 formData.append("file", uploadedFile);
                 formData.append("tripPlanNo",tripPlanNo);
-                console.log("",uploadedFile)
                 console.log("tripPlanNo",tripPlanNo)
 
                 // reviewThumbnail 값을 가져와서 formData에 추가
@@ -858,14 +856,14 @@ $(document).ready(function () {
                     processData: false,
                     contentType: false,
                     success: function (response) {
-                        console.log("파일 업로드 성공:", response);
+                        console.log("파일 업로드 성공 니가 맞아?:", response);
                         var imagePath = response;
                         reviewThumbnail = imagePath.replace(/^\/imagePath\//, "");
-                        console.log("reviewThumnail>>>>",reviewThumbnail);
+                        console.log("reviewThumnail>>>>>>>",reviewThumbnail);
                         $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + reviewThumbnail + "')");
 
                         // 썸네일 값 input 요소에 저장
-                        $("#reviewThumbnailInput").val(reviewThumbnail);
+                        $("#reviewThumbnail").val(reviewThumbnail);
                     },
                     error: function (xhr, status, error) {
                         console.log("파일 업로드 실패:", error);
