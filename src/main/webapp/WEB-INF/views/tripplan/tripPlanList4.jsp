@@ -49,7 +49,7 @@
                                            class="tripPlanNo"/></div>
                             </c:if>
                             <c:if test="${tripPlan.tripPlanThumbnail == ''}">
-                            <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
+                            <div class="item-img row" style="background-image: url('/images/default_motrip.png');">
                                 <input type="hidden" id="tripPlanImage${tripPlan.tripPlanNo}"
                                     <c:if test="${tripPlan.isPlanDeleted}">
                                         value="0"

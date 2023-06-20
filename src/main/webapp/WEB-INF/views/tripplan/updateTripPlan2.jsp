@@ -58,7 +58,7 @@
         let isPlanDownloadable = false; // 가져가기 여부
         let mapCounter = 1; // 지도 갯수 카운트
         let idCheck = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
-        let tripPlanThumbnail = "";
+        let tripPlanThumbnail = ${tripPlan.tripPlanThumbnail};
     </script>
 
     <style>
