@@ -352,9 +352,6 @@ public class ReviewController {
     }
 
 
-
-
-
     @GetMapping(value = "/updateReviewView")//후기 수정
     public String updateReviewView(@RequestParam("reviewNo") int reviewNo,
                                    @RequestParam("tripPlanNo") int tripPlanNo,Model model, HttpSession session) throws Exception {
