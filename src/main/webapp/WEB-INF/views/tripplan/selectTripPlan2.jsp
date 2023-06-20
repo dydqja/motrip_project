@@ -387,7 +387,7 @@
                                     <div class="card text-white mb-3" id="tripTitle${i-1}"
                                          style="width: auto; height: auto; font-size: 9px;">
                                         <div class="card-body btn btn-lg btn-info" style="background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
-                                            <h5 class="card-title${i-1}" name="placeTitle" data-index="${j-1}">
+                                            <h5 class="card-title" name="placeTitle" data-index="${j-1}">
                                                 <div style="color: black; width: 100%;">
                                                     <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
                                                 </div>
@@ -589,6 +589,9 @@
             if (!position[mapIndex]) {
                 position[mapIndex] = [];
             }
+            if (!overlays[mapIndex]) {
+                overlays[mapIndex] = [];
+            }
 
             position[mapIndex].push(marker);
 
@@ -625,7 +628,7 @@
             });
 
             overlay.setMap(null); // 오버레이 초기 상태는 숨김으로 설정
-            overlays.push(overlay);
+            overlays[mapIndex].push(overlay);
 
             (function (marker, overlay, mapIndex) {
 
@@ -641,19 +644,19 @@
                     overlay.setMap(null);
                 });
 
-                $('.card-title' + mapIndex).click(function() {
-
-                    var dataIndex = parseInt($(this).attr('data-index'));
-                    console.log(dataIndex);
-                    console.log(position[mapIndex][dataIndex]);
-
-                    // 해당 마커를 클릭한 것처럼 동작
-                    maps[mapIndex].setLevel(5);
-                    maps[mapIndex].panTo(position[mapIndex][dataIndex].getPosition());
-                    overlay.setMap(null);
-                    overlay.setMap(maps[mapIndex]);
-
-                });
+                // $('.card-title' + mapIndex).click(function() {
+                //
+                //     var dataIndex = parseInt($(this).attr('data-index'));
+                //     console.log(dataIndex);
+                //     console.log(position[mapIndex][dataIndex]);
+                //
+                //     // 해당 마커를 클릭한 것처럼 동작
+                //     maps[mapIndex].setLevel(5);
+                //     maps[mapIndex].panTo(position[mapIndex][dataIndex].getPosition());
+                //     overlay.setMap(null);
+                //     overlay.setMap(maps[mapIndex]);
+                //
+                // });
 
                 // 화면 초기화
                 $('#reset' + mapIndex).click(function () {
@@ -683,7 +686,27 @@
 
             })(marker, overlay, mapIndex);
         }
+
+        $(document).on('click', '[id^="tripTitle"]', function() {
+            var mapIndex = $(this).attr('id').replace('tripTitle', ''); // 클릭한 태그의 인덱스 추출
+            var dataIndex = $(this).find('.card-title').attr('data-index');
+            console.log("클릭한 태그의 인덱스:", index);
+            console.log("확인: ", dataIndex);
+            // 원하는 작업 수행
+
+            console.log(overlays[mapIndex])
+
+            maps[mapIndex].setLevel(5);
+            maps[mapIndex].panTo(position[mapIndex][dataIndex].getPosition());
+
+            for(var i=0; i<overlays[mapIndex].length; i++){
+                overlays[mapIndex][i].setMap(null);
+            }
+            overlays[mapIndex][dataIndex].setMap(maps[mapIndex]);
+        });
+
     });
+
 
     <!-- 아래는 버튼클릭시 동작되는 부분입니다 -->
 

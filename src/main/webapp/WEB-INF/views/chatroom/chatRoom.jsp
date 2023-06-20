@@ -491,7 +491,7 @@
         });
         function fncGetUser(getUserName){
 
-            var url = "/user/getUser?userId=" + getUserName;
+            var url = "/user/getUser?userId=" + getUserName + "&type=my";
             window.location.href = url;
         }
         $(function() {

@@ -147,7 +147,7 @@ public class TripPlanController {
             model.addAttribute("condition", "my");
         }
 
-        return "tripplan/tripPlanList2.jsp";
+        return "tripplan/tripPlanList3.jsp";
     }
 
 //    @GetMapping("myTripPlanList") // 나의 여행플랜 리스트
