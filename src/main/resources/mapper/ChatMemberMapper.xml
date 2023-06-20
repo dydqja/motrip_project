@@ -58,4 +58,8 @@
 		select * from chat_room_members where chat_room_no = #{chatRoomNo} and is_chat_room_author=1
 	</select>
 
+	<select id="getChatRoomNumber" parameterType="int" resultMap="chatMemberResultMap">
+		select * from chat_room_members where trip_plan_no = #{tripPlanNo} and is_chat_room_author=1
+	</select>
+
 </mapper>

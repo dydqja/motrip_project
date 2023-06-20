@@ -23,5 +23,6 @@ public interface ChatMemberService {
     public void kickChatMember(int chatRoomNo, String userId, boolean isChatRoomAuthor) throws Exception;
     // 채팅 멤버 리스트 출력
     public ArrayList<ChatMember> chatMemberList(int chatRoomNo) throws Exception; // 멤버리스트
+    public List<ChatMember> getChatRoomNumber(int tripPlanNo) throws Exception;
 
 }

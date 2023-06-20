@@ -22,8 +22,17 @@ public class TripPlan {
     private List<DailyPlan> dailyplanResultMap;
     private String strDate;
     private String tripPlanNickName;
+    private int chatRoomNo;
 
     public TripPlan() {
+    }
+
+    public int getChatRoomNo() {
+        return chatRoomNo;
+    }
+
+    public void setChatRoomNo(int chatRoomNo) {
+        this.chatRoomNo = chatRoomNo;
     }
 
     public String getTripPlanNickName() {
@@ -171,6 +180,7 @@ public class TripPlan {
                 ", tripPlanLikes=" + tripPlanLikes +
                 ", tripPlanViews=" + tripPlanViews +
                 ", dailyplanResultMap=" + dailyplanResultMap +
+                ", chatRoomNo=" + chatRoomNo +
                 '}' + "\n";
     }
 }

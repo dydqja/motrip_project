@@ -191,6 +191,7 @@ public class UserController {
         System.out.println("/user/getUser : GET");
         System.out.println("userId = [" + userId + "], nickname = [" + nickname + "]");
         //Business Logic
+
         if (userId != null) {
             User user = userService.getUserById(userId);
             System.out.println("getUserById로 가져온 user값은 ? " + user);
@@ -214,15 +215,14 @@ public class UserController {
 
         Search search = new Search();
         search.setCurrentPage(currentPage);
-
-        int pageSize = 5;
         search.setPageSize(pageSize);
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("search", search);
+
         if (type.equals("my")) {
-            User user = (User) session.getAttribute("user");
-            parameters.put("user", user);
+//            User user = (User) session.getAttribute("user");
+            parameters.put("user", userService.getUserById(userId));
         }
         System.out.println("처음 페이지 들어왔을떄 : " + parameters);
 
@@ -231,7 +231,7 @@ public class UserController {
         int totalCount = (int) tripPlanList.get("totalCount");
         int pageUnit = 3; // 화면 하단에 표시할 페이지 수
 
-        Page page = new Page(currentPage, totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
+        Page page = new Page(search.getCurrentPage(), totalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
         int maxPage = page.getMaxPage(); // 총 페이지 수
         int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
         int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
@@ -243,6 +243,8 @@ public class UserController {
         model.addAttribute("beginUnitPage", beginUnitPage);
         model.addAttribute("endUnitPage", endUnitPage);
         model.addAttribute("tripPlanAuthor", tripPlanAuthor);
+        model.addAttribute("search",search);
+
         System.out.println(tripPlanAuthor);
         if (tripPlanAuthor == null) {
             model.addAttribute("condition", "all");

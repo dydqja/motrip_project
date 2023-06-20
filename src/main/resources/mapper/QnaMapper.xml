@@ -10,6 +10,7 @@
 
         <result property="qnaNo"                    column="board_no"                  jdbcType="INTEGER"/>
         <result property="qnaAuthor"                column="board_author"              jdbcType="VARCHAR"/>
+        <result property="nickName"                 column="nickname"                  jdbcType="VARCHAR"/>
         <result property="qnaTitle"                 column="board_title"               jdbcType="VARCHAR"/>
         <result property="qnaContents"              column="board_contents"            jdbcType="VARCHAR"/>
         <result property="qnaViews"                 column="board_views"               jdbcType="INTEGER"/>
@@ -23,20 +24,22 @@
 
     <select id="getQnaList" parameterType="com.bit.motrip.common.Search"	resultMap="qnaSelectMap">
         SELECT *
-        FROM (
-                 SELECT
-                     BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS,
-                     BOARD_REG_DATE, QNA_CATEGORY, IS_QNA_ANSWERED, QNA_ANSWER_CONTENTS, BOARD_CATEGORY,
-                     ROW_NUMBER() OVER (ORDER BY CASE WHEN IS_QNA_ANSWERED = 1 THEN 0 ELSE 1 END, BOARD_NO DESC) AS row_seq
-                 FROM
-                     board
+            FROM (
+                SELECT
+                    b.BOARD_NO, b.BOARD_AUTHOR, u.NICKNAME, b.BOARD_TITLE, b.BOARD_CONTENTS, b.BOARD_VIEWS,
+                    b.BOARD_REG_DATE, b.QNA_CATEGORY, b.IS_QNA_ANSWERED, b.QNA_ANSWER_CONTENTS, b.BOARD_CATEGORY,
+                    ROW_NUMBER() OVER (ORDER BY b.BOARD_NO DESC) AS row_seq
+                FROM
+                    board b
+                INNER JOIN
+                    users u ON b.BOARD_AUTHOR = u.USER_ID -- 조인 조건을 사용자 ID에 맞게 설정
                  WHERE
-                     BOARD_CATEGORY = 1
+                    b.BOARD_CATEGORY = 1
                 <if test="searchKeyword != null">
-                    AND BOARD_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+                    AND b.BOARD_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
                 </if>
-             ) AS derived_table
-        WHERE
+                    ) AS derived_table
+            WHERE
             row_seq BETWEEN #{startRowNum} AND #{endRowNum}
     </select>
 

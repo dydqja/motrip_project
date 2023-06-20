@@ -231,22 +231,22 @@
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-hand-scissor"></span></span>
         <div class="desc">
-          <h5>믿을만한 여행동료들</h5>
-          <p>휴대폰 실명인증을 거친 신원이 확실한 회원들과 함께</p>
+          <h5>믿을만한 여행 동료들</h5>
+          <p>휴대폰 실명인증을 거친<br>신원이 확실한 회원들과 함께</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-road-sign"></span></span>
         <div class="desc">
-          <h5>좌우 구분 잘하세요</h5>
-          <p>저희는 인생의 길을 찾아주는 웹사이트가 아닙니다.</p>
+          <h5>어디든 마음대로</h5>
+          <p>모여행과 함께라면<br>어디든 여행을 갈 수 있어요</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-map"></span></span>
         <div class="desc">
-          <h5>나의 여행플랜 작성</h5>
-          <p>지도에 경로를 그리며 여행플랜을 작성하세요<br>동선을 확인하고 완벽한 일정을 만드십시오</p>
+          <h5>여행플랜 작성</h5>
+          <p>지도에 경로를 그리며 여행플랜을 작성하세요<br>동선을 확인하고 완벽한 일정을 만들어요</p>
         </div>
       </div>
 
@@ -254,21 +254,21 @@
         <span class="square-icon"><span class="icon-deer"></span></span>
         <div class="desc">
           <h5>멸종 위기의 고라니</h5>
-          <p>고라니와 함께하는 한국여행을 즐기세요</p>
+          <p>고라니와 함께하는<br>한국 여행을 즐기세요</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-flower"></span></span>
         <div class="desc">
           <h5>자연과 한마음</h5>
-          <p>모여행은 친환경을 중시합니다. <br>모여행은 일회용 젓가락을 사용하지 않아요</p>
+          <p>모여행은 친환경을 중시합니다<br>일회용 젓가락을 사용하지 않아요</p>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <span class="square-icon"><span class="icon-binocular"></span></span>
         <div class="desc">
-          <h5>새로운 발견! 잊지 못할 여행! </h5>
-          <p>믿을 수 있는 여행 동료들과 함께<br>멋진 여행 후기를 작성해보세요.</p>
+          <h5>새로운 발견! 잊지 못할 여행!</h5>
+          <p>새로운 인연을 찾고<br>멋진 추억을 만들어요</p>
         </div>
       </div>
 

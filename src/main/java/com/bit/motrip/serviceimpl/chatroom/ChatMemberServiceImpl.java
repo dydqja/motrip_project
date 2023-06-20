@@ -97,4 +97,9 @@ public class ChatMemberServiceImpl implements ChatMemberService {
         return chatMemberDao.listChatMember(chatRoomNo);
     }
 
+    @Override
+    public List<ChatMember> getChatRoomNumber(int tripPlanNo) throws Exception {
+        return chatMemberDao.getChatRoomNumber(tripPlanNo);
+    }
+
 }

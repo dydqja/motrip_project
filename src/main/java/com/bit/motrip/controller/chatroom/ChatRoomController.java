@@ -102,6 +102,7 @@ public class ChatRoomController {
                        HttpSession session
             , Model model) throws Exception{
         User sessionUser = (User) session.getAttribute("user");
+        System.out.println(chatRoom);
         System.out.println(sessionUser);
         ChatRoom ch = chatRoomService.getChatRoom(chatRoom.getChatRoomNo());
         System.out.println(ch);

@@ -139,13 +139,15 @@ public class TripPlanController {
         model.addAttribute("search",search);
 
         System.out.println(tripPlanAuthor);
+        System.out.println("아 확인해보자");
+        System.out.println(tripPlanList);
         if(tripPlanAuthor == null) {
             model.addAttribute("condition", "all");
         } else {
             model.addAttribute("condition", "my");
         }
 
-        return "tripplan/tripPlanList2.jsp";
+        return "tripplan/tripPlanList3.jsp";
     }
 
 //    @GetMapping("myTripPlanList") // 나의 여행플랜 리스트

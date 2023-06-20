@@ -21,7 +21,7 @@
 
     <select id="getNoticeList"  parameterType="com.bit.motrip.common.Search"	resultMap="noticeSelectMap">
         SELECT *
-        FROM (
+            FROM (
                  SELECT
                      BOARD_NO, BOARD_AUTHOR, BOARD_TITLE, BOARD_CONTENTS, BOARD_VIEWS, BOARD_REG_DATE, BOARD_CATEGORY, IS_NOTICE_IMPORTANT,
                      ROW_NUMBER() OVER (ORDER BY CASE WHEN IS_NOTICE_IMPORTANT = 1 THEN 0 ELSE 1 END, BOARD_NO DESC) AS row_seq
@@ -32,8 +32,8 @@
                 <if test="searchKeyword != null">
                     AND BOARD_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
                 </if>
-             ) AS derived_table
-        WHERE
+                    ) AS derived_table
+            WHERE
             row_seq BETWEEN #{startRowNum} AND #{endRowNum}
     </select>
 
