@@ -1644,8 +1644,6 @@
                 var formData = new FormData();
                 formData.append("file", uploadedFile);
 
-                console.log(formData);
-
                 // 파일 업로드 AJAX 요청
                 $.ajax({
                     url: "/tripPlan/fileUpload",
