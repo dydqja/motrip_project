@@ -156,7 +156,6 @@ public class ReviewController {
     public String addReview(@ModelAttribute("review") Review review,
                             @RequestParam("tripPlanNo") int tripPlanNo,
                             @RequestParam("tripPlanTitle") String tripPlanTitle,
-                            @RequestParam(value = "reviewThumbnail", required = false) String reviewThumbnail,
                             Model model, HttpSession session) throws Exception {
         System.out.println("/review/addReview : POST");
         // 세션에서 로그인된 userId 값을 가져옴
@@ -176,6 +175,8 @@ public class ReviewController {
         newReview.setisReviewDeleted(review.getisReviewDeleted());
         newReview.setReviewDelDate(review.getReviewDelDate());
 
+        System.out.println("newReview>>>>"+newReview);
+
         // tripPlanNo 설정
         newReview.setTripPlanNo(tripPlanNo);
         // tripPlan 객체 조회
@@ -184,6 +185,8 @@ public class ReviewController {
         model.addAttribute("tripPlan", tripPlan);
         System.out.println("여기는 컨트롤러 addReview>>>>>>>>>"+tripPlan);
         reviewService.addReview(newReview);
+
+
 
         model.addAttribute("reviewAuthor", reviewAuthor);
         model.addAttribute("review", newReview);

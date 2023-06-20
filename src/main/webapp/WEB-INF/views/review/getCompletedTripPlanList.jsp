@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -123,7 +124,7 @@
 <body>
 <div class="container">
   <h1>후기작성이 가능한 여행플랜 목록</h1>
-  <h5>여행을 마친 플랜만 후기로 작성할 수 있어요.</h5>
+  <h5>여행을 마친 여행플랜만 후기로 작성할 수 있어요.</h5>
 
   <div style="margin-bottom: 80px;"></div><!--그냥 여백-->
 
@@ -136,14 +137,17 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${tripPlanList}" var="tripPlan" >
+    <c:forEach items="${tripPlanList}" var="tripPlan">
       <tr>
         <td style="text-align: center;">${tripPlan.tripPlanNo}</td>
         <td>
           <a href="addReviewView?tripPlanNo=${tripPlan.tripPlanNo}">
-              ${tripPlan.tripPlanTitle}</a>
+              ${tripPlan.tripPlanTitle}
+          </a>
         </td>
-        <td>${tripPlan.tripPlanRegDate}</td>
+        <td>
+          <fmt:formatDate value="${tripPlan.tripPlanRegDate}" pattern="yyyy년 MM월 dd일" />
+        </td>
       </tr>
     </c:forEach>
 

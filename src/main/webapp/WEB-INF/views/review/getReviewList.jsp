@@ -59,7 +59,7 @@
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 <%--</header>--%>
 
-<<div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
+<div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
   <div class="container">
     <div class="col-sm-8">
       <h1 class="main-head">모든 후기 보기 </h1>
@@ -80,7 +80,7 @@
         </div>
         <label><br></label>
         <div class="border-box">
-          <div class="box-title">Search Condition</div>
+          <div class="box-title">정렬 조건 </div>
           <div class="center-div" style="width: 100%; height: 100%;">
             <div class="btn-group" data-toggle="buttons">
               <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="newDate">
@@ -114,13 +114,6 @@
             </div>
           </div>
 
-          <div class="border-box">
-            <div class="box-title">Trip Days Search</div>
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Days">
-              <div class="input-group-btn"></div>
-            </div>
-          </div>
 
         </div>
       </div>
@@ -143,8 +136,12 @@
                 <div>
                   <h6 class="right">${review.reviewRegDate}</h6>
                   <h5 class="item-title">${review.reviewTitle} </h5>
-                  <div class="sub-title"  style="display: none;">
-                   태그는 여기로
+                  <div class="sub-title"  >
+                    <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
+                      <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                        <h6 style="text-overflow: ellipsis">#${place.placeTags}</h6>
+                      </c:forEach>
+                    </c:forEach>
                   </div>
                 </div>
 

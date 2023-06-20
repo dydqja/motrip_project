@@ -207,9 +207,7 @@
 
 <body>
 
-<header class="nav-menu fixed">
-    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-</header>
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
 
 <div class="post-single left" style="margin-bottom: 70px">
@@ -221,24 +219,25 @@
             </c:if>
             <div class="page-img-txt container">
                 <div class="row">
-                    <div class="col-sm-12"style="margin-top: 74px">
-                        <h2>
-                            <div class="author-img" style="margin-top: 2%">
+                    <div class="col-sm-12">
+                        <h2 class="main-head">작성  완료</h2>
+                        <p class="sub-head">작성한 후기를 확인해보세요.</p>
+                        <h3>
+                            <div class="author-img" style="margin-top: 1%">
                                 <img src="${user.userPhoto}" alt="">
                             </div>
                             <div class="author">
-                                <span style="font-size: 25px">${review.reviewTitle}</span>
+                                <h5>Review No. ${reviewNo}</h5>
+                                <span style="font-size: 18px">${review.reviewTitle}</span>
                             </div>
-                        </h2>
+                        </h3>
                         <p class="byline">
                         <h4>
-                            <div style="margin: 4px;"></div>
                             <span>By</span>
                             <span><c:out value="${user.nickname}"/></span></a>
                             <span class="italic"></span>
                             <span>${review.reviewRegDate}</span>
                             <span>${review.strDate}</span>
-
 
                         </h4>
                         </p>
@@ -256,7 +255,7 @@
             <div display="flex;"style="margin-left: 40px">
                 <span class="icon-map" style="font-size: 40px; " ></span><div class="day">${i}일차 이동경로 <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px"></button></div>
             </div>
-            <div style="margin: 11%"></div>
+            <div style="margin: 4%"></div>
 
             <!-- 지도와 탭을 담을 컨테이너 -->
             <div class="container">

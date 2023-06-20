@@ -215,14 +215,14 @@
             <div class="row">
                 <div class="col-sm-8">
                     <h5>No.${review.reviewNo}</h5>
-                    <h2>
+                    <h4>
                         <div class="author-img">
                             <img src="/images/tripImage.jpg" alt="">
                         </div>
                         <div class="author">
                             <span>${review.reviewTitle}</span>
                         </div>
-                    </h2>
+                    </h4>
                     <p class="byline">
                     <h4>
                         <span class="italic">${user.nickname}</span>

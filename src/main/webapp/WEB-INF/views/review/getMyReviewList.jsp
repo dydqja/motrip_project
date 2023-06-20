@@ -116,22 +116,12 @@
 
                 <div class="sidebar">
                     <div class="border-box">
-                        <div class="box-title">Review Search</div>
+                        <div class="box-title">후기 검색</div>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Title">
                             <div class="input-group-btn">
                                 <button class="btn btn-primary">Search</button>
                             </div>
-                        </div>
-
-
-                    </div>
-
-                    <div class="border-box">
-                        <div class="box-title">Trip Days Search</div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Days">
-                            <div class="input-group-btn"></div>
                         </div>
                     </div>
 
@@ -145,10 +135,28 @@
                     <c:set var="i" value="${ i+1 }"/>
                     <div class="item-list review-item-list">
                         <div class="col-sm-5">
-                            <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
-                                    type="hidden"
-                                    value=">${review.reviewNo}"
-                                    class="reviewNo"/></div>
+                            <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">
+                                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">
+                                    <input type="hidden" id="reviewImage${review.reviewNo}"
+                                            <c:if test="${review.getisReviewDeleted()}">
+                                                value="0"
+                                            </c:if>
+                                            <c:if test="${!review.getisReviewDeleted}">
+                                                value="${review.reviewNo}"
+                                            </c:if>
+                                           class="reviewNo"/></div>
+                            </c:if>
+                            <c:if test="${review.reviewThumbnail == ''}">
+                            <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
+                                <input type="hidden" id="reviewImage${review.reviewNo}"
+                                        <c:if test="${review.getisReviewDeleted()}">
+                                            value="0"
+                                        </c:if>
+                                        <c:if test="${!review.getisReviewDeleted()}">
+                                            value="${review.reviewNo}"
+                                        </c:if>
+                                       class="reviewNo"/></div>
+                            </c:if>
                         </div>
 
                         <div class="col-sm-7">
@@ -157,43 +165,56 @@
                                     <h6 class="right">${review.strDate}</h6>
                                     <h5 class="item-title">${review.reviewTitle} </h5>
                                     <div class="sub-title">
-                                        태그는 여기로
+                                        <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
+                                            <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                                                <h6 style="text-overflow: ellipsis">#${place.placeTags}</h6>
+                                            </c:forEach>
+                                        </c:forEach>
                                     </div>
                                 </div>
 
-                                <div class="right">
-                                    <h4>${review.reviewAuthor}</h4>
+                                <div class="right" style="margin-top: -8px">
                                     <div class="right"><span class="icon-date"></span>
-                                        몇 박 몇일은 여기에
+                                        <c:if test="${tripPlan.tripDays == 1}">
+                                            ${tripPlan.tripDays}일
+                                        </c:if>
+                                        <c:if test="${tripPlan.tripDays != 1}">
+                                            ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일
+                                        </c:if>
                                     </div>
-                                    <div>
-                                       삭제여부 넣고 싶으면 여기에
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="item-book">
 
                                 <button class="btn btn-sm btn-success" name="reviewNo"
+                                        <c:if test="${review.isReviewDeleted}">
+                                            style="display: none;"
+                                        </c:if>
+                                        id="reviewView${review.reviewNo}"
                                         value="${review.reviewNo}">조회<input type="hidden"
                                                                             value="${review.reviewNo}"
                                                                             class="reviewNo"/>
                                 </button>
 
-
-                                <c:if test="${sessionScope.user.userId == reviewAuthor}">
-                                    <button id="btnDelete" class="btn btn-sm btn-danger"
-                                            value="${review.reviewNo}">삭제<input type="hidden"
-                                                                                value="${review.reviewNo}"
-                                                                                class="reviewNo"/>
-                                    </button>
+                                <c:if test="${not empty sessionScope.user.userId && review.isReviewDeleted }">
+                                    <c:if test="${sessionScope.user.userId == reviewAuthor}">
+                                        <button id="btnDelete${review.reviewNo}" class="btn btn-sm btn-info btnDelete"
+                                                value="${review.reviewNo}">복구<input type="hidden"
+                                                                                    value="${review.reviewNo}"
+                                                                                    class="reviewNo"/>
+                                        </button>
+                                    </c:if>
                                 </c:if>
 
-                                <c:if test="${sessionScope.user.userId == reviewAuthor}">
-                                    <button id="btnDelete" class="btn btn-sm btn-info"
-                                            value="${review.reviewNo}">복구<input type="hidden"
-                                                                                value="${review.reviewNo}"
-                                                                                class="reviewNo"/>
-                                    </button>
+                                <c:if test="${not empty sessionScope.user.userId && review.isReviewDeleted }">
+                                    <c:if test="${sessionScope.user.userId == reviewAuthor}">
+                                        <button id="btnDelete${review.reviewNo}" class="btn btn-sm btn-warning btnDelete"
+                                                value="${review.reviewNo}">삭제<input type="hidden"
+                                                                                    value="${tripPlan.reviewNo}"
+                                                                                    class="reviewNo"/>
+                                        </button>
+                                    </c:if>
                                 </c:if>
 
 
