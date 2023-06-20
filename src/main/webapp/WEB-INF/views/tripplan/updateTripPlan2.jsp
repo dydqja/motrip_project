@@ -66,6 +66,7 @@
             font-size: 30px; /* 원하는 크기로 설정 */
             font-weight: bold; /* 굵은 글씨체 설정 */
         }
+
     </style>
     <style>
         /* 리스트 css */
@@ -146,6 +147,7 @@
             right: 10px;
             padding: 4px 8px;
             font-size: 12px;
+            z-index: 9999; /* 맨 앞으로 배치 */
         }
 
         /* 첫 번째 버튼 위치 조정 */
@@ -180,6 +182,7 @@
             color: #fff;
             padding: 2px 2px;
             border-radius: 5px;
+            z-index: 9999; /* 맨 앞으로 배치 */
         }
     </style>
     <script>
@@ -357,23 +360,25 @@
                         </h4>
                         <div style="display: flex">
                             <span><h4><input type="text" id="tripPlanTitle" value="${tripPlan.tripPlanTitle}"
-                                             style="color: black; width: 600px; height: 30px; opacity: 0.8;"></h4></span>
+                                             style="color: black; width: 600px; height: 30px; opacity: 0.8;"></h4></span>&nbsp;&nbsp;&nbsp;&nbsp;
                             <h5>
-                                <c:if test="${tripPlan.getisPlanPublic()}">
-                                    공개<input type="checkbox" id="chbispublic" class="round" value="true" checked="true" disabled/>&nbsp;&nbsp;
-                                    비공개<input type="checkbox" id="chbpublic" class="round" value="false" />
-                                </c:if>
-                                <c:if test="${!tripPlan.getisPlanPublic()}">
-                                    공개<input type="checkbox" id="chbispublic" class="round" value="true" />&nbsp;&nbsp;
-                                    비공개<input type="checkbox" id="chbpublic" class="round" value="false" checked="true" disabled/>
-                                </c:if>
-                            </h5>
+                                <label class="switch" title="타 회원에게 공개할지 비공개할지 설정할 수 있어요.">
+                                    <input class="isPlanPublic" id="isPlanPublic" type="checkbox" name="isPlanPublic" value="${tripPlan.isPlanPublic}"
+                                            <c:if test="${tripPlan.isPlanPublic}">
+                                                checked="checked"
+                                            </c:if>
+                                    />
+                                    <span class="switch-label" data-on="True" data-off="False"></span>
+                                    <span>공개여부</span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </h5>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn-warning icon-camera" id="tripPlanThumbnail" style="height: 25px; margin-top: 1.2%"></button>
                         </div>
                     </div>
                     <div class="colsm-4">
                     </div>
                 </div>
-                <button class="btn-default icon-camera" id="tripPlanThumbnail" style="font-size: 5px; margin-left: 0.8%">썸네일</button>
             </div>
         </div>
 
@@ -639,36 +644,36 @@
             });
         }
 
-        <!-- 체크박스 true, false -->
-        $("#chbispublic").click(function () {
-
-            isPlanPublic = this.value;
-            console.log(isPlanPublic);
-
-            var chbispublic = $(this);
-            var chbpublic = $("#chbpublic");
-
-            if (chbispublic.prop("checked")) {
-                chbispublic.prop("disabled", true);
-                chbpublic.prop("disabled", false);
-                chbpublic.prop("checked", false);
-            }
-        });
-
-        // 비공개 체크박스 클릭 이벤트 핸들러
-        $("#chbpublic").click(function () {
-            isPlanPublic = this.value;
-            console.log(isPlanPublic);
-
-            var chbpublic = $(this);
-            var chbispublic = $("#chbispublic");
-
-            if (chbpublic.prop("checked")) {
-                chbpublic.prop("disabled", true);
-                chbispublic.prop("disabled", false);
-                chbispublic.prop("checked", false);
-            }
-        });
+        // <!-- 체크박스 true, false -->
+        // $("#chbispublic").click(function () {
+        //
+        //     isPlanPublic = this.value;
+        //     console.log(isPlanPublic);
+        //
+        //     var chbispublic = $(this);
+        //     var chbpublic = $("#chbpublic");
+        //
+        //     if (chbispublic.prop("checked")) {
+        //         chbispublic.prop("disabled", true);
+        //         chbpublic.prop("disabled", false);
+        //         chbpublic.prop("checked", false);
+        //     }
+        // });
+        //
+        // // 비공개 체크박스 클릭 이벤트 핸들러
+        // $("#chbpublic").click(function () {
+        //     isPlanPublic = this.value;
+        //     console.log(isPlanPublic);
+        //
+        //     var chbpublic = $(this);
+        //     var chbispublic = $("#chbispublic");
+        //
+        //     if (chbpublic.prop("checked")) {
+        //         chbpublic.prop("disabled", true);
+        //         chbispublic.prop("disabled", false);
+        //         chbispublic.prop("checked", false);
+        //     }
+        // });
     </script>
 
     <!-- 지도 관련 -->
@@ -1207,6 +1212,8 @@
 
             var tripPlanTitle = $('#tripPlanTitle').val(); // 여행플랜 제목
             var dailyPlanContents = []; // 일차별 여행플랜 본문과 명소들을 모두 저장하는곳
+            isPlanPublic = $("#isPlanPublic").prop("checked");
+            console.log(isPlanPublic);
 
             for (var i = 0; i < idCheck; i++) {
                 var dailyPlanContent; // 일차별 여행플랜 본문

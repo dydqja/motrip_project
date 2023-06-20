@@ -239,7 +239,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     public String fileUpload(MultipartFile file) throws Exception {
 
-        System.out.println("reviewfileUpload");
+        System.out.println("tripPlanfileUpload");
         // 파일이 비어있는지 체크
         if (file.isEmpty()) {
             throw new IllegalArgumentException("파일이 없습니다.");
@@ -273,7 +273,6 @@ public class ReviewServiceImpl implements ReviewService {
 
         return uniqueFileName;
     }
-
 }
 
 

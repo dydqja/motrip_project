@@ -102,12 +102,13 @@ public class ChatRoomController {
                        HttpSession session
             , Model model) throws Exception{
         User sessionUser = (User) session.getAttribute("user");
+        System.out.println(chatRoom);
         System.out.println(sessionUser);
         ChatRoom ch = chatRoomService.getChatRoom(chatRoom.getChatRoomNo());
         System.out.println(ch);
         ChatMember author = chatMemberService.getChatMemberAuthor(chatRoom.getChatRoomNo());
         List<ChatMember> chatMemberList = chatMemberService.chatMemberList(chatRoom.getChatRoomNo());
-        //System.out.println(userService.getUserById(sessionUser.getUserId()).getUserPhoto());
+        System.out.println("images::"+userService.getUserById(sessionUser.getUserId()).getUserPhoto());
         //tripPlan 보내기
         System.out.println("채팅방에서 tripplan정보 가져오기 테스트:" + tripPlanService.selectTripPlan(ch.getTripPlanNo()));
         model.addAttribute("tripPlan",tripPlanService.selectTripPlan(ch.getTripPlanNo()));

@@ -139,6 +139,8 @@ public class TripPlanController {
         model.addAttribute("search",search);
 
         System.out.println(tripPlanAuthor);
+        System.out.println("아 확인해보자");
+        System.out.println(tripPlanList);
         if(tripPlanAuthor == null) {
             model.addAttribute("condition", "all");
         } else {

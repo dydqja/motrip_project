@@ -19,4 +19,6 @@ public interface ChatMemberDao {
     public void kickChatMember(int chatRoomNo, String userId, boolean isChatRoomAuthor) throws Exception;
     // 멤버리스트
     public ArrayList<ChatMember> listChatMember(int chatRoomNo) throws Exception;
+
+    public List<ChatMember> getChatRoomNumber(int tripPlanNo) throws Exception;
 }

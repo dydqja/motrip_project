@@ -71,6 +71,7 @@
         let markers = []; // 마커 배열
         let maps = []; // 지도 배열
         let pathInfo = []; // 좌표 저장 배열
+        let reviewThumbnail = "";
     </script>
 
     <style>
@@ -383,6 +384,8 @@
         var reviewTitle = $("input[name='reviewTitle']").val();
         var reviewContents = $("textarea[name='reviewContents']").val();
         var tripPlanNo = "<c:out value='${tripPlanNo}' />";
+        reviewThumbnail = $("input[name='reviewThumbnail']").val();
+        console.log("썸네일>>>",reviewThumbnail);
 
         if (reviewTitle == null || reviewTitle.length < 1) {
             alert("후기 제목을 반드시 입력하여야 합니다.");
@@ -466,10 +469,12 @@ $(document).ready(function () {
                                 <a href="#">4 Comments</a>-->
                             </p>
 
-                            <button class="btn-default icon-camera" id="reviewThumbnail"
+                            <button class="btn-default icon-camera" id="reviewThumbnailInput"
                                     style="font-size: 10px; margin-left: 0.8%">썸네일
                             </button>
                         </div>
+                        <input type="hidden" id="reviewThumbnail" name="reviewThumbnail" value="">
+
                     </div>
                 </div>
             </div>
@@ -812,7 +817,7 @@ $(document).ready(function () {
 
 
     // 여행플랜 썸네일
-    $("#reviewThumbnail").click(function () {
+    $("#reviewThumbnailInput").click(function () {
         var tripPlanNo = "${tripPlan.tripPlanNo}";
         Swal.fire({
             title: "썸네일 업로드",
@@ -839,7 +844,11 @@ $(document).ready(function () {
                 var formData = new FormData();
                 formData.append("file", uploadedFile);
                 formData.append("tripPlanNo",tripPlanNo);
+                console.log("",uploadedFile)
                 console.log("tripPlanNo",tripPlanNo)
+
+                // reviewThumbnail 값을 가져와서 formData에 추가
+                //var reviewThumbnailInput = document.getElementById("reviewThumbnailInput").files[0];
 
                 // 파일 업로드 AJAX 요청
                 $.ajax({
@@ -852,27 +861,11 @@ $(document).ready(function () {
                         console.log("파일 업로드 성공:", response);
                         var imagePath = response;
                         reviewThumbnail = imagePath.replace(/^\/imagePath\//, "");
-                        console.log(reviewThumbnail);
+                        console.log("reviewThumnail>>>>",reviewThumbnail);
                         $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + reviewThumbnail + "')");
 
-                        // 여행플랜 썸네일 저장하는 AJAX 요청
-                        $.ajax({
-                            url: "/review/reviewThumbnail", // DB에 썸네일 저장하는 엔드포인트 경로로 변경해야 합니다.
-                            type: "POST",
-                            data: {
-                                tripPlanNo: tripPlanNo,
-                                reviewThumbnail: reviewThumbnail
-                            },
-                            success: function (response) {
-                                console.log("썸네일 저장 성공:", response);
-                                // 저장 성공 후 필요한 동작 수행
-                            },
-                            error: function (xhr, status, error) {
-                                console.log("썸네일 저장 실패:", error);
-                            },
-                        });
-
-
+                        // 썸네일 값 input 요소에 저장
+                        $("#reviewThumbnailInput").val(reviewThumbnail);
                     },
                     error: function (xhr, status, error) {
                         console.log("파일 업로드 실패:", error);
@@ -880,16 +873,21 @@ $(document).ready(function () {
                 });
             }
         });
-    });
 
 
-    $(function () { // 이전으로 돌아가기
-        $("#history").on("click", function () {
-            window.history.back();
+        $(function () { // 이전으로 돌아가기
+            $("#history").on("click", function () {
+                window.history.back();
+            });
         });
-    });
 
+
+
+
+    });
 </script>
+
+
 <!-- 부트스트랩 3.4.1 JavaScript 및 종속성 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
 <!-- 부트스트랩 3.4.1 JavaScript 및 종속성 -->
