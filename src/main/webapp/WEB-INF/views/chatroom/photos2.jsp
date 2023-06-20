@@ -41,7 +41,7 @@
         <c:forEach var="photo" items="${photos}">
           <c:set var="i" value="${ i+1 }" />
         <div class="col-sm-3">
-          <a href="/imagePath/phots/${photo.photoId}" class="gallery-item" data-lightbox="trip-detail-gallery" data-title="Lorem ipsum dolor.">
+          <a href="/imagePath/photos/${photo.photoId}" class="gallery-item" data-lightbox="trip-detail-gallery" data-title="Lorem ipsum dolor.">
             <img src="/imagePath/photos/${photo.photoId}" alt="..." class="img-responsive">
             <div class="hover-overlay">
               <span class="icon-search"></span>
