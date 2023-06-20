@@ -192,7 +192,7 @@
                         <li class="dropdown">
                             <a class="icon-user" href="#">${sessionScope.user.nickname}</a>
                             <ul class="dropdown-menu">
-                                <li><a href="/user/getUser?userId=${sessionScope.user.userId}">MyPage</a>
+                                <li><a href="/user/getUser?userId=${sessionScope.user.userId}&type=my">MyPage</a>
                                 </li>
                                 <c:if test="${sessionScope.user.role == 0}">
                                     <li><a href="/user/listUser">회원목록</a>

@@ -51,7 +51,7 @@
     <script src="/assets/js/min/priceslider.min.js"></script>
 
 <%--    <script src="/assets/js/min/countnumbers.min.js"></script>--%>
-    <%--<script src="/assets/js/main.js"></script>--%>
+    <script src="/assets/js/main.js"></script>
 <%--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>--%>
 <%--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>--%>
 <%--    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>--%>
@@ -60,6 +60,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <%--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--%>
+
     <!--  ///////////////////////// CSS ////////////////////////// -->
 
 
@@ -240,129 +241,308 @@
 
             <div class="tab-pane active" id="tripPlanList">
                 <!-- 여행플랜목록 부분 ################################################################################ -->
-                <main>
-                    <input type="hidden" name="userId" value="${sessionScope.user.userId}">
-                    <div class="container">
-                        <div class="col-sm-12">
-                            <c:set var="i" value="0"/>
-                            <c:forEach var="tripPlan" items="${tripPlanList}">
-                                <c:set var="i" value="${ i+1 }"/>
-                                <div class="item-list trip-plan-item-list">
-                                    <div class="col-sm-5">
-                                        <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
-                                                type="hidden"
-                                                value="${tripPlan.tripPlanNo}"
-                                                class="tripPlanNo"/>
-                                        </div>
-                                    </div>
 
-                                    <div class="col-sm-7">
-                                        <div class="item-desc">
-                                            <div>
-                                                <h6 class="right">${tripPlan.tripPlanRegDate}</h6>
-                                                <h5 class="item-title">${tripPlan.tripPlanTitle} </h5>
-                                                <div class="sub-title">
-                                                    <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
-                                                        <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                                                            <h6>#${place.placeTags}</h6>
-                                                        </c:forEach>
-                                                    </c:forEach>
-                                                </div>
-                                            </div>
+<%--                <div class="col-sm-12">--%>
 
-                                            <div class="right">
-                                                <h4>${tripPlan.tripPlanAuthor}</h4>
-                                                <div class="right"><span class="icon-date"></span>
-                                                    <c:if test="${tripPlan.tripDays == 1}">
-                                                        ${tripPlan.tripDays}일
-                                                    </c:if>
-                                                    <c:if test="${tripPlan.tripDays != 1}">
-                                                        ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일
-                                                    </c:if>
-                                                </div>
-                                                <div>
-                                                    <c:if test="${not empty sessionScope.user.userId}">
-                                                        <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                            <button class="btn-sm btn-info right" id="addChatRoom"
-                                                                    value="${tripPlan.tripPlanNo}">채팅방 생성
-                                                            </button>
-                                                        </c:if>
-                                                    </c:if>
-                                                    <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
-                                                        <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                            <button class="btn-sm btn-info right" name="tripPlanNo"
-                                                                    value="${tripPlan.tripPlanNo}">여행완료
-                                                            </button>
-                                                        </c:if>
-                                                    </c:if>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="item-book">
+<%--                    <c:set var="i" value="0"/>--%>
+<%--                    <c:forEach var="tripPlan" items="${tripPlanList}">--%>
+<%--                        <c:set var="i" value="${ i+1 }"/>--%>
+<%--                        <div class="item-list trip-plan-item-list">--%>
+<%--                            <div class="col-sm-5">--%>
+<%--                                <c:if test="${tripPlan.tripPlanThumbnail != null && tripPlan.tripPlanThumbnail != ''}">--%>
+<%--                                    <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${tripPlan.tripPlanThumbnail}');">--%>
+<%--                                        <input type="hidden" id="tripPlanImage${tripPlan.tripPlanNo}"--%>
+<%--                                                <c:if test="${tripPlan.isPlanDeleted}">--%>
+<%--                                                    value="0"--%>
+<%--                                                </c:if>--%>
+<%--                                                <c:if test="${!tripPlan.isPlanDeleted}">--%>
+<%--                                                    value="${tripPlan.tripPlanNo}"--%>
+<%--                                                </c:if>--%>
+<%--                                               class="tripPlanNo"/></div>--%>
+<%--                                </c:if>--%>
+<%--                                <c:if test="${tripPlan.tripPlanThumbnail == ''}">--%>
+<%--                                    <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">--%>
+<%--                                        <input type="hidden" id="tripPlanImage${tripPlan.tripPlanNo}"--%>
+<%--                                                <c:if test="${tripPlan.isPlanDeleted}">--%>
+<%--                                                    value="0"--%>
+<%--                                                </c:if>--%>
+<%--                                                <c:if test="${!tripPlan.isPlanDeleted}">--%>
+<%--                                                    value="${tripPlan.tripPlanNo}"--%>
+<%--                                                </c:if>--%>
+<%--                                               class="tripPlanNo"/></div>--%>
+<%--                                </c:if>--%>
+<%--                            </div>--%>
 
-                                            <button class="btn btn-sm btn-success" id="getTripPlanDetail" name="tripPlanNo"
-                                                    value="${tripPlan.tripPlanNo}">조회<input type="hidden"
-                                                                                            value="${tripPlan.tripPlanNo}"
-                                                                                            class="tripPlanNo"/>
-                                            </button>
+<%--                            <div class="col-sm-7">--%>
+<%--                                <div class="item-desc">--%>
+<%--                                    <div>--%>
+<%--                                        <h6 class="right">${tripPlan.strDate}</h6>--%>
+<%--                                        <h5 class="item-title">${tripPlan.tripPlanTitle} </h5>--%>
+<%--                                        <div class="sub-title">--%>
+<%--                                            <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">--%>
+<%--                                                <c:forEach var="place" items="${dailyPlan.placeResultMap}">--%>
+<%--                                                    <h6 style="text-overflow: ellipsis">#${place.placeTags}</h6>--%>
+<%--                                                </c:forEach>--%>
+<%--                                            </c:forEach>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
 
-                                            <c:if test="${not empty sessionScope.user.userId && !tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                    <button id="btnDelete" class="btn btn-sm btn-danger"
-                                                            value="${tripPlan.tripPlanNo}">삭제<input type="hidden"
-                                                                                                    value="${tripPlan.tripPlanNo}"
-                                                                                                    class="tripPlanNo"/>
-                                                    </button>
-                                                </c:if>
-                                            </c:if>
+<%--                                    <div class="right">--%>
+<%--                                        <h4>${tripPlan.tripPlanNickName}<div class="hidden">${tripPlan.tripPlanAuthor}</div></h4>--%>
+<%--                                        <div class="right"><span class="icon-date"></span>--%>
+<%--                                            <c:if test="${tripPlan.tripDays == 1}">--%>
+<%--                                                ${tripPlan.tripDays}일--%>
+<%--                                            </c:if>--%>
+<%--                                            <c:if test="${tripPlan.tripDays != 1}">--%>
+<%--                                                ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일--%>
+<%--                                            </c:if>--%>
+<%--                                        </div>--%>
+<%--                                        <div>--%>
+<%--                                            <c:if test="${not empty sessionScope.user.userId}">--%>
+<%--                                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">--%>
+<%--                                                    <a href="/chatRoom/addChatRoom?tripPlanNo=${tripPlan.tripPlanNo}&userId=${sessionScope.user.userId}"--%>
+<%--                                                            <c:if test="${tripPlan.isPlanDeleted}">--%>
+<%--                                                                style="display: none;"--%>
+<%--                                                            </c:if>--%>
+<%--                                                       type="button" id="addChatRoom${tripPlan.tripPlanNo}"--%>
+<%--                                                       class="btn-sm btn-info right">채팅방 생성</a>--%>
+<%--                                                </c:if>--%>
+<%--                                            </c:if>--%>
+<%--                                            <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">--%>
+<%--                                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">--%>
+<%--                                                    <button class="btn-sm btn-info right tripPlanComplete" name="tripPlanNo"--%>
+<%--                                                            <c:if test="${tripPlan.isPlanDeleted}">--%>
+<%--                                                                style="display: none;"--%>
+<%--                                                            </c:if>--%>
+<%--                                                            id="tripPlanComplete${tripPlan.tripPlanNo}"--%>
+<%--                                                            value="${tripPlan.tripPlanNo}">여행완료--%>
+<%--                                                    </button>--%>
+<%--                                                </c:if>--%>
+<%--                                            </c:if>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                                <div class="item-book">--%>
 
-                                            <c:if test="${not empty sessionScope.user.userId && tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">
-                                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                    <button id="btnDelete" class="btn btn-sm btn-info"
-                                                            value="${tripPlan.tripPlanNo}">복구<input type="hidden"
-                                                                                                    value="${tripPlan.tripPlanNo}"
-                                                                                                    class="tripPlanNo"/>
-                                                    </button>
-                                                </c:if>
-                                            </c:if>
+<%--                                    <button class="btn btn-sm btn-success" name="tripPlanNo"--%>
+<%--                                            <c:if test="${tripPlan.isPlanDeleted}">--%>
+<%--                                                style="display: none;"--%>
+<%--                                            </c:if>--%>
+<%--                                            id="tripPlanView${tripPlan.tripPlanNo}"--%>
+<%--                                            value="${tripPlan.tripPlanNo}">조회<input type="hidden"--%>
+<%--                                                                                    value="${tripPlan.tripPlanNo}"--%>
+<%--                                                                                    class="tripPlanNo"/>--%>
+<%--                                    </button>--%>
 
-                                            <div class="price">
-                                                <label class="icon-hand-like">${tripPlan.tripPlanLikes}</label>
-                                                <label></label>
-                                                <label class="icon-eye">${tripPlan.tripPlanViews}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
 
-                            <nav aria-label="Page navigation example" class="text-center">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage - 1}"
-                                           aria-label="Previous">
-                                            &laquo;
-                                        </a>
-                                    </li>
-                                    <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
+<%--                                    <c:if test="${not empty sessionScope.user.userId && tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">--%>
+<%--                                        <c:if test="${sessionScope.user.userId == tripPlanAuthor}">--%>
+<%--                                            <button id="btnDelete${tripPlan.tripPlanNo}" class="btn btn-sm btn-info btnDelete"--%>
+<%--                                                    value="${tripPlan.tripPlanNo}">복구<input type="hidden"--%>
+<%--                                                                                            value="${tripPlan.tripPlanNo}"--%>
+<%--                                                                                            class="tripPlanNo"/>--%>
+<%--                                            </button>--%>
+<%--                                        </c:if>--%>
+<%--                                    </c:if>--%>
 
-                                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-                                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}">${i}</a>
-                                        </li>
+<%--                                    <c:if test="${not empty sessionScope.user.userId && !tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">--%>
+<%--                                        <c:if test="${sessionScope.user.userId == tripPlanAuthor}">--%>
+<%--                                            <button id="btnDelete${tripPlan.tripPlanNo}" class="btn btn-sm btn-warning btnDelete"--%>
+<%--                                                    value="${tripPlan.tripPlanNo}">삭제<input type="hidden"--%>
+<%--                                                                                            value="${tripPlan.tripPlanNo}"--%>
+<%--                                                                                            class="tripPlanNo"/>--%>
+<%--                                            </button>--%>
+<%--                                        </c:if>--%>
+<%--                                    </c:if>--%>
 
-                                    </c:forEach>
+<%--                                    <c:if test="${sessionScope.user.userId == tripPlanAuthor && !tripPlan.isTripCompleted}">--%>
+<%--                                        <button id="btnTripPlanDelete${tripPlan.tripPlanNo}" class="btn btn-sm btn-danger btnTripPlanDelete"--%>
+<%--                                                <c:if test="${!tripPlan.isPlanDeleted}">--%>
+<%--                                                    style="display: none;"--%>
+<%--                                                </c:if>--%>
+<%--                                                value="${tripPlan.tripPlanNo}">완전삭제<input type="hidden"--%>
+<%--                                                                                          value="${tripPlan.tripPlanNo}"--%>
+<%--                                                                                          class="tripPlanNo"/>--%>
+<%--                                        </button>--%>
+<%--                                    </c:if>--%>
 
-                                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
-                                        <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage + 1}"
-                                           aria-label="Next">
-                                            &raquo;
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </main>
+
+<%--                                    <div class="price">--%>
+<%--                                        <label class="icon-hand-like">${tripPlan.tripPlanLikes}</label>--%>
+<%--                                        <label></label>--%>
+<%--                                        <label class="icon-eye">${tripPlan.tripPlanViews}</label>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </c:forEach>--%>
+
+<%--                    <nav aria-label="Page navigation example" class="text-center">--%>
+
+<%--                        <ul class="pagination justify-content-center">--%>
+
+<%--                            <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">--%>
+
+<%--                                <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage - 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"--%>
+<%--                                   aria-label="Previous">--%>
+<%--                                    &laquo;--%>
+<%--                                </a>--%>
+
+<%--                            </li>--%>
+
+<%--                            <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">--%>
+
+<%--                                <li class="page-item ${i == page.currentPage ? 'active' : ''}">--%>
+
+<%--                                    <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}">${i}</a>--%>
+
+<%--                                </li>--%>
+
+<%--                            </c:forEach>--%>
+
+<%--                            <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">--%>
+
+<%--                                <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage + 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"--%>
+<%--                                   aria-label="Next">--%>
+<%--                                    &raquo;--%>
+<%--                                </a>--%>
+
+<%--                            </li>--%>
+
+<%--                        </ul>--%>
+
+<%--                    </nav>--%>
+
+<%--                </div>--%>
+<%--                    ##################################################################--%>
+                <div class="row">
+                    <jsp:include page="../tripplan/tripPlanList4.jsp"/>
+                </div>
+
+<%--                <main>--%>
+<%--                    <input type="hidden" name="userId" value="${sessionScope.user.userId}">--%>
+<%--                    <div class="container">--%>
+<%--                        <div class="col-sm-12">--%>
+<%--                            <c:set var="i" value="0"/>--%>
+<%--                            <c:forEach var="tripPlan" items="${tripPlanList}">--%>
+<%--                                <c:set var="i" value="${ i+1 }"/>--%>
+<%--                                <div class="item-list trip-plan-item-list">--%>
+<%--                                    <div class="col-sm-5">--%>
+<%--                                        <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input--%>
+<%--                                                type="hidden"--%>
+<%--                                                value="${tripPlan.tripPlanNo}"--%>
+<%--                                                class="tripPlanNo"/>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+
+<%--                                    <div class="col-sm-7">--%>
+<%--                                        <div class="item-desc">--%>
+<%--                                            <div>--%>
+<%--                                                <h6 class="right">${tripPlan.tripPlanRegDate}</h6>--%>
+<%--                                                <h5 class="item-title">${tripPlan.tripPlanTitle} </h5>--%>
+<%--                                                <div class="sub-title">--%>
+<%--                                                    <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">--%>
+<%--                                                        <c:forEach var="place" items="${dailyPlan.placeResultMap}">--%>
+<%--                                                            <h6>#${place.placeTags}</h6>--%>
+<%--                                                        </c:forEach>--%>
+<%--                                                    </c:forEach>--%>
+<%--                                                </div>--%>
+<%--                                            </div>--%>
+
+<%--                                            <div class="right">--%>
+<%--                                                <h4>${tripPlan.tripPlanAuthor}</h4>--%>
+<%--                                                <div class="right"><span class="icon-date"></span>--%>
+<%--                                                    <c:if test="${tripPlan.tripDays == 1}">--%>
+<%--                                                        ${tripPlan.tripDays}일--%>
+<%--                                                    </c:if>--%>
+<%--                                                    <c:if test="${tripPlan.tripDays != 1}">--%>
+<%--                                                        ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일--%>
+<%--                                                    </c:if>--%>
+<%--                                                </div>--%>
+<%--                                                <div>--%>
+<%--                                                    <c:if test="${not empty sessionScope.user.userId}">--%>
+<%--                                                        <c:if test="${sessionScope.user.userId == tripPlanAuthor}">--%>
+<%--                                                            <button class="btn-sm btn-info right" id="addChatRoom"--%>
+<%--                                                                    value="${tripPlan.tripPlanNo}">채팅방 생성--%>
+<%--                                                            </button>--%>
+<%--                                                        </c:if>--%>
+<%--                                                    </c:if>--%>
+<%--                                                    <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">--%>
+<%--                                                        <c:if test="${sessionScope.user.userId == tripPlanAuthor}">--%>
+<%--                                                            <button class="btn-sm btn-info right" name="tripPlanNo"--%>
+<%--                                                                    value="${tripPlan.tripPlanNo}">여행완료--%>
+<%--                                                            </button>--%>
+<%--                                                        </c:if>--%>
+<%--                                                    </c:if>--%>
+<%--                                                </div>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="item-book">--%>
+
+<%--                                            <button class="btn btn-sm btn-success" id="getTripPlanDetail" name="tripPlanNo"--%>
+<%--                                                    value="${tripPlan.tripPlanNo}">조회<input type="hidden"--%>
+<%--                                                                                            value="${tripPlan.tripPlanNo}"--%>
+<%--                                                                                            class="tripPlanNo"/>--%>
+<%--                                            </button>--%>
+
+<%--                                            <c:if test="${not empty sessionScope.user.userId && !tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">--%>
+<%--                                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">--%>
+<%--                                                    <button id="btnDelete" class="btn btn-sm btn-danger"--%>
+<%--                                                            value="${tripPlan.tripPlanNo}">삭제<input type="hidden"--%>
+<%--                                                                                                    value="${tripPlan.tripPlanNo}"--%>
+<%--                                                                                                    class="tripPlanNo"/>--%>
+<%--                                                    </button>--%>
+<%--                                                </c:if>--%>
+<%--                                            </c:if>--%>
+
+<%--                                            <c:if test="${not empty sessionScope.user.userId && tripPlan.isPlanDeleted && !tripPlan.isTripCompleted}">--%>
+<%--                                                <c:if test="${sessionScope.user.userId == tripPlanAuthor}">--%>
+<%--                                                    <button id="btnDelete" class="btn btn-sm btn-info"--%>
+<%--                                                            value="${tripPlan.tripPlanNo}">복구<input type="hidden"--%>
+<%--                                                                                                    value="${tripPlan.tripPlanNo}"--%>
+<%--                                                                                                    class="tripPlanNo"/>--%>
+<%--                                                    </button>--%>
+<%--                                                </c:if>--%>
+<%--                                            </c:if>--%>
+
+<%--                                            <div class="price">--%>
+<%--                                                <label class="icon-hand-like">${tripPlan.tripPlanLikes}</label>--%>
+<%--                                                <label></label>--%>
+<%--                                                <label class="icon-eye">${tripPlan.tripPlanViews}</label>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                            </c:forEach>--%>
+
+<%--                            <nav aria-label="Page navigation example" class="text-center">--%>
+<%--                                <ul class="pagination justify-content-center">--%>
+<%--                                    <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">--%>
+<%--                                        <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage - 1}"--%>
+<%--                                           aria-label="Previous">--%>
+<%--                                            &laquo;--%>
+<%--                                        </a>--%>
+<%--                                    </li>--%>
+<%--                                    <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">--%>
+
+<%--                                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">--%>
+<%--                                            <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}">${i}</a>--%>
+<%--                                        </li>--%>
+
+<%--                                    </c:forEach>--%>
+
+<%--                                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">--%>
+<%--                                        <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${page.currentPage + 1}"--%>
+<%--                                           aria-label="Next">--%>
+<%--                                            &raquo;--%>
+<%--                                        </a>--%>
+<%--                                    </li>--%>
+<%--                                </ul>--%>
+<%--                            </nav>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </main>--%>
             </div><!-- END Tabs findId -->
 
 

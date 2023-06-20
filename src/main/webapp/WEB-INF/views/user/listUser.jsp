@@ -260,7 +260,7 @@
       //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
       $( ".getUser" ).on("click" , function() {
         console.log("회원ID 클릭됨"+$(this).text().trim());
-        self.location ="/user/getUser?userId="+$(this).text().trim();
+        self.location ="/user/getUser?userId="+$(this).text().trim()+"&type=my";
       });
 
       //==> userId LINK Event End User 에게 보일수 있도록
