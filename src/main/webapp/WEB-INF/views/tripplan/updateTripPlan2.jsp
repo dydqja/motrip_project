@@ -58,7 +58,7 @@
         let isPlanDownloadable = false; // 가져가기 여부
         let mapCounter = 1; // 지도 갯수 카운트
         let idCheck = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
-        let tripPlanThumbnail = ${tripPlan.tripPlanThumbnail};
+        let tripPlanThumbnail = "";
     </script>
 
     <style>
@@ -399,11 +399,14 @@
                     </div>
                 </div>
             </div>
+        </main>
+
 
             <c:set var="i" value="0"/>
             <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
             <c:set var="i" value="${ i+1 }"/>
-            <div class="container" id="container${i-1}">
+            <main class="white">
+            <div class="container" style="margin-top: -8%" id="container${i-1}">
                 <div display="flex;">
                     <div class="day"> ${i}일차 여행플랜
                         <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px; border-radius: 15px;" onclick="reset(event, ${i-1})"></button>
@@ -577,14 +580,19 @@
                     </div>
                 </div>
                 <hr />
+            </div>
+        </main>
                 </c:forEach>
 
-            </div>
+            <main class="white">
+                <div class="container" style="margin-top: -5%">
             <div class="addDaily" id="addDaily" style="text-align: right;">
                 <button class="btn btn-primary" id="history">취소</button>
                 <button class="btn btn-primary" id="btnUpdateTripPlan">수정</button>
             </div>
-        </main>
+                </div>
+            </main>
+
         <div style="display: flex">
             <button class="scroll-button btn btn-sm btn-success icon-arrow-up" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
             <button class="scroll-button btn btn-sm btn-success icon-arr-up" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
@@ -622,7 +630,7 @@
                 height: 550,
                 disableResizeEditor: true
             });
-        };
+        }
 
         function initializeSummernote(idCheck) {
             $('#dailyPlanContents' + idCheck).summernote({
@@ -674,6 +682,7 @@
         //         chbispublic.prop("checked", false);
         //     }
         // });
+
     </script>
 
     <!-- 지도 관련 -->
@@ -1336,7 +1345,7 @@
                 console.log("뭐나오는지")
                 console.log(idCheck);
 
-                var dynamicHTML = '<div class="container" id="container' + idCheck + '">' +
+                var dynamicHTML = '<main class="white"><div class="container" style="margin-top: -9%" id="container' + idCheck + '">' +
                     '<div display="flex;">' + '<div class="day">' + (idCheck + 1) + '일차 여행플랜' +
                     '<button class="icon-locate-map right" id="reset' + idCheck + '" style="font-size: 20px; border-radius: 15px;" onclick="reset(event, ' + idCheck + ')"></button>' +
                     '</div>' + '</div>' + '<div class="row">' + '<div class="col-sm-12">' +
@@ -1351,7 +1360,7 @@
                     '<div class="border-box list' + idCheck + '" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">' +
                     '<div class="box-title">명소리스트' +
                     '<div class="card text-white mb-3 btn btn-sm btn-info" id="totalTripTime' + idCheck + '" style="background-color: rgb(255,254,255); color: black; text-align: right; display: inline-block; border: none;"></div>' +
-                    '</div>' + '</div>' + '</div>' + '</div>' + '</div><hr/>';
+                    '</div>' + '</div>' + '</div>' + '</div>' + '</div><hr/></main>';
 
 
                 // 동적으로 생성한 요소들을 DOM에 추가
