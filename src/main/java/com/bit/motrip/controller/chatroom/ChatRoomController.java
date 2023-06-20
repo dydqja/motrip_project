@@ -117,7 +117,7 @@ public class ChatRoomController {
         model.addAttribute("chatRoom",ch); //채팅방 객체 전송
         model.addAttribute("chatMembers",chatMemberList);
         model.addAttribute("author",author);
-        model.addAttribute("images",userService.getUserById(sessionUser.getUserId()).getUserPhoto());
+        model.addAttribute("imagess",userService.getUserById(sessionUser.getUserId()).getUserPhoto());
         System.out.println("chatRoomNo"+chatRoom.getChatRoomNo());
         System.out.println(author.getUserId());
         int flag = 0;
