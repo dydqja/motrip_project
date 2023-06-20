@@ -208,7 +208,7 @@
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-
+<img src="/imagePath/thumbnail/e45d56c8-7878-4f50-a756-ff1d511bf088_strawberry.jpg">
 <div class="post-single left">
     <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
         <div class="page-img-txt container">
