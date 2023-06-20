@@ -83,7 +83,7 @@ chatForm.addEventListener('submit', (e) => {
     //clear input
     e.target.elements.msg.value = '';
     //e.target.elements.msg.value.focus();
-    e.target.elements.uploadFile.value= '';
+    //e.target.elements.uploadFile.value= '';
     var previewContainer = document.getElementById("image-preview");
     previewContainer.innerHTML = ""
   });
@@ -115,10 +115,10 @@ function outputMessage(message){
       messageTime = message.time;
       beforeUserName=message.username;
     }else {
+      // <img src="${message.images}" style="border-radius: 40%;"/>
       div.innerHTML = `
       <div class="userbox" align="right">
       <span>${message.time}</span><p class="chat">${message.username}</p>
-      <img src="${message.images}" style="border-radius: 40%;"/>
       </div>
       <p class="text">
         ${message.text}
@@ -138,7 +138,8 @@ function outputMessage(message){
       messageTime = message.time;
       beforeUserName=message.username;
     }else{
-    div.innerHTML = `<img src="${message.images}" style="border-radius: 40%;"/>
+      //<img src="${message.images}" style="border-radius: 40%;"/>
+    div.innerHTML = `
     <p class="chat2">${message.username}</p><span>   ${message.time}</span><br/>
     <p class="text2">
       ${message.text}

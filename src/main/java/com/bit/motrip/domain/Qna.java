@@ -9,6 +9,8 @@ public class Qna {
 
     private String qnaAuthor;
 
+    private String nickName;
+
     private String qnaTitle;
 
     private String qnaContents;
@@ -40,6 +42,14 @@ public class Qna {
 
     public void setQnaAuthor(String qnaAuthor) {
         this.qnaAuthor = qnaAuthor;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getQnaTitle() {

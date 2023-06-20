@@ -166,7 +166,7 @@
 
                         <div class="col-sm-7">
                             <div class="item-desc">
-                                <div>
+                                <div style="margin-top: -25px">
                                     <h6 class="right">${tripPlan.strDate}</h6>
                                     <h5 class="item-title">${tripPlan.tripPlanTitle} </h5>
                                     <div class="sub-title">
@@ -178,7 +178,7 @@
                                     </div>
                                 </div>
 
-                                <div class="right">
+                                <div class="right" style="margin-top: -8px">
                                     <h4>${tripPlan.tripPlanNickName}<div class="hidden">${tripPlan.tripPlanAuthor}</div></h4>
                                     <div class="right"><span class="icon-date"></span>
                                         <c:if test="${tripPlan.tripDays == 1}">
@@ -196,9 +196,15 @@
                                                             style="display: none;"
                                                         </c:if>
                                                    type="button" id="addChatRoom${tripPlan.tripPlanNo}"
-                                                   class="btn-sm btn-info right">채팅방 생성</a>
+                                                   class="btn-sm btn-info right" >채팅방 생성</a>
                                             </c:if>
                                         </c:if>
+
+                                        <c:if test="${tripPlan.chatRoomNo != 0 && condition == 'all'}">
+                                            <button type="button" onclick="chatRoomRequest(${tripPlan.chatRoomNo})"
+                                                    class="btn-sm btn-warning right" style="height: 25px; font-size: 8px">채팅방 접속</button>
+                                        </c:if>
+
                                         <c:if test="${not empty sessionScope.user.userId && !tripPlan.isTripCompleted}">
                                             <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
                                                 <button class="btn-sm btn-info right tripPlanComplete" name="tripPlanNo"
@@ -206,14 +212,14 @@
                                                             style="display: none;"
                                                         </c:if>
                                                         id="tripPlanComplete${tripPlan.tripPlanNo}"
-                                                        value="${tripPlan.tripPlanNo}">여행완료
+                                                        value="${tripPlan.tripPlanNo}" style="height: 25px; font-size: 8px">여행완료
                                                 </button>
                                             </c:if>
                                         </c:if>
                                     </div>
                                 </div>
                             </div>
-                            <div class="item-book">
+                            <div class="item-book" style="margin-top: -5px">
 
                                 <button class="btn btn-sm btn-success" name="tripPlanNo"
                                         <c:if test="${tripPlan.isPlanDeleted}">
@@ -520,6 +526,29 @@
     });
 
 </script>
+
+<script>
+    function chatRoomRequest(chatRoomNo) {
+        var url = "/chatRoom/chat";
+        var data = {
+            chatRoomNo: chatRoomNo
+        };
+        console.log(chatRoomNo);
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: function(response) {
+                // POST 요청 성공 시 수행할 동작
+            },
+            error: function(xhr, status, error) {
+                // POST 요청 실패 시 수행할 동작
+            }
+        });
+    }
+</script>
+
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 
