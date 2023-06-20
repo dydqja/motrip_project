@@ -156,6 +156,7 @@ public class ReviewController {
     public String addReview(@ModelAttribute("review") Review review,
                             @RequestParam("tripPlanNo") int tripPlanNo,
                             @RequestParam("tripPlanTitle") String tripPlanTitle,
+                            @RequestParam(value = "reviewThumbnail", required = false) String reviewThumbnail,
                             Model model, HttpSession session) throws Exception {
         System.out.println("/review/addReview : POST");
         // 세션에서 로그인된 userId 값을 가져옴
