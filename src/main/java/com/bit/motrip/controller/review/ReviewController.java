@@ -333,13 +333,19 @@ public class ReviewController {
 
 
 
-    @GetMapping("/getReview")// 후기 단 1개 조회
+    @GetMapping("/getReview")
     public String getReview(@RequestParam("reviewNo") int reviewNo, Model model, HttpSession session) throws Exception {
         System.out.println("getReview (): GET ");
         // 리뷰 상세 조회
         Review review = reviewService.getReview(reviewNo);
         User user = userService.getUserById(review.getReviewAuthor());
 
+        // 썸네일 문자열 처리
+        String reviewThumbnail = review.getReviewThumbnail();
+        if (reviewThumbnail != null && reviewThumbnail.startsWith("'") && reviewThumbnail.endsWith("'")) {
+            reviewThumbnail = reviewThumbnail.substring(1, reviewThumbnail.length() - 1);
+            review.setReviewThumbnail(reviewThumbnail);
+        }
 
         // 해당 리뷰와 관련된 여행 계획 정보 가져오기
         TripPlan tripPlan = tripPlanService.selectTripPlan(review.getTripPlanNo());
@@ -350,6 +356,7 @@ public class ReviewController {
 
         return "review/getReview.jsp";
     }
+
 
 
 
