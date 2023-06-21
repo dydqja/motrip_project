@@ -487,7 +487,7 @@ $(document).ready(function () {
                 <div>
                                 <span>
             <h4>
-                <input type="text" id="reviewThumbnail" name="reviewThumbnail" value="">
+                <input type="text" id="reviewThumbnail" name="reviewThumbnail" value="" hidden>
                 <input type="text" id="reviewTitle" name="reviewTitle" placeholder="제목을 입력하세요."
                        style="color: black; width: 82%; height: 40px; opacity: 0.5;">
             </h4>

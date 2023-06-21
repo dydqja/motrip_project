@@ -204,21 +204,33 @@
 
 </head>
 
-<body>l
+<body>
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-<img src="/imagePath/thumbnail/${review.reviewThumbnail}">
+<!--<img src="/imagePath/thumbnail/${review.reviewThumbnail}">-->
 <div class="post-single left">
-    <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
-        <div class="page-img-txt container">
-            <div class="row">
+    <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">
+    <div class="page-img" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">
+        </c:if>
+        <c:if test="${review.reviewThumbnail == ''}">
+        <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
+            </c:if>
+            <div class="page-img-txt container">
+                <div class="row">
                 <div class="col-sm-8">
                     <h5>No.${review.reviewNo}</h5>
                     <h4>
-                        <div class="author-img">
-                            <img src="/images/tripImage.jpg" alt="">
-                        </div>
+                        <c:if test="${userPhoto == null}">
+                            <div class="author-img" style="margin-top: 2%">
+                                <img src="/images/tripImage.jpg" alt="">
+                            </div>
+                        </c:if>
+                        <c:if test="${userPhoto != null}">
+                            <div class="author-img" style="margin-top: 2%">
+                                <img src="${userPhoto}" alt="">
+                            </div>
+                        </c:if>
                         <div class="author">
                             <span>${review.reviewTitle}</span>
                         </div>

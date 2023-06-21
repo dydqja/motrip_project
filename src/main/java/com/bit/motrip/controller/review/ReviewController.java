@@ -346,12 +346,14 @@ public class ReviewController {
             reviewThumbnail = reviewThumbnail.substring(1, reviewThumbnail.length() - 1);
             review.setReviewThumbnail(reviewThumbnail);
         }
+        System.out.println("reviewThumbnail에 싱글쿼티션이 짤렸나요?>>>"+reviewThumbnail);
 
         // 해당 리뷰와 관련된 여행 계획 정보 가져오기
         TripPlan tripPlan = tripPlanService.selectTripPlan(review.getTripPlanNo());
 
         model.addAttribute("user", user);
         model.addAttribute("review", review);
+        System.out.println("review객체에 들어있는 reviewThumbnail는 싱글쿼티션이 짤렸나요?>>>"+reviewThumbnail);
         model.addAttribute("tripPlan", tripPlan);
 
         return "review/getReview.jsp";
