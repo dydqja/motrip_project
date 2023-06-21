@@ -8,6 +8,15 @@ public class ChatMember {
     private int tripPlanNo; // 플랜번호
     private boolean isChatRoomAuthor; //방장여부
     private int status; //0 , 1강퇴당함
+    private String images;
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
+    }
 
     public int getStatus() {
         return status;

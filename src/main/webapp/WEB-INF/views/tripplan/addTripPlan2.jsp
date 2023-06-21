@@ -1179,7 +1179,7 @@
         // 새로운 요소를 생성
         if (idCheck < 5) {
 
-            var dynamicHTML = '<hr></hr><div class="container" id="container' + idCheck + '">' +
+            var dynamicHTML = '<hr></hr><main class="white"><div class="container" style="margin-top: -3%" id="container' + idCheck + '">' +
                 '<div display="flex;">' + '<div class="day">' + (idCheck + 1) + '일차 여행플랜' +
                 '<button class="icon-locate-map right" id="reset' + idCheck + '" style="font-size: 20px; border-radius: 15px;" onclick="reset(event, ' + idCheck + ')"></button>' +
                 '</div>' + '</div>' + '<div class="row">' + '<div class="col-sm-12">' +
@@ -1194,7 +1194,7 @@
                 '<div class="border-box list' + idCheck + '" style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">' +
                 '<div class="box-title">명소리스트' +
                 '<div class="card text-white mb-3 btn btn-sm btn-info" id="totalTripTime' + idCheck + '" style="background-color: rgb(255,254,255); color: black; text-align: right; display: inline-block; border: none;"></div>' +
-                '</div>' + '</div>' + '</div>' + '</div>' + '</div>';
+                '</div>' + '</div>' + '</div>' + '</div>' + '</div></main>';
 
             // 동적으로 생성한 요소들을 DOM에 추가
             var newElement = document.createElement('div');
