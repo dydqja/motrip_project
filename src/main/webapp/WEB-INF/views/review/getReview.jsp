@@ -204,25 +204,25 @@
 
 </head>
 
-<body>
+<body>l
 
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
-
+<img src="/imagePath/thumbnail/${review.reviewThumbnail}">
 <div class="post-single left">
     <div class="page-img" style="background-image: url('/images/tripImage.jpg');">
         <div class="page-img-txt container">
             <div class="row">
                 <div class="col-sm-8">
                     <h5>No.${review.reviewNo}</h5>
-                    <h2>
+                    <h4>
                         <div class="author-img">
                             <img src="/images/tripImage.jpg" alt="">
                         </div>
                         <div class="author">
                             <span>${review.reviewTitle}</span>
                         </div>
-                    </h2>
+                    </h4>
                     <p class="byline">
                     <h4>
                         <span class="italic">${user.nickname}</span>
