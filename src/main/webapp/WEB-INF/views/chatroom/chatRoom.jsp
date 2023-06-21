@@ -506,7 +506,8 @@
 
 
         $(function() {
-            $(document).on("click", ".kick", function() {
+            $(document).on("click", ".kick", function(e) {
+                e.stopPropagation(); // 마이페이지로 넘어가는거 강제로 막음
                 var chatRoomForm = $("#chat-room");
                 chatRoomForm.attr("onsubmit", "return false;"); // 동적으로 onsubmit 속성 설정
 
@@ -572,6 +573,7 @@
                                     .attr("data-userid", member.userId)
                                     .attr("style", "color: red; border-radius: 50%; font-size: 50%;")
                                     .text("강제 퇴장");
+
                                 li.append(kickButton);
                             }
                             chatUsers.append(li);
