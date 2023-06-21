@@ -51,8 +51,12 @@ public class chatMemberRestController {
         System.out.println("GET : json/fetchChatMembers");
         System.out.println(chatRoomNo);
         //여기서 해야하는일 for 문돌려서 가져와서 사진 찾아와서 붙여주기
+        List<ChatMember> chatMember = chatMemberService.chatMemberList(chatRoomNo);
+        for (ChatMember cm : chatMember) {
+            cm.setImages(userService.getUserById(cm.getUserId()).getUserPhoto());
+        }
 
-        return chatMemberService.chatMemberList(chatRoomNo);
+        return chatMember;
     }
     @RequestMapping(value="json/iconChatMembers/{chatRoomNo}" , method=RequestMethod.GET )
     public List<User> iconChatMembers(@PathVariable int chatRoomNo) throws Exception {
