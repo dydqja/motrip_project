@@ -105,7 +105,7 @@
 
         <div class="sidebar">
           <div class="border-box">
-            <div class="box-title">Review Search</div>
+            <div class="box-title">후기 검색</div>
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Title">
               <div class="input-group-btn">
@@ -125,10 +125,28 @@
           <c:set var="i" value="${ i+1 }"/>
           <div class="item-list review-item-list">
             <div class="col-sm-5">
-              <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
-                      type="hidden"
-                      value=">${review.reviewNo}"
-                      class="reviewNo"/></div>
+              <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">
+                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">
+                  <input type="hidden" id="reviewImage${review.reviewNo}"
+                          <c:if test="${review.isReviewDeleted}">
+                            value="0"
+                          </c:if>
+                          <c:if test="${!review.isReviewDeleted}">
+                            value="${review.reviewNo}"
+                          </c:if>
+                         class="reviewNo"/></div>
+              </c:if>
+              <c:if test="${review.reviewThumbnail == ''}">
+                <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
+                  <input type="hidden" id="reviewImage${review.reviewNo}"
+                          <c:if test="${review.isReviewDeleted}">
+                            value="0"
+                          </c:if>
+                          <c:if test="${!review.isReviewDeleted}">
+                            value="${review.reviewNo}"
+                          </c:if>
+                         class="reviewNo"/></div>
+              </c:if>
             </div>
 
             <div class="col-sm-7">
@@ -137,11 +155,7 @@
                   <h6 class="right">${review.reviewRegDate}</h6>
                   <h5 class="item-title">${review.reviewTitle} </h5>
                   <div class="sub-title"  >
-                    <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
-                      <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                        <h6 style="text-overflow: ellipsis">#${place.placeTags}</h6>
-                      </c:forEach>
-                    </c:forEach>
+
                   </div>
                 </div>
 
