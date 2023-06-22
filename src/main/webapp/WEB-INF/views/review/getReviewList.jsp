@@ -105,7 +105,7 @@
 
         <div class="sidebar">
           <div class="border-box">
-            <div class="box-title">Review Search</div>
+            <div class="box-title">후기 검색</div>
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Title">
               <div class="input-group-btn">
