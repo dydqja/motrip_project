@@ -362,7 +362,21 @@ public class UserRestController {
     public int getUserCount () throws Exception {
         return userService.userCount();
     }
+    @RequestMapping(value = "getUserRoom", method = RequestMethod.POST)
+    public List<User> getUserRoom (@RequestBody Map<String, List<String>> request) throws Exception {
+        System.out.println("getUserRoom");
+        List<User> users=new ArrayList<>();
+        List<String> usernames = request.get("usernames");
+        for (String username:usernames) {
+            users.add(userService.getUserById(username));
+        }
 
+//        System.out.println(userService.getUserById(userId));
+//        User user2 = userService.getUserById(user.getUserId());
+//        System.out.println("phototest: "+user);
+//        System.out.println(user2.getUserPhoto());
+        return users;
+    }
 }
 
 
