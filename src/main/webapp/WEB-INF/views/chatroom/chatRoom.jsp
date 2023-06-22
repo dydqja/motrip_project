@@ -506,7 +506,8 @@
 
 
         $(function() {
-            $(document).on("click", ".kick", function() {
+            $(document).on("click", ".kick", function(e) {
+                e.stopPropagation(); // 마이페이지로 넘어가는거 강제로 막음
                 var chatRoomForm = $("#chat-room");
                 chatRoomForm.attr("onsubmit", "return false;"); // 동적으로 onsubmit 속성 설정
 
@@ -553,16 +554,20 @@
                         let memberArray = [];
                         // 채팅 멤버 리스트를 출력할 요소
                         var chatUsers = $('#chatUsers');
-
                         // 기존 리스트 초기화
                         chatUsers.empty();
-
                         // 멤버 리스트를 순회하며 <li> 요소 생성 및 추가
                         $.each(members, function(index, member) {
                             memberArray.push(member.userId);
                             var li = $('<li>').attr("id", member.userId).attr("class","getUser").attr("value",member.userId).text(member.userId);
                             chatUsers.append(li);
-
+                            var img = $('<img>')
+                                .attr('src', member.images).css({
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '50%'
+                                });
+                            li.prepend(img);
                             if (author === member.userId) {
                                 // li.append('<img src="/imagePath/masetHat.png"/>'); // 방장
                             }
@@ -572,6 +577,7 @@
                                     .attr("data-userid", member.userId)
                                     .attr("style", "color: red; border-radius: 50%; font-size: 50%;")
                                     .text("강제 퇴장");
+
                                 li.append(kickButton);
                             }
                             chatUsers.append(li);

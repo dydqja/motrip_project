@@ -46,9 +46,9 @@
             <div class="navbar-collapse collapse" id="main-navbar">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a href="#">모두의 여행 <i class="fa fa-chevron-down nav-arrow"></i></a>
+                        <a href="#">모여행 <i class="fa fa-chevron-down nav-arrow"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="home_default.html">모두의 여행이란</a></li>
+                            <li><a href="home_default.html">모여행이란</a></li>
                             <li><a href="home_slider.html">설계 포트폴리오</a></li>
                             <%--<li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
                             <c:if test="${empty sessionScope.user}">

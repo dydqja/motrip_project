@@ -333,7 +333,7 @@
     <main class="white">
         <div class="container">
 
-            <div display="flex;">
+            <div display="flex;" style="margin-top: -3%">
                 <span class="icon-map" style="font-size: 50px; "></span><div class="day">${i}일차 여행플랜 <button class="icon-locate-map" id="reset${i-1}"
                                                                                                              style="font-size: 20px; border-radius: 15px; "></button></div>
             </div>
@@ -455,9 +455,14 @@
                     </div>
                 </div>
             </div>
-            <hr/>
-            </c:forEach> <!-- dailyPlan for end -->
+            <hr style="margin-bottom: -100%"/>
 
+        </div>
+    </main>
+    </c:forEach> <!-- dailyPlan for end -->
+
+    <main class="white">
+        <div class="container" style="margin-top: -6%">
             <div class="review-comment">
                 <div class="add-comment">
                     <div class="addDaily" style="text-align: right;">
@@ -468,16 +473,16 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 
-            <div style="display: flex">
-                <button class="scroll-button btn btn-sm btn-success icon-arrow-up" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
-                <button class="scroll-button btn btn-sm btn-success icon-arr-up" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
-                <button class="scroll-button btn btn-sm btn-success icon-arr-down" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
-                <button class="scroll-button btn btn-sm btn-success icon-arrow-down" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
-            </div>
+
+    <div style="display: flex">
+        <button class="scroll-button btn btn-sm btn-success icon-arrow-up" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+        <button class="scroll-button btn btn-sm btn-success icon-arr-up" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+        <button class="scroll-button btn btn-sm btn-success icon-arr-down" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+        <button class="scroll-button btn btn-sm btn-success icon-arrow-down" style="width: 70px; margin-top: 2px; font-size: 10px"></button>
+    </div>
 </div>
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>

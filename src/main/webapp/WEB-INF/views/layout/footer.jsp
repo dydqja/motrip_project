@@ -10,8 +10,8 @@
 <footer id="footer">
     <div class="container">
         <div class="row">
-            <div class="col-sm-7 col-md-3">
-                <h3>개발팀, 단일인입조</h3>
+            <div class="col-sm-7 col-md-5">
+                <h3>단일인입조</h3>
                 <ul>
                     <li>팀장      : 김성구</li>
                     <li>형상관리   : 소재연</li>
@@ -21,7 +21,7 @@
                     <li>DevOps   : 박성원</li>
                 </ul>
             </div>
-            <div class="col-sm-5 col-md-2">
+            <div class="col-sm-5 col-md-5">
                 <h3>GitHub</h3>
                 <ul>
                     <li><a href="https://github.com/kimerum333/">https://github.com/kimerum333/</a></li>
@@ -29,11 +29,11 @@
                     <li><a href="https://github.com/dydqja/">https://github.com/dydqja/</a></li>
                     <li><a href="https://github.com/tmdgus717/">https://github.com/tmdgus717/</a></li>
                     <li><a href="https://github.com/Honeybeebzzz/">https://github.com/Honeybeebzzz/</a></li>
-                    <li><a href="https://github.com/Samantha - Virtual ChatBot/">https://github.com/Samantha - Virtual ChatBot/</a></li>
+                    <li><a href="https://github.com/Virtual-ChatBot/">https://github.com/Virtual-ChatBot/</a></li>
                 </ul>
             </div>
-            <div class="col-sm-7 col-md-4">
-<%--                <h3>Newsletter Signup</h3>
+<%--        <div class="col-sm-7 col-md-4">
+                <h3>Newsletter Signup</h3>
                 <p>Subscribe to our weekly newsletter to get news and update</p>
                 <br>
                 <div class="input-group">
@@ -41,12 +41,12 @@
                     <div class="input-group-btn">
                         <button class="btn btn-primary">Subscribe</button>
                     </div>
-                </div>--%>
-            </div>
+                </div>
+            </div>--%>
             <div class="col-sm-5 col-md-2">
-                <h3>Project 모여행</h3>
+                <h3>Project Motrip</h3>
                 <ul>
-                    <li><a href="https://github.com/sososo95/motrip_main_project">소스파일 깃허브</a></li>
+                    <li><a href="https://github.com/sososo95/motrip_main_project">소스 파일 깃허브</a></li>
                     <li><a href="https://drive.google.com/drive/folders/1TU6uPVLsPevseUFc_Gfm-S9Xeq3vo8Rs">개발 문서 자료</a></li>
                 </ul>
                 <div class="clearfix">

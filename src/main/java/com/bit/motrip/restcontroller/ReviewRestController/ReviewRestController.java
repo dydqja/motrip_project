@@ -59,7 +59,7 @@ public class ReviewRestController {
 
     @PostMapping(value = "fileUpload")
     public ResponseEntity<?> fileUpload(@RequestParam("file") MultipartFile file) throws Exception {
-        System.out.println("/tripPlan/fileUpload : POST");
+        System.out.println("/review/fileUpload : POST");
 
         System.out.println("client에서 넘어온 file 값은 => : " + file);
         String fileName = reviewService.fileUpload(file);

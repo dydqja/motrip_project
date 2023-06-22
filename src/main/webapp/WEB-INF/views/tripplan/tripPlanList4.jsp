@@ -49,7 +49,7 @@
                                            class="tripPlanNo"/></div>
                             </c:if>
                             <c:if test="${tripPlan.tripPlanThumbnail == ''}">
-                            <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
+                            <div class="item-img row" style="background-image: url('/images/default_motrip.png');">
                                 <input type="hidden" id="tripPlanImage${tripPlan.tripPlanNo}"
                                     <c:if test="${tripPlan.isPlanDeleted}">
                                         value="0"
@@ -63,19 +63,19 @@
 
                         <div class="col-sm-7">
                             <div class="item-desc">
-                                <div>
+                                <div style="margin-top: -25px">
                                     <h6 class="right">${tripPlan.strDate}</h6>
-                                    <h5 class="item-title">${tripPlan.tripPlanTitle} </h5>
+                                    <h5 class="item-title" style="text-overflow: ellipsis;  overflow: hidden; white-space: nowrap; max-width: 400px;">${tripPlan.tripPlanTitle} </h5>
                                     <div class="sub-title">
                                         <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
                                             <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                                                <h6 style="text-overflow: ellipsis">#${place.placeTags}</h6>
+                                                <h6 style="text-overflow: ellipsis;  overflow: hidden; white-space: nowrap; max-width: 350px;">#${place.placeTags}</h6>
                                             </c:forEach>
                                         </c:forEach>
                                     </div>
                                 </div>
 
-                                <div class="right">
+                                <div class="right" style="margin-top: -8px">
                                     <h4>${tripPlan.tripPlanNickName}<div class="hidden">${tripPlan.tripPlanAuthor}</div></h4>
                                     <div class="right"><span class="icon-date"></span>
                                         <c:if test="${tripPlan.tripDays == 1}">
@@ -103,14 +103,14 @@
                                                             style="display: none;"
                                                         </c:if>
                                                         id="tripPlanComplete${tripPlan.tripPlanNo}"
-                                                        value="${tripPlan.tripPlanNo}">여행완료
+                                                        value="${tripPlan.tripPlanNo}" style="height: 25px; font-size: 8px">여행완료
                                                 </button>
                                             </c:if>
                                         </c:if>
                                     </div>
                                 </div>
                             </div>
-                            <div class="item-book">
+                            <div class="item-book" style="margin-top: -5px">
 
                                 <button class="btn btn-sm btn-success" name="tripPlanNo"
                                         <c:if test="${tripPlan.isPlanDeleted}">
