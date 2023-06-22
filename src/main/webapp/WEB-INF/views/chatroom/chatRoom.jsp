@@ -453,9 +453,10 @@
     <script type="text/javascript">
         const username = "${username}";
         const room = "${chatRoom.chatRoomNo}";
-        const author = "${author.userId}"
-        const chatRoomNo = "${chatRoom.chatRoomNo}"
+        const author = "${author.userId}";
+        const chatRoomNo = "${chatRoom.chatRoomNo}";
         const images = "${images}";
+        const nickName = "${nickname}";
 
         //업데이트 컨트롤러로 이동
         function fncUpdateChatroom(){
@@ -559,7 +560,7 @@
                         // 멤버 리스트를 순회하며 <li> 요소 생성 및 추가
                         $.each(members, function(index, member) {
                             memberArray.push(member.userId);
-                            var li = $('<li>').attr("id", member.userId).attr("class","getUser").attr("value",member.userId).text(member.userId);
+                            var li = $('<li>').attr("id", member.userId).attr("class","getUser").attr("value",member.userId).text(member.userNickName);
                             chatUsers.append(li);
                             var img = $('<img>')
                                 .attr('src', member.images).css({
