@@ -366,14 +366,14 @@
                             </div>
                         </div>
                         </c:forEach> <!-- dailyPlan for end -->
+                        <div class="col-sm-9">
+                            <div class="post" style="height: 400px; overflow: auto; border-radius: 15px;">
+                                <div>${review.reviewContents}</div>
+                            </div>
+                        </div>
 
             </main>
 
-            <div class="col-sm-9">
-                <div class="post" style="height: 600px; overflow: auto; border-radius: 15px;">
-                    <div>${review.reviewContents}</div>
-                </div>
-            </div>
     </div>
         <div style="margin: 3%"></div>
 </div>

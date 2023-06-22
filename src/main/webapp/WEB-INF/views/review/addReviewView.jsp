@@ -676,8 +676,7 @@
         </div>
     </form>
 </main>
-</div>
-</div>
+
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 <!-- 아래는 설정용 스크립트입니다. -->
