@@ -132,6 +132,8 @@ async function initCall(){ //hidden을 바꾼다!
         myPeerConnection.close();
         call.hidden=true;
         trip.hidden=false;
+        handleMuteClick();
+        handleCameraClick();
         socket.emit('leave_room', rtcRoom);
         console.log("video out!!");
     }
