@@ -65,8 +65,11 @@ public class UserController {
     public String login(HttpSession session) throws Exception{
         System.out.println("/user/login : GET");
 
+        String pageNavigation = "";
+
         session.setAttribute("naverClientId", naverClientId);
         session.setAttribute("naverCallbackUrl", naverCallbackUrl);
+        session.setAttribute("pageNavigation", pageNavigation );
 
         return "user/login.jsp";
     }
@@ -210,6 +213,11 @@ public class UserController {
         }
 
 //        여행플랜 리스트 가져오는곳 #################################################################
+        String pageNavigation = (String)session.getAttribute("pageNavigation");
+        if (pageNavigation != "myPage") {
+            System.out.println("======플랜리스트구성 myPage 입력됨 =======");
+            session.setAttribute("pageNavigation", "myPage");
+        }
 
         System.out.println("GET : tripPlanList()");
 
@@ -221,6 +229,7 @@ public class UserController {
         parameters.put("search", search);
 
         if (type.equals("my")) {
+            System.out.println("======== 여행플랜리스트 type=my if문 들어옴 ========");
 //            User user = (User) session.getAttribute("user");
             parameters.put("user", userService.getUserById(userId));
         }
@@ -236,6 +245,7 @@ public class UserController {
         int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
         int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
         String tripPlanAuthor = (String) parameters.get("tripPlanAuthor");
+        String navigation = (String) session.getAttribute("pageNavigation");
 
         model.addAttribute("tripPlanList", tripPlanList.get("list"));
         model.addAttribute("page", page);
@@ -244,6 +254,7 @@ public class UserController {
         model.addAttribute("endUnitPage", endUnitPage);
         model.addAttribute("tripPlanAuthor", tripPlanAuthor);
         model.addAttribute("search",search);
+        model.addAttribute("navigation",navigation);
 
         System.out.println(tripPlanAuthor);
         if (tripPlanAuthor == null) {
@@ -254,75 +265,75 @@ public class UserController {
 
 //      채팅방목록 가져오는곳 #################################################################
 
-        User sessionUser = (User) session.getAttribute("user");
-        System.out.println(sessionUser);
-
-        if (search.getCurrentPage() == 0) {
-
-            search.setCurrentPage(1);
-        }
-//        if(search.getSearchKeyword() == null){
-//            search.setSearchKeyword('');
+//        User sessionUser = (User) session.getAttribute("user");
+//        System.out.println(sessionUser);
+//
+//        if (search.getCurrentPage() == 0) {
+//
+//            search.setCurrentPage(1);
 //        }
-        search.setPageSize(pageSize);
-
-        Map<String, Object> chatRoomListData = chatRoomService.myChatRoomListPage(search, sessionUser.getUserId());
-
-        int chatTotalCount = (int) chatRoomListData.get("totalCount");
-        // maxPage, beginUnitPage, endUnitPage 연산
-        Page chatPage = new Page(search.getCurrentPage(), chatTotalCount, pageUnit, pageSize);
-        // 총 페이지 수
-        int chatMaxPage = page.getMaxPage();
-        // 화면 하단에 표시할 페이지의 시작 번호
-        int chatBeginUnitPage = page.getBeginUnitPage();
-        // 화면 하단에 표시할 페이지의 끝 번호
-        int chatEndUnitPage = page.getEndUnitPage();
-
-        model.addAttribute("chatRoomList", chatRoomListData.get("list"));
-        model.addAttribute("chatRoomPage", chatPage);
-        model.addAttribute("chatRoomMaxPage", chatMaxPage);
-        model.addAttribute("chatRoomBeginUnitPage", chatBeginUnitPage);
-        model.addAttribute("chatRoomEndUnitPage", chatEndUnitPage);
-        model.addAttribute("chatRoomSearch", search);
+////        if(search.getSearchKeyword() == null){
+////            search.setSearchKeyword('');
+////        }
+//        search.setPageSize(pageSize);
+//
+//        Map<String, Object> chatRoomListData = chatRoomService.myChatRoomListPage(search, sessionUser.getUserId());
+//
+//        int chatTotalCount = (int) chatRoomListData.get("totalCount");
+//        // maxPage, beginUnitPage, endUnitPage 연산
+//        Page chatPage = new Page(search.getCurrentPage(), chatTotalCount, pageUnit, pageSize);
+//        // 총 페이지 수
+//        int chatMaxPage = page.getMaxPage();
+//        // 화면 하단에 표시할 페이지의 시작 번호
+//        int chatBeginUnitPage = page.getBeginUnitPage();
+//        // 화면 하단에 표시할 페이지의 끝 번호
+//        int chatEndUnitPage = page.getEndUnitPage();
+//
+//        model.addAttribute("chatRoomList", chatRoomListData.get("list"));
+//        model.addAttribute("chatRoomPage", chatPage);
+//        model.addAttribute("chatRoomMaxPage", chatMaxPage);
+//        model.addAttribute("chatRoomBeginUnitPage", chatBeginUnitPage);
+//        model.addAttribute("chatRoomEndUnitPage", chatEndUnitPage);
+//        model.addAttribute("chatRoomSearch", search);
 
 //      후기목록 가져오는곳####################################################################
 
-        System.out.println("getMyReviewList(): GET ");
-
-        Search reviewSearch = new Search();
-        reviewSearch.setCurrentPage(currentPage);
-
-        reviewSearch.setPageSize(pageSize);
-
-        User dbUser = (User) session.getAttribute("user");
-        if (dbUser == null) {
-            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
-            return "user/login.jsp";
-        }
-
-        Map<String, Object> reviewParameters = new HashMap<>();
-        reviewParameters.put("search", reviewSearch);
-        reviewParameters.put("user", dbUser);
-        reviewParameters.put("condition", "myReviewList"); // 나의 후기 목록을 조회하기 위한 조건 설정
-
-        Map<String, Object> reviewList = reviewService.selectReviewList(reviewParameters);
-        List<Review> myReviewList = (List<Review>) reviewList.get("reviewList");
-
-        int reviewTotalCount = (int) reviewList.get("totalCount");
-
-        Page reviewPage = new Page(reviewSearch.getCurrentPage(), reviewTotalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
-        int reviewMaxPage = reviewPage.getMaxPage(); // 총 페이지 수
-        int reviewBeginUnitPage = reviewPage.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
-        int reviewEndUnitPage = reviewPage.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
-
-        model.addAttribute("myReviewList", myReviewList);
-        model.addAttribute("page", reviewPage);
-        model.addAttribute("maxPage", reviewMaxPage);
-        model.addAttribute("beginUnitPage", reviewBeginUnitPage);
-        model.addAttribute("endUnitPage", reviewEndUnitPage);
-        model.addAttribute("search", reviewSearch);
-
-        model.addAttribute("reviewList", reviewList.get("myReviewList")); // 수정된 키 이름으로 변경
+//        System.out.println("getMyReviewList(): GET ");
+//
+//        Search reviewSearch = new Search();
+//        reviewSearch.setCurrentPage(currentPage);
+//
+//        reviewSearch.setPageSize(pageSize);
+//
+//        User dbUser = (User) session.getAttribute("user");
+//        if (dbUser == null) {
+//            model.addAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
+//            return "user/login.jsp";
+//        }
+//
+//        Map<String, Object> reviewParameters = new HashMap<>();
+//        reviewParameters.put("search", reviewSearch);
+//        reviewParameters.put("user", dbUser);
+//        reviewParameters.put("condition", "myReviewList"); // 나의 후기 목록을 조회하기 위한 조건 설정
+//
+//        Map<String, Object> reviewList = reviewService.selectReviewList(reviewParameters);
+//        List<Review> myReviewList = (List<Review>) reviewList.get("reviewList");
+//
+//        int reviewTotalCount = (int) reviewList.get("totalCount");
+//
+//        Page reviewPage = new Page(reviewSearch.getCurrentPage(), reviewTotalCount, pageUnit, pageSize); // maxPage, beginUnitPage, endUnitPage 연산
+//        int reviewMaxPage = reviewPage.getMaxPage(); // 총 페이지 수
+//        int reviewBeginUnitPage = reviewPage.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
+//        int reviewEndUnitPage = reviewPage.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
+//
+//        model.addAttribute("myReviewList", myReviewList);
+//        model.addAttribute("page", reviewPage);
+//        model.addAttribute("maxPage", reviewMaxPage);
+//        model.addAttribute("beginUnitPage", reviewBeginUnitPage);
+//        model.addAttribute("endUnitPage", reviewEndUnitPage);
+//        model.addAttribute("search", reviewSearch);
+//
+//        model.addAttribute("reviewList", reviewList.get("myReviewList")); // 수정된 키 이름으로 변경
 
         return "/user/getUser.jsp";
     }

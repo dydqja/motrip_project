@@ -230,8 +230,8 @@
         <div class="block full">
             <ul class="nav nav-tabs" data-toggle="tabs">
                 <li class="active"><a href="#tripPlanList" data-toggle="tab" data-load="true" id="tripPlanListTab">여행플랜목록</a></li>
-                <li class=""><a href="#chatRoomList" data-toggle="tab" data-load="false" id="chatRoomListTab">채팅방 목록</a></li>
-                <li class=""><a href="#reviewList" data-toggle="tab" data-load="false" id="reviewListTab">후기 목록</a></li>
+<%--                <li class=""><a href="#chatRoomList" data-toggle="tab" data-load="false" id="chatRoomListTab">채팅방 목록</a></li>--%>
+<%--                <li class=""><a href="#reviewList" data-toggle="tab" data-load="false" id="reviewListTab">후기 목록</a></li>--%>
             </ul>
         </div>
         <!-- END Block Tabs Title -->
@@ -548,209 +548,209 @@
 
             <!-- 채팅목록 부분 ################################################################################ -->
 
-            <div class="tab-pane" id="chatRoomList">
-                <main>
-                    <div class="container">
-                        <div class="col-sm-12">
-                            <c:set var="i" value="0" />
-                            <c:forEach var="chatRoom" items="${chatRoomList}">
-                                <c:set var="i" value="${ i+1 }" />
-                                <div class="item-list">
-                                    <div class="col-sm-5">
-                                        <div class="item-img row" style="background-image: url('http://placehold.it/320x250');">
-                                            <div class="item-overlay">
-                                                <a href="trip_detail.html"><span class="icon-binocular"></span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7">
-                                        <div class="item-desc">
-                                            <h5 class="item-title">${chatRoom.chatRoomTitle}</h5>
+<%--            <div class="tab-pane" id="chatRoomList">--%>
+<%--                <main>--%>
+<%--                    <div class="container">--%>
+<%--                        <div class="col-sm-12">--%>
+<%--                            <c:set var="i" value="0" />--%>
+<%--                            <c:forEach var="chatRoom" items="${chatRoomList}">--%>
+<%--                                <c:set var="i" value="${ i+1 }" />--%>
+<%--                                <div class="item-list">--%>
+<%--                                    <div class="col-sm-5">--%>
+<%--                                        <div class="item-img row" style="background-image: url('http://placehold.it/320x250');">--%>
+<%--                                            <div class="item-overlay">--%>
+<%--                                                <a href="trip_detail.html"><span class="icon-binocular"></span></a>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                    <div class="col-sm-7">--%>
+<%--                                        <div class="item-desc">--%>
+<%--                                            <h5 class="item-title">${chatRoom.chatRoomTitle}</h5>--%>
 
-                                            <div class="sub-title">
-                                                    ${chatRoom.tripPlanTitle}
-                                            </div>
-                                            <div class="left">
-                                                Age : ${chatRoom.minAge} ~ ${chatRoom.maxAge}
-                                            </div>
-                                            <div class="left">
-                                                Gender :
-                                                <c:if test="${chatRoom.gender == 'MF'}">
-                                                    <i class="fa fa-venus-mars"></i>
-                                                </c:if>
-                                                <c:if test="${chatRoom.gender == 'M'}">
-                                                    <i class="fa fa-mars"></i>
-                                                </c:if>
-                                                <c:if test="${chatRoom.gender == 'F'}">
-                                                    <i class="fa fa-venus"></i>
-                                                </c:if>
-                                            </div><br/>
-                                            <div class="left"><span class="icon-calendar"></span>   ${chatRoom.strDate} [${chatRoom.tripDays}일]</div>
+<%--                                            <div class="sub-title">--%>
+<%--                                                    ${chatRoom.tripPlanTitle}--%>
+<%--                                            </div>--%>
+<%--                                            <div class="left">--%>
+<%--                                                Age : ${chatRoom.minAge} ~ ${chatRoom.maxAge}--%>
+<%--                                            </div>--%>
+<%--                                            <div class="left">--%>
+<%--                                                Gender :--%>
+<%--                                                <c:if test="${chatRoom.gender == 'MF'}">--%>
+<%--                                                    <i class="fa fa-venus-mars"></i>--%>
+<%--                                                </c:if>--%>
+<%--                                                <c:if test="${chatRoom.gender == 'M'}">--%>
+<%--                                                    <i class="fa fa-mars"></i>--%>
+<%--                                                </c:if>--%>
+<%--                                                <c:if test="${chatRoom.gender == 'F'}">--%>
+<%--                                                    <i class="fa fa-venus"></i>--%>
+<%--                                                </c:if>--%>
+<%--                                            </div><br/>--%>
+<%--                                            <div class="left"><span class="icon-calendar"></span>   ${chatRoom.strDate} [${chatRoom.tripDays}일]</div>--%>
 
-                                            <div class="right">
-                                                <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"><span class="icon-plane"></span></a>
-                                                <a href="#modal-regular2" data-toggle="modal"><span class="icon-user" value="${chatRoom.chatRoomNo}"></span></a>
-                                                <input type="hidden" />
-                                                <div id="modal-regular2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                                <h3 class="modal-title">Members</h3>
-                                                            </div>
-                                                            <div class="modal-body">
+<%--                                            <div class="right">--%>
+<%--                                                <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"><span class="icon-plane"></span></a>--%>
+<%--                                                <a href="#modal-regular2" data-toggle="modal"><span class="icon-user" value="${chatRoom.chatRoomNo}"></span></a>--%>
+<%--                                                <input type="hidden" />--%>
+<%--                                                <div id="modal-regular2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">--%>
+<%--                                                    <div class="modal-dialog">--%>
+<%--                                                        <div class="modal-content">--%>
+<%--                                                            <div class="modal-header">--%>
+<%--                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>--%>
+<%--                                                                <h3 class="modal-title">Members</h3>--%>
+<%--                                                            </div>--%>
+<%--                                                            <div class="modal-body">--%>
 
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="item-book">
-                                            <button class="btn btn-primary hvr-fade go" name="chatRoomNo" value="${chatRoom.chatRoomNo}">Enter</button>
-                                            <c:if test="${chatRoom.currentPersons eq chatRoom.maxPersons}">
-                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
-                                                        style="margin-left: 10px; background-color: #ee3f00" disabled>Hottest</button>
-                                            </c:if>
-                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 0}">
-                                                <input type="hidden" class="roomGender" value="${chatRoom.gender}">
-                                                <input type="hidden" class="minAge" value="${chatRoom.minAge}">
-                                                <input type="hidden" class="maxAge" value="${chatRoom.maxAge}">
-                                            </c:if>
-                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">
-                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
-                                                        style="margin-left: 10px; background-color: #66ffd6" disabled>Completed</button>
-                                            </c:if>
-                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 2}">
-                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"
-                                                        style="margin-left: 10px; background-color: #f5ff66; color: red" disabled>Finished</button>
-                                            </c:if>
-                                            <div class="price">${chatRoom.currentPersons} / ${chatRoom.maxPersons}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
+<%--                                                            </div>--%>
+<%--                                                            <div class="modal-footer">--%>
+<%--                                                                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>--%>
+<%--                                                            </div>--%>
+<%--                                                        </div>--%>
+<%--                                                    </div>--%>
+<%--                                                </div>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="item-book">--%>
+<%--                                            <button class="btn btn-primary hvr-fade go" name="chatRoomNo" value="${chatRoom.chatRoomNo}">Enter</button>--%>
+<%--                                            <c:if test="${chatRoom.currentPersons eq chatRoom.maxPersons}">--%>
+<%--                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"--%>
+<%--                                                        style="margin-left: 10px; background-color: #ee3f00" disabled>Hottest</button>--%>
+<%--                                            </c:if>--%>
+<%--                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 0}">--%>
+<%--                                                <input type="hidden" class="roomGender" value="${chatRoom.gender}">--%>
+<%--                                                <input type="hidden" class="minAge" value="${chatRoom.minAge}">--%>
+<%--                                                <input type="hidden" class="maxAge" value="${chatRoom.maxAge}">--%>
+<%--                                            </c:if>--%>
+<%--                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 1}">--%>
+<%--                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"--%>
+<%--                                                        style="margin-left: 10px; background-color: #66ffd6" disabled>Completed</button>--%>
+<%--                                            </c:if>--%>
+<%--                                            <c:if test="${chatRoom.currentPersons ne chatRoom.maxPersons and chatRoom.chatRoomStatus eq 2}">--%>
+<%--                                                <button class="btn btn-primary hvr-fade join-chatRoom" value="${chatRoom.chatRoomNo}"--%>
+<%--                                                        style="margin-left: 10px; background-color: #f5ff66; color: red" disabled>Finished</button>--%>
+<%--                                            </c:if>--%>
+<%--                                            <div class="price">${chatRoom.currentPersons} / ${chatRoom.maxPersons}</div>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                            </c:forEach>--%>
 
-                            <nav aria-label="Page navigation example" class="text-center">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item ${chatRoomPage.currentPage == 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="/user/getUser?currentPage=${chatRoomPage.currentPage - 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Previous">
-                                            &laquo;
-                                        </a>
-                                    </li>
-                                    <c:forEach var="i" begin="${chatRoomBeginUnitPage}" end="${chatRoomEndUnitPage}">
-                                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-                                            <a class="page-link" href="/user/getUser?currentPage=${i}&searchKeyword=${chatRoomSearch.searchKeyword}">${i}</a>
-                                        </li>
-                                    </c:forEach>
-                                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
+<%--                            <nav aria-label="Page navigation example" class="text-center">--%>
+<%--                                <ul class="pagination justify-content-center">--%>
+<%--                                    <li class="page-item ${chatRoomPage.currentPage == 1 ? 'disabled' : ''}">--%>
+<%--                                        <a class="page-link" href="/user/getUser?currentPage=${chatRoomPage.currentPage - 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Previous">--%>
+<%--                                            &laquo;--%>
+<%--                                        </a>--%>
+<%--                                    </li>--%>
+<%--                                    <c:forEach var="i" begin="${chatRoomBeginUnitPage}" end="${chatRoomEndUnitPage}">--%>
+<%--                                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">--%>
+<%--                                            <a class="page-link" href="/user/getUser?currentPage=${i}&searchKeyword=${chatRoomSearch.searchKeyword}">${i}</a>--%>
+<%--                                        </li>--%>
+<%--                                    </c:forEach>--%>
+<%--                                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">--%>
 
-                                        <a class="page-link" href="/user/getUser?currentPage=${chatRoomPage.currentPage + 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Next">
-                                            &raquo;
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </main>
-            </div><!-- END Tabs findPwd -->
+<%--                                        <a class="page-link" href="/user/getUser?currentPage=${chatRoomPage.currentPage + 1}&searchKeyword=${chatRoomSearch.searchKeyword}" aria-label="Next">--%>
+<%--                                            &raquo;--%>
+<%--                                        </a>--%>
+<%--                                    </li>--%>
+<%--                                </ul>--%>
+<%--                            </nav>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </main>--%>
+<%--            </div><!-- END Tabs findPwd -->--%>
 
-            <div class="tab-pane" id="reviewList">
-                <!-- 리뷰목록 부분 ################################################################################ -->
-                <main>
-                    <div class="container">
-                        <div class="col-sm-12">
-                            <c:set var="i" value="0"/>
-                            <c:forEach var="review" items="${myReviewList}">
-                                <c:set var="i" value="${ i+1 }"/>
-                                <div class="item-list review-item-list">
+<%--            <div class="tab-pane" id="reviewList">--%>
+<%--                <!-- 리뷰목록 부분 ################################################################################ -->--%>
+<%--                <main>--%>
+<%--                    <div class="container">--%>
+<%--                        <div class="col-sm-12">--%>
+<%--                            <c:set var="i" value="0"/>--%>
+<%--                            <c:forEach var="review" items="${myReviewList}">--%>
+<%--                                <c:set var="i" value="${ i+1 }"/>--%>
+<%--                                <div class="item-list review-item-list">--%>
 
-                                    <div class="col-sm-5">
-                                        <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input
-                                                type="hidden"
-                                                value=">${review.reviewNo}"
-                                                class="reviewNo"/>
-                                        </div>
-                                    </div>
+<%--                                    <div class="col-sm-5">--%>
+<%--                                        <div class="item-img row" style="background-image: url('/images/tripImage.jpg');"><input--%>
+<%--                                                type="hidden"--%>
+<%--                                                value=">${review.reviewNo}"--%>
+<%--                                                class="reviewNo"/>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
 
-                                    <div class="col-sm-7">
-                                        <div class="item-desc">
-                                            <div>
-                                                <h6 class="right">${review.reviewRegDate}</h6>
-                                                <h5 class="item-title">${review.reviewTitle} </h5>
-                                                <div class="sub-title">
-                                                    태그는 여기로
-                                                </div>
-                                            </div>
+<%--                                    <div class="col-sm-7">--%>
+<%--                                        <div class="item-desc">--%>
+<%--                                            <div>--%>
+<%--                                                <h6 class="right">${review.reviewRegDate}</h6>--%>
+<%--                                                <h5 class="item-title">${review.reviewTitle} </h5>--%>
+<%--                                                <div class="sub-title">--%>
+<%--                                                    태그는 여기로--%>
+<%--                                                </div>--%>
+<%--                                            </div>--%>
 
-                                            <div class="right">
-                                                <h4>${review.reviewAuthor}</h4>
-                                                <div class="right"><span class="icon-date"></span>
-                                                    몇 박 몇일은 여기에
-                                                </div>
-                                                <div>
-                                                    삭제여부 넣고 싶으면 여기에
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="item-book">
-                                            <button class="btn btn-sm btn-success" id="getReviewDetail" name="reviewNo"
-                                                    value="${review.reviewNo}">조회<input type="hidden"
-                                                                                        value="${review.reviewNo}"
-                                                                                        class="reviewNo"/>
-                                            </button>
-                                            <c:if test="${sessionScope.user.userId == reviewAuthor}">
-                                                <button id="btnDelete" class="btn btn-sm btn-danger"
-                                                        value="${review.reviewNo}">삭제<input type="hidden"
-                                                                                            value="${review.reviewNo}"
-                                                                                            class="reviewNo"/>
-                                                </button>
-                                            </c:if>
-                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">
-                                                <button id="btnDelete" class="btn btn-sm btn-info"
-                                                        value="${review.reviewNo}">복구<input type="hidden"
-                                                                                            value="${review.reviewNo}"
-                                                                                            class="reviewNo"/>
-                                                </button>
-                                            </c:if>
-                                            <div class="price">
-                                                <label class="icon-hand-like">${review.reviewLikes}</label>
-                                                <label></label>
-                                                <label class="icon-eye">${review.viewCount}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                            <nav aria-label="Page navigation example" class="text-center">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item ${reviewPage.currentPage == 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="/review/getMyReviewList?type=${condition}&currentPage=${page.currentPage - 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"
-                                           aria-label="Previous">
-                                            &laquo;
-                                        </a>
-                                    </li>
-                                    <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">
-                                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">
-                                            <a class="page-link" href="/review/getMyReviewList?type=${condition}&currentPage=${i}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}">${i}</a>
-                                        </li>
-                                    </c:forEach>
-                                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
-                                        <a class="page-link" href="/review/getMyReviewList?type=${condition}&currentPage=${page.currentPage + 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"
-                                           aria-label="Next">
-                                            &raquo;
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div><!-- END Tabs container -->
-                </main>
-            </div><!-- END Tabs reviewList -->
+<%--                                            <div class="right">--%>
+<%--                                                <h4>${review.reviewAuthor}</h4>--%>
+<%--                                                <div class="right"><span class="icon-date"></span>--%>
+<%--                                                    몇 박 몇일은 여기에--%>
+<%--                                                </div>--%>
+<%--                                                <div>--%>
+<%--                                                    삭제여부 넣고 싶으면 여기에--%>
+<%--                                                </div>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="item-book">--%>
+<%--                                            <button class="btn btn-sm btn-success" id="getReviewDetail" name="reviewNo"--%>
+<%--                                                    value="${review.reviewNo}">조회<input type="hidden"--%>
+<%--                                                                                        value="${review.reviewNo}"--%>
+<%--                                                                                        class="reviewNo"/>--%>
+<%--                                            </button>--%>
+<%--                                            <c:if test="${sessionScope.user.userId == reviewAuthor}">--%>
+<%--                                                <button id="btnDelete" class="btn btn-sm btn-danger"--%>
+<%--                                                        value="${review.reviewNo}">삭제<input type="hidden"--%>
+<%--                                                                                            value="${review.reviewNo}"--%>
+<%--                                                                                            class="reviewNo"/>--%>
+<%--                                                </button>--%>
+<%--                                            </c:if>--%>
+<%--                                            <c:if test="${sessionScope.user.userId == tripPlanAuthor}">--%>
+<%--                                                <button id="btnDelete" class="btn btn-sm btn-info"--%>
+<%--                                                        value="${review.reviewNo}">복구<input type="hidden"--%>
+<%--                                                                                            value="${review.reviewNo}"--%>
+<%--                                                                                            class="reviewNo"/>--%>
+<%--                                                </button>--%>
+<%--                                            </c:if>--%>
+<%--                                            <div class="price">--%>
+<%--                                                <label class="icon-hand-like">${review.reviewLikes}</label>--%>
+<%--                                                <label></label>--%>
+<%--                                                <label class="icon-eye">${review.viewCount}</label>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                            </c:forEach>--%>
+<%--                            <nav aria-label="Page navigation example" class="text-center">--%>
+<%--                                <ul class="pagination justify-content-center">--%>
+<%--                                    <li class="page-item ${reviewPage.currentPage == 1 ? 'disabled' : ''}">--%>
+<%--                                        <a class="page-link" href="/review/getMyReviewList?type=${condition}&currentPage=${page.currentPage - 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"--%>
+<%--                                           aria-label="Previous">--%>
+<%--                                            &laquo;--%>
+<%--                                        </a>--%>
+<%--                                    </li>--%>
+<%--                                    <c:forEach var="i" begin="${beginUnitPage}" end="${endUnitPage}">--%>
+<%--                                        <li class="page-item ${i == page.currentPage ? 'active' : ''}">--%>
+<%--                                            <a class="page-link" href="/review/getMyReviewList?type=${condition}&currentPage=${i}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}">${i}</a>--%>
+<%--                                        </li>--%>
+<%--                                    </c:forEach>--%>
+<%--                                    <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">--%>
+<%--                                        <a class="page-link" href="/review/getMyReviewList?type=${condition}&currentPage=${page.currentPage + 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"--%>
+<%--                                           aria-label="Next">--%>
+<%--                                            &raquo;--%>
+<%--                                        </a>--%>
+<%--                                    </li>--%>
+<%--                                </ul>--%>
+<%--                            </nav>--%>
+<%--                        </div>--%>
+<%--                    </div><!-- END Tabs container -->--%>
+<%--                </main>--%>
+<%--            </div><!-- END Tabs reviewList -->--%>
         </div><!-- END Tabs Content -->
     </div>
 </div>
@@ -1163,39 +1163,121 @@
             });
         });
 
+        // 여행플랜 조회 버튼
+        $(function () {
+            $(".btn.btn-sm.btn-success").on("click", function () {
+                var tripPlanNo = $(this).find(".tripPlanNo").val();
+                window.location.href = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
+            });
+        });
+
         // 여행플랜 삭제하기 버튼
         $(function () {
-            $("button[id='btnDelete']").on("click", function () {
+            $(".btnDelete").on("click", function () {
                 var tripPlanNo = this.value;
-                var delTripPlan = $(this).closest("tr");
-
                 console.log(tripPlanNo);
 
-                $.ajax({
-                    url: "/tripPlan/tripPlanDeleted",
-                    type: "GET",
-                    data: {"tripPlanNo": tripPlanNo},
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        if (data.isPlanDeleted) {
-                            delTripPlan.css("background-color", "gray");
-                            delTripPlan.class("btn btn-sm btn-info");
-                            delTripPlan.find(".btn btn-sm btn-info").val(0); // 숨겨진 요소의 값을 업데이트
-                            delTripPlan.find(".btnDelete").text("복구"); // 버튼 텍스트 업데이트
-                        } else {
-                            delTripPlan.css("background-color", "white");
-                            delTripPlan.class("btn btn-sm btn-danger");
-                            delTripPlan.find(".btn btn-sm btn-danger").val(data.tripPlanNo); // 숨겨진 요소의 값을 업데이트
-                            delTripPlan.find(".btnDelete").text("삭제"); // 버튼 텍스트 업데이트
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("여행플랜 삭제 실패");
+                var button = $(this); // 클릭한 버튼을 변수에 저장
+                console.log(button)
+
+                var swalTitle = "삭제";
+                var swalText = "정말로 여행플랜을 삭제하겠습니까? 삭제된 여행플랜은 임시보관되며 복구할수있습니다.";
+                var successMessage = "삭제되었습니다.";
+                var cancelButtonText = "취소";
+
+                if (button.hasClass("btn-info")) {
+                    swalTitle = "복구";
+                    swalText = "여행플랜을 복구하겠습니까?";
+                    successMessage = "복구되었습니다.";
+                    cancelButtonText = "취소";
+                }
+
+                Swal.fire({
+                    title: swalTitle,
+                    text: swalText,
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "확인",
+                    cancelButtonText: cancelButtonText
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/tripPlan/tripPlanDeleted",
+                            type: "GET",
+                            data: { "tripPlanNo": tripPlanNo },
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "JSON",
+                            success: function (data) {
+                                if (data.isPlanDeleted) {
+                                    button
+                                        .removeClass("btn-warning")
+                                        .addClass("btn-info")
+                                        .html("복구");
+
+                                    $("#tripPlanView" + tripPlanNo).hide(); // 조회 버튼 숨기기
+                                    $("#addChatRoom" + tripPlanNo).hide(); // 채팅방 생성 버튼 숨기기
+                                    $("#tripPlanComplete" + tripPlanNo).hide(); // 여행완료 버튼 숨기기
+                                    $("#btnTripPlanDelete" + tripPlanNo).show();
+                                    $("#tripPlanImage" + tripPlanNo).val(0);
+
+                                    Swal.fire(successMessage, "", "success");
+                                } else {
+                                    button
+                                        .removeClass("btn-info")
+                                        .addClass("btn-warning")
+                                        .html("삭제");
+
+                                    $("#tripPlanView" + tripPlanNo).show(); // 조회 버튼 숨기기
+                                    $("#addChatRoom" + tripPlanNo).show(); // 채팅방 생성 버튼 숨기기
+                                    $("#tripPlanComplete" + tripPlanNo).show(); // 여행완료 버튼 숨기기
+                                    $("#btnTripPlanDelete" + tripPlanNo).hide();
+                                    $("#tripPlanImage" + tripPlanNo).val(tripPlanNo);
+
+                                    Swal.fire(successMessage, "", "success");
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("여행플랜 삭제 실패");
+                            }
+                        });
                     }
                 });
             });
         });
+
+        // // 여행플랜 삭제하기 버튼
+        // $(function () {
+        //     $("button[id='btnDelete']").on("click", function () {
+        //         var tripPlanNo = this.value;
+        //         var delTripPlan = $(this).closest("tr");
+        //
+        //         console.log(tripPlanNo);
+        //
+        //         $.ajax({
+        //             url: "/tripPlan/tripPlanDeleted",
+        //             type: "GET",
+        //             data: {"tripPlanNo": tripPlanNo},
+        //             contentType: "application/json; charset=utf-8",
+        //             dataType: "JSON",
+        //             success: function (data) {
+        //                 if (data.isPlanDeleted) {
+        //                     delTripPlan.css("background-color", "gray");
+        //                     delTripPlan.class("btn btn-sm btn-info");
+        //                     delTripPlan.find(".btn btn-sm btn-info").val(0); // 숨겨진 요소의 값을 업데이트
+        //                     delTripPlan.find(".btnDelete").text("복구"); // 버튼 텍스트 업데이트
+        //                 } else {
+        //                     delTripPlan.css("background-color", "white");
+        //                     delTripPlan.class("btn btn-sm btn-danger");
+        //                     delTripPlan.find(".btn btn-sm btn-danger").val(data.tripPlanNo); // 숨겨진 요소의 값을 업데이트
+        //                     delTripPlan.find(".btnDelete").text("삭제"); // 버튼 텍스트 업데이트
+        //                 }
+        //             },
+        //             error: function (xhr, status, error) {
+        //                 console.log("여행플랜 삭제 실패");
+        //             }
+        //         });
+        //     });
+        // });
 
         // AJAX 요청을 보내고 여행플랜의 수를 가져오는 함수
         function listCounter() {
