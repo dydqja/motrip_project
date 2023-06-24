@@ -1163,39 +1163,121 @@
             });
         });
 
+        // 여행플랜 조회 버튼
+        $(function () {
+            $(".btn.btn-sm.btn-success").on("click", function () {
+                var tripPlanNo = $(this).find(".tripPlanNo").val();
+                window.location.href = "/tripPlan/selectTripPlan?tripPlanNo=" + tripPlanNo;
+            });
+        });
+
         // 여행플랜 삭제하기 버튼
         $(function () {
-            $("button[id='btnDelete']").on("click", function () {
+            $(".btnDelete").on("click", function () {
                 var tripPlanNo = this.value;
-                var delTripPlan = $(this).closest("tr");
-
                 console.log(tripPlanNo);
 
-                $.ajax({
-                    url: "/tripPlan/tripPlanDeleted",
-                    type: "GET",
-                    data: {"tripPlanNo": tripPlanNo},
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    success: function (data) {
-                        if (data.isPlanDeleted) {
-                            delTripPlan.css("background-color", "gray");
-                            delTripPlan.class("btn btn-sm btn-info");
-                            delTripPlan.find(".btn btn-sm btn-info").val(0); // 숨겨진 요소의 값을 업데이트
-                            delTripPlan.find(".btnDelete").text("복구"); // 버튼 텍스트 업데이트
-                        } else {
-                            delTripPlan.css("background-color", "white");
-                            delTripPlan.class("btn btn-sm btn-danger");
-                            delTripPlan.find(".btn btn-sm btn-danger").val(data.tripPlanNo); // 숨겨진 요소의 값을 업데이트
-                            delTripPlan.find(".btnDelete").text("삭제"); // 버튼 텍스트 업데이트
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("여행플랜 삭제 실패");
+                var button = $(this); // 클릭한 버튼을 변수에 저장
+                console.log(button)
+
+                var swalTitle = "삭제";
+                var swalText = "정말로 여행플랜을 삭제하겠습니까? 삭제된 여행플랜은 임시보관되며 복구할수있습니다.";
+                var successMessage = "삭제되었습니다.";
+                var cancelButtonText = "취소";
+
+                if (button.hasClass("btn-info")) {
+                    swalTitle = "복구";
+                    swalText = "여행플랜을 복구하겠습니까?";
+                    successMessage = "복구되었습니다.";
+                    cancelButtonText = "취소";
+                }
+
+                Swal.fire({
+                    title: swalTitle,
+                    text: swalText,
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "확인",
+                    cancelButtonText: cancelButtonText
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/tripPlan/tripPlanDeleted",
+                            type: "GET",
+                            data: { "tripPlanNo": tripPlanNo },
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "JSON",
+                            success: function (data) {
+                                if (data.isPlanDeleted) {
+                                    button
+                                        .removeClass("btn-warning")
+                                        .addClass("btn-info")
+                                        .html("복구");
+
+                                    $("#tripPlanView" + tripPlanNo).hide(); // 조회 버튼 숨기기
+                                    $("#addChatRoom" + tripPlanNo).hide(); // 채팅방 생성 버튼 숨기기
+                                    $("#tripPlanComplete" + tripPlanNo).hide(); // 여행완료 버튼 숨기기
+                                    $("#btnTripPlanDelete" + tripPlanNo).show();
+                                    $("#tripPlanImage" + tripPlanNo).val(0);
+
+                                    Swal.fire(successMessage, "", "success");
+                                } else {
+                                    button
+                                        .removeClass("btn-info")
+                                        .addClass("btn-warning")
+                                        .html("삭제");
+
+                                    $("#tripPlanView" + tripPlanNo).show(); // 조회 버튼 숨기기
+                                    $("#addChatRoom" + tripPlanNo).show(); // 채팅방 생성 버튼 숨기기
+                                    $("#tripPlanComplete" + tripPlanNo).show(); // 여행완료 버튼 숨기기
+                                    $("#btnTripPlanDelete" + tripPlanNo).hide();
+                                    $("#tripPlanImage" + tripPlanNo).val(tripPlanNo);
+
+                                    Swal.fire(successMessage, "", "success");
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("여행플랜 삭제 실패");
+                            }
+                        });
                     }
                 });
             });
         });
+
+        // // 여행플랜 삭제하기 버튼
+        // $(function () {
+        //     $("button[id='btnDelete']").on("click", function () {
+        //         var tripPlanNo = this.value;
+        //         var delTripPlan = $(this).closest("tr");
+        //
+        //         console.log(tripPlanNo);
+        //
+        //         $.ajax({
+        //             url: "/tripPlan/tripPlanDeleted",
+        //             type: "GET",
+        //             data: {"tripPlanNo": tripPlanNo},
+        //             contentType: "application/json; charset=utf-8",
+        //             dataType: "JSON",
+        //             success: function (data) {
+        //                 if (data.isPlanDeleted) {
+        //                     delTripPlan.css("background-color", "gray");
+        //                     delTripPlan.class("btn btn-sm btn-info");
+        //                     delTripPlan.find(".btn btn-sm btn-info").val(0); // 숨겨진 요소의 값을 업데이트
+        //                     delTripPlan.find(".btnDelete").text("복구"); // 버튼 텍스트 업데이트
+        //                 } else {
+        //                     delTripPlan.css("background-color", "white");
+        //                     delTripPlan.class("btn btn-sm btn-danger");
+        //                     delTripPlan.find(".btn btn-sm btn-danger").val(data.tripPlanNo); // 숨겨진 요소의 값을 업데이트
+        //                     delTripPlan.find(".btnDelete").text("삭제"); // 버튼 텍스트 업데이트
+        //                 }
+        //             },
+        //             error: function (xhr, status, error) {
+        //                 console.log("여행플랜 삭제 실패");
+        //             }
+        //         });
+        //     });
+        // });
 
         // AJAX 요청을 보내고 여행플랜의 수를 가져오는 함수
         function listCounter() {
