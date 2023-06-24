@@ -62,7 +62,7 @@
 <div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
   <div class="container">
     <div class="col-sm-8">
-      <h1 class="main-head">모든 후기 보기 </h1>
+      <h1 class="main-head">후기</h1>
     </div>
   </div>
 </div>
@@ -105,9 +105,9 @@
 
         <div class="sidebar">
           <div class="border-box">
-            <div class="box-title">Review Search</div>
+            <div class="box-title">후기 검색</div>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Title">
+              <input type="text" class="form-control" placeholder="후기 타이틀">
               <div class="input-group-btn">
                 <button class="btn btn-primary">Search</button>
               </div>

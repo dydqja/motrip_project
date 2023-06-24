@@ -73,7 +73,7 @@
 <div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
     <div class="container">
         <div class="col-sm-8">
-            <h1 class="main-head">내가  작성한 후기 </h1>
+            <h1 class="main-head">후기</h1>
         </div>
     </div>
 </div>
@@ -118,7 +118,7 @@
                     <div class="border-box">
                         <div class="box-title">후기 검색</div>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Title">
+                            <input type="text" class="form-control" placeholder="후기 타이틀">
                             <div class="input-group-btn">
                                 <button class="btn btn-primary">Search</button>
                             </div>
@@ -135,18 +135,18 @@
                     <c:set var="i" value="${ i+1 }"/>
                     <div class="item-list review-item-list">
                         <div class="col-sm-5">
-                            <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">
-                                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">
-                                    <input type="hidden" id="reviewImage${review.reviewNo}"
-                                            <c:if test="${review.getisReviewDeleted()}">
-                                                value="0"
-                                            </c:if>
-                                            <c:if test="${!review.getisReviewDeleted}">
-                                                value="${review.reviewNo}"
-                                            </c:if>
-                                           class="reviewNo"/></div>
-                            </c:if>
-                            <c:if test="${review.reviewThumbnail == ''}">
+<%--                            <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">--%>
+<%--                                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">--%>
+<%--                                    <input type="hidden" id="reviewImage${review.reviewNo}"--%>
+<%--                                            <c:if test="${review.getisReviewDeleted()}">--%>
+<%--                                                value="0"--%>
+<%--                                            </c:if>--%>
+<%--                                            <c:if test="${!review.getisReviewDeleted}">--%>
+<%--                                                value="${review.reviewNo}"--%>
+<%--                                            </c:if>--%>
+<%--                                           class="reviewNo"/></div>--%>
+<%--                            </c:if>--%>
+<%--                            <c:if test="${review.reviewThumbnail == ''}">--%>
                             <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
                                 <input type="hidden" id="reviewImage${review.reviewNo}"
                                         <c:if test="${review.getisReviewDeleted()}">
@@ -156,7 +156,7 @@
                                             value="${review.reviewNo}"
                                         </c:if>
                                        class="reviewNo"/></div>
-                            </c:if>
+<%--                            </c:if>--%>
                         </div>
 
                         <div class="col-sm-7">

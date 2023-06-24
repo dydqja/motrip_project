@@ -87,11 +87,12 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">후기</a>
                         <ul class="dropdown-menu">
-                            <li><a href=/review/getCompletedTripPlanList>후기 작성</a>
+                            <li><a href="/review/getReviewList">후기 목록</a>
                             </li>
-                            <li><a href="/review/getReviewList">모든 후기</a>
-                            </li>
+                            <c:if test="${not empty sessionScope.user}">
                             <li><a  href="/review/getMyReviewList">나의 후기</a>
+                            </li></c:if>
+                            <li><a href=/review/getCompletedTripPlanList>후기 작성</a>
                             </li>
                         </ul>
                     </li>

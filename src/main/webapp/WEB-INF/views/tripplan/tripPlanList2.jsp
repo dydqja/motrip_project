@@ -64,7 +64,7 @@
 <body>
 
 <%--<header class="nav-menu fixed">--%>
-    <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
 <%--</header>--%>
 
 <div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
@@ -122,13 +122,13 @@
                         </div>
                     </div>
 
-<%--                    <div class="border-box">--%>
-<%--                        <div class="box-title">Trip Days Search</div>--%>
-<%--                        <div class="input-group">--%>
-<%--                            <input type="text" class="form-control" placeholder="Days">--%>
-<%--                            <div class="input-group-btn"></div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
+                    <%--                    <div class="border-box">--%>
+                    <%--                        <div class="box-title">Trip Days Search</div>--%>
+                    <%--                        <div class="input-group">--%>
+                    <%--                            <input type="text" class="form-control" placeholder="Days">--%>
+                    <%--                            <div class="input-group-btn"></div>--%>
+                    <%--                        </div>--%>
+                    <%--                    </div>--%>
 
                 </div>
             </div>
@@ -152,15 +152,15 @@
                                            class="tripPlanNo"/></div>
                             </c:if>
                             <c:if test="${tripPlan.tripPlanThumbnail == ''}">
-                            <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
-                                <input type="hidden" id="tripPlanImage${tripPlan.tripPlanNo}"
-                                    <c:if test="${tripPlan.isPlanDeleted}">
-                                        value="0"
-                                    </c:if>
-                                    <c:if test="${!tripPlan.isPlanDeleted}">
-                                        value="${tripPlan.tripPlanNo}"
-                                    </c:if>
-                                    class="tripPlanNo"/></div>
+                                <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
+                                    <input type="hidden" id="tripPlanImage${tripPlan.tripPlanNo}"
+                                            <c:if test="${tripPlan.isPlanDeleted}">
+                                                value="0"
+                                            </c:if>
+                                            <c:if test="${!tripPlan.isPlanDeleted}">
+                                                value="${tripPlan.tripPlanNo}"
+                                            </c:if>
+                                           class="tripPlanNo"/></div>
                             </c:if>
                         </div>
 
@@ -258,8 +258,8 @@
                                                 style="display: none;"
                                             </c:if>
                                             value="${tripPlan.tripPlanNo}">완전삭제<input type="hidden"
-                                                                                    value="${tripPlan.tripPlanNo}"
-                                                                                    class="tripPlanNo"/>
+                                                                                      value="${tripPlan.tripPlanNo}"
+                                                                                      class="tripPlanNo"/>
                                     </button>
                                 </c:if>
 
