@@ -12,8 +12,8 @@ const fileInput = document.getElementById('uploadFile');
 //console.log(username,room);
 
 //cors 에러 해결
-const socket = io.connect("chat.motrip.co.kr", {
-  cors:{origin:"chat.motrip.co.kr"}
+const socket = io.connect("http://localhost:3000", {
+  cors:{origin:"http://localhost:3000"}
 });
 //"http://192.168.0.28:3000" "http://localhost:3000"},"chat.motrip.co.kr"
 //join chatroom
@@ -282,7 +282,7 @@ function outputUsers(users){ //이거는 참여한 유저 리스트 => nickname�
 };
 function outputUsers2(users){
   userList.innerHTML = `
-      ${users.map(user => `<li><img src=${user.userPhoto}>${user.nickname}</li>`).join('')}
+      ${users.map(user => `<li><img src=${user.userPhoto} style="height: 40px;width: 40px">${user.nickname}</li>`).join('')}
     `;
 }
 //<img src="${user.image}">
