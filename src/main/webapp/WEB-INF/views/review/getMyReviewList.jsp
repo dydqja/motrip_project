@@ -172,18 +172,18 @@
                                         </c:forEach>
                                     </div>
                                 </div>
+                                <h4 class="right">${review.reviewAuthor}</h4>
+<%--                                <div class="right" style="margin-top: -8px">--%>
+<%--                                    <div class="right"><span class="icon-date"></span>--%>
+<%--                                        <c:if test="${tripPlan.tripDays == 1}">--%>
+<%--                                            ${tripPlan.tripDays}일--%>
+<%--                                        </c:if>--%>
+<%--                                        <c:if test="${tripPlan.tripDays != 1}">--%>
+<%--                                            ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일--%>
+<%--                                        </c:if>--%>
+<%--                                    </div>--%>
 
-                                <div class="right" style="margin-top: -8px">
-                                    <div class="right"><span class="icon-date"></span>
-                                        <c:if test="${tripPlan.tripDays == 1}">
-                                            ${tripPlan.tripDays}일
-                                        </c:if>
-                                        <c:if test="${tripPlan.tripDays != 1}">
-                                            ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일
-                                        </c:if>
-                                    </div>
-
-                                </div>
+<%--                                </div>--%>
                             </div>
                             <div class="item-book">
 
