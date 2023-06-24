@@ -67,9 +67,7 @@
                         <span> 24, 2023</span>
                         <span class="dot">·</span>
                         <span class="italic">in</span>
-                        <a href="#">Adventure</a>, <a href="#">Asia</a>
-                        <span class="dot">·</span>
-                        <a href="#">4 Comments</a>
+                        <a href="#">Adventure</a>, <a href="#">Korea</a>
                     </p>
                 </div>
                 <div class="col-sm-2">
