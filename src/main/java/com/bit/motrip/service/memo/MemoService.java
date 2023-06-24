@@ -33,7 +33,7 @@ public interface MemoService {
 
 
     Memo getMemo(int memoNo) throws Exception;
-    //메모의 No를 기준으로 메모의 구체적인 정보를 불러오는 기능.
+    //메모의 No를 기준으로 메모의 구체적인 정보를  불러오는 기능.
     //수정버튼이나 삭제버튼을 띄울지말지 여부를 화면에서 판단하기 위해서는, Author 를 함께 뽑아올 필요성이 있다.
 
     Memo updateMemo(Memo memo) throws Exception;

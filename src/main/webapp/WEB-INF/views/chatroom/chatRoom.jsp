@@ -444,18 +444,23 @@
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
     <script type="text/javascript">
+        // let markers = []; // 마커 배열
+        // let maps = []; // 지도 배열
+        // let pathInfo = []; // 좌표 저장 배열
         let markers = []; // 마커 배열
         let maps = []; // 지도 배열
         let pathInfo = []; // 좌표 저장 배열
-
+        let tripTime = ""; // 파싱할 시간
+        let totalTripTime = "";
     </script>
 
     <script type="text/javascript">
         const username = "${username}";
         const room = "${chatRoom.chatRoomNo}";
-        const author = "${author.userId}"
-        const chatRoomNo = "${chatRoom.chatRoomNo}"
+        const author = "${author.userId}";
+        const chatRoomNo = "${chatRoom.chatRoomNo}";
         const images = "${images}";
+        const nickName = "${nickname}";
 
         //업데이트 컨트롤러로 이동
         function fncUpdateChatroom(){
@@ -559,7 +564,7 @@
                         // 멤버 리스트를 순회하며 <li> 요소 생성 및 추가
                         $.each(members, function(index, member) {
                             memberArray.push(member.userId);
-                            var li = $('<li>').attr("id", member.userId).attr("class","getUser").attr("value",member.userId).text(member.userId);
+                            var li = $('<li>').attr("id", member.userId).attr("class","getUser").attr("value",member.userId).text(member.userNickName);
                             chatUsers.append(li);
                             var img = $('<img>')
                                 .attr('src', member.images).css({
@@ -901,6 +906,7 @@
         //     }
         // });
         let tripDays = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
+        let indexCheck = [];
 
         $(function () { // 저장되었던 맵의 갯수 만큼 출력하고 세팅
 
@@ -941,34 +947,48 @@
                     return marker.mapId === mapId;
                 });
 
+                if (!indexCheck[mapId]) {
+                    indexCheck[mapId] = [];
+                }
+
                 $(mapMarkers).each(function (index, marker) {
-                    var markerOptions = {
-                        position: marker.position,
-                        map: map
-                    };
-                    var marker = new kakao.maps.Marker(markerOptions);
-                    marker.setMap(map);
-                    bounds.extend(markerOptions.position);
+                    var newMarker = addMarker(marker.position, index);
+                    newMarker.setMap(map);
+
+                    indexCheck[mapId].push(index);
+                    bounds.extend(marker.position);
                 });
 
-                // 바운드의 범위를 한 단계만 더 가깝게 설정
-                var extraPadding = 0.1; // 조절 가능한 추가 간격 (0.1은 10%를 의미)
-                var ne = bounds.getNorthEast();
-                var sw = bounds.getSouthWest();
-                var deltaX = (ne.getLng() - sw.getLng()) * extraPadding;
-                var deltaY = (ne.getLat() - sw.getLat()) * extraPadding;
-                var extendedNE = new kakao.maps.LatLng(ne.getLat() + deltaY, ne.getLng() + deltaX);
-                var extendedSW = new kakao.maps.LatLng(sw.getLat() - deltaY, sw.getLng() - deltaX);
-                bounds.extend(extendedNE);
-                bounds.extend(extendedSW);
+                console.log("test")
+                console.log(indexCheck);
 
                 map.setBounds(bounds);
             });
 
         });
 
+        function addMarker(position, idx) {
+            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
+            var imageSize = new kakao.maps.Size(36, 37);
+            var imgOptions = {
+                spriteSize: new kakao.maps.Size(36, 691),
+                spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10),
+                offset: new kakao.maps.Point(13, 37)
+            };
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+            var marker = new kakao.maps.Marker({
+                position: position,
+                image: markerImage
+            });
+
+            return marker;
+        }
+
         $(function () { // 오버레이 표시
             var overlays = [];
+            var position = [];
+            var makerIndex = 0;
+
             for (var i = 0; i < markers.length; i++) { // 각 지도에 맞춰서 마커들을 표시
                 var mapId = markers[i].mapId;
                 var mapIndex = parseInt(mapId.replace("map", ""));
@@ -976,8 +996,23 @@
                     position: markers[i].position,
                     map: maps[mapIndex]
                 };
-                var marker = new kakao.maps.Marker(markerOptions);
+
+                var marker = addMarker(markerOptions.position, makerIndex);
                 marker.setMap(markerOptions.map);
+
+                makerIndex++;
+                if (makerIndex >= indexCheck[mapId].length) {
+                    makerIndex = 0;  // index가 indexCheck[mapId].length보다 크거나 같으면 0으로 초기화
+                }
+
+                if (!position[mapIndex]) {
+                    position[mapIndex] = [];
+                }
+                if (!overlays[mapIndex]) {
+                    overlays[mapIndex] = [];
+                }
+
+                position[mapIndex].push(marker);
 
                 var category = '';
                 if (markers[i].placeCategory == 0) {
@@ -1001,7 +1036,7 @@
                     '           </div>' +
                     '            <div class="desc">' +
                     '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
-                    '                <div class="category">(카테고리) ' + category + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
+                    '                <div class="category">(전화번호) ' + markers[i].placePhoneNumber + '</div>' +
                     '    </div></div></div></div>';
 
                 var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
@@ -1012,13 +1047,13 @@
                 });
 
                 overlay.setMap(null); // 오버레이 초기 상태는 숨김으로 설정
-                overlays.push(overlay);
+                overlays[mapIndex].push(overlay);
 
                 (function (marker, overlay, mapIndex) {
 
                     // 마커를 클릭했을 때 오버레이 표시
                     kakao.maps.event.addListener(marker, 'click', function () {
-                        maps[mapIndex].setLevel(3); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
+                        maps[mapIndex].setLevel(5); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
                         maps[mapIndex].panTo(marker.getPosition()); // 해당 마커 위치로 지도 이동
                         overlay.setMap(maps[mapIndex]);
                     });
@@ -1027,6 +1062,20 @@
                     kakao.maps.event.addListener(maps[mapIndex], 'click', function () {
                         overlay.setMap(null);
                     });
+
+                    // $('.card-title' + mapIndex).click(function() {
+                    //
+                    //     var dataIndex = parseInt($(this).attr('data-index'));
+                    //     console.log(dataIndex);
+                    //     console.log(position[mapIndex][dataIndex]);
+                    //
+                    //     // 해당 마커를 클릭한 것처럼 동작
+                    //     maps[mapIndex].setLevel(5);
+                    //     maps[mapIndex].panTo(position[mapIndex][dataIndex].getPosition());
+                    //     overlay.setMap(null);
+                    //     overlay.setMap(maps[mapIndex]);
+                    //
+                    // });
 
                     // 화면 초기화
                     $('#reset' + mapIndex).click(function () {
@@ -1039,12 +1088,44 @@
                                 bounds.extend(markers[j].position);
                             }
                         }
+
+                        // // 확장할 수 있는 마진 값을 지정합니다.
+                        // var margin = 0.001; // 예시로 0.1(10%)로 설정하였습니다.
+                        // var southWest = bounds.getSouthWest();
+                        // var northEast = bounds.getNorthEast();
+                        // var latDiff = northEast.getLat() - southWest.getLat();
+                        // var lngDiff = northEast.getLng() - southWest.getLng();
+                        //
+                        // // 확장된 영역으로 bounds를 설정합니다.
+                        // bounds.extend(new kakao.maps.LatLng(southWest.getLat() - latDiff * margin, southWest.getLng() - lngDiff * margin));
+                        // bounds.extend(new kakao.maps.LatLng(northEast.getLat() + latDiff * margin, northEast.getLng() + lngDiff * margin));
+
                         maps[mapIndex].setBounds(bounds);
                     });
 
                 })(marker, overlay, mapIndex);
             }
+
+            $(document).on('click', '[id^="tripTitle"]', function() {
+                var mapIndex = $(this).attr('id').replace('tripTitle', ''); // 클릭한 태그의 인덱스 추출
+                var dataIndex = $(this).find('.card-title').attr('data-index');
+                console.log("클릭한 태그의 인덱스:", index);
+                console.log("확인: ", dataIndex);
+                // 원하는 작업 수행
+
+                console.log(overlays[mapIndex])
+
+                maps[mapIndex].setLevel(5);
+                maps[mapIndex].panTo(position[mapIndex][dataIndex].getPosition());
+
+                for(var i=0; i<overlays[mapIndex].length; i++){
+                    overlays[mapIndex][i].setMap(null);
+                }
+                overlays[mapIndex][dataIndex].setMap(maps[mapIndex]);
+            });
+
         });
+
     </script>
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
     <script src="/js/main.js"></script>

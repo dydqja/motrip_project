@@ -50,5 +50,11 @@ public class TestController {
 
         return "alarm/reject.jsp";
     }
+    @GetMapping("what")
+    public String what() throws Exception{
+        System.out.println("what works");
+
+        return "common/what.jsp";
+    }
 
 }

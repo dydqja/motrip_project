@@ -48,7 +48,7 @@
                     <li class="dropdown">
                         <a href="#">모여행 <i class="fa fa-chevron-down nav-arrow"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="home_default.html">모여행이란</a></li>
+                            <li><a href="/test/what">모여행이란</a></li>
                             <li><a href="home_slider.html">설계 포트폴리오</a></li>
                             <%--<li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
                             <c:if test="${empty sessionScope.user}">
@@ -87,11 +87,12 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">후기</a>
                         <ul class="dropdown-menu">
-                            <li><a href=/review/getCompletedTripPlanList>후기 작성</a>
+                            <li><a href="/review/getReviewList">후기 목록</a>
                             </li>
-                            <li><a href="/review/getReviewList">모든 후기</a>
-                            </li>
+                            <c:if test="${not empty sessionScope.user}">
                             <li><a  href="/review/getMyReviewList">나의 후기</a>
+                            </li></c:if>
+                            <li><a href=/review/getCompletedTripPlanList>후기 작성</a>
                             </li>
                         </ul>
                     </li>

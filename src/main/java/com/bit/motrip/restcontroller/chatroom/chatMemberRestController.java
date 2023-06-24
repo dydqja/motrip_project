@@ -54,6 +54,7 @@ public class chatMemberRestController {
         List<ChatMember> chatMember = chatMemberService.chatMemberList(chatRoomNo);
         for (ChatMember cm : chatMember) {
             cm.setImages(userService.getUserById(cm.getUserId()).getUserPhoto());
+            cm.setUserNickName(userService.getUserById(cm.getUserId()).getNickname());
         }
 
         return chatMember;

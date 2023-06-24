@@ -17,11 +17,12 @@ const socket = io.connect("chat.motrip.co.kr", {
 });
 //"http://192.168.0.28:3000" "http://localhost:3000"},"chat.motrip.co.kr"
 //join chatroom
-socket.emit('joinRoom',{username,room}); //,image
+socket.emit('joinRoom',{username,room}); //,image , nickName,
 
 //get room and users
 socket.on('roomUsers', ({ room, users }) => {
   outputRoomName(room);
+
   outputUsers(users);
 });
 // socket.on('roomUsersRemove', ({ room, users }) => {
@@ -30,9 +31,9 @@ socket.on('roomUsers', ({ room, users }) => {
 //client side
 //Message from server
 socket.on('message',message => {
-  console.log(message);
+
   if(message.photo){
-    console.log(message.photo);
+    // console.log(message.photo);
     outputPhoto(message);
   }else{
     outputMessage(message);
@@ -40,6 +41,12 @@ socket.on('message',message => {
 
   //SCROLL DOWN
   chatMessage.scrollTop=chatMessage.scrollHeight;
+});
+
+//session 끊기면 발생
+socket.on("sessionOut",()=>
+{
+  swal.fire("로그인 하세요~");
 });
 ///webRTC이용
 
@@ -100,8 +107,8 @@ function isOneMinuteApart(time1, time2) { //1분 차이인지 판단하는 알�
 }
 // let minutes = messageTime.getMinutes();
 function outputMessage(message){
+  let currentImage;
   const isOneMinute = isOneMinuteApart(messageTime, message.time);
-
   const div = document.createElement('div');
 
   if(username==message.username){
@@ -115,10 +122,29 @@ function outputMessage(message){
       messageTime = message.time;
       beforeUserName=message.username;
     }else {
-      // <img src="${message.images}" style="border-radius: 40%;"/>
+      // $.ajax({
+      //   url: "/user/getUserPhoto",
+      //   method: "post",
+      //   dataType: "json",
+      //   headers: {
+      //     "Accept": "application/json",
+      //     "Content-Type": "application/json"
+      //   },
+      //   data: JSON.stringify({
+      //     "userId": message.username,
+      //   }),
+      //   success: function (JSONData, status) {
+      //     console.log(JSONData);
+      //     currentImage = JSONData;
+      //   }
+      // });
+      // <img src=${message.images} style="border-radius: 40%; width: 40px;height: 40px"/>
+
       div.innerHTML = `
+      
       <div class="userbox" align="right">
       <span>${message.time}</span><p class="chat">${message.username}</p>
+   
       </div>
       <p class="text">
         ${message.text}
@@ -140,6 +166,7 @@ function outputMessage(message){
     }else{
       //<img src="${message.images}" style="border-radius: 40%;"/>
     div.innerHTML = `
+
     <p class="chat2">${message.username}</p><span>   ${message.time}</span><br/>
     <p class="text2">
       ${message.text}
@@ -171,7 +198,7 @@ function outputPhoto(message){
     <div class="userbox" align="right">
     <span>   ${message.time}</span>
     <p class="chat">${message.username}</p>
-  
+
     </div>
     <p class="text">
      <img src="/imagePath/photos/${message.photo}"/><br/>
@@ -182,6 +209,7 @@ function outputPhoto(message){
   }else{
     div.classList.add('message2');
     div.innerHTML = `
+    
     <p class="chat2">${message.username}</p>
     <span>   ${message.time}</span><br/>
     <p class="text2">
@@ -200,11 +228,38 @@ function outputRoomName(room) {
   roomName.innerText = room;
 }
 
-function outputUsers(users){ //이거는 참여한 유저 리스트
-  userList.innerHTML = `
-    ${users.map(user => `<li id="${user.username}">${user.username}</li>`).join('')}
-  `;
+function outputUsers(users){ //이거는 참여한 유저 리스트 => nickname으로 변경해야함
+
+  let usernames = users.map(user => user.username);
+
+
+  $.ajax({
+    url: "/user/getUserRoom",
+    method: "post",
+    dataType: "json",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    data: JSON.stringify({
+      usernames: usernames // 추출된 username 배열 전달
+    }),
+    success: function (responseData, status) {
+      // 서버로부터 응답을 받은 후 실행할 코드
+      outputUsers2(responseData);
+    }
+  });
+
 };
+function outputUsers2(users){
+  userList.innerHTML = `
+      ${users.map(user => `<li><img src=${user.userPhoto} style="width: 40px;height: 40px;border-radius: 40%;">${user.nickname}</li>`).join('')}
+    `;
+}
+//<img src="${user.image}">
+// userList.innerHTML = `
+//     ${users.map(user => `<li id="${user.username}">${user.username}</li>`).join('')}
+//   `;
 function removeUsers(users) {
     const userElement = document.getElementById(users);
     if (userElement) {
