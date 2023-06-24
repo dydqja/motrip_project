@@ -54,6 +54,7 @@
                 </div>
                 <div class="col-sm-8">
                     <h1 class="main-head">모여행이란?</h1>
+                    <p class="main-subhead">모여서 여행을 떠나는 여행 플랫폼</p>
 <%--                    <img src="/images/mtrip.jpg"/>--%>
 
                     <div class="author-img">
