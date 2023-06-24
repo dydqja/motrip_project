@@ -293,6 +293,7 @@ public class ReviewController {
         parameters.put("condition", "myReviewList"); // 나의 후기 목록을 조회하기 위한 조건 설정
 
         Map<String, Object> reviewList = reviewService.selectReviewList(parameters);
+        Map<String, Object> tripPlanList= tripPlanService.selectTripPlanList(parameters);
         List<Review> myReviewList = (List<Review>) reviewList.get("reviewList");
 
         System.out.println("myReviewList 왜 못갖고와"+myReviewList);
@@ -309,6 +310,7 @@ public class ReviewController {
         int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
         String reviewAuthor = (String) parameters.get("reviewAuthor");
 
+        model.addAttribute("tripPlanList",tripPlanList.get("list"));
         model.addAttribute("myReviewList", myReviewList);
         model.addAttribute("reviewAuthor", reviewAuthor);
         model.addAttribute("page", page);
@@ -340,18 +342,21 @@ public class ReviewController {
         Review review = reviewService.getReview(reviewNo);
         User user = userService.getUserById(review.getReviewAuthor());
 
+
         // 썸네일 문자열 처리
         String reviewThumbnail = review.getReviewThumbnail();
         if (reviewThumbnail != null && reviewThumbnail.startsWith("'") && reviewThumbnail.endsWith("'")) {
             reviewThumbnail = reviewThumbnail.substring(1, reviewThumbnail.length() - 1);
             review.setReviewThumbnail(reviewThumbnail);
         }
+        System.out.println("reviewThumbnail에 싱글쿼티션이 짤렸나요?>>>"+reviewThumbnail);
 
         // 해당 리뷰와 관련된 여행 계획 정보 가져오기
         TripPlan tripPlan = tripPlanService.selectTripPlan(review.getTripPlanNo());
 
         model.addAttribute("user", user);
         model.addAttribute("review", review);
+        System.out.println("review객체에 들어있는 reviewThumbnail는 싱글쿼티션이 짤렸나요?>>>"+reviewThumbnail);
         model.addAttribute("tripPlan", tripPlan);
 
         return "review/getReview.jsp";
@@ -423,12 +428,13 @@ public class ReviewController {
 
 
 
-    @PostMapping(value = "deleteReview")//후기완전삭제
-    public String deleteReview(@RequestParam("reviewNo") int reviewNo) {
-        System.out.println("/review/deleteReview : POST");
+    @RequestMapping("deleteReview")//후기완전삭제
+    public String deleteReview(@RequestParam("reviewNo") int reviewNo)throws Exception {
+        System.out.println("::");
+        System.out.println("/review/deleteReview :");
         reviewService.deleteReview(reviewNo);
 
-        return "redirect:/review/getMyReviewList.jsp";
+        return "redirect:/review/getMyReviewList";
     }
     @PostMapping(value = "recoverReview")//후기 복구
     public String recoverReview(@RequestParam("reviewNo") int reviewNo) {

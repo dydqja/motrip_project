@@ -32,7 +32,7 @@ public class MemoRestController {
 
     @PostMapping("getMemoList")
     public String getMemoList(HttpSession session,
-                              @RequestParam("searchCondition") String searchCondition,
+                              @RequestParam("searchCondition"   ) String searchCondition,
                               @RequestParam("currentPage") String currentPage)  {
 
         //System.out.println("레스트컨트롤러 겟메모리스트 동작");

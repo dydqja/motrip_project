@@ -48,7 +48,7 @@
                     <li class="dropdown">
                         <a href="#">모여행 <i class="fa fa-chevron-down nav-arrow"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="home_default.html">모여행이란</a></li>
+                            <li><a href="/test/what">모여행이란</a></li>
                             <li><a href="home_slider.html">설계 포트폴리오</a></li>
                             <%--<li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
                             <c:if test="${empty sessionScope.user}">

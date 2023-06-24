@@ -107,6 +107,9 @@ public class UserServiceImpl implements UserService{
     public void addUser(User user) throws Exception {
         System.out.println("UserServiceImpl에서 addUser 실행됨.");
 
+        String maleDefault = "/imagePath/41f1e46f-a86f-4f11-8a81-38a96c3932fd_manBasicProfile.png";
+        String femaleDefault = "/imagePath/af01b38c-1c79-4df3-be36-491bd8bb6e4a_womanBasicProfile.png";
+
         String getSsn = user.getSsn();
         String phone = user.getPhone();
         String age;
@@ -136,10 +139,30 @@ public class UserServiceImpl implements UserService{
             user.setGender(gender);
             user.setSsn(ssn);
 
+            if (user.getUserPhoto() == null || user.getUserPhoto() == "") {
+
+                if (user.getGender() == "M") {
+                    user.setUserPhoto(maleDefault);
+                }
+                else {
+                    user.setUserPhoto((femaleDefault));
+                }
+            }
+
             userDao.addUser(user);
 
         //네이버 회원가입 일 때 실행
         } else {
+
+            if (user.getUserPhoto() == null || user.getUserPhoto() == "") {
+
+                if (user.getGender() == "M") {
+                    user.setUserPhoto(maleDefault);
+                }
+                else {
+                    user.setUserPhoto((femaleDefault));
+                }
+            }
             userDao.addUser(user);
         }
     }

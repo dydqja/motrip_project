@@ -152,19 +152,28 @@ public class ReviewServiceImpl implements ReviewService {
                 updatedReviewList.add(review);
             }
 
-
-
-
             int totalCount = reviewDao.selectReviewTotalCount(search);
             System.out.println("totalCount : " + totalCount);
 
             parameters.put("reviewList", updatedReviewList); // 수정된 부분: reviewList를 parameters에 추가
             parameters.put("totalCount", totalCount);
         }
+
+        List<TripPlan> tripPlanList = tripPlanDao.selectTripPlanList(parameters);
+
+        for (TripPlan tp : tripPlanList) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+            String strDate = simpleDateFormat.format(tp.getTripPlanRegDate());
+            tp.setStrDate(strDate);
+            tp.setTripPlanNickName(userService.getUserById(tp.getTripPlanAuthor()).getNickname());
+        }
+        System.out.println(tripPlanList);
+
         System.out.println("임쁠 if문 밖>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         int totalCount = reviewDao.selectReviewTotalCount(search);
         System.out.println("totalCount : " + totalCount);
         parameters.put("totalCount", totalCount);
+        parameters.put("tripPlanList", tripPlanList);
 
         System.out.println("임쁠 parameters>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+parameters);
         return parameters;
@@ -198,6 +207,7 @@ public class ReviewServiceImpl implements ReviewService {
     //후기 삭제
     @Override
     public void deleteReview(int reviewNo) {
+        reviewDao.deleteReview(reviewNo);
     }
 
     //후기 복구

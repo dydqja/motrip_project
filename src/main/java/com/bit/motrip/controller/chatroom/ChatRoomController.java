@@ -114,12 +114,12 @@ public class ChatRoomController {
         model.addAttribute("tripPlan",tripPlanService.selectTripPlan(ch.getTripPlanNo()));
         model.addAttribute("username",sessionUser.getUserId()); //유저 name으로 userId 전송
 //        model.addAttribute("username",userId); //유저 name으로 userId 전송
-        model.addAttribute("usernickname",sessionUser.getNickname()); //유저 name으로 userId 전송
+        model.addAttribute("nickname",sessionUser.getNickname()); //유저 name으로 userId 전송
         model.addAttribute("chatRoom",ch); //채팅방 객체 전송
         model.addAttribute("chatMembers",chatMemberList);
         model.addAttribute("author",author);
-        model.addAttribute("imagess",userService.getUserById(sessionUser.getUserId()).getUserPhoto());
-        System.out.println("chatRoomNo"+chatRoom.getChatRoomNo());
+        model.addAttribute("images",userService.getUserById(sessionUser.getUserId()).getUserPhoto());
+        //System.out.println("chatRoomNo"+chatRoom.getChatRoomNo());
         System.out.println(author.getUserId());
         int flag = 0;
         //chatMemberService.getChatMember()

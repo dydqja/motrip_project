@@ -432,6 +432,12 @@
                                     var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
                                     var tripPath = '${place.tripPath}';
 
+
+                                    console.log("latitude>>>>>>>>>>>>>>", latitude);
+                                    console.log("longitude>>>>>>>>>>>>>", longitude);
+                                    console.log("mapId>>>>",mapId);
+
+
                                     var index = ${i-1};
                                     if(!pathInfo[index]) {
                                         pathInfo[index] = [];
