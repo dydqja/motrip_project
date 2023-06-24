@@ -12,8 +12,8 @@ const fileInput = document.getElementById('uploadFile');
 //console.log(username,room);
 
 //cors 에러 해결
-const socket = io.connect("chat.motrip.co.kr", {
-  cors:{origin:"chat.motrip.co.kr"}
+const socket = io.connect("http://localhost:3000", {
+  cors:{origin:"http://localhost:3000"}
 });
 //"http://192.168.0.28:3000" "http://localhost:3000"},"chat.motrip.co.kr"
 //join chatroom
@@ -34,13 +34,42 @@ socket.on('message',message => {
 
   if(message.photo){
     // console.log(message.photo);
-    outputPhoto(message);
+    // message.username  == id  이걸로 user를 가져와서 같이 보내준다.
+    $.ajax({
+      url: "/user/json/getUserById/"+message.username,
+      method: "post",
+      dataType: "json",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      success: function (messageUser, status) {
+        // 서버로부터 응답을 받은 후 실행할 코드
+        outputPhoto(message,messageUser);
+        chatMessage.scrollTop=chatMessage.scrollHeight;
+      }
+    });
+    // outputPhoto(message);
   }else{
-    outputMessage(message);
+    $.ajax({
+      url: "/user/json/getUserById/"+message.username,
+      method: "post",
+      dataType: "json",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      success: function (messageUser, status) {
+        // 서버로부터 응답을 받은 후 실행할 코드
+        outputMessage(message,messageUser);
+        chatMessage.scrollTop=chatMessage.scrollHeight;
+      }
+    });
+    // outputMessage(message);
   }
 
   //SCROLL DOWN
-  chatMessage.scrollTop=chatMessage.scrollHeight;
+
 });
 
 //session 끊기면 발생
@@ -106,7 +135,7 @@ function isOneMinuteApart(time1, time2) { //1분 차이인지 판단하는 알�
   return minutes <= 1;
 }
 // let minutes = messageTime.getMinutes();
-function outputMessage(message){
+function outputMessage(message,messageUser){
   let currentImage;
   const isOneMinute = isOneMinuteApart(messageTime, message.time);
   const div = document.createElement('div');
@@ -143,7 +172,7 @@ function outputMessage(message){
       div.innerHTML = `
       
       <div class="userbox" align="right">
-      <span>${message.time}</span><p class="chat">${message.username}</p>
+      <span>${message.time}</span><p class="chat">${messageUser.nickname}</p>
    
       </div>
       <p class="text">
@@ -164,10 +193,10 @@ function outputMessage(message){
       messageTime = message.time;
       beforeUserName=message.username;
     }else{
-      //<img src="${message.images}" style="border-radius: 40%;"/>
-    div.innerHTML = `
 
-    <p class="chat2">${message.username}</p><span>   ${message.time}</span><br/>
+    div.innerHTML = `
+    <img src="${messageUser.userPhoto}" style="width:40px;height:40px;border-radius: 40%;"/>
+    <p class="chat2">${messageUser.nickname}</p><span>   ${message.time}</span><br/>
     <p class="text2">
       ${message.text}
     </p>`;
@@ -187,7 +216,7 @@ function outputMessage(message){
 
 };
 //photo
-function outputPhoto(message){
+function outputPhoto(message,messageUser){
 
   const div = document.createElement('div');
 
@@ -197,7 +226,7 @@ function outputPhoto(message){
     
     <div class="userbox" align="right">
     <span>   ${message.time}</span>
-    <p class="chat">${message.username}</p>
+    <p class="chat">${messageUser.nickname}</p>
 
     </div>
     <p class="text">
@@ -209,8 +238,8 @@ function outputPhoto(message){
   }else{
     div.classList.add('message2');
     div.innerHTML = `
-    
-    <p class="chat2">${message.username}</p>
+    <img src="${messageUser.userPhoto}" style="width:40px;height:40px;border-radius: 40%;"/>
+    <p class="chat2">${messageUser.nickname}</p>
     <span>   ${message.time}</span><br/>
     <p class="text2">
         <img src="/imagePath/photos/${message.photo}"/>
@@ -253,7 +282,7 @@ function outputUsers(users){ //이거는 참여한 유저 리스트 => nickname�
 };
 function outputUsers2(users){
   userList.innerHTML = `
-      ${users.map(user => `<li><img src=${user.userPhoto} style="width: 40px;height: 40px;border-radius: 40%;">${user.nickname}</li>`).join('')}
+      ${users.map(user => `<li><img src=${user.userPhoto}>${user.nickname}</li>`).join('')}
     `;
 }
 //<img src="${user.image}">
