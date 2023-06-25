@@ -117,9 +117,9 @@ cameraSelect.addEventListener("input",handleCameraChange); //input이 바뀌면 
 //backend  작업 (join room)
 let count = 0;
 async function initCall(){ //hidden을 바꾼다!
-    if(call.hidden==true){
-        call.hidden=false;
-        trip.hidden=true;
+    if(call.hidden==false){
+        // call.hidden=false;
+        // trip.hidden=true;
         console.log(room);
         await getMedia();
         makeConnection();
@@ -135,11 +135,16 @@ async function initCall(){ //hidden을 바꾼다!
         div.appendChild(video);
         //count += 1;
     }else{
+
         myPeerConnection.close();
-        call.hidden=true;
-        trip.hidden=false;
-        handleMuteClick();
-        handleCameraClick();
+        // call.hidden=true;
+        // trip.hidden=false;
+        var div = document.getElementById('myStream');
+        var video = document.getElementById(`peersFace${count}`);
+        if (video) {
+            div.removeChild(video);
+        }
+
         // socket.emit('leave_room', rtcRoom);
         console.log("video out!!");
     }
@@ -151,9 +156,15 @@ async function handleWelcomeSubmit(event){
     event.preventDefault();
     // socket.emit("addVideo");
     //console.log(input.value);
-    await initCall();
-    // backend submit
-    socket.emit("join_room",rtcRoom); //payload = input.value
+
+    if(call.hidden==false) {
+        await initCall();
+        // backend submit
+        socket.emit("join_room", rtcRoom); //payload = input.value
+    }else{
+
+        await initCall();
+    }
 }
 /// Socket Code
 
