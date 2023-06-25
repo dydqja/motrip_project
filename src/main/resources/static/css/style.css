@@ -63,7 +63,7 @@ a {
 .chat-main {
 	height: 80vh;
 	display: grid;
-	grid-template-columns: 1fr 3fr 2fr;
+	grid-template-columns: 1fr 3fr 3fr;
 }
 .chat-trip{
 	height: 80vh;
