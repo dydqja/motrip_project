@@ -343,7 +343,7 @@ function outputUsers(users){ //이거는 참여한 유저 리스트 => nickname�
 };
 function outputUsers2(users){
   userList.innerHTML = `
-      ${users.map(user => `<li><img src=${user.userPhoto} style="height: 40px;width: 40px">
+      ${users.map(user => `<li><img src=${user.userPhoto} style="height: 40px;width: 40px;border-radius: 40%;">
         <span style="color: #ffd966;">${user.nickname}</span></li>`).join('')}
     `;
 }
