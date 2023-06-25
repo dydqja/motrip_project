@@ -131,14 +131,14 @@
                         </div>
                     </div>
 
-                    <div class="border-box">
-                        <div class="box-title">Age Range</div>
-                        <div class="price-widget">
-                            <div id="price-slider"></div>
-                            <div id="amount-min" class="pull-left"></div>
-                            <div id="amount-max" class="pull-right"></div>
-                        </div>
-                    </div>
+<%--                    <div class="border-box">--%>
+<%--                        <div class="box-title">Age Range</div>--%>
+<%--                        <div class="price-widget">--%>
+<%--                            <div id="price-slider"></div>--%>
+<%--                            <div id="amount-min" class="pull-left"></div>--%>
+<%--                            <div id="amount-max" class="pull-right"></div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
 
 <%--                    <div class="border-box">--%>
 <%--                        <div class="box-title">StartDate</div>--%>
