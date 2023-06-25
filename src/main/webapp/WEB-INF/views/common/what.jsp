@@ -58,7 +58,7 @@
 <%--                    <img src="/images/mtrip.jpg"/>--%>
 
                     <div class="author-img">
-                        <img src="http://placehold.it/70x70" alt="">
+                        <img src="/media/psw.png"/>
                     </div>
                     <div class="author">
                         <p>여행, 인연, 그리고 사랑</p>
