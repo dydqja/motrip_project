@@ -58,6 +58,7 @@
         let isPlanPublic = true; // 공유여부
         let isPlanDownloadable = false; // 가져가기여부 (미구현)
         let tripPlanThumbnail = "";
+        let titleCheck = []; // 연속적으로 똑같은거 검색하기 방지
     </script>
 
     <style>
@@ -558,10 +559,12 @@
 
             function searchPlaces() {
                 var keyword = document.getElementById('placeName' + indexCheck).value;
+
                 if (!keyword.replace(/^\s+|\s+$/g, '')) {
                     alert('키워드를 입력해주세요!');
                     return false;
                 }
+
                 ps.keywordSearch(keyword, placesSearchCB);
             }
 
@@ -627,6 +630,16 @@
                             marker.setMap(null);
                         };
                         itemEl.onclick = function () {
+                            // 배열이 존재하지 않는 경우에만 초기화
+                            if (!titleCheck[indexCheck]) {
+                                titleCheck[indexCheck] = [];
+                            }
+
+                            if(title == titleCheck[indexCheck][0]) {
+                                alert("연속적으로 똑같은 장소는 입력 불가능합니다.");
+                                return false;
+                            }
+                            titleCheck[indexCheck][0] = title;
 
                             // 배열이 존재하지 않는 경우에만 초기화
                             if (!placeTripPositions[indexCheck]) {

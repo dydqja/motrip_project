@@ -20,6 +20,143 @@
     <%--    />--%>
 
     <link rel="stylesheet" href="/css/style.css">
+<%--    <link rel="stylesheet" href="/css/tripplan/tripplan.css">--%>
+    <style>
+        .post {
+            width: 100%; /* 원하는 너비 설정 */
+            height: 620px; /* 원하는 높이 설정 */
+            overflow: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+            border: 1px solid #ccc; /* 테두리 스타일 지정 */
+            padding: 10px; /* 내용과 테두리 사이 간격 */
+        }
+        .day {
+            font-size: 30px; /* 원하는 크기로 설정 */
+            font-weight: bold; /* 굵은 글씨체 설정 */
+        }
+
+
+        .wrap {
+            position: absolute;
+            left: 0;
+            bottom: 40px;
+            width: 288px;
+            height: 132px;
+            margin-left: -144px;
+            text-align: left;
+            overflow: hidden;
+            font-size: 12px;
+            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+            line-height: 1.5;
+        }
+
+        .wrap * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .wrap .info {
+            width: 286px;
+            height: 120px;
+            border-radius: 5px;
+            border-bottom: 2px solid #ccc;
+            border-right: 1px solid #ccc;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .wrap .info:nth-child(1) {
+            border: 0;
+            box-shadow: 0px 1px 2px #888;
+        }
+
+        .info .title {
+            padding: 5px 0 0 10px;
+            height: 30px;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .info .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #888;
+            width: 17px;
+            height: 17px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+        }
+
+        .info .close:hover {
+            cursor: pointer;
+        }
+
+        .info .body {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info .desc {
+            position: relative;
+            margin: 13px 0 0 90px;
+            height: 75px;
+        }
+
+        .desc .ellipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .desc .category {
+            font-size: 11px;
+            color: #888;
+            margin-top: -2px;
+        }
+
+        .info .img {
+            position: absolute;
+            top: 6px;
+            left: 5px;
+            width: 73px;
+            height: 71px;
+            border: 1px solid #ddd;
+            color: #888;
+            overflow: hidden;
+        }
+
+        .info:after {
+            content: '';
+            position: absolute;
+            margin-left: -12px;
+            left: 50%;
+            bottom: 0;
+            width: 22px;
+            height: 12px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+        }
+
+        .info .link {
+            color: #5085BB;
+        }
+
+        .custom-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .plan-contents {
+            text-align: left;
+            margin-right: 20px;
+        }
+
+        .place-info {
+            text-align: left;
+        }
+    </style>
     <style>
         .chat-main {
             position: relative;
@@ -43,7 +180,20 @@
             cursor: pointer;
 
         }
-
+        .papago{
+            display: inline-block;
+            padding: 10px 20px;
+            width: 130px; height: 40px;
+            cursor: pointer;
+        }
+        .btn-on {
+            background-color: #f5ff66;
+            color: black;
+        }
+        .btn-off {
+            background-color: #66d6ff;
+            color: black;
+        }
         .file-label:hover {
             background-color: #1976d2;
         }
@@ -443,21 +593,27 @@
 <%--    <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">--%>
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c6ffa2721e097b8c38f9548c63f6e31a&libraries=services"></script>
+
     <script type="text/javascript">
+        // let markers = []; // 마커 배열
+        // let maps = []; // 지도 배열
+        // let pathInfo = []; // 좌표 저장 배열
         let markers = []; // 마커 배열
         let maps = []; // 지도 배열
         let pathInfo = []; // 좌표 저장 배열
-
+        let tripTime = ""; // 파싱할 시간
+        let totalTripTime = "";
     </script>
 
     <script type="text/javascript">
+
         const username = "${username}";
         const room = "${chatRoom.chatRoomNo}";
         const author = "${author.userId}";
         const chatRoomNo = "${chatRoom.chatRoomNo}";
         const images = "${images}";
-        const nickName = "${nickname}";
-
+        const nickname = "${nickname}";
+        const userphoto = "${userphoto}";
         //업데이트 컨트롤러로 이동
         function fncUpdateChatroom(){
             $("#chat-room").attr("method","get").attr("action","/chatRoom/updateChatRoom?chatRoomNo="+chatRoomNo).submit();
@@ -724,21 +880,23 @@
         <input type="hidden" id="room-name"/>
         <main class="chat-main">
             <div class="chat-sidebar">
-                <div class="chat-title" style="text-align: center"><h3 id="chatRoomTitle">${chatRoom.chatRoomTitle}</h3></div>
+<%--                <div class="chat-title" style="text-align: center"><h3 id="chatRoomTitle">${chatRoom.chatRoomTitle}</h3></div>--%>
                 <audio id="myAudio" autoplay></audio>
                 <div class="chatButton" align="center">
                     <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"
-                       data-toggle="modal" type="button" class="btn btn-primary" style="background-color: #66ffff">TripPlan</a>
+                       data-toggle="modal" type="button" class="btn btn-primary" style="background-color: lightskyblue;color:  black">TripPlan</a>
 <%--                    <div type="button" class="btn btn-primary" id="roomMute" style="background-color: #75ff66">Mute</div>--%>
-                    <button type="button" class="btn btn-primary" id="videoRoom2" style="background-color: #e366ff">VideoOn</button>
+                    <button type="button" class="btn btn-primary btn-on" id="videoRoom2" style="background-color: #000303;color:  lightskyblue">VideoOn</button>
                 </div>
                 <div></div>
-                <div class="users" style="text-align: left; border-bottom: #00b3ee"><h3>현재 참여 목록</h3></div>
+                <div class="users" style="text-align: left; color: #ffd966"><h3>참여중</h3>
+                    <hr style="background:#ffd966;height:1px;border:0;"/></div>
                 <ul id="users"></ul>
-                <div class="dbUsers" style="text-align: left;color: #5bc0de"><h3>채팅방 멤버</h3></div>
+                <div class="dbUsers" style="text-align: left;color: #d3d3d3"><h3>멤버</h3>
+                    <hr style="background:#d3d3d3;height:1px;border:0;"/></div>
                 <ul id="chatUsers"></ul>
             </div>
-            <div class="chat-messages">  <div id="image-preview"style="width:30%;height: 30%"></div></div>
+            <div class="chat-messages">  <div id="image-preview"style="width:30%;height: 30%; border-radius: 20%"></div></div>
             <div class="chat-trip" style="position: relative;">
                 <div id="call">
                     <div id="myStream" align="center">
@@ -746,88 +904,129 @@
                         <button type="button" id="mute">Mute</button>
                         <button type="button" id="camera">Turn Camera Off</button>
                         <select id="cameras"></select>
-                        <video id="peersFace0" autoplay playsinline width="200" height="200"></video>
+<%--                        <video id="peersFace" autoplay playsinline width="200" height="200"></video>--%>
                     </div>
                 </div>
                 <div id="trip">
+                    <div style="margin-left: 3%">
                     <h2><span class="italic" STYLE="color: black">${tripPlan.tripPlanTitle}</span></h2>
                     <span class="dot">좋아요 : </span>
                     <span id="likes" align="center" width="200">${tripPlan.tripPlanLikes}</span>
                     <span class="dot">조회수 : </span>
                     <span>${tripPlan.tripPlanViews}</span>&nbsp;&nbsp;
-
+                    </div>
+                    <hr/>
                     <c:set var="i" value="0"/>
                     <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
                         <c:set var="i" value="${ i+1 }"/>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div id="map${i-1}" style="width: 500px; height: 300px; border-radius: 15px;"></div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div display="flex;">
-                                        <span class="icon-map" style="font-size: 50px;"></span>
-                                        <b><div class="day" style="color: black ">${i}일차 여행플랜 </div>
-                                        <div class="tag-차link" style="text-align: left; color:rebeccapurple">총 이동시간: ${dailyPlan.totalTripTime} 분</div></b>
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="box-title" style="margin: 3%;color: darkblue"><b>명소리스트</b></div>
-                                    <div class="border-box" style="height: 200px; width: 100%; overflow-y: auto; overflow-x: hidden; ">
-                                        <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                                            <div class="col-12 column" style="text-align: center;">
-                                                <div class="card text-white mb-3" style="width: auto; height: auto; font-size: 9px;">
-                                                    <div class="card-body btn btn-lg btn-info" style="border-radius: 15px; background-color: rgba(164,255,193,0.22); width: 70%; height: auto;">
-                                                        <h5 class="card-title" name="placeTitle">
-                                                            <div style="color: black; width: 100%;">
-                                                                <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
-                                                            </div>
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                                <c:if test="${place.tripTime != null}">
-                                                    <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" style="background-color: rgba(188,222,167,0.39); width: auto; height: auto;">
-                                                        <div style="color: black; display: inline-block;">이동시간: ${place.tripTime}</div>
-                                                    </div>
-                                                </c:if>
+                        <main class="white">
+                            <div class="container">
+                                <span class="icon-map" style="font-size: 20px;">${i}일차 여행플랜</span>
+
+                                <div style="display:flex">
+                                <div id="map${i-1}" style="width: 40%; height: 400px; border-radius: 15px;" ></div>
+                                    <div>
+                                        <c:if test="${dailyPlan.totalTripTime != 0 && dailyPlan.totalTripTime != null}">
+                                            &nbsp<span style="color: #e366ff">총 이동시간 : </span>
+
+                                            <c:if test="${dailyPlan.totalTripTime >= 60}">
+                                                <script>
+                                                    totalTripTime = ${dailyPlan.totalTripTime};
+                                                    var hours = Math.floor(totalTripTime / 60);
+                                                    var minutes = totalTripTime % 60;
+                                                    var formattedTime = hours + "시간 " + minutes + "분";
+                                                    document.write(formattedTime);
+                                                </script>
+                                                ${formattedTime}
+                                            </c:if>
+                                            <c:if test="${dailyPlan.totalTripTime < 60}">
+                                                ${dailyPlan.totalTripTime}분
+                                            </c:if>
+
+                                        </c:if>
+                                    <c:set var="j" value="0"/>
+                                    <c:forEach var="place" items="${dailyPlan.placeResultMap}">
+                                        <c:set var="j" value="${ j+1 }"/>
+
+                                        <div class="col-12 column" style="text-align: center; ">
+                                            <div class="card text-white mb-3" id="tripTitle${i-1}"
+                                                 style="width: auto; height: auto; font-size: 9px;">
+
+                                                    <h5 class="card-title" name="placeTitle" data-index="${j-1}">
+                                                        <div style="color: black; width: 100%;">
+                                                            <span class="icon-locate" style="color: #467cf1;" value="${place.placeCategory}"></span>&nbsp;&nbsp;#${place.placeTags}
+                                                        </div>
+                                                    </h5>
                                             </div>
-                                            <script type="text/javascript">
-                                                var placeTags = "${place.placeTags}";
-                                                var placePhoneNumber = "${place.placePhoneNumber}";
-                                                var placeAddress = "${place.placeAddress}";
-                                                var placeCategory = "${place.placeCategory}";
-                                                var placeImage = "${place.placeImage}";
-                                                var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
-                                                var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
-                                                var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
-                                                var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
-                                                var tripPath = '${place.tripPath}';
+                                            <c:if test="${place.tripTime != 0 && place.tripTime != null}">
 
-                                                var index = ${i-1};
-                                                if(!pathInfo[index]) {
-                                                    pathInfo[index] = [];
-                                                }
-                                                pathInfo[index].push(tripPath);
+                                                    <label class="icon-arrow-down" style=" color: #88e0c6; font-size: 15px;"></label>
+                                                    <div style=" color: black; display: inline-block; font-size: 7px;">
+                                                        <c:if test="${place.tripTime >= 60}">
+                                                            <script>
+                                                                console.log(${place.tripTime});
+                                                                totalTripTime = ${place.tripTime};
+                                                                var hours = Math.floor((parseInt(totalTripTime)) / 60);
+                                                                var minutes = totalTripTime % 60;
+                                                                var formattedTime = hours + "시간 " + minutes + "분";
+                                                                document.write(formattedTime);
+                                                            </script>
+                                                            ${formattedTime}
+                                                        </c:if>
+                                                        <c:if test="${place.tripTime < 60}">
+                                                            ${place.tripTime}분
+                                                        </c:if>
+                                                    </div>
 
-                                                // markers 배열에 좌표 및 맵 ID 정보 추가
-                                                markers.push({
-                                                    position: markerPosition,
-                                                    mapId: mapId,
-                                                    placeTags: placeTags,
-                                                    placePhoneNumber: placePhoneNumber,
-                                                    placeAddress: placeAddress,
-                                                    placeCategory: placeCategory,
-                                                    placeImage: placeImage
-                                                });
+                                            </c:if>
+                                        </div>
 
-                                            </script>
-                                        </c:forEach> <!-- place for end -->
+                                        <!-- place 반복문이 내부에있어서 해당 장소에 선언하였으며 마커와 오버레이를 보여주기 위한 스크립트 -->
+
+                                        <script type="text/javascript">
+                                            var placeTags = "${place.placeTags}";
+                                            var placePhoneNumber = "${place.placePhoneNumber}";
+                                            var placeAddress = "${place.placeAddress}";
+                                            var placeCategory = "${place.placeCategory}";
+                                            var placeImage = "${place.placeImage}";
+                                            var latitude = ${place.placeCoordinates.split(',')[0]}; // 위도
+                                            var longitude = ${place.placeCoordinates.split(',')[1]}; // 경도
+                                            var markerPosition = new kakao.maps.LatLng(longitude, latitude); // 경도, 위도 순으로 저장해야함
+                                            var mapId = 'map${i-1}'; // 해당 명소의 맵 ID
+                                            var tripPath = '${place.tripPath}';
+
+
+                                            console.log("latitude>>>>>>>>>>>>>>", latitude);
+                                            console.log("longitude>>>>>>>>>>>>>", longitude);
+                                            console.log("mapId>>>>",mapId);
+
+
+                                            var index = ${i-1};
+                                            if(!pathInfo[index]) {
+                                                pathInfo[index] = [];
+                                            }
+                                            pathInfo[index].push(tripPath);
+
+                                            // markers 배열에 좌표 및 맵 ID 정보 추가
+                                            markers.push({
+                                                position: markerPosition,
+                                                mapId: mapId,
+                                                placeTags: placeTags,
+                                                placePhoneNumber: placePhoneNumber,
+                                                placeAddress: placeAddress,
+                                                placeCategory: placeCategory,
+                                                placeImage: placeImage
+                                            });
+
+                                        </script>
+                                    </c:forEach> <!-- place for end -->
                                     </div>
                                 </div>
+                                <hr/>
                             </div>
-                            <hr/>
-                        </div><!-- container -->
+                        </main>
                     </c:forEach> <!-- dailyPlan for end -->
+
                 </div><!-- trip -->
             </div><!-- chat-trip -->
         </main>
@@ -839,6 +1038,8 @@
 
             <input type="file" id="uploadFile" name="uploadFile">
             <label for="uploadFile" class="file-label">+</label>
+            <button type="button" id="papagoBtn" class="papago btn-off" onclick="papago()">PAPAGO OFF</button>
+
             <input
                     id="msg"
                     type="text"
@@ -902,6 +1103,7 @@
         //     }
         // });
         let tripDays = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
+        let indexCheck = [];
 
         $(function () { // 저장되었던 맵의 갯수 만큼 출력하고 세팅
 
@@ -942,34 +1144,48 @@
                     return marker.mapId === mapId;
                 });
 
+                if (!indexCheck[mapId]) {
+                    indexCheck[mapId] = [];
+                }
+
                 $(mapMarkers).each(function (index, marker) {
-                    var markerOptions = {
-                        position: marker.position,
-                        map: map
-                    };
-                    var marker = new kakao.maps.Marker(markerOptions);
-                    marker.setMap(map);
-                    bounds.extend(markerOptions.position);
+                    var newMarker = addMarker(marker.position, index);
+                    newMarker.setMap(map);
+
+                    indexCheck[mapId].push(index);
+                    bounds.extend(marker.position);
                 });
 
-                // 바운드의 범위를 한 단계만 더 가깝게 설정
-                var extraPadding = 0.1; // 조절 가능한 추가 간격 (0.1은 10%를 의미)
-                var ne = bounds.getNorthEast();
-                var sw = bounds.getSouthWest();
-                var deltaX = (ne.getLng() - sw.getLng()) * extraPadding;
-                var deltaY = (ne.getLat() - sw.getLat()) * extraPadding;
-                var extendedNE = new kakao.maps.LatLng(ne.getLat() + deltaY, ne.getLng() + deltaX);
-                var extendedSW = new kakao.maps.LatLng(sw.getLat() - deltaY, sw.getLng() - deltaX);
-                bounds.extend(extendedNE);
-                bounds.extend(extendedSW);
+                console.log("test")
+                console.log(indexCheck);
 
                 map.setBounds(bounds);
             });
 
         });
 
+        function addMarker(position, idx) {
+            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
+            var imageSize = new kakao.maps.Size(36, 37);
+            var imgOptions = {
+                spriteSize: new kakao.maps.Size(36, 691),
+                spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10),
+                offset: new kakao.maps.Point(13, 37)
+            };
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+            var marker = new kakao.maps.Marker({
+                position: position,
+                image: markerImage
+            });
+
+            return marker;
+        }
+
         $(function () { // 오버레이 표시
             var overlays = [];
+            var position = [];
+            var makerIndex = 0;
+
             for (var i = 0; i < markers.length; i++) { // 각 지도에 맞춰서 마커들을 표시
                 var mapId = markers[i].mapId;
                 var mapIndex = parseInt(mapId.replace("map", ""));
@@ -977,8 +1193,23 @@
                     position: markers[i].position,
                     map: maps[mapIndex]
                 };
-                var marker = new kakao.maps.Marker(markerOptions);
+
+                var marker = addMarker(markerOptions.position, makerIndex);
                 marker.setMap(markerOptions.map);
+
+                makerIndex++;
+                if (makerIndex >= indexCheck[mapId].length) {
+                    makerIndex = 0;  // index가 indexCheck[mapId].length보다 크거나 같으면 0으로 초기화
+                }
+
+                if (!position[mapIndex]) {
+                    position[mapIndex] = [];
+                }
+                if (!overlays[mapIndex]) {
+                    overlays[mapIndex] = [];
+                }
+
+                position[mapIndex].push(marker);
 
                 var category = '';
                 if (markers[i].placeCategory == 0) {
@@ -1002,7 +1233,7 @@
                     '           </div>' +
                     '            <div class="desc">' +
                     '                <div class="ellipsis">' + markers[i].placeAddress + '</div>' +
-                    '                <div class="category">(카테고리) ' + category + ' (전화번호) ' + markers[i].placePhoneNumber + '</div>' +
+                    '                <div class="category">(전화번호) ' + markers[i].placePhoneNumber + '</div>' +
                     '    </div></div></div></div>';
 
                 var overlay = new kakao.maps.CustomOverlay({  // 마커 위에 커스텀오버레이를 표시합니다, 마커를 중심으로 커스텀 오버레이를 표시하기 위해 CSS를 이용해 위치를 설정했습니다
@@ -1013,13 +1244,13 @@
                 });
 
                 overlay.setMap(null); // 오버레이 초기 상태는 숨김으로 설정
-                overlays.push(overlay);
+                overlays[mapIndex].push(overlay);
 
                 (function (marker, overlay, mapIndex) {
 
                     // 마커를 클릭했을 때 오버레이 표시
                     kakao.maps.event.addListener(marker, 'click', function () {
-                        maps[mapIndex].setLevel(3); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
+                        maps[mapIndex].setLevel(5); // 확대 수준 설정 (1: 세계, 3: 도시, 5: 거리, 7: 건물)
                         maps[mapIndex].panTo(marker.getPosition()); // 해당 마커 위치로 지도 이동
                         overlay.setMap(maps[mapIndex]);
                     });
@@ -1028,6 +1259,20 @@
                     kakao.maps.event.addListener(maps[mapIndex], 'click', function () {
                         overlay.setMap(null);
                     });
+
+                    // $('.card-title' + mapIndex).click(function() {
+                    //
+                    //     var dataIndex = parseInt($(this).attr('data-index'));
+                    //     console.log(dataIndex);
+                    //     console.log(position[mapIndex][dataIndex]);
+                    //
+                    //     // 해당 마커를 클릭한 것처럼 동작
+                    //     maps[mapIndex].setLevel(5);
+                    //     maps[mapIndex].panTo(position[mapIndex][dataIndex].getPosition());
+                    //     overlay.setMap(null);
+                    //     overlay.setMap(maps[mapIndex]);
+                    //
+                    // });
 
                     // 화면 초기화
                     $('#reset' + mapIndex).click(function () {
@@ -1040,12 +1285,76 @@
                                 bounds.extend(markers[j].position);
                             }
                         }
+
+                        // // 확장할 수 있는 마진 값을 지정합니다.
+                        // var margin = 0.001; // 예시로 0.1(10%)로 설정하였습니다.
+                        // var southWest = bounds.getSouthWest();
+                        // var northEast = bounds.getNorthEast();
+                        // var latDiff = northEast.getLat() - southWest.getLat();
+                        // var lngDiff = northEast.getLng() - southWest.getLng();
+                        //
+                        // // 확장된 영역으로 bounds를 설정합니다.
+                        // bounds.extend(new kakao.maps.LatLng(southWest.getLat() - latDiff * margin, southWest.getLng() - lngDiff * margin));
+                        // bounds.extend(new kakao.maps.LatLng(northEast.getLat() + latDiff * margin, northEast.getLng() + lngDiff * margin));
+
                         maps[mapIndex].setBounds(bounds);
                     });
 
                 })(marker, overlay, mapIndex);
             }
+
+            $(document).on('click', '[id^="tripTitle"]', function() {
+                var mapIndex = $(this).attr('id').replace('tripTitle', ''); // 클릭한 태그의 인덱스 추출
+                var dataIndex = $(this).find('.card-title').attr('data-index');
+                console.log("클릭한 태그의 인덱스:", index);
+                console.log("확인: ", dataIndex);
+                // 원하는 작업 수행
+
+                console.log(overlays[mapIndex])
+
+                maps[mapIndex].setLevel(5);
+                maps[mapIndex].panTo(position[mapIndex][dataIndex].getPosition());
+
+                for(var i=0; i<overlays[mapIndex].length; i++){
+                    overlays[mapIndex][i].setMap(null);
+                }
+                overlays[mapIndex][dataIndex].setMap(maps[mapIndex]);
+            });
+
         });
+
+    </script>
+    <script>
+        //papago
+        var btn = document.getElementById('papagoBtn');
+        function papago() {
+
+            if (btn.classList.contains('btn-on')) { //btn-on 이면?
+                btn.classList.remove('btn-on');
+                btn.classList.add('btn-off');
+                btn.innerText = 'PAPAGO OFF';
+            } else {
+                btn.classList.remove('btn-off');
+                btn.classList.add('btn-on');
+                btn.innerText = 'PAPAGO ON';
+            }
+        }
+        videoBtn.addEventListener("click",()=>{
+            if (videoBtn.classList.contains('btn-on')) { //btn-on 이면? on
+                videoBtn.classList.remove('btn-on'); //on 을 지우고
+                videoBtn.classList.add('btn-off'); //off로 바꾼다.
+                videoBtn.innerText = 'VideoOff'; //
+                call.hidden=false;
+                trip.hidden=true;
+            } else { //처음 btn-off
+                videoBtn.classList.remove('btn-off');
+                videoBtn.classList.add('btn-on');
+                videoBtn.innerText = 'VideoOn';
+                call.hidden=true;
+                trip.hidden=false;
+            }
+        })
+
     </script>
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
     <script src="/js/main.js"></script>

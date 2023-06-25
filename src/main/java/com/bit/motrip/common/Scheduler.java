@@ -23,10 +23,13 @@ public class Scheduler {
     //@Scheduled(cron = "0 15 10 15 * ?", zone = "Asia/Seoul")
 //    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Seoul")
     @Scheduled(cron = "0 */1 * * * *", zone = "Asia/Seoul")//1분마다 실행
+//    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul") // 매일 자정 12시에 실행
     public void min1work() throws Exception {
 
         cronService.cronDel("memo", "memo", "memo_del_date", "1");
 
         cronService.cronDel("tripPlan", "trip_plan", "trip_plan_del_date", "1");
+
+        cronService.cronDel("user", "users", "secession_date", "1");
     }
 }

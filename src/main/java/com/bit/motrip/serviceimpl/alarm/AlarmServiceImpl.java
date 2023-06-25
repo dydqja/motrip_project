@@ -327,20 +327,6 @@ public class AlarmServiceImpl implements AlarmService {
         return encodeBase64String;
     }
 
-    //인증번호 확인
-    public String phCodeConfirm(String phCodeConfirm, String smsConfirmNum) throws Exception {
-        boolean result = false;
-
-        if (phCodeConfirm != null && phCodeConfirm.equals(smsConfirmNum)) {
-            result = true;
-        }
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("result", result);
-
-        return jsonObject.toString();
-    }
-
     //전화번호 파싱
     public String phNumberParsing(String phNumber) throws Exception {
         String result = "";
