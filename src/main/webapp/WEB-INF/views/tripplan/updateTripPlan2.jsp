@@ -58,7 +58,8 @@
         let isPlanDownloadable = false; // 가져가기 여부
         let mapCounter = 1; // 지도 갯수 카운트
         let idCheck = ${tripPlan.tripDays}; // 여행일수의 수량만큼 map 생성
-        let tripPlanThumbnail = "";
+        let tripPlanThumbnail = '${tripPlan.tripPlanThumbnail}';
+        let titleCheck = []; // 연속적으로 똑같은거 검색하기 방지
     </script>
 
     <style>
@@ -535,6 +536,11 @@
                                         }
                                         pathInfo[index].push(tripPath);
 
+                                        if(!titleCheck[index]) {
+                                            titleCheck[index] = [];
+                                        }
+                                        titleCheck[index] = placeTags;
+
                                         // 포지션과 mapId는 처음 읽어들어왔을때 중심점 잡기위해
                                         var place = {
                                             placeTags: placeTags,
@@ -560,19 +566,18 @@
                                         }
                                         placeData[index].push(place);
 
-                                        console.log("위치확인용")
-                                        console.log(markers); // 설정완료 화면 마커들
-                                        console.log(markersBound) // 설정완료 중앙값
-                                        console.log(maps)  // 설정완료 맵
-                                        console.log(placeTripPositions) // 설정완료 좌표
-                                        console.log(placeTripTimes) // 설정완료 이동시간
-                                        console.log(allPlaces) // 설정완료 명소 전체정보
-                                        console.log(totalTripTimes) // 설정완료 전체이동시간
-                                        console.log(polylineArray) // 설정완료 명소간 이동경로
-                                        console.log(pathArray) //
-                                        console.log(placeData)
-                                        console.log(pathInfo) // 설정완료
-
+                                        // console.log("위치확인용")
+                                        // console.log(markers); // 설정완료 화면 마커들
+                                        // console.log(markersBound) // 설정완료 중앙값
+                                        // console.log(maps)  // 설정완료 맵
+                                        // console.log(placeTripPositions) // 설정완료 좌표
+                                        // console.log(placeTripTimes) // 설정완료 이동시간
+                                        // console.log(allPlaces) // 설정완료 명소 전체정보
+                                        // console.log(totalTripTimes) // 설정완료 전체이동시간
+                                        // console.log(polylineArray) // 설정완료 명소간 이동경로
+                                        // console.log(pathArray) //
+                                        // console.log(placeData)
+                                        // console.log(pathInfo) // 설정완료
                                     </script>
                                 </c:forEach>
                             </div>
@@ -806,6 +811,7 @@
         }
 
         function handleKeyPress(event, indexCheck) {
+
             console.log(indexCheck)
             if (event.type === 'click' || event.keyCode === 13) {
                 // 검색창에 입력한 키워드로 목록 출력 요청
@@ -885,6 +891,19 @@
                                 marker.setMap(null);
                             };
                             itemEl.onclick = function () {
+
+                                // 배열이 존재하지 않는 경우에만 초기화
+                                if (!titleCheck[indexCheck]) {
+                                    titleCheck[indexCheck] = [];
+                                }
+                                console.log("여기어딘데")
+                                console.log(titleCheck[indexCheck])
+
+                                if(title == titleCheck[indexCheck]) {
+                                    alert("연속적으로 똑같은 장소는 입력 불가능합니다.");
+                                    return false;
+                                }
+                                titleCheck[indexCheck] = title;
 
                                 // 배열이 존재하지 않는 경우에만 초기화
                                 if (!placeTripPositions[indexCheck]) {
