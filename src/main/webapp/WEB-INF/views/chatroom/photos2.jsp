@@ -31,8 +31,8 @@
 
 <section class="gray">
   <div class="main-title">
-    <h1>${chatRoomTitle} 사진첩</h1>
-    <p>Motrip Gallery</p>
+    <h1>${chatRoomTitle} <br/></h1>
+    <p>채팅방 사진첩</p>
   </div>
   <div class="container-fluid">
     <div class="row">

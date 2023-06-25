@@ -106,20 +106,25 @@ cameraSelect.addEventListener("input",handleCameraChange); //input이 바뀌면 
 //getUserMedia() => user camera, audio info
 //enumerateDevices() => computer의 모든 장치 정보
 
+// 내가 봤을때는 count를 node 서버에 두고
+// node 서버에서 한명 들어올때마다 count를 증가시켜주고
+// initCall 전에 회원이 들어올 자리를 설정해 줘야할듯?
+// 그리고 나가면 거기 자리를 지워주고 자리를 당겨야할 것 같아 어떻게 생각해?
+// 일단 한번 해보자
 
 
 
 //backend  작업 (join room)
 let count = 0;
 async function initCall(){ //hidden을 바꾼다!
-    if(call.hidden==true){
-        call.hidden=false;
-        trip.hidden=true;
+    if(call.hidden==false){
+        // call.hidden=false;
+        // trip.hidden=true;
         console.log(room);
         await getMedia();
         makeConnection();
+
         count += 1;
-        // count += 1;
         var video = document.createElement('video');
         video.autoplay = true;
         video.playsinline = true;
@@ -128,13 +133,19 @@ async function initCall(){ //hidden을 바꾼다!
         video.id = `peersFace${count}`;
         var div = document.getElementById('myStream');
         div.appendChild(video);
+        //count += 1;
     }else{
+
         myPeerConnection.close();
-        call.hidden=true;
-        trip.hidden=false;
-        handleMuteClick();
-        handleCameraClick();
-        socket.emit('leave_room', rtcRoom);
+        // call.hidden=true;
+        // trip.hidden=false;
+        var div = document.getElementById('myStream');
+        var video = document.getElementById(`peersFace${count}`);
+        if (video) {
+            div.removeChild(video);
+        }
+
+        // socket.emit('leave_room', rtcRoom);
         console.log("video out!!");
     }
 }
@@ -143,10 +154,17 @@ videoBtn.addEventListener("click",handleWelcomeSubmit);
 
 async function handleWelcomeSubmit(event){
     event.preventDefault();
+    // socket.emit("addVideo");
     //console.log(input.value);
-    await initCall();
-    // backend submit
-    socket.emit("join_room",rtcRoom); //payload = input.value
+
+    if(call.hidden==false) {
+        await initCall();
+        // backend submit
+        socket.emit("join_room", rtcRoom); //payload = input.value
+    }else{
+
+        await initCall();
+    }
 }
 /// Socket Code
 

@@ -78,10 +78,11 @@
                         <ul class="dropdown-menu">
                             <li><a href="/chatRoom/chatRoomList">채팅방 목록</a>
                             </li>
-                            <%--<li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=2">채팅방 추가테스트2</a>
-                            </li>
-                            <li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=56">채팅방 추가테스트5</a>--%>
-                            </li>
+                            <c:if test="${not empty sessionScope.user}">
+                            <li><a href="/chatRoom/myChatRoomList">나의 채팅방</a></li>
+                            </c:if>
+<%--                            <li><a href="/chatRoom/addChatRoom?userId=${sessionScope.user.userId}&tripPlanNo=56">채팅방 추가테스트5</a>--%>
+<%--                            </li>--%>
                         </ul>
                     </li>
                     <li class="dropdown">
