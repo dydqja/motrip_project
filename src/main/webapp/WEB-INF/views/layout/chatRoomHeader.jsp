@@ -36,10 +36,15 @@
   <nav class="navbar normal transparent">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="/">
-          <img src="/images/motrip-logo.gif" alt="" style="height: 120%;">
-        </a>
+        <div class="navbar-brand">
+          <a href="/"> <img src="/images/motrip-logo.gif" alt="" style="height: 120%; margin-left:30px;margin-right: 30px"  /></a>
+
+          <span style="color: white; "  >${chatRoom.chatRoomTitle} 채팅방</span>
+        </div>
+
+
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
+
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -48,9 +53,11 @@
       </div>
 
       <div class="navbar-collapse collapse" id="main-navbar">
+
         <ul class="nav navbar-nav">
 
           <li class="dropdown">
+
             <a href="#">채팅방 Menu <i class="fa fa-chevron-down nav-arrow"></i></a>
             <ul class="dropdown-menu">
               <c:if test="${author.userId eq username}">

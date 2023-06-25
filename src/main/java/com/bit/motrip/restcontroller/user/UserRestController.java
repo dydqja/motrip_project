@@ -377,6 +377,10 @@ public class UserRestController {
 //        System.out.println(user2.getUserPhoto());
         return users;
     }
+    @RequestMapping(value = "json/getUserById/{userId}", method = RequestMethod.POST)
+    public User getUserById (@PathVariable String userId) throws Exception {
+        return userService.getUserById(userId);
+    }
 }
 
 

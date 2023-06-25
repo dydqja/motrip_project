@@ -728,18 +728,20 @@
         <input type="hidden" id="room-name"/>
         <main class="chat-main">
             <div class="chat-sidebar">
-                <div class="chat-title" style="text-align: center"><h3 id="chatRoomTitle">${chatRoom.chatRoomTitle}</h3></div>
+<%--                <div class="chat-title" style="text-align: center"><h3 id="chatRoomTitle">${chatRoom.chatRoomTitle}</h3></div>--%>
                 <audio id="myAudio" autoplay></audio>
                 <div class="chatButton" align="center">
                     <a href="/tripPlan/selectTripPlan?tripPlanNo=${chatRoom.tripPlanNo}"
-                       data-toggle="modal" type="button" class="btn btn-primary" style="background-color: #66ffff">TripPlan</a>
+                       data-toggle="modal" type="button" class="btn btn-primary" style="background-color: lightskyblue;color:  black">TripPlan</a>
 <%--                    <div type="button" class="btn btn-primary" id="roomMute" style="background-color: #75ff66">Mute</div>--%>
-                    <button type="button" class="btn btn-primary" id="videoRoom2" style="background-color: #e366ff">VideoOn</button>
+                    <button type="button" class="btn btn-primary" id="videoRoom2" style="background-color: #000303;color:  lightskyblue">VideoOn</button>
                 </div>
                 <div></div>
-                <div class="users" style="text-align: left; border-bottom: #00b3ee"><h3>현재 참여 목록</h3></div>
+                <div class="users" style="text-align: left; color: #ffd966"><h3>참여중</h3>
+                    <hr style="background:#ffd966;height:1px;border:0;"/></div>
                 <ul id="users"></ul>
-                <div class="dbUsers" style="text-align: left;color: #5bc0de"><h3>채팅방 멤버</h3></div>
+                <div class="dbUsers" style="text-align: left;color: #d3d3d3"><h3>멤버</h3>
+                    <hr style="background:#d3d3d3;height:1px;border:0;"/></div>
                 <ul id="chatUsers"></ul>
             </div>
             <div class="chat-messages">  <div id="image-preview"style="width:30%;height: 30%"></div></div>
@@ -750,7 +752,7 @@
                         <button type="button" id="mute">Mute</button>
                         <button type="button" id="camera">Turn Camera Off</button>
                         <select id="cameras"></select>
-                        <video id="peersFace0" autoplay playsinline width="200" height="200"></video>
+<%--                        <video id="peersFace" autoplay playsinline width="200" height="200"></video>--%>
                     </div>
                 </div>
                 <div id="trip">

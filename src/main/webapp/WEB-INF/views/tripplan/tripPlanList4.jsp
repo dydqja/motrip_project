@@ -183,7 +183,13 @@
 
                             <li class="page-item ${i == page.currentPage ? 'active' : ''}">
 
-                                <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}">${i}</a>
+                                <c:if test="${navigation eq 'myPage'}">
+                                    <a class="page-link" href="/user/getUser?userId=${getUser.userId}&type=my&currentPage=${i}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}">${i}</a>
+                                </c:if>
+
+                                <c:if test="${navigation ne 'myPage'}">
+                                    <a class="page-link" href="/tripPlan/tripPlanList?type=${condition}&currentPage=${i}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}">${i}</a>
+                                </c:if>
 
                             </li>
 
