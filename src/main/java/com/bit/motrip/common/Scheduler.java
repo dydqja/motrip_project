@@ -29,5 +29,7 @@ public class Scheduler {
         cronService.cronDel("memo", "memo", "memo_del_date", "1");
 
         cronService.cronDel("tripPlan", "trip_plan", "trip_plan_del_date", "1");
+
+        cronService.cronDel("user", "users", "secession_date", "1");
     }
 }
