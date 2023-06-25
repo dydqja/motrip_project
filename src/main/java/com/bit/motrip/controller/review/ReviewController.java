@@ -234,6 +234,13 @@ public class ReviewController {
 
         Map<String, Object> reviewListData = reviewService.selectReviewList(parameters);
         List<Review> reviewList = (List<Review>) reviewListData.get("reviewList");
+        for (Review review : reviewList) {
+            int tripPlanNo = review.getTripPlanNo();
+            TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
+            model.addAttribute("tripPlan", tripPlan);
+            System.out.println("tripPlan>>>>>"+tripPlan);
+        }
+
         System.out.println("reviewListData 왜 못갖고와"+reviewListData);
         System.out.println("reviewList 왜 못갖고와"+reviewList);
 
@@ -246,6 +253,7 @@ public class ReviewController {
         int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
         int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
         String reviewAuthor = (String) parameters.get("reviewAuthor");
+
 
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("page", page);
@@ -293,8 +301,15 @@ public class ReviewController {
         parameters.put("condition", "myReviewList"); // 나의 후기 목록을 조회하기 위한 조건 설정
 
         Map<String, Object> reviewList = reviewService.selectReviewList(parameters);
-        Map<String, Object> tripPlanList= tripPlanService.selectTripPlanList(parameters);
         List<Review> myReviewList = (List<Review>) reviewList.get("reviewList");
+        for (Review review : myReviewList) {
+            int tripPlanNo = review.getTripPlanNo();
+            TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
+            model.addAttribute("tripPlan", tripPlan);
+            System.out.println("tripPlan>>>>>"+tripPlan);
+        }
+
+        Map<String, Object> tripPlanList= tripPlanService.selectTripPlanList(parameters);
 
         System.out.println("myReviewList 왜 못갖고와"+myReviewList);
         System.out.println("reviewList 왜 못갖고와"+reviewList);
@@ -358,14 +373,12 @@ public class ReviewController {
         model.addAttribute("review", review);
         System.out.println("review객체에 들어있는 reviewThumbnail는 싱글쿼티션이 짤렸나요?>>>"+reviewThumbnail);
         model.addAttribute("tripPlan", tripPlan);
+        model.addAttribute("userPhoto", user.getUserPhoto()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
+
+        System.out.println(user.getUserPhoto());
 
         return "review/getReview.jsp";
     }
-
-
-
-
-
 
     @GetMapping(value = "/updateReviewView")//후기 수정
     public String updateReviewView(@RequestParam("reviewNo") int reviewNo,
@@ -423,11 +436,6 @@ public class ReviewController {
         return "redirect:/review/getReview?reviewNo=" + reviewNo;
 
     }
-
-
-
-
-
     @RequestMapping("deleteReview")//후기완전삭제
     public String deleteReview(@RequestParam("reviewNo") int reviewNo)throws Exception {
         System.out.println("::");

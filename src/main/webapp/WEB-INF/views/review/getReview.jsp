@@ -238,12 +238,12 @@
                         <h4>
                             <span class="italic">${user.nickname}</span>
                             <span class="dot">·</span>
-                            <span>${tripPlan.strDate}</span>
+                            <span>${review.reviewRegDate}</span>
                             <span class="icon-hand-like" style="margin-left: 2%"></span>
-                            <span id="likes" align="center" width="200">${tripPlan.tripPlanLikes}</span>
+                            <span id="reviewLikes" align="center" width="200">${review.reviewLikes}</span>
                             <span class="icon-eye" style="margin-left: 1%"></span>
-                            <span>${tripPlan.tripPlanViews}</span>&nbsp;&nbsp;
-                            <button class="btn btn-primary" id="tripPlanLikes" value="${tripPlan.tripPlanNo}"
+                            <span>${review.viewCount}</span>&nbsp;&nbsp;
+                            <button class="btn btn-primary" id="reviewLikes" value="${review.reviewNo}"
                                     style="width: auto; height: auto; box-sizing: border-box; padding: 5px 10px;">추천
                             </button>
                             <c:if test="${tripPlan.isPlanDownloadable == true}">
@@ -271,6 +271,8 @@
                             <button class="icon-locate-map" id="reset${i-1}" style="font-size: 20px; border-radius: 15px;"></button>
                         </div>
                     </div>
+
+
                     <div class="row">
                         <div class="col-sm-9">
                             <div id="map${i-1}" style="width: 100%; height: 600px; border-radius: 15px;"></div>
@@ -371,83 +373,39 @@
                                 <div>${review.reviewContents}</div>
                             </div>
                         </div>
+                    </div>
+
+                    </div>
+
+                <div class="review-comment" style="margin-right: 100px;">
+                    <div class="add-comment">
+                        <div class="addDaily" style="text-align: right;">
+                            <button class="btn btn-primary" id="history">확인</button>
+                            <c:if test="${user.userId == review.reviewAuthor}">
+                                <button class="btn btn-primary" id="updateReview">수정</button>
+                            </c:if>
+                            <c:if test="${user.userId == review.reviewAuthor}">
+                                <button class="btn btn-primary" id="deleteReview">삭제</button>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+
+
+
 
             </main>
+
 
     </div>
         <div style="margin: 3%"></div>
 </div>
-            <div class="review-comment">
-                <div class="add-comment">
-                    <div class="addDaily" style="text-align: right;">
-                        <button class="btn btn-primary" id="history">확인</button>
-                        <c:if test="${user.userId == review.reviewAuthor}">
-                            <button class="btn btn-primary" id="updateReview">수정</button>
-                        </c:if>
-                        <c:if test="${user.userId == review.reviewAuthor}">
-                            <button class="btn btn-primary" id="deleteReview">삭제</button>
-                        </c:if>
-                    </div>
-                </div>
-            </div>
+
 
         </div>
     </main>
 </div>
-
-<footer id="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-7 col-md-3">
-                <h3>Mold Discover</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quia, architecto? A,
-                    reiciendis eveniet! Esse est eaque adipisci natus rerum laudantium accusamus magni.</p>
-            </div>
-            <div class="col-sm-5 col-md-2">
-                <h3>Quick Link</h3>
-                <ul>
-                    <li>Holiday Package</li>
-                    <li>Summer Adventure</li>
-                    <li>Bus and Trasnportation</li>
-                    <li>Ticket and Hotel Booking</li>
-                    <li>Trek and Hikings</li>
-                </ul>
-            </div>
-            <div class="col-sm-7 col-md-4">
-                <h3>Newsletter Signup</h3>
-                <p>Subscribe to our weekly newsletter to get news and update</p>
-                <br>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Your Email">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-5 col-md-2">
-                <h3>Contact Info</h3>
-                <ul>
-                    <li>Mold Discover</li>
-                    <li>info@moldthemes.com</li>
-                </ul>
-                <div class="clearfix">
-                    <div class="social-icon-list">
-                        <ul>
-                            <li>
-                                <a href="https://twitter.com/moldthemes" class="icon-twitter"></a>
-                            </li>
-                            <li>
-                                <a href="mailto:info@moldthemes.com" class="icon-mail"></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="copy"><span>&copy;</span> Copyright Mold Discover, 2017</div>
-</footer>
-
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 <!-- 아래는 설정용 스크립트입니다. -->
 
 <script type="text/javascript">
@@ -603,6 +561,7 @@
     $(function () {
         $("button[id='reviewLikes']").on("click", function () {
             var reviewNo = "${review.reviewNo}";
+            console.log("reviewNo 들어가니?".reviewNo)
             $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
                 url: "/review/reviewLikes",
                 type: "GET",
@@ -610,12 +569,12 @@
                 success: function (data) {
                     console.log(data);
                     if (data == -1) {
-                        alert("이미 추천한 여행 후기 입니다.");
+                        alert("이미 추천한 후기 입니다.");
                     } else if (data == 0) {
                         alert("비회원은 추천을 할수없습니다.");
                     } else {
                         alert("추천 완료");
-                        $("#likes").text(data);
+                        $("#reviewLikes").text(data);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -652,11 +611,46 @@
         });
     });
 
-    $(function () { // 이전으로 돌아가기
+    $(function () { // '확인'버튼 이전으로 돌아가기
         $("#history").on("click", function () {
-            window.history.back();
+            window.location.href = "/review/getMyReviewList";
         });
     });
+
+    // 유저닉네임, 프로필 클릭시 이동
+    $(document).ready(function() {
+        $('.author-img').hover(
+            function() {
+                $(this).css('cursor', 'pointer');
+                /* 마우스를 올렸을 때의 스타일 변경 */
+            },
+            function() {
+                $(this).css('cursor', 'auto');
+                /* 마우스가 벗어났을 때의 스타일 변경 */
+            }
+        );
+
+        $('.italic').hover(
+            function() {
+                $(this).css('cursor', 'pointer');
+                /* 마우스를 올렸을 때의 스타일 변경 */
+            },
+            function() {
+                $(this).css('cursor', 'auto');
+                /* 마우스가 벗어났을 때의 스타일 변경 */
+            }
+        );
+
+        $('.author-img').click(function() {
+            window.location.href = '/user/getUser?userId=${tripPlan.tripPlanAuthor}';
+        });
+
+        $('.italic').click(function() {
+            window.location.href = '/user/getUser?userId=${tripPlan.tripPlanAuthor}';
+        });
+    });
+
+</script>
 
 </script>
 
@@ -677,10 +671,6 @@
 <script src="/assets/js/min/countnumbers.min.js"></script>
 <script src="/assets/js/main.js"></script>
 
-    <div class="button-container">
-        <a href="getReviewList">모든 후기 목록</a>
-        <a href="getMyReviewList">나의 후기 목록</a>
-    </div>
 </div>
 </body>
 </html>

@@ -264,6 +264,20 @@
       border-radius: 6px;
     }
 
+    .btnNoUpdate {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      padding: 14px 30px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      border: none;
+      color: #fff;
+      background-color: #d9806d;
+      border-radius: 6px;
+    }
+
   </style>
 
 
@@ -662,6 +676,9 @@
     </div>
     <div class="col-sm-offset-4 col-sm-4 text-center">
       <button type="btnUpdateReview" class="btnUpdateReview" onclick="fncUpdateReview()">수정완료</button>
+
+      <button class="btnNoUpdate" id="history">수정취소</button>
+
     </div>
 </form>
 </main>
@@ -921,9 +938,9 @@
   });
 
 
-  $(function () { // 이전으w로 돌아가기
+  $(function () { // '수정 취소'버튼 이전으로 돌아가기
     $("#history").on("click", function () {
-      window.history.back();
+      window.location.href = "/review/getMyReviewList";
     });
   });
 

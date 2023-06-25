@@ -161,8 +161,13 @@
 
                 <div class="right">
                   <h4>${review.reviewAuthor}</h4>
-                  <div class="right"  style="display: none;"><span class="icon-date"></span>
-                   몇 박 몇일은 여기에
+                  <div class="right"><span class="icon-date"></span>
+                    <c:if test="${tripPlan.tripDays == 1}">
+                      ${tripPlan.tripDays}일
+                    </c:if>
+                    <c:if test="${tripPlan.tripDays != 1}">
+                      ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일
+                    </c:if>
                   </div>
                   <div style="display: none;">
                  버튼 넣고 싶으면 여기에

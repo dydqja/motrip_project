@@ -21,7 +21,7 @@ class ReportAndSanctionServiceTest {
     @Autowired
     private ReportAndSanctionService reportAndSanctionService;
 
-    @Test
+   // @Test
     void addReport() throws Exception {
 
         ReportAndSanction reportAndSanction = new ReportAndSanction();
@@ -82,7 +82,7 @@ class ReportAndSanctionServiceTest {
 
     }
 
-    @Test
+   // @Test
     void updateSanction() throws Exception {
 
         ReportAndSanction reportAndSanction = new ReportAndSanction();

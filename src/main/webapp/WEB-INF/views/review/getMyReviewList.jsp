@@ -64,7 +64,7 @@
 <div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
     <div class="container">
         <div class="col-sm-8">
-            <h1 class="main-head">내가  작성한 후기 </h1>
+            <h1 class="main-head">나의 후기 </h1>
         </div>
     </div>
 </div>
@@ -160,17 +160,24 @@
                                     </div>
                                 </div>
 
-                                <div class="right">
-                                    <h4>${review.reviewAuthor}</h4>
-                                    <div class="right"  style="display: none;"><span class="icon-date"></span>
-                                        몇 박 몇일은 여기에
-                                    </div>
-                                    <div style="display: none;">
-                                        버튼 넣고 싶으면 여기에
+
+                                    <div class="right">
+                                        <h4>${user.nickname}</h4>
+                                        <div class="right"><span class="icon-date"></span>
+                                            <c:if test="${tripPlan.tripDays == 1}">
+                                                ${tripPlan.tripDays}일
+                                            </c:if>
+                                            <c:if test="${tripPlan.tripDays != 1}">
+                                                ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일
+                                            </c:if>
+                                        </div>
+                                        <div style="display: none;">
+                                            버튼 넣고 싶으면 여기에
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="item-book">
+                                <div class="item-book">
+
 
                                 <button class="btn btn-sm btn-success" name="reviewNo"
                                         <c:if test="${review.isReviewDeleted}">
