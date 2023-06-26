@@ -384,9 +384,9 @@
                             <c:if test="${sessionScope.user.userId == review.reviewAuthor}">
                                 <button class="btn btn-primary" id="updateReview">수정</button>
                             </c:if>
-                            <c:if test="${sessionScope.user.userId == review.reviewAuthor}">
+     <%--                       <c:if test="${sessionScope.user.userId == review.reviewAuthor}">
                                 <button class="btn btn-primary" id="deleteReview">삭제</button>
-                            </c:if>
+                            </c:if>--%>
                         </div>
                     </div>
                 </div>
