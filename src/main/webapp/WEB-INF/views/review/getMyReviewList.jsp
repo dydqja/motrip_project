@@ -36,16 +36,6 @@
     <script src="/assets/js/min/countnumbers.min.js"></script>
     <script src="/assets/js/main.js"></script>
 
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            var radioButtonId = '${search.planCondition}';
-            // 해당 라디오 버튼을 체크 상태로 설정
-            document.getElementById(radioButtonId).checked = true;
-        });
-
-    </script>
-
 
 
     <style>
@@ -62,6 +52,7 @@
 
     </style>
 
+
 </head>
 
 <body>
@@ -73,7 +64,7 @@
 <div class="page-img" style="background-image: url('/images/tripplan2.jpg');">
     <div class="container">
         <div class="col-sm-8">
-            <h1 class="main-head">후기</h1>
+            <h1 class="main-head">나의 후기 </h1>
         </div>
     </div>
 </div>
@@ -90,35 +81,13 @@
                     </div>
                 </div>
                 <label><br></label>
-                <div class="border-box">
-                    <div class="box-title">정렬 조건</div>
-                    <div class="center-div" style="width: 100%; height: 100%;">
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="newDate">
-                                <h4><span class="icon-calendar"></span>&nbsp
-                                    <input type="radio" name="options" id="newDate"
-                                           value="newDate" OnClick="window.location.href='/review/reviewList?type=${condition}&planCondition=newDate'"></h4>
-                                <h5>최신날짜순</h5>
-                            </label>
-                            <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="views">
-                                <h4><span class="icon-eye"></span>&nbsp<input type="radio" name="options"
-                                                                              id="views" value="views" OnClick="window.location.href='/review/getReviewList?type=${condition}&reviewCondition=views'"></h4>
-                                <h5>조회수</h5>
-                            </label>
-                            <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="likes">
-                                <h4><span class="icon-hand-like"></span>&nbsp<input type="radio" name="options"
-                                                                                    id="likes" value="likes" OnClick="window.location.href='/review/getReviewList?type=${condition}&reviewCondition=likes'"></h4>
-                                <h5>추천수</h5>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+    
 
                 <div class="sidebar">
                     <div class="border-box">
                         <div class="box-title">후기 검색</div>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="후기 타이틀">
+                            <input type="text" class="form-control" placeholder="Title">
                             <div class="input-group-btn">
                                 <button class="btn btn-primary">Search</button>
                             </div>
@@ -135,57 +104,58 @@
                     <c:set var="i" value="${ i+1 }"/>
                     <div class="item-list review-item-list">
                         <div class="col-sm-5">
-<%--                            <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">--%>
-<%--                                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">--%>
-<%--                                    <input type="hidden" id="reviewImage${review.reviewNo}"--%>
-<%--                                            <c:if test="${review.getisReviewDeleted()}">--%>
-<%--                                                value="0"--%>
-<%--                                            </c:if>--%>
-<%--                                            <c:if test="${!review.getisReviewDeleted}">--%>
-<%--                                                value="${review.reviewNo}"--%>
-<%--                                            </c:if>--%>
-<%--                                           class="reviewNo"/></div>--%>
-<%--                            </c:if>--%>
-<%--                            <c:if test="${review.reviewThumbnail == ''}">--%>
-                            <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
-                                <input type="hidden" id="reviewImage${review.reviewNo}"
-                                        <c:if test="${review.getisReviewDeleted()}">
-                                            value="0"
-                                        </c:if>
-                                        <c:if test="${!review.getisReviewDeleted()}">
-                                            value="${review.reviewNo}"
-                                        </c:if>
-                                       class="reviewNo"/></div>
-<%--                            </c:if>--%>
+                            <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">
+                                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">
+                                    <input type="hidden" id="reviewImage${review.reviewNo}"
+                                            <c:if test="${review.isReviewDeleted}">
+                                                value="0"
+                                            </c:if>
+                                            <c:if test="${!review.isReviewDeleted}">
+                                                value="${review.reviewNo}"
+                                            </c:if>
+                                           class="reviewNo"/></div>
+                            </c:if>
+                            <c:if test="${review.reviewThumbnail == ''}">
+                                <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
+                                    <input type="hidden" id="reviewImage${review.reviewNo}"
+                                            <c:if test="${review.isReviewDeleted}">
+                                                value="0"
+                                            </c:if>
+                                            <c:if test="${!review.isReviewDeleted}">
+                                                value="${review.reviewNo}"
+                                            </c:if>
+                                           class="reviewNo"/></div>
+                            </c:if>
                         </div>
 
                         <div class="col-sm-7">
                             <div class="item-desc">
                                 <div>
-                                    <h6 class="right">${review.strDate}</h6>
+                                    <h6 class="right">${review.reviewRegDate}</h6>
                                     <h5 class="item-title">${review.reviewTitle} </h5>
-                                    <div class="sub-title">
-                                        <c:forEach var="dailyPlan" items="${tripPlan.dailyplanResultMap}">
-                                            <c:forEach var="place" items="${dailyPlan.placeResultMap}">
-                                                <h6 style="text-overflow: ellipsis">#${place.placeTags}</h6>
-                                            </c:forEach>
-                                        </c:forEach>
+                                    <div class="sub-title"  >
+
                                     </div>
                                 </div>
-                                <h4 class="right">${review.reviewAuthor}</h4>
-<%--                                <div class="right" style="margin-top: -8px">--%>
-<%--                                    <div class="right"><span class="icon-date"></span>--%>
-<%--                                        <c:if test="${tripPlan.tripDays == 1}">--%>
-<%--                                            ${tripPlan.tripDays}일--%>
-<%--                                        </c:if>--%>
-<%--                                        <c:if test="${tripPlan.tripDays != 1}">--%>
-<%--                                            ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일--%>
-<%--                                        </c:if>--%>
-<%--                                    </div>--%>
 
-<%--                                </div>--%>
-                            </div>
-                            <div class="item-book">
+
+                                    <div class="right">
+                                        <h4>${user.nickname}</h4>
+                                        <div class="right"><span class="icon-date"></span>
+                                            <c:if test="${tripPlan.tripDays == 1}">
+                                                ${tripPlan.tripDays}일
+                                            </c:if>
+                                            <c:if test="${tripPlan.tripDays != 1}">
+                                                ${tripPlan.tripDays-1}박 ${tripPlan.tripDays}일
+                                            </c:if>
+                                        </div>
+                                        <div style="display: none;">
+                                            버튼 넣고 싶으면 여기에
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-book">
+
 
                                 <button class="btn btn-sm btn-success" name="reviewNo"
                                         <c:if test="${review.isReviewDeleted}">
@@ -196,6 +166,7 @@
                                                                             value="${review.reviewNo}"
                                                                             class="reviewNo"/>
                                 </button>
+
 
                                 <c:if test="${not empty sessionScope.user.userId && review.isReviewDeleted }">
                                     <c:if test="${sessionScope.user.userId == reviewAuthor}">
@@ -217,6 +188,17 @@
                                     </c:if>
                                 </c:if>
 
+                                <c:if test="${sessionScope.user.userId == reviewAuthor}">
+                                    <button id="btnTripPlanDelete${review.reviewNo}" class="btn btn-sm btn-danger btnTripPlanDelete"
+                                            <c:if test="${!review.isReviewDeleted}">
+                                                style="display: none;"
+                                            </c:if>
+                                            value="${review.reviewNo}">완전삭제<input type="hidden"
+                                                                                  value="${review.reviewNo}"
+                                                                                  class="reviewNo"/>
+                                    </button>
+                                </c:if>
+
 
                                 <div class="price">
                                     <label class="icon-hand-like">${review.reviewLikes}</label>
@@ -236,7 +218,7 @@
 
                         <li class="page-item ${page.currentPage == 1 ? 'disabled' : ''}">
 
-                            <a class="page-link" href="/review/getMyReviewList?type=${condition}&currentPage=${page.currentPage - 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"
+                            <a class="page-link" href="/review/getReviewList?type=${condition}&currentPage=${page.currentPage - 1}&reviewCondition=${search.reviewCondition}&searchKeyword=${search.searchKeyword}"
                                aria-label="Previous">
                                 &laquo;
                             </a>
@@ -247,7 +229,7 @@
 
                             <li class="page-item ${i == page.currentPage ? 'active' : ''}">
 
-                                <a class="page-link" href="/review/getMyReviewList?type=${condition}&currentPage=${i}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}">${i}</a>
+                                <a class="page-link" href="/review/getReviewList?type=${condition}&currentPage=${i}&reviewCondition=${search.reviewCondition}&searchKeyword=${search.searchKeyword}">${i}</a>
 
                             </li>
 
@@ -255,7 +237,7 @@
 
                         <li class="page-item ${page.currentPage == maxPage ? 'disabled' : ''}">
 
-                            <a class="page-link" href="/review/getMyReviewList?type=${condition}&currentPage=${page.currentPage + 1}&planCondition=${search.planCondition}&searchKeyword=${search.searchKeyword}"
+                            <a class="page-link" href="/review/getReviewList?type=${condition}&currentPage=${page.currentPage + 1}&reviewCondition=${search.reviewCondition}&searchKeyword=${search.searchKeyword}"
                                aria-label="Next">
                                 &raquo;
                             </a>
@@ -267,7 +249,7 @@
                 </nav>
 
             </div>
-            <%--마이페이지 하드코딩부분 끝 ########################################################################################################--%>
+
         </div>
     </div>
 
@@ -277,24 +259,6 @@
 <script src="/assets/js/min/priceslider.min.js"></script>
 
 <script type="text/javascript">
-
-    // 여행후기 검색
-    document.getElementById('searchButton').addEventListener('click', function() {
-        var searchKeyword = document.getElementById('searchKeyword').value;
-        var url = '/review/getReviewList?searchKeyword=' + encodeURIComponent(searchKeyword);
-        window.location.href = url;
-    });
-
-    document.getElementById('searchKeyword').addEventListener('keypress', function(event) {
-        if (event.keyCode === 13) { // 엔터 키
-            var searchKeyword = document.getElementById('searchKeyword').value;
-            var url = '/review/getReviewList?searchKeyword=' + encodeURIComponent(searchKeyword);
-            window.location.href = url;
-        }
-    });
-
-
-
     $(document).ready(function () {
 
         // 사진의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
@@ -322,10 +286,6 @@
                 }
             });
         });
-
-
-
-
 
         // AJAX 요청을 보내고 여행플랜의 수를 가져오는 함수
         function listCounter() {

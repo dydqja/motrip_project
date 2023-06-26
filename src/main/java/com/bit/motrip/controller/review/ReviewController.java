@@ -202,11 +202,15 @@ public class ReviewController {
 
 
     @GetMapping("getReviewList") // 공개된 모든 후기 목록 조회
-    public String getReviewList(@RequestParam(defaultValue = "1") int currentPage, Model model, HttpSession session) throws Exception {
+    public String getReviewList(@RequestParam(defaultValue = "1") int currentPage,
+                                @RequestParam(value = "type", defaultValue = "all") String type,
+                                @RequestParam(value = "reviewCondition", defaultValue = "newDate") String reviewCondition,
+                                @RequestParam(value = "searchKeyword", required = false) String searchKeyword,Model model, HttpSession session) throws Exception {
         System.out.println("/review/getReviewList : GET");
 
         Search search = new Search();
         search.setCurrentPage(currentPage);
+        search.setReviewCondition(reviewCondition);
 
         System.out.println("currentPage>>>>>>>>"+currentPage);
         System.out.println(search);
@@ -217,6 +221,7 @@ public class ReviewController {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("search", search);
         parameters.put("condition", "publicReviewList"); // 전체 공개 후기 목록을 조회하기 위한 조건 설정
+
 
         //######용범 추가 부분 시작(blackList 관련)##############
         if(session.getAttribute("user") != null) {
@@ -234,6 +239,21 @@ public class ReviewController {
 
         Map<String, Object> reviewListData = reviewService.selectReviewList(parameters);
         List<Review> reviewList = (List<Review>) reviewListData.get("reviewList");
+        for (Review review : reviewList) {
+            int tripPlanNo = review.getTripPlanNo();
+            int reviewNo = review.getReviewNo();
+            int reviewLikes = review.getReviewLikes();
+            int viewCount = review.getViewCount();
+
+            TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
+            model.addAttribute("reviewNo", reviewNo);
+            System.out.println("reviewNo>>>"+reviewNo);
+            model.addAttribute("tripPlan", tripPlan);
+            model.addAttribute("reviewLikes", reviewLikes);
+            model.addAttribute("viewCount", viewCount);
+            System.out.println("tripPlan>>>>>"+tripPlan);
+        }
+
         System.out.println("reviewListData 왜 못갖고와"+reviewListData);
         System.out.println("reviewList 왜 못갖고와"+reviewList);
 
@@ -246,6 +266,7 @@ public class ReviewController {
         int beginUnitPage = page.getBeginUnitPage(); // 화면 하단에 표시할 페이지의 시작 번호
         int endUnitPage = page.getEndUnitPage(); // 화면 하단에 표시할 페이지의 끝 번호
         String reviewAuthor = (String) parameters.get("reviewAuthor");
+
 
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("page", page);
@@ -293,8 +314,15 @@ public class ReviewController {
         parameters.put("condition", "myReviewList"); // 나의 후기 목록을 조회하기 위한 조건 설정
 
         Map<String, Object> reviewList = reviewService.selectReviewList(parameters);
-        Map<String, Object> tripPlanList= tripPlanService.selectTripPlanList(parameters);
         List<Review> myReviewList = (List<Review>) reviewList.get("reviewList");
+        for (Review review : myReviewList) {
+            int tripPlanNo = review.getTripPlanNo();
+            TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
+            model.addAttribute("tripPlan", tripPlan);
+            System.out.println("tripPlan>>>>>"+tripPlan);
+        }
+
+        Map<String, Object> tripPlanList= tripPlanService.selectTripPlanList(parameters);
 
         System.out.println("myReviewList 왜 못갖고와"+myReviewList);
         System.out.println("reviewList 왜 못갖고와"+reviewList);
@@ -341,6 +369,7 @@ public class ReviewController {
         // 리뷰 상세 조회
         Review review = reviewService.getReview(reviewNo);
         User user = userService.getUserById(review.getReviewAuthor());
+        model.addAttribute("userPhoto", user.getUserPhoto()); // 닉네임만 찾으면 되는데 세션 겹칠까봐 key값을 별도로두었음
 
 
         // 썸네일 문자열 처리
@@ -356,16 +385,14 @@ public class ReviewController {
 
         model.addAttribute("user", user);
         model.addAttribute("review", review);
+        System.out.println("user>>>>"+user);
         System.out.println("review객체에 들어있는 reviewThumbnail는 싱글쿼티션이 짤렸나요?>>>"+reviewThumbnail);
         model.addAttribute("tripPlan", tripPlan);
 
+        System.out.println(user.getUserPhoto());
+
         return "review/getReview.jsp";
     }
-
-
-
-
-
 
     @GetMapping(value = "/updateReviewView")//후기 수정
     public String updateReviewView(@RequestParam("reviewNo") int reviewNo,
@@ -423,11 +450,6 @@ public class ReviewController {
         return "redirect:/review/getReview?reviewNo=" + reviewNo;
 
     }
-
-
-
-
-
     @RequestMapping("deleteReview")//후기완전삭제
     public String deleteReview(@RequestParam("reviewNo") int reviewNo)throws Exception {
         System.out.println("::");

@@ -267,7 +267,7 @@ function buildMemoSharerTableRow(memoAccess) {
     let row = $('<tr>');
     row.append($('<td>').html('<span class="memo-sharer">' + userNickname + '</span>'));
     row.append($('<td>').text(userEmail));
-    row.append($('<td>').html('<a href="/user/getUser?userId=' + userId + '">자세히</a>'));
+    row.append($('<td>').html('<a href="/user/getUser?type=my&userId=' + userId + '">자세히</a>'));
     row.append($('<td>').html('<button class="memo-share-modal-unShare-btn-for-sharer" value="' + userId + '">공유해제</button>'));
     return row;
 }

@@ -264,6 +264,20 @@
       border-radius: 6px;
     }
 
+    .btnNoUpdate {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      padding: 14px 30px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      border: none;
+      color: #fff;
+      background-color: #d9806d;
+      border-radius: 6px;
+    }
+
   </style>
 
 
@@ -619,8 +633,8 @@
       </main>
       </c:forEach> <!-- dailyPlan for end -->
 
-      <div class="col-sm-9" style="text-align: center;">
-        <textarea id="reviewContents" name="reviewContents" valuew="${review.reviewContents}" required></textarea>
+      <div class="col-sm-9" >
+        <textarea id="reviewContents" name="reviewContents" required><c:out value="${review.reviewContents}" /></textarea>
       </div>
 
 
@@ -662,6 +676,9 @@
     </div>
     <div class="col-sm-offset-4 col-sm-4 text-center">
       <button type="btnUpdateReview" class="btnUpdateReview" onclick="fncUpdateReview()">수정완료</button>
+
+      <button class="btnNoUpdate" id="history">수정취소</button>
+
     </div>
 </form>
 </main>
@@ -821,21 +838,22 @@
   <!-- 아래는 버튼클릭시 동작되는 부분입니다 -->
 
   $(function () {
-    $("button[id='tripPlanLikes']").on("click", function () {
-      var tripPlanNo = "${tripPlan.tripPlanNo}";
+    $("button[id='reviewLikes']").on("click", function () {
+      var reviewNo = "${review.reviewNo}";
+      console.log("reviewNo 들어가니?".reviewNo)
       $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
-        url: "/tripPlan/tripPlanLikes",
+        url: "/review/reviewLikes",
         type: "GET",
-        data: {"tripPlanNo": tripPlanNo},
+        data: {"reviewNo": reviewNo},
         success: function (data) {
           console.log(data);
           if (data == -1) {
-            alert("이미 추천한 후기입니다.");
+            alert("이미 추천한 후기 입니다.");
           } else if (data == 0) {
             alert("비회원은 추천을 할수없습니다.");
           } else {
             alert("추천 완료");
-            $("#likes").text(data);
+            $("#reviewLikes").text(data);
           }
         },
         error: function (xhr, status, error) {
@@ -844,6 +862,7 @@
       });
     });
   });
+
 
 
 
@@ -921,9 +940,9 @@
   });
 
 
-  $(function () { // 이전으w로 돌아가기
+  $(function () { // '수정 취소'버튼 이전으로 돌아가기
     $("#history").on("click", function () {
-      window.history.back();
+      window.location.href = "/review/getMyReviewList";
     });
   });
 

@@ -293,5 +293,18 @@
         ) countTable
     </select>
 
+    <!-- 후기 추천 -->
+    <update id="reviewLikes" parameterType="com.bit.motrip.domain.Review" >
+        UPDATE review
+        SET review_likes = #{reviewLikes}
+        WHERE review_no = #{reviewNo}
+    </update>
+
+    <!-- 조회수 -->
+    <update id="viewCount" parameterType="com.bit.motrip.domain.Review">
+        UPDATE review
+        SET view_count = #{viewCount}
+        WHERE review_no = #{reviewNo}
+    </update>
 
 </mapper>

@@ -115,6 +115,7 @@ public class ChatRoomController {
         model.addAttribute("username",sessionUser.getUserId()); //유저 name으로 userId 전송
 //        model.addAttribute("username",userId); //유저 name으로 userId 전송
         model.addAttribute("nickname",sessionUser.getNickname()); //유저 name으로 userId 전송
+        model.addAttribute("userphoto",sessionUser.getUserPhoto());
         model.addAttribute("chatRoom",ch); //채팅방 객체 전송
         model.addAttribute("chatMembers",chatMemberList);
         model.addAttribute("author",author);
@@ -288,7 +289,7 @@ public class ChatRoomController {
     public String myChatRoomList( @ModelAttribute("search") Search search, HttpSession session
             ,Model model) throws Exception{
         User sessionUser = (User) session.getAttribute("user");
-        System.out.println(sessionUser);
+        System.out.println("myChatRoomList :: "+sessionUser);
 
         if(search.getCurrentPage() == 0){
 
@@ -321,12 +322,13 @@ public class ChatRoomController {
         // 화면 하단에 표시할 페이지의 끝 번호
         int endUnitPage = page.getEndUnitPage();
 
-        model.addAttribute("chatRoomList",chatRoomListData.get("list"));
-        model.addAttribute("chatRoomPage", page);
-        model.addAttribute("chatRoomMaxPage", maxPage);
-        model.addAttribute("chatRoomBeginUnitPage", beginUnitPage);
-        model.addAttribute("chatRoomEndUnitPage", endUnitPage);
-        model.addAttribute("chatRoomSearch",search);
+
+        model.addAttribute("list",chatRoomListData.get("list"));
+        model.addAttribute("page", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("beginUnitPage", beginUnitPage);
+        model.addAttribute("endUnitPage", endUnitPage);
+        model.addAttribute("search",search);
         //model.addAttribute("user",user);
         System.out.println(page);
         System.out.println(maxPage);
@@ -334,6 +336,6 @@ public class ChatRoomController {
         System.out.println(endUnitPage);
         System.out.println(totalCount);
         System.out.println(search);
-        return "user/getUser.jsp";
+        return "chatroom/chatRoomList.jsp";
     }
 }// ChatRoomController 종료

@@ -134,6 +134,7 @@ public class ReviewServiceImpl implements ReviewService {
         if ("myReviewList".equals(condition)) { // 나의 후기
             System.out.println("myReviewList임쁠 if문안에 들어오나요");
             parameters.put("reviewAuthor", dbUser.getUserId());
+            parameters.put("nickname", dbUser.getNickname());
             parameters.put("search", search);
             parameters.put("reviewList", reviewDao.selectReviewList(parameters));
             System.out.println("여기는myReviewList 서비스임쁠parameters>>>>" + parameters);
