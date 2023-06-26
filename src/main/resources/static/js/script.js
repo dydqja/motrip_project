@@ -3,21 +3,42 @@ const videoGrid = document.getElementById('video-grid'); //Grid 가져옴
 const myPeer = new Peer(); //peer 생성
 const myVideo = document.createElement('video'); //video 새로 생성
 myVideo.muted = true;
-
+let myStream;
 const peers = {};
-
-navigator.mediaDevices
-    .getUserMedia({
+videoBtn.addEventListener("click",()=>{
+    if (videoBtn.classList.contains('btn-on')) { //btn-on 이면? on
+        videoBtn.classList.remove('btn-on'); //on 을 지우고
+        videoBtn.classList.add('btn-off'); //off로 바꾼다.
+        videoBtn.innerText = 'VideoOff'; //
+        call.hidden=false;
+        trip.hidden=true;
+        handleCameraOnClick();
+        handleMuteClick();
+    } else { //처음 btn-off
+        videoBtn.classList.remove('btn-off');
+        videoBtn.classList.add('btn-on');
+        videoBtn.innerText = 'VideoOn';
+        call.hidden=true;
+        trip.hidden=false;
+        handleCameraOffClick();
+        handleMuteClick();
+    }
+})
+startVideo()
+function startVideo() {
+   navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
-    })
-    .then((stream) => {
-        addVideoStream(myVideo, stream); //myVideo에 스트림 추가
+    }).then((stream) => {
+        myStream = stream;
+        addVideoStream(myVideo, stream);
 
         myPeer.on('call', (call) => {
+            console.log("myPeer.on(call)");
             call.answer(stream);
             const video = document.createElement('video');
             call.on('stream', (userVideoStream) => {
+                console.log("myPeer.on(call) -> call.on(stream)");
                 addVideoStream(video, userVideoStream);
             });
         });
@@ -28,14 +49,15 @@ navigator.mediaDevices
         });
     });
 
-socket.on('user-disconnected', (userId) => {
-    if (peers[userId]) peers[userId].close();
-});
+    socket.on('user-disconnected', (userId) => {
+        if (peers[userId]) peers[userId].close();
+    });
 
-myPeer.on('open', (id) => {
-    console.log("My peer Id is : "+ id);
-    socket.emit('join-room', ROOM_ID, id);
-});
+    myPeer.on('open', (id) => {
+        console.log("My peer Id is: " + id);
+        socket.emit('join-room', ROOM_ID, id);
+    });
+}
 
 
 
@@ -44,6 +66,7 @@ function connectToNewUser(userId, stream) {
     const call = myPeer.call(userId, stream);
     const video = document.createElement('video');
     call.on('stream', (userVideoStream) => {
+        console.log("connecToNewUser -> call.on(stream)")
         addVideoStream(video, userVideoStream);
     });
     call.on('close', () => {
@@ -60,18 +83,21 @@ function addVideoStream(video, stream) {
         video.play();
     });
     videoGrid.append(video);
+    handleCameraOffClick();
+    handleMuteClick();
 }
-// function handleCameraClick(){  //카메라 on off
-//     myVideo.getVideoTracks().forEach(track => (track.enabled = !track.enabled)); //비디오 트랙정보를 가져와서 enabled를 반대로 설정한다.
-//
-//     if(cameraOff){ //카메라 꺼져있으면
-//         cameraBtn.innerText = "Turn Camera Off"; // 카메라를 끄니까 켜진상태
-//         cameraOff=false; //카메라 켠다.
-//     }else{ //카메라가 켜져있으면
-//         cameraBtn.innerText = "Turn Camera On"; //카메라를 켜니까 꺼진상태
-//         cameraOff=true; //카메라 끈다.
-//     }}
-
+function handleCameraOffClick(){  //카메라 on off
+    console.log(myStream);
+    myStream.getVideoTracks().forEach(track => (track.enabled = !track.enabled)); //비디오 트랙정보를 가져와서 enabled를 반대로 설정한다.
+}
+function handleCameraOnClick(){  //카메라 on off
+    console.log(myStream);
+    myStream.getVideoTracks().forEach(track => (track.enabled = !track.enabled)); //비디오 트랙정보를 가져와서 enabled를 반대로 설정한다.
+}
+function handleMuteClick(){ // 소리 on off
+    //console.log(myStream.getAudioTracks()); //track 정보를 가져온다.//labeled = 모델명
+    myStream.getAudioTracks().forEach(track => (track.enabled = !track.enabled)); //enabled!!!! 를 반대로 설정한다.
+}
     // PeerJS를 사용하여 서버에 연결합니다.
 //     const peer = new Peer({ path: '/peerjs', host: '/', port: 3000 });
 //
