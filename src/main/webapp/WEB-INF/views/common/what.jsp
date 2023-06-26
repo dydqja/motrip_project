@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -47,7 +47,7 @@
 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 
 <div class="post-single center">
-    <div class="page-img" style="background-image: url('/images/mtrip.jpg');">
+    <div class="page-img" style="background-image: url('/media/whatBack.jpg');">
         <div class="page-img-txt container">
             <div class="row">
                 <div class="col-sm-2">

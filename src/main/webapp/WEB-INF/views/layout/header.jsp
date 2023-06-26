@@ -49,9 +49,8 @@
                         <a href="#">모여행 <i class="fa fa-chevron-down nav-arrow"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="/test/what">모여행이란</a></li>
-                            <li><a href="home_slider.html">설계 포트폴리오</a></li>
-                            <%--<li><a href="home_slider_with_searhbar.html">제작팀 소개</a></li>
-                            <c:if test="${empty sessionScope.user}">
+                            <li><a href="/test/who">개발팀 소개</a></li>
+                            <%--<c:if test="${empty sessionScope.user}">
                             <li><a href="/test/login/user1">유저1로 로그인</a></li>
                             <li><a href="/test/login/user2">유저2로 로그인</a></li>
                             <li><a href="/test/login/admin">admin 로그인</a></li>
