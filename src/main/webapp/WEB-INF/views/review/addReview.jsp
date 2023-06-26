@@ -555,17 +555,6 @@
 
 
 
-    $(function () { // 수정 하러가기
-        $("button[id='updateReview']").on("click", function () {
-            var reviewNo = "${review.reviewNo}";
-            var tripPlanNo = "${tripPlan.tripPlanNo}";
-            window.location.href = "/review/updateReviewView?reviewNo="+reviewNo+"tripPlanNo="+tripPlanNo;
-            console.log("수정 버튼 reviewNo",reviewNo);
-            console.log("수정 버튼 tripPlanNo",tripPlanNo);
-
-        });
-    });
-
     $(function () { // 나의 목록으로가기 : 비공개 설정하고 등록하면 모든 목록에서 조회되지 않으므로
         $("#history").on("click", function () {
             window.location.href = "/review/getMyReviewList";

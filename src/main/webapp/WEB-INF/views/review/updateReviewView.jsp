@@ -485,7 +485,7 @@
               <a href="#">4 Comments</a>-->
             </p>
 
-            <button class="btn-default icon-camera" id="reviewThumbnail"
+            <button class="btn-default icon-camera" id="reviewThumbnailbtn"
                     style="font-size: 10px; margin-left: 0.8%">썸네일
             </button>
           </div>
@@ -502,6 +502,7 @@
         <div>
                                 <span>
             <h4>
+              <input type="text" id="reviewThumbnail" name="reviewThumbnail" value="" hidden>
                 <input type="text" id="reviewTitle" name="reviewTitle" value="${review.reviewTitle}"  placeholder="제목을 입력하세요."
                        style="color: black; width: 82%; height: 40px; opacity: 0.5;">
             </h4>
@@ -633,8 +634,8 @@
       </main>
       </c:forEach> <!-- dailyPlan for end -->
 
-      <div class="col-sm-9" style="text-align: center;">
-        <textarea id="reviewContents" name="reviewContents" valuew="${review.reviewContents}" required></textarea>
+      <div class="col-sm-9" >
+        <textarea id="reviewContents" name="reviewContents" required><c:out value="${review.reviewContents}" /></textarea>
       </div>
 
 
@@ -838,21 +839,22 @@
   <!-- 아래는 버튼클릭시 동작되는 부분입니다 -->
 
   $(function () {
-    $("button[id='tripPlanLikes']").on("click", function () {
-      var tripPlanNo = "${tripPlan.tripPlanNo}";
+    $("button[id='reviewLikes']").on("click", function () {
+      var reviewNo = "${review.reviewNo}";
+      console.log("reviewNo 들어가니?".reviewNo)
       $.ajax({ // userID와 tripPlanNo가 필요하여 객체로 전달
-        url: "/tripPlan/tripPlanLikes",
+        url: "/review/reviewLikes",
         type: "GET",
-        data: {"tripPlanNo": tripPlanNo},
+        data: {"reviewNo": reviewNo},
         success: function (data) {
           console.log(data);
           if (data == -1) {
-            alert("이미 추천한 후기입니다.");
+            alert("이미 추천한 후기 입니다.");
           } else if (data == 0) {
             alert("비회원은 추천을 할수없습니다.");
           } else {
             alert("추천 완료");
-            $("#likes").text(data);
+            $("#reviewLikes").text(data);
           }
         },
         error: function (xhr, status, error) {
@@ -865,8 +867,9 @@
 
 
 
+
   // 여행플랜 썸네일
-  $("#reviewThumbnail").click(function () {
+  $("#reviewThumbnailbtn").click(function () {
     var tripPlanNo = "${tripPlan.tripPlanNo}";
     Swal.fire({
       title: "썸네일 업로드",
@@ -895,6 +898,9 @@
         formData.append("tripPlanNo",tripPlanNo);
         console.log("tripPlanNo",tripPlanNo)
 
+        // reviewThumbnail 값을 가져와서 formData에 추가
+        //var reviewThumbnailInput = document.getElementById("reviewThumbnailInput").files[0];
+
         // 파일 업로드 AJAX 요청
         $.ajax({
           url: "/review/fileUpload",
@@ -903,31 +909,14 @@
           processData: false,
           contentType: false,
           success: function (response) {
-            console.log("파일 업로드 성공:", response);
+            console.log("파일 업로드 성공 니가 맞아?:", response);
             var imagePath = response;
             reviewThumbnail = imagePath.replace(/^\/imagePath\//, "");
-            console.log(reviewThumbnail);
+            console.log("reviewThumnail>>>>>>>",reviewThumbnail);
             $(".page-img").css("background-image", "url('/imagePath/thumbnail/" + reviewThumbnail + "')");
 
-            // 여행플랜 썸네일 저장하는 AJAX 요청
-            $.ajax({
-              url: "/review/reviewThumbnail", // DB에 썸네일 저장하는 엔드포인트 경로로 변경해야 합니다.
-              type: "POST",
-              data: {
-                tripPlanNo: tripPlanNo,
-                reviewThumbnail: reviewThumbnail,
-              },
-              success: function (response) {
-                console.log("썸네일 저장 성공:", response);
-                // 저장 성공 후 필요한 동작 수행
-              },
-              error: function (xhr, status, error) {
-                console.log("썸네일 저장 실패:", error);
-              },
-            });
-
-
-
+            // 썸네일 값 input 요소에 저장
+            $("#reviewThumbnail").val(reviewThumbnail);
           },
           error: function (xhr, status, error) {
             console.log("파일 업로드 실패:", error);
@@ -935,13 +924,13 @@
         });
       }
     });
-  });
 
-
-  $(function () { // '수정 취소'버튼 이전으로 돌아가기
-    $("#history").on("click", function () {
-      window.location.href = "/review/getMyReviewList";
+    $(function () { // '수정 취소'버튼 이전으로 돌아가기
+      $("#history").on("click", function () {
+        window.location.href = "/review/getMyReviewList";
+      });
     });
+
   });
 
 </script>

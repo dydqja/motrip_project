@@ -37,6 +37,7 @@
   <script src="/assets/js/main.js"></script>
 
 
+
   <style>
     .center-div {
       display: flex;
@@ -79,29 +80,7 @@
           </div>
         </div>
         <label><br></label>
-        <div class="border-box">
-          <div class="box-title">정렬 조건 </div>
-          <div class="center-div" style="width: 100%; height: 100%;">
-            <div class="btn-group" data-toggle="buttons">
-              <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="newDate">
-                <h4><span class="icon-calendar"></span>&nbsp
-                  <input type="radio" name="options" id="newDate"
-                         value="newDate" OnClick="window.location.href='/review/reviewList?type=${condition}&planCondition=newDate'"></h4>
-                <h5>최신날짜순</h5>
-              </label>
-              <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="views">
-                <h4><span class="icon-eye"></span>&nbsp<input type="radio" name="options"
-                                                              id="views" value="views" OnClick="window.location.href='/review/reviewList?type=${condition}&reviewCondition=views'"></h4>
-                <h5>조회수</h5>
-              </label>
-              <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="likes">
-                <h4><span class="icon-hand-like"></span>&nbsp<input type="radio" name="options"
-                                                                    id="likes" value="likes" OnClick="window.location.href='/review/reviewList?type=${condition}&reviewCondition=likes'"></h4>
-                <h5>추천수</h5>
-              </label>
-            </div>
-          </div>
-        </div>
+
 
         <div class="sidebar">
           <div class="border-box">
@@ -109,7 +88,7 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="후기 타이틀">
               <div class="input-group-btn">
-                <button class="btn btn-primary">Search</button>
+                <button class="btn btn-primary">검색</button>
               </div>
             </div>
           </div>
@@ -125,18 +104,18 @@
           <c:set var="i" value="${ i+1 }"/>
           <div class="item-list review-item-list">
             <div class="col-sm-5">
-<%--              <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">--%>
-<%--                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">--%>
-<%--                  <input type="hidden" id="reviewImage${review.reviewNo}"--%>
-<%--                          <c:if test="${review.isReviewDeleted}">--%>
-<%--                            value="0"--%>
-<%--                          </c:if>--%>
-<%--                          <c:if test="${!review.isReviewDeleted}">--%>
-<%--                            value="${review.reviewNo}"--%>
-<%--                          </c:if>--%>
-<%--                         class="reviewNo"/></div>--%>
-<%--              </c:if>--%>
-<%--              <c:if test="${review.reviewThumbnail == ''}">--%>
+              <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">
+                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">
+                  <input type="hidden" id="reviewImage${review.reviewNo}"
+                          <c:if test="${review.isReviewDeleted}">
+                            value="0"
+                          </c:if>
+                          <c:if test="${!review.isReviewDeleted}">
+                            value="${review.reviewNo}"
+                          </c:if>
+                         class="reviewNo"/></div>
+              </c:if>
+              <c:if test="${review.reviewThumbnail == ''}">
                 <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
                   <input type="hidden" id="reviewImage${review.reviewNo}"
                           <c:if test="${review.isReviewDeleted}">
@@ -146,7 +125,7 @@
                             value="${review.reviewNo}"
                           </c:if>
                          class="reviewNo"/></div>
-<%--              </c:if>--%>
+              </c:if>
             </div>
 
             <div class="col-sm-7">
@@ -187,8 +166,8 @@
                 </button>
 
 
-                <c:if test="${not empty sessionScope.user.userId && review.isReviewDeleted }">
-                  <c:if test="${sessionScope.user.userId == reviewAuthor}">
+                <c:if test="${not empty user.userId && review.isReviewDeleted }">
+                  <c:if test="${user.userId == reviewAuthor}">
                     <button id="btnDelete${review.reviewNo}" class="btn btn-sm btn-info btnDelete"
                             value="${review.reviewNo}">복구<input type="hidden"
                                                                     value="${review.reviewNo}"
@@ -278,6 +257,12 @@
 <script src="/assets/js/min/priceslider.min.js"></script>
 
 <script type="text/javascript">
+
+
+
+
+
+
   $(document).ready(function () {
 
     // 사진의 경우 여행플랜 삭제되었을때 아무것도 안눌리도록
@@ -306,7 +291,7 @@
       });
     });
 
-    // AJAX 요청을 보내고 여행플랜의 수를 가져오는 함수
+    // AJAX 요청을 보내고 후기의 수를 가져오는 함수
     function listCounter() {
       $.ajax({
         url: "/review/reviewCount",
@@ -332,6 +317,41 @@
 
     // 페이지가 열리면 함수 실행
     listCounter();
+
+/*    // 후기 검색
+    document.getElementById('searchButton').addEventListener('click', function() {
+      var searchKeyword = document.getElementById('searchKeyword').value;
+      var url = '/review/getReviewList?searchKeyword=' + encodeURIComponent(searchKeyword);
+      window.location.href = url;
+    });
+
+    document.getElementById('searchKeyword').addEventListener('keypress', function(event) {
+      if (event.keyCode === 13) { // 엔터 키
+        var searchKeyword = document.getElementById('searchKeyword').value;
+        var url = '/review/getReviewList?searchKeyword=' + encodeURIComponent(searchKeyword);
+        window.location.href = url;
+      }
+    });*/
+
+    $(document).ready(function() {
+      $('.right h4').hover(
+              function() {
+                $(this).css('cursor', 'pointer');
+                /* 마우스를 올렸을 때의 스타일 변경 */
+              },
+              function() {
+                $(this).css('cursor', 'auto');
+                /* 마우스가 벗어났을 때의 스타일 변경 */
+              }
+      );
+
+      $('.right h4').click(function() {
+        var userId = $(this).find('.hidden').text();  // h4 요소의 텍스트를 가져옵니다.
+        window.location.href = '/user/getUser?userId=' + userId + "&type=my";
+      });
+    });
+
+
   });
 
 </script>
