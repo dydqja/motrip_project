@@ -380,23 +380,17 @@
                 <div class="review-comment" style="margin-right: 100px;">
                     <div class="add-comment">
                         <div class="addDaily" style="text-align: right;">
-                            <button class="btn btn-primary" id="history">확인</button>
-                            <c:if test="${user.userId == review.reviewAuthor}">
+                            <button class="btn btn-primary" id="history">목록으로</button>
+                            <c:if test="${sessionScope.user.userId == review.reviewAuthor}">
                                 <button class="btn btn-primary" id="updateReview">수정</button>
                             </c:if>
-                            <c:if test="${user.userId == review.reviewAuthor}">
+                            <c:if test="${sessionScope.user.userId == review.reviewAuthor}">
                                 <button class="btn btn-primary" id="deleteReview">삭제</button>
                             </c:if>
                         </div>
                     </div>
                 </div>
-
-
-
-
             </main>
-
-
     </div>
         <div style="margin: 3%"></div>
 </div>
@@ -611,9 +605,9 @@
         });
     });
 
-    $(function () { // '확인'버튼 이전으로 돌아가기
+    $(function () { // '목록으로'버튼 공개된 목록으로 가기
         $("#history").on("click", function () {
-            window.location.href = "/review/getMyReviewList";
+            window.location.href = "/review/getReviewList";
         });
     });
 

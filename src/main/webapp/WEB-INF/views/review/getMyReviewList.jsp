@@ -81,29 +81,7 @@
                     </div>
                 </div>
                 <label><br></label>
-                <div class="border-box">
-                    <div class="box-title">정렬 조건</div>
-                    <div class="center-div" style="width: 100%; height: 100%;">
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="newDate">
-                                <h4><span class="icon-calendar"></span>&nbsp
-                                    <input type="radio" name="options" id="newDate"
-                                           value="newDate" OnClick="window.location.href='/review/reviewList?type=${condition}&planCondition=newDate'"></h4>
-                                <h5>최신날짜순</h5>
-                            </label>
-                            <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="views">
-                                <h4><span class="icon-eye"></span>&nbsp<input type="radio" name="options"
-                                                                              id="views" value="views" OnClick="window.location.href='/review/getReviewList?type=${condition}&reviewCondition=views'"></h4>
-                                <h5>조회수</h5>
-                            </label>
-                            <label class="btn-label" data-toggle="tooltip" data-placement="bottom" title="likes">
-                                <h4><span class="icon-hand-like"></span>&nbsp<input type="radio" name="options"
-                                                                                    id="likes" value="likes" OnClick="window.location.href='/review/getReviewList?type=${condition}&reviewCondition=likes'"></h4>
-                                <h5>추천수</h5>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+    
 
                 <div class="sidebar">
                     <div class="border-box">

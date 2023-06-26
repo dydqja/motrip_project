@@ -192,6 +192,7 @@ public class Search {
                 ", minAge=" + minAge +
                 ", maxAge=" + maxAge +
                 ", planCondition=" + planCondition +
+                ", reviewCondition=" + reviewCondition +
                 ", searchTravelStartDate="+searchTravelStartDate+
                 '}';
     }
