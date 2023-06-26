@@ -88,7 +88,7 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="후기 타이틀">
               <div class="input-group-btn">
-                <button class="btn btn-primary">Search</button>
+                <button class="btn btn-primary">검색</button>
               </div>
             </div>
           </div>
@@ -104,18 +104,18 @@
           <c:set var="i" value="${ i+1 }"/>
           <div class="item-list review-item-list">
             <div class="col-sm-5">
-<%--              <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">--%>
-<%--                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">--%>
-<%--                  <input type="hidden" id="reviewImage${review.reviewNo}"--%>
-<%--                          <c:if test="${review.isReviewDeleted}">--%>
-<%--                            value="0"--%>
-<%--                          </c:if>--%>
-<%--                          <c:if test="${!review.isReviewDeleted}">--%>
-<%--                            value="${review.reviewNo}"--%>
-<%--                          </c:if>--%>
-<%--                         class="reviewNo"/></div>--%>
-<%--              </c:if>--%>
-<%--              <c:if test="${review.reviewThumbnail == ''}">--%>
+              <c:if test="${review.reviewThumbnail != null && review.reviewThumbnail != ''}">
+                <div class="item-img row" style="background-image: url('/imagePath/thumbnail/${review.reviewThumbnail}');">
+                  <input type="hidden" id="reviewImage${review.reviewNo}"
+                          <c:if test="${review.isReviewDeleted}">
+                            value="0"
+                          </c:if>
+                          <c:if test="${!review.isReviewDeleted}">
+                            value="${review.reviewNo}"
+                          </c:if>
+                         class="reviewNo"/></div>
+              </c:if>
+              <c:if test="${review.reviewThumbnail == ''}">
                 <div class="item-img row" style="background-image: url('/images/tripImage.jpg');">
                   <input type="hidden" id="reviewImage${review.reviewNo}"
                           <c:if test="${review.isReviewDeleted}">
@@ -125,7 +125,7 @@
                             value="${review.reviewNo}"
                           </c:if>
                          class="reviewNo"/></div>
-<%--              </c:if>--%>
+              </c:if>
             </div>
 
             <div class="col-sm-7">
