@@ -58,7 +58,14 @@
             </div>
         </div>
     </div>
-        <img src="/media/who.png"/>
+
+    <main class="white" style="width: 100%">
+        <div class="container" style="width: 100%">
+            <div style="width: 100%">
+                <img src="/media/who.png" style="width: 100%" />
+            </div>
+        </div>
+    </main>
 </div>
 
 <%@ include file="/WEB-INF/views/layout/footer.jsp" %>
