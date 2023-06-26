@@ -568,14 +568,29 @@
             }
             .navbar-collapse li li {
                 border-bottom: 0px;
-            }z
+            }
             .nav-boxed {
                 margin-top: 0px;
 
             }
         }
     </style>
+    <style>
+        #video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 300px);
+            grid-auto-rows: 300px;
+            justify-content: center; /* 수평 가운데 정렬 */
+        }
+        video {
 
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            margin: 10%;
+            border-radius: 10%;
+        }
+    </style>
 <%--    <link rel="stylesheet" href="/assets/css/min/bootstrap.min.css" media="all">--%>
 <%--    <link rel="stylesheet" href="/assets/css/jqueryui.css" media="all">--%>
 <%--    &lt;%&ndash;      <link rel="stylesheet" href="/assets/css/main.css" media="all" id="maincss">&ndash;%&gt;--%>
@@ -899,13 +914,14 @@
             <div class="chat-messages">  <div id="image-preview"style="width:30%;height: 30%; border-radius: 20%"></div></div>
             <div class="chat-trip" style="position: relative;">
                 <div id="call">
-                    <div id="myStream" align="center">
-                        <video id="myFace" autoplay playsinline width="300" height="300"></video><br/>
-                        <button type="button" id="mute">Mute</button>
-                        <button type="button" id="camera">Turn Camera Off</button>
-                        <select id="cameras"></select>
+<%--                    <div id="myStream" align="center">--%>
+<%--                        <video id="myFace" autoplay playsinline width="300" height="300"></video><br/>--%>
+<%--                        <button type="button" id="mute">Mute</button>--%>
+<%--                        <button type="button" id="camera">Turn Camera Off</button>--%>
+<%--                        <select id="cameras"></select>--%>
 <%--                        <video id="peersFace" autoplay playsinline width="200" height="200"></video>--%>
-                    </div>
+<%--                    </div>--%>
+                    <div id="video-grid"></div>
                 </div>
                 <div id="trip">
                     <div style="margin-left: 3%">
@@ -1088,8 +1104,8 @@
         const call = document.getElementById("call");
         const videoBtn = document.getElementById('videoRoom2');
         const trip = document.getElementById("trip");
-        call.hidden=true;
-        trip.hidden=false;
+        call.hidden=false;
+        trip.hidden=true;
         const input = document.getElementById("myInput");
 
         // input.addEventListener("keydown", function(event) {
@@ -1325,6 +1341,10 @@
 
     </script>
     <script>
+        const ROOM_ID = "${chatRoom.chatRoomNo}";
+        const userId = "${username}";
+    </script>
+    <script>
         //papago
         var btn = document.getElementById('papagoBtn');
         function papago() {
@@ -1344,22 +1364,29 @@
                 videoBtn.classList.remove('btn-on'); //on 을 지우고
                 videoBtn.classList.add('btn-off'); //off로 바꾼다.
                 videoBtn.innerText = 'VideoOff'; //
-                call.hidden=false;
-                trip.hidden=true;
+                // call.hidden=true;
+                // trip.hidden=false;
+
             } else { //처음 btn-off
                 videoBtn.classList.remove('btn-off');
                 videoBtn.classList.add('btn-on');
                 videoBtn.innerText = 'VideoOn';
-                call.hidden=true;
-                trip.hidden=false;
+                // call.hidden=true;
+                // trip.hidden=false;
+
             }
         })
 
     </script>
+
+    <script
+            src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"
+    ></script>
+
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
     <script src="/js/main.js"></script>
-    <script src="/js/rtc.js"></script>
+<%--    <script src="/js/rtc.js"></script>--%>
     <script src="/js/imagepreview.js"></script>
-
+    <script src="/js/script.js" defer></script>
 </body>
 </html>

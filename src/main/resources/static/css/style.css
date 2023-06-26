@@ -44,7 +44,7 @@ a {
 .chat-container {
 	/*max-width: 100%;*/
 	/*max-height: 100%;*/
-	background: #ffffff;
+	background: rgba(232, 245, 241, 0.37);
 	/*margin: 30px auto;*/
 	overflow: hidden;
 }

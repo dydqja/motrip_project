@@ -29,7 +29,7 @@ async function getCameras(){ //카메라 정보를 select에 표시해주는 코
             }
             cameraSelect.appendChild(option); //select 에 option을 append
         })
-        console.log(cameras);
+        // console.log(cameras);
     }catch(e){
         console.log(e);
     }
@@ -96,7 +96,7 @@ async function handleCameraChange(){//카메라 변경
     //getMedia 불러오면 된다.
     //특정 카메라 불러오는법은 ?
     //getUserMedia(constraints) => constraints 를 통해 정보를 보내준다.
-    console.log(cameraSelect.value);
+    // console.log(cameraSelect.value);
     await getMedia(cameraSelect.value); // *(중요) 카메라 deviceId를 가져오는 부분
 }
 
@@ -120,19 +120,19 @@ async function initCall(){ //hidden을 바꾼다!
     if(call.hidden==false){
         // call.hidden=false;
         // trip.hidden=true;
-        console.log(room);
+        console.log("initCall");
         await getMedia();
         makeConnection();
 
-        count += 1;
-        var video = document.createElement('video');
-        video.autoplay = true;
-        video.playsinline = true;
-        video.width = 300;
-        video.height = 300;
-        video.id = `peersFace${count}`;
-        var div = document.getElementById('myStream');
-        div.appendChild(video);
+        // count += 1;
+        // var video = document.createElement('video');
+        // video.autoplay = true;
+        // video.playsinline = true;
+        // video.width = 300;
+        // video.height = 300;
+        // video.id = `peersFace${count}`;
+        // var div = document.getElementById('myStream');
+        // div.appendChild(video);
         //count += 1;
     }else{
 
@@ -149,6 +149,11 @@ async function initCall(){ //hidden을 바꾼다!
         console.log("video out!!");
     }
 }
+async function initCall(){ //hidden을 바꾼다!
+        console.log("initCall");
+        await getMedia();
+        makeConnection();
+}
 
 videoBtn.addEventListener("click",handleWelcomeSubmit);
 
@@ -156,7 +161,7 @@ async function handleWelcomeSubmit(event){
     event.preventDefault();
     // socket.emit("addVideo");
     //console.log(input.value);
-
+    console.log("handleWelcomeSubmit()")
     if(call.hidden==false) {
         await initCall();
         // backend submit
@@ -168,7 +173,7 @@ async function handleWelcomeSubmit(event){
 }
 /// Socket Code
 
-socket.on("welcome",async ()=>{ //peer A
+socket.on("welcome",async ()=>{ //peer A 53rtc
     console.log("someone join");
     const offer = await myPeerConnection.createOffer();
     myPeerConnection.setLocalDescription(offer);
@@ -183,7 +188,9 @@ socket.on("offer",async(offer) => { // offer가 도착한 순간 myPeerConnectio
     myPeerConnection.setRemoteDescription(offer); // 내 들어온 사람의 remoteDescription
     const answer = await myPeerConnection.createAnswer();
     console.log(answer);
+    console.log(myPeerConnection);
     myPeerConnection.setLocalDescription(answer);
+
     socket.emit("answer",answer,rtcRoom);
     console.log("sent the answer");
 });
@@ -201,6 +208,7 @@ socket.on("ice",ice => {
 
 //RTC CODE
 function makeConnection(){
+    console.log("makeConnection()");
     myPeerConnection = new RTCPeerConnection({
         iceServers:[
             {
@@ -228,13 +236,36 @@ function handleIce(data){
     // console.log(data);
 }
 
-function handleAddStream(data){
-
-    const peersFace = document.getElementById(`peersFace${count}`);
+async function handleAddStream(data){
+    console.log(data);
+    // const peersFace = document.getElementById(`peersFace${count}`);
+    const peersFace = document.getElementById(`peersFace`);
     console.log("god a event from here");
     console.log("peer's stream",data.stream);
     console.log("myStream",myStream);
     peersFace.srcObject = data.stream;
 
-
+    await initCall();
 }
+
+const peer = new Peer({ path: '/peerjs', host: '/', port: 3000 });
+
+// 로컬 비디오 스트림을 표시합니다.
+navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    .then((stream) => {
+        const localVideo = document.getElementById('localVideo');
+        localVideo.srcObject = stream;
+
+        // 연결된 피어에게 비디오 스트림을 전송합니다.
+        peer.on('call', (call) => {
+            call.answer(stream);
+            const video = document.createElement('video');
+            call.on('stream', (remoteStream) => {
+                video.srcObject = remoteStream;
+                document.getElementById('remoteVideos').appendChild(video);
+            });
+        });
+    })
+    .catch((error) => {
+        console.error('Error accessing media devices:', error);
+    });
