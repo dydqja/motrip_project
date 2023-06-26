@@ -36,15 +36,7 @@
   <script src="/assets/js/min/countnumbers.min.js"></script>
   <script src="/assets/js/main.js"></script>
 
-  <script type="text/javascript">
 
-    $(document).ready(function () {
-      var radioButtonId = '${search.reviewCondition}';
-      // 해당 라디오 버튼을 체크 상태로 설정
-      document.getElementById(radioButtonId).checked = true;
-    });
-
-  </script>
 
   <style>
     .center-div {
