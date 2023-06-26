@@ -1104,8 +1104,8 @@
         const call = document.getElementById("call");
         const videoBtn = document.getElementById('videoRoom2');
         const trip = document.getElementById("trip");
-        call.hidden=false;
-        trip.hidden=true;
+        call.hidden=true;
+        trip.hidden=false;
         const input = document.getElementById("myInput");
 
         // input.addEventListener("keydown", function(event) {
@@ -1359,23 +1359,23 @@
                 btn.innerText = 'PAPAGO ON';
             }
         }
-        videoBtn.addEventListener("click",()=>{
-            if (videoBtn.classList.contains('btn-on')) { //btn-on 이면? on
-                videoBtn.classList.remove('btn-on'); //on 을 지우고
-                videoBtn.classList.add('btn-off'); //off로 바꾼다.
-                videoBtn.innerText = 'VideoOff'; //
-                // call.hidden=true;
-                // trip.hidden=false;
-
-            } else { //처음 btn-off
-                videoBtn.classList.remove('btn-off');
-                videoBtn.classList.add('btn-on');
-                videoBtn.innerText = 'VideoOn';
-                // call.hidden=true;
-                // trip.hidden=false;
-
-            }
-        })
+        // videoBtn.addEventListener("click",()=>{
+        //     if (videoBtn.classList.contains('btn-on')) { //btn-on 이면? on
+        //         videoBtn.classList.remove('btn-on'); //on 을 지우고
+        //         videoBtn.classList.add('btn-off'); //off로 바꾼다.
+        //         videoBtn.innerText = 'VideoOff'; //
+        //         // call.hidden=true;
+        //         // trip.hidden=false;
+        //
+        //     } else { //처음 btn-off
+        //         videoBtn.classList.remove('btn-off');
+        //         videoBtn.classList.add('btn-on');
+        //         videoBtn.innerText = 'VideoOn';
+        //         // call.hidden=true;
+        //         // trip.hidden=false;
+        //
+        //     }
+        // })
 
     </script>
 
