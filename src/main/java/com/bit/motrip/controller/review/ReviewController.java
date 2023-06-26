@@ -208,8 +208,11 @@ public class ReviewController {
                                 @RequestParam(value = "searchKeyword", required = false) String searchKeyword,Model model, HttpSession session) throws Exception {
         System.out.println("/review/getReviewList : GET");
 
+        User dbUser = (User) session.getAttribute("user");
+
         Search search = new Search();
         search.setCurrentPage(currentPage);
+        search.setSearchKeyword(searchKeyword);
         search.setReviewCondition(reviewCondition);
 
         System.out.println("currentPage>>>>>>>>"+currentPage);
@@ -245,6 +248,7 @@ public class ReviewController {
             int reviewLikes = review.getReviewLikes();
             int viewCount = review.getViewCount();
 
+            model.addAttribute("review", review);
             TripPlan tripPlan = tripPlanService.selectTripPlan(tripPlanNo);
             model.addAttribute("reviewNo", reviewNo);
             System.out.println("reviewNo>>>"+reviewNo);
@@ -252,6 +256,7 @@ public class ReviewController {
             model.addAttribute("reviewLikes", reviewLikes);
             model.addAttribute("viewCount", viewCount);
             System.out.println("tripPlan>>>>>"+tripPlan);
+            System.out.println("viewCount>>>>"+viewCount);
         }
 
         System.out.println("reviewListData 왜 못갖고와"+reviewListData);
