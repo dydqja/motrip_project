@@ -485,7 +485,7 @@
               <a href="#">4 Comments</a>-->
             </p>
 
-            <button class="btn-default icon-camera" id="reviewThumbnail"
+            <button class="btn-default icon-camera" id="reviewThumbnailbtn"
                     style="font-size: 10px; margin-left: 0.8%">썸네일
             </button>
           </div>
@@ -502,6 +502,7 @@
         <div>
                                 <span>
             <h4>
+              <input type="text" id="reviewThumbnail" name="reviewThumbnail" value="" hidden>
                 <input type="text" id="reviewTitle" name="reviewTitle" value="${review.reviewTitle}"  placeholder="제목을 입력하세요."
                        style="color: black; width: 82%; height: 40px; opacity: 0.5;">
             </h4>
@@ -924,11 +925,12 @@
       }
     });
 
-
-  $(function () { // '수정 취소'버튼 이전으로 돌아가기
-    $("#history").on("click", function () {
-      window.location.href = "/review/getMyReviewList";
+    $(function () { // '수정 취소'버튼 이전으로 돌아가기
+      $("#history").on("click", function () {
+        window.location.href = "/review/getMyReviewList";
+      });
     });
+
   });
 
 </script>
