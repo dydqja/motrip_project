@@ -12,7 +12,7 @@ videoBtn.addEventListener("click",()=>{
         videoBtn.innerText = 'VideoOff'; //
         call.hidden=false;
         trip.hidden=true;
-        handleCameraOnClick();
+        handleCameraClick();
         handleMuteClick();
     } else { //처음 btn-off
         videoBtn.classList.remove('btn-off');
@@ -20,7 +20,7 @@ videoBtn.addEventListener("click",()=>{
         videoBtn.innerText = 'VideoOn';
         call.hidden=true;
         trip.hidden=false;
-        handleCameraOffClick();
+        handleCameraClick();
         handleMuteClick();
     }
 })
@@ -83,17 +83,17 @@ function addVideoStream(video, stream) {
         video.play();
     });
     videoGrid.append(video);
-    handleCameraOffClick();
+    handleCameraClick();
     handleMuteClick();
 }
-function handleCameraOffClick(){  //카메라 on off
+function handleCameraClick(){  //카메라 on off
     console.log(myStream);
     myStream.getVideoTracks().forEach(track => (track.enabled = !track.enabled)); //비디오 트랙정보를 가져와서 enabled를 반대로 설정한다.
 }
-function handleCameraOnClick(){  //카메라 on off
-    console.log(myStream);
-    myStream.getVideoTracks().forEach(track => (track.enabled = !track.enabled)); //비디오 트랙정보를 가져와서 enabled를 반대로 설정한다.
-}
+// function handleCameraOnClick(){  //카메라 on off
+//     console.log(myStream);
+//     myStream.getVideoTracks().forEach(track => (track.enabled = !track.enabled)); //비디오 트랙정보를 가져와서 enabled를 반대로 설정한다.
+// }
 function handleMuteClick(){ // 소리 on off
     //console.log(myStream.getAudioTracks()); //track 정보를 가져온다.//labeled = 모델명
     myStream.getAudioTracks().forEach(track => (track.enabled = !track.enabled)); //enabled!!!! 를 반대로 설정한다.
