@@ -1146,7 +1146,7 @@
                         console.log(error);
                         Swal.fire({
                             title: '저장 실패',
-                            text: '여행플랜 저장 중에 오류가 발생했습니다.',
+                            text: '여행플랜 저장 중에 오류가 발생했습니다. 사진 용량이 너무 큽니다.',
                             icon: 'error',
                             confirmButtonText: '확인'
                         });
@@ -1284,17 +1284,17 @@
 
     function delDailyPlan(indexCheck) {
         // 배열에서 전체 삭제
-        console.log("삭제하겠습니다");
-        console.log(indexCheck);
-
-        console.log(placeTripTimes['map' + indexCheck]);
-        console.log(totalTripTimes[indexCheck]);
-        console.log(placeTripPositions[indexCheck]);
-        console.log(allPlaces['map' + indexCheck]);
-        console.log(markers[indexCheck]);
-        console.log(markersBound[indexCheck]);
-        console.log(maps[indexCheck]);
-        console.log(placeData[indexCheck]);
+        // console.log("삭제하겠습니다");
+        // console.log(indexCheck);
+        //
+        // console.log(placeTripTimes['map' + indexCheck]);
+        // console.log(totalTripTimes[indexCheck]);
+        // console.log(placeTripPositions[indexCheck]);
+        // console.log(allPlaces['map' + indexCheck]);
+        // console.log(markers[indexCheck]);
+        // console.log(markersBound[indexCheck]);
+        // console.log(maps[indexCheck]);
+        // console.log(placeData[indexCheck]);
 
         delete placeTripTimes['map' + indexCheck];
         totalTripTimes.splice(indexCheck, 1);

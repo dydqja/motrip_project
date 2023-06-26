@@ -453,7 +453,6 @@
                             <div class="border-box list${i-1}"
                                  style="height: 600px; width: 100%; overflow-y: auto; overflow-x: hidden; border-radius: 15px;">
                                 <div class="box-title">명소리스트
-                                    <c:if test="${dailyPlan.totalTripTime != 0 && dailyPlan.totalTripTime != null}">
                                         <div class="card text-white mb-3 btn btn-sm btn-info" style="background-color: rgb(255,254,255); color: black; text-align: right;"
                                              id="totalTripTime${i-1}" style="font-size: 5px;">
                                             <c:if test="${dailyPlan.totalTripTime >= 60}">
@@ -465,10 +464,10 @@
                                                 </script>
                                                 ${formattedTime}
                                             </c:if>
+                                            <c:if test="${dailyPlan.totalTripTime != 0 && dailyPlan.totalTripTime != null}">
                                             <c:if test="${dailyPlan.totalTripTime < 60}">
                                                 ${dailyPlan.totalTripTime}분
-                                            </c:if></div>
-                                    </c:if>
+                                            </c:if></c:if></div>
                                 </div>
 
                                 <c:set var="j" value="0"/>
@@ -489,7 +488,6 @@
                                                 </h5>
                                             </div>
                                         </div>
-                                        <c:if test="${place.tripTime != 0 && place.tripTime != null}">
                                             <div class="card text-white mb-3 btn btn-sm btn-info" name="tripTime" id="tripTime${i - 1}" data-index="${j - 1}"
                                                  style="background-color: rgb(255,255,255); color: black; width: auto; height: auto; ">
                                                 <div style=" color: black; display: inline-block;">
@@ -503,12 +501,13 @@
                                                         </script>
                                                         ${formattedTime}
                                                     </c:if>
+                                                    <c:if test="${place.tripTime != 0 && place.tripTime != null}">
                                                     <c:if test="${place.tripTime < 60}">
                                                         ${place.tripTime}분
                                                     </c:if>
+                                                    </c:if>
                                                 </div>
                                             </div>
-                                        </c:if>
                                     </div>
 
                                     <script type="text/javascript">
@@ -1328,7 +1327,7 @@
                         },
                         error: function (xhr, status, error) {
                             console.log(error);
-                            Swal.fire('수정 실패', '여행플랜 수정 중 오류가 발생했습니다.', 'error');
+                            Swal.fire('수정 실패', '여행플랜 수정 중 오류가 발생했습니다. 추가한 사진 용량이 너무 큽니다.', 'error');
                         }
                     });
                 }
@@ -1498,13 +1497,19 @@
             console.log("id : " + indexCheck);
             console.log("index : " + index);
 
-            var prevTripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index) + '"]'); // 명소를 기준으로 이전 시간 리스트박스
+            var prevTripTimeEl = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + index + '"]'); // 명소를 기준으로 이전 시간 리스트박스
+
+            console.log("으아아")
+            console.log(prevTripTimeEl)
+            console.log("으아아")
+
             $(prevTripTimeEl).parent().remove();
             $(prevTripTimeEl).remove();
 
             if (index == 0) {
 
                 console.log("0으로 시작")
+
 
                 totalTripTimes[indexCheck] = (parseInt(totalTripTimes[indexCheck])) - placeTripTimes['map' + indexCheck][index];
                 if(totalTripTimes[indexCheck] == 0) {
@@ -1594,6 +1599,7 @@
 
                 console.log("0이상의 값으로 시작")
 
+
                 // 이부분은 맨마지막 항목을 제외했을때에도 체크하기 위해서 급하게 작성되었음
                 var safeTripTime = document.querySelector('[name="tripTime"][id="tripTime' + indexCheck + '"][data-index="' + (index - 1) + '"]');
                 var content = safeTripTime.innerHTML;
@@ -1648,7 +1654,7 @@
                 placeData[indexCheck].splice(index, 1);
 
                 // 이후 남아있는 리스트박스들의 id 값을 업데이트
-                var elTripTimes = document.querySelectorAll('[id="tripTime' + indexCheck + '"]');
+                var elTripTimes = document.querySelectorAll('.card.text-white.mb-3[id="tripTime' + indexCheck + '"]');
                 console.log(elTripTimes)
                 console.log(elTripTimes.length)
                 console.log("위에가 남아있는 리스트 크기임")
@@ -1671,6 +1677,7 @@
                     elPlaceTitles[i].setAttribute('data-index', i);
                     console.log(elPlaceTitles[i]);
                 }
+
 
                 // 삭제된 화면을 재구성
                 var bounds = new kakao.maps.LatLngBounds();
